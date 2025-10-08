@@ -2,5 +2,8 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "name": "@pp-clca-pcm/domain"
+  "name": "@pp-clca-pcm/domain",
+  "dependencies": {
+    "@types/node": "^24.7.0"
+  }
 }
