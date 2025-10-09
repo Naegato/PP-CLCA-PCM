@@ -2,5 +2,8 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "name": "@pp-clca-pcm/adapters"
+  "name": "@pp-clca-pcm/adapters",
+  "dependencies": {
+    "@types/node": "^24.7.0"
+  }
 }

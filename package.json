@@ -5,6 +5,7 @@
   "workspaces": [
     "application",
     "domain",
-    "infrastructure/adapters"
+    "infrastructure/adapters",
+    "infrastructure/tests"
   ]
 }
