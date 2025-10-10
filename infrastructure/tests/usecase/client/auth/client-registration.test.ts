@@ -3,16 +3,16 @@ import { describe, expect, test } from 'vitest';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
 import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { AccountRepositoryInMemory } from '@pp-clca-pcm/adapters/repositories/memory/account/account';
-import { AccountTypeRepositoryInMemory } from '@pp-clca-pcm/adapters/repositories/memory/account/type';
+import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/account';
+import { InMemoryAccountTypeRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/type';
 import { ClientRegistration } from '@pp-clca-pcm/application/usecases/client/auth/client-registration';
 import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
 
 describe('Client Registration ', () => {
   const getData = () => {
     const inMemoryClientsRepository = new InMemoryUserRepository();
-    const inMemoryAccountRepository = new AccountRepositoryInMemory();
-    const inMemoryAccountTypeRepository = new AccountTypeRepositoryInMemory();
+    const inMemoryAccountRepository = new InMemoryAccountRepository(inMemoryClientsRepository);
+    const inMemoryAccountTypeRepository = new InMemoryAccountTypeRepository();
 
     return {
       useCase: new ClientRegistration(

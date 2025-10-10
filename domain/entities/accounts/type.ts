@@ -10,6 +10,7 @@ export class AccountType {
     public readonly identifier: string | null,
     public readonly name: AccountTypeName,
     public readonly rate: number,
+    public readonly limitByClient?: number | null,
     public readonly description?: string | null,
   ) { }
 
@@ -18,7 +19,7 @@ export class AccountType {
     rate: number,
     description?: string | null,
   ): AccountType {
-    return new AccountType(null, name, rate, description ?? null);
+    return new AccountType(null, name, rate,null, description ?? null);
   }
 
   public update(props: Partial<AccountType>): AccountType {
@@ -26,6 +27,7 @@ export class AccountType {
       props.identifier ?? this.identifier,
       props.name ?? this.name,
       props.rate ?? this.rate,
+      props.limitByClient ?? this.limitByClient,
       props.description ?? this.description,
     );
   }

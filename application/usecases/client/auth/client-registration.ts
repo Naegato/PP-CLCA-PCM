@@ -35,8 +35,9 @@ export class ClientRegistration {
     const defaultAccountType = await this.accountTypeRepository.getOrSave(AccountTypeNameEnum.DEFAULT, AccountType.create(AccountTypeNameEnum.DEFAULT, 0));
     const account = Account.create(savedClient, defaultAccountType,'Main Account');
     const savedAccount = await this.accountRepository.save(account);
-    const updatedClient = savedClient.updateClientProps(new ClientProps([savedAccount]));
 
-    return updatedClient;
+    const finalClient = await this.userRepository.find(savedClient);
+
+    return finalClient;
   }
 }

@@ -1,7 +1,7 @@
 import { AccountTypeRepository } from '@pp-clca-pcm/application/repositories/type';
 import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
 
-export class AccountTypeRepositoryInMemory implements AccountTypeRepository {
+export class InMemoryAccountTypeRepository implements AccountTypeRepository {
   public readonly inMemoryAccountTypes: AccountType[] = [];
 
   getOrSave(name: AccountTypeName, accountType: AccountType): Promise<AccountType> {

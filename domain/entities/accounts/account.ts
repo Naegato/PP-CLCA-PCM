@@ -1,12 +1,12 @@
 import { Transaction } from '../transaction';
-import { Client } from '../../value-objects/user/client';
 import { AccountType } from './type';
 import { randomUUID } from 'node:crypto';
+import { User } from '../user';
 
 export class Account {
   public constructor (
     public readonly identifier: string | null,
-    public readonly owner: Client,
+    public readonly owner: User,
     public readonly type: AccountType,
     public readonly emittedTransactions: Transaction[] = [],
     public readonly receivedTransactions: Transaction[] = [],
@@ -14,17 +14,17 @@ export class Account {
   ) { }
 
   public static create (
-    owner: Client,
+    owner: User,
     type: AccountType,
     name?: string,
   ): Account {
     return new Account(randomUUID(), owner, type, [], [], name);
   }
 
-  public update(props: Partial<Omit<Account, 'identifier'>>): Account {
+  public update(props: Partial<Omit<Account, 'identifier' | 'owner'>>): Account {
     return new Account(
       this.identifier,
-      props.owner ?? this.owner,
+      this.owner,
       props.type ?? this.type,
       props.emittedTransactions ?? this.emittedTransactions,
       props.receivedTransactions ?? this.receivedTransactions,
