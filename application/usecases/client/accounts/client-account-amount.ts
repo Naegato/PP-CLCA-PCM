@@ -1,11 +1,9 @@
-import { Client } from '@pp-clca-pcm/domain/entities/user/client';
-import { AccountRepository } from '../../../repositories/account';
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
+import { User } from '@pp-clca-pcm/domain/entities/user';
 
 export class ClientAccountAmount {
 
-  public async execute(client: Client): Promise<number> {
-    const account: Account = client.account;
+  public async execute(account: Account): Promise<number> {
     const emitTransactions = account?.emittedTransactions ?? [];
     const receivedTransactions = account?.receivedTransactions ?? [];
 

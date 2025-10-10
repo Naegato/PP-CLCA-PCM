@@ -1,10 +1,9 @@
-import { Director } from '@pp-clca-pcm/domain/entities/user/director';
-import { DirectorRepository } from '@pp-clca-pcm/application/repositories/director';
-import { DirectorCreateError } from '../../../errors/director-create';
+import { UserRepository } from '../../../repositories/user';
+import { User } from '@pp-clca-pcm/domain/entities/user';
 
 export class DirectorRegistration {
   public constructor (
-    public readonly directorRepository: DirectorRepository
+    public readonly userRepositories: UserRepository,
   ) { }
 
   public async execute (
@@ -12,14 +11,14 @@ export class DirectorRegistration {
     lastname: string,
     email: string,
     password: string,
-  ): Promise<Director | DirectorCreateError> {
-    const director = Director.create(firstname, lastname, email, password);
+  ) {
+    const director = User.create(firstname, lastname, email, password);
 
     if (director instanceof Error) {
-      return new DirectorCreateError(director);
+      return director;
     }
 
-    const savedDirector = await this.directorRepository.save(director);
+    const savedDirector = await this.userRepositories.save(director);
     return savedDirector;
   }
 }

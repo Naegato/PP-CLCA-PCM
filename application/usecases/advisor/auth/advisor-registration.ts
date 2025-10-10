@@ -1,11 +1,9 @@
-import { Advisor } from '@pp-clca-pcm/domain/entities/user/advisor';
-import { AdvisorRepository } from '../../../repositories/advisor';
-import { exhaustive } from 'exhaustive';
-import { AdvisorCreateError } from '../../../errors/advisor-create';
+import { User } from '@pp-clca-pcm/domain/entities/user';
+import { UserRepository } from '../../../repositories/user';
 
 export class AdvisorRegistration {
   public constructor (
-    public readonly advisorRepository: AdvisorRepository,
+    public readonly userRepositories: UserRepository,
   ) { }
 
   public async execute (
@@ -13,14 +11,14 @@ export class AdvisorRegistration {
     lastname: string,
     email: string,
     password: string,
-  ): Promise<Advisor | AdvisorCreateError> {
-    const advisor = Advisor.create(firstname, lastname, email, password);
+  ) {
+    const advisor = User.create(firstname, lastname, email, password);
 
     if (advisor instanceof Error) {
-      return new AdvisorCreateError(advisor);
+      return advisor;
     }
 
-    const savedAdvisor = await this.advisorRepository.save(advisor);
+    const savedAdvisor = await this.userRepositories.save(advisor);
     return savedAdvisor;
   }
 }

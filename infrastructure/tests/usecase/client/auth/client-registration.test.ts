@@ -1,16 +1,16 @@
 import { describe, expect, test } from 'vitest';
 
-import { ClientRepositoryInMemory } from '@pp-clca-pcm/adapters/repositories/memory/user/client';
+import { User } from '@pp-clca-pcm/domain/entities/user';
+import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
 import { AccountRepositoryInMemory } from '@pp-clca-pcm/adapters/repositories/memory/account/account';
 import { AccountTypeRepositoryInMemory } from '@pp-clca-pcm/adapters/repositories/memory/account/type';
 import { ClientRegistration } from '@pp-clca-pcm/application/usecases/client/auth/client-registration';
-import { Client } from '@pp-clca-pcm/domain/entities/user/client';
-import { PasswordLengthError } from '@pp-clca-pcm/domain/errors/password-length';
-import { PasswordUppercaseError } from '@pp-clca-pcm/domain/errors/password-uppercase';
+import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
 
 describe('Client Registration ', () => {
   const getData = () => {
-    const inMemoryClientsRepository = new ClientRepositoryInMemory();
+    const inMemoryClientsRepository = new InMemoryUserRepository();
     const inMemoryAccountRepository = new AccountRepositoryInMemory();
     const inMemoryAccountTypeRepository = new AccountTypeRepositoryInMemory();
 
@@ -46,7 +46,12 @@ describe('Client Registration ', () => {
       'Pas*/-sword123@',
     );
 
-    expect(client).instanceof(Client);
+    expect(client).instanceof(User);
+
+    if (client instanceof User) {
+      expect(client.clientProps).instanceof(ClientProps);
+      expect(client.clientProps.accounts.length).toBe(1);
+    }
 
     const accounts = await inMemoryAccountRepository.all();
 
@@ -54,30 +59,24 @@ describe('Client Registration ', () => {
     expect((await inMemoryAccountTypeRepository.all()).length).toBe(1);
   });
 
-  test('Password need 8 characters', async () => {
+  test('Should not register with existing email', async () => {
     const { useCase } = getData();
 
-    const client = await useCase.execute(
+    const user = await useCase.execute(
       'John',
       'Doe',
       'jdoe@yopmail.com',
-      'Pas*/-1',
+      'Pas*/-sword123@',
     );
 
-    expect(client).instanceof(PasswordLengthError);
-  });
-
-  test('Password need 1 uppercase char', async () => {
-    const { useCase } = getData();
-
-    const client = await useCase.execute(
-      'John',
+    const user2 = await useCase.execute(
+      'Jane',
       'Doe',
       'jdoe@yopmail.com',
-      '123456a@',
+      'Pas*/-sword123@',
     );
 
-    expect(client).instanceof(PasswordUppercaseError);
+    expect(user).instanceof(User);
+    expect(user2).toBeInstanceOf(EmailAlreadyExistError);
   });
-
 });

@@ -1,5 +1,5 @@
 import { Transaction } from '../transaction';
-import { Client } from '../user/client';
+import { Client } from '../../value-objects/user/client';
 import { AccountType } from './type';
 import { randomUUID } from 'node:crypto';
 
