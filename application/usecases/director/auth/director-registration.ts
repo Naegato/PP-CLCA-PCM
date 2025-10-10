@@ -12,7 +12,7 @@ export class DirectorRegistration {
     email: string,
     password: string,
   ) {
-    const director = User.create(firstname, lastname, email, password);
+    const director = User.createDirector(firstname, lastname, email, password);
 
     if (director instanceof Error) {
       return director;

@@ -12,7 +12,7 @@ export class AdvisorRegistration {
     email: string,
     password: string,
   ) {
-    const advisor = User.create(firstname, lastname, email, password);
+    const advisor = User.createAdvisor(firstname, lastname, email, password);
 
     if (advisor instanceof Error) {
       return advisor;
