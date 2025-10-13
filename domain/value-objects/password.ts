@@ -29,6 +29,8 @@ export class Password {
       return new PasswordSpecialError('Password must contain at least one special character.');
     }
 
-    return new Password(value);
+    const hasPassword = value; // TODO hash the password
+
+    return new Password(hasPassword);
   }
 }

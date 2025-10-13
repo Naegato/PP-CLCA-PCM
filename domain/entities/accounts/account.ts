@@ -18,7 +18,7 @@ export class Account {
     type: AccountType,
     name?: string,
   ): Account {
-    return new Account(randomUUID(), owner, type, [], [], name);
+    return new Account(randomUUID(), owner, type, [], [], name ?? randomUUID());
   }
 
   public update(props: Partial<Omit<Account, 'identifier' | 'owner'>>): Account {

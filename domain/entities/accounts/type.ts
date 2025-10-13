@@ -1,8 +1,8 @@
-
 export enum AccountTypeNameEnum {
   DEFAULT = 'DEFAULT',
   SAVINGS = 'SAVINGS',
 }
+
 export type AccountTypeName = keyof typeof AccountTypeNameEnum | string;
 
 export class AccountType {
