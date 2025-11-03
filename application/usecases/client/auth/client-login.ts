@@ -4,6 +4,7 @@ export class ClientLogin {
   public constructor(
     public readonly loginService: LoginService,
   ) {}
+
   public async execute() {
     const user = await this.loginService.execute();
 
