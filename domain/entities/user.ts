@@ -122,4 +122,16 @@ export class User {
       props,
     );
   }
+
+  public isAdvisor(): boolean {
+	return this.advisorProps !== undefined;
+  }
+
+  public isDirector(): boolean {
+	return this.directorProps !== undefined;
+  }
+
+  public isClient(): boolean {
+	return this.clientProps !== undefined;
+  }
 }
