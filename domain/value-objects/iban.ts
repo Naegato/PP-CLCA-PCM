@@ -94,7 +94,7 @@ export class Iban {
 
   public static getAccountNumber(iban: string): string | InvalidIbanError {
     if (iban.length !== FRENCH_IBAN_ATTRIBUTES.TOTAL_IBAN_LENGTH) {
-      return new InvalidIbanError("Invalid IBAN length for country FR");
+      return new InvalidIbanError("Invalid IBAN length");
     }
 
     const sliceStart = FRENCH_IBAN_ATTRIBUTES.IBAN_PREFIX_LENGTH + FRENCH_IBAN_ATTRIBUTES.BANK_CODE_LENGTH + FRENCH_IBAN_ATTRIBUTES.BRANCH_CODE_LENGTH;

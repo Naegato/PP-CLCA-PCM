@@ -7,4 +7,5 @@ export interface AccountRepository {
   all(): Promise<Account[]>;
   delete(account: Account): Promise<Account | AccountDeleteError>;
   update(account: Account): Promise<Account | AccountUpdateError>;
+  generateAccountNumber(): Promise<string>;
 }
