@@ -2,6 +2,9 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "scripts": {
+    "test": "cd infrastructure/tests && npm test"
+  },
   "workspaces": [
     "application",
     "domain",

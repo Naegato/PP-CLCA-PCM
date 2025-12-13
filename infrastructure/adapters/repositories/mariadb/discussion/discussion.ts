@@ -1,4 +1,4 @@
-import { Discussion } from '@pp-clca-pcm/domain/entities/discussion/discussion.ts';
+import { Discussion } from '@pp-clca-pcm/domain/entities/discussion/discussion';
 import { DiscussionRepository } from '../../../../../application/repositories/discussion/discussion';
 import { Database } from '../database.ts';
 

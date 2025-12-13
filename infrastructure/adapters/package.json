@@ -5,6 +5,7 @@
   "name": "@pp-clca-pcm/adapters",
   "dependencies": {
     "@types/node": "^24.7.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "mariadb": "^3.4.5"
   }
 }
