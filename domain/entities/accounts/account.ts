@@ -35,4 +35,10 @@ export class Account {
       props.name ?? this.name,
     );
   }
+
+  public get balance(): number {
+    const received = this.receivedTransactions?.reduce((sum, tx) => sum + tx.amount, 0) ?? 0;
+    const emitted = this.emittedTransactions?.reduce((sum, tx) => sum + tx.amount, 0) ?? 0;
+    return received - emitted;
+  }
 }
