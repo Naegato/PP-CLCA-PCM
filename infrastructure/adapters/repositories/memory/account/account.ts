@@ -4,9 +4,11 @@ import { AccountUpdateError } from '@pp-clca-pcm/application/errors/account-upda
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { InMemoryUserRepository } from '../user';
 import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
+import { FRENCH_IBAN_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/iban-fr';
 
 export class InMemoryAccountRepository implements AccountRepository {
   public readonly inMemoryAccounts: Account[] = [];
+  private lastAccountNumber = 0n;
 
   constructor(
     public readonly inMemoryUserRepository: InMemoryUserRepository,
@@ -19,7 +21,7 @@ export class InMemoryAccountRepository implements AccountRepository {
 
     if (user) {
       const updatedUser = user.updateClientProps(new ClientProps(
-        [...user.clientProps.accounts, account]
+        [...(user.clientProps?.accounts ?? []), account]
       ));
       await this.inMemoryUserRepository.update(updatedUser);
     }
@@ -50,5 +52,11 @@ export class InMemoryAccountRepository implements AccountRepository {
     this.inMemoryAccounts[index] = account;
 
     return Promise.resolve(account);
+  }
+
+  public async generateAccountNumber(): Promise<string> {
+    this.lastAccountNumber = this.lastAccountNumber + 1n;
+    const accountNumberString = this.lastAccountNumber.toString();
+    return accountNumberString.padStart(FRENCH_IBAN_ATTRIBUTES.ACCOUNT_NUMBER_LENGTH, '0');
   }
 }

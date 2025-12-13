@@ -2,6 +2,7 @@ import { Transaction } from '../transaction';
 import { AccountType } from './type';
 import { randomUUID } from 'node:crypto';
 import { User } from '../user';
+import { Iban } from '../../value-objects/iban';
 
 export class Account {
   public constructor (
@@ -10,15 +11,17 @@ export class Account {
     public readonly type: AccountType,
     public readonly emittedTransactions: Transaction[] = [],
     public readonly receivedTransactions: Transaction[] = [],
+    public readonly iban: Iban,
     public readonly name?: string,
   ) { }
 
   public static create (
     owner: User,
     type: AccountType,
+    iban: Iban,
     name?: string,
   ): Account {
-    return new Account(randomUUID(), owner, type, [], [], name ?? randomUUID());
+    return new Account(randomUUID(), owner, type, [], [], iban, name ?? randomUUID());
   }
 
   public update(props: Partial<Omit<Account, 'identifier' | 'owner'>>): Account {
@@ -28,6 +31,7 @@ export class Account {
       props.type ?? this.type,
       props.emittedTransactions ?? this.emittedTransactions,
       props.receivedTransactions ?? this.receivedTransactions,
+      this.iban,
       props.name ?? this.name,
     );
   }
