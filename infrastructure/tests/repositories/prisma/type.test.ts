@@ -1,18 +1,19 @@
-import { Database } from '@pp-clca-pcm/adapters/repositories/mariadb/database';
-import { MariaDbAccountTypeRepository } from '@pp-clca-pcm/adapters/repositories/mariadb/account/type';
+import { PrismaAccountTypeRepository } from '@pp-clca-pcm/adapters/repositories/prisma/account/type';
+import { prisma } from '@pp-clca-pcm/adapters/repositories/prisma/client';
 import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain/entities/accounts/type';
 import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;
-const isMariaDb = databaseProvider === 'mariadb';
+const isPostgres = databaseProvider === 'postgresql';
 
-describe.skipIf(!isMariaDb)('MariaDb type Repository', async () => {
-  const db = new Database();
-  const repository = new MariaDbAccountTypeRepository(db)
-  beforeAll(async () => {
-    await db.reset();
-    await db.seed()
+describe.skipIf(!isPostgres)('Prisma type Repository', async () => {
+  const repository = new PrismaAccountTypeRepository(prisma)
+
+  beforeAll(() => {
+    return prisma.$transaction([
+      prisma.accountType.deleteMany(),
+    ]);
   })
 
   test('save', async () => {
