@@ -1,5 +1,6 @@
 import { AccountTypeRepository } from '@pp-clca-pcm/application/repositories/type';
 import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
+import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application/errors/account-type-does-not-exist';
 import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
 import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
 
@@ -65,6 +66,20 @@ export class PrismaAccountTypeRepository implements AccountTypeRepository {
       savedType.limitByClient,
       savedType.description,
     );
+  }
+
+  async update(accountType: AccountType): Promise<AccountType | AccountTypeDoesNotExistError> {
+    const existingType = await this.db.accountType.findUnique({ where: { name: accountType.name } });
+    if (!existingType) {
+      return new AccountTypeDoesNotExistError(`Account type '${accountType.name}' does not exist`);
+    }
+
+    const updated = await this.db.accountType.update({
+      where: { name: accountType.name },
+      data: { rate: accountType.rate, limitByClient: accountType.limitByClient, description: accountType.description },
+    });
+
+    return new AccountType(updated.identifier, updated.name as AccountTypeName, updated.rate, updated.limitByClient, updated.description);
   }
 
 }

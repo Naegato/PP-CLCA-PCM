@@ -1,4 +1,5 @@
 import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
+import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application/errors/account-type-does-not-exist';
 import { AccountTypeRepository } from '@pp-clca-pcm/application/repositories/type';
 import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
 
@@ -29,5 +30,15 @@ export class InMemoryAccountTypeRepository implements AccountTypeRepository {
 
   all(): Promise<AccountType[]> {
     return Promise.resolve(this.inMemoryAccountTypes);
+  }
+
+  update(accountType: AccountType): Promise<AccountType | AccountTypeDoesNotExistError> {
+    const index = this.inMemoryAccountTypes.findIndex((type) => type.name === accountType.name);
+    if (index === -1) {
+      return Promise.resolve(new AccountTypeDoesNotExistError(`Account type '${accountType.name}' does not exist`));
+    }
+
+    this.inMemoryAccountTypes[index] = accountType;
+    return Promise.resolve(accountType);
   }
 }
