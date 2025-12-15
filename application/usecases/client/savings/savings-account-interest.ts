@@ -9,23 +9,17 @@ export class SavingsAccountInterest {
 	) {}
 
 	public async execute(user: User): Promise<number | AccountUpdateError> {
+
 		const accounts = user.clientProps?.accounts ?? [];
-		let totalInterest = 0;
 
-		for (const account of accounts) {
-			const rate = account.type?.rate ?? 0;
-			if (!rate || rate <= 0) {
-				continue;
-			}
+		const result = await accounts.reduce<Promise<number | AccountUpdateError>>(async (accumulator, account) => {
+			const totalInterestOrError = await accumulator;
 
-			const dailyRate = rate / 100 / 365;
-			const interestRaw = account.balance * dailyRate;
-			const interest = Math.round(interestRaw * 100) / 100; //arrondi cents
+			if (totalInterestOrError instanceof AccountUpdateError) return totalInterestOrError;
 
-			if (interest <= 0) {
-				continue;
-			}
+			const interest = account.calculateDailyInterest();
 
+			if (interest <= 0) return totalInterestOrError as number;
 			const tx = Transaction.create(account, interest, 'Daily savings interest');
 
 			const updatedAccount = account.update({
@@ -37,9 +31,10 @@ export class SavingsAccountInterest {
 				return saved;
 			}
 
-			totalInterest += interest;
-		}
+			return (totalInterestOrError as number) + interest;
+		}, Promise.resolve(0));
 
-		return totalInterest;
+		if (result instanceof AccountUpdateError) return result;
+		return result as number;
 	}
 }
