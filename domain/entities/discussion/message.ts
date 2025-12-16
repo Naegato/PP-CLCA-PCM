@@ -3,6 +3,7 @@ import { Discussion } from "./discussion";
 
 export class Message {
   constructor(
+	public readonly identifier: string | null = null,
     public readonly content: string | null,
     public readonly sendAt: Date | null,
 	public readonly sender: User | null,
@@ -10,6 +11,6 @@ export class Message {
   ) { }
 
   reply(sender: User, content: string): Message {
-	return new Message(content, new Date(), sender, this.discussion);
+	return new Message(null, content, new Date(), sender, this.discussion);
   }
 }
