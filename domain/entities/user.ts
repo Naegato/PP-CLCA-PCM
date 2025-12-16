@@ -84,6 +84,28 @@ export class User {
     );
   }
 
+  public static createFromRaw(
+		identifier: string,
+		firstname: string,
+		lastname: string,
+		email: string,
+		password: string,
+		clientProps?: ClientProps,
+		advisorProps?: AdvisorProps,
+		directorProps?: DirectorProps,
+	): User {
+		return new User(
+			identifier,
+			firstname,
+			lastname,
+			Email.create(email) as Email,
+			Password.create(password) as Password,
+			clientProps,
+			advisorProps,
+			directorProps,
+		);
+	}
+
   public updateClientProps(props: ClientProps): User {
     return new User(
       this.identifier,
