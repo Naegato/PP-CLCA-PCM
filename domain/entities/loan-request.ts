@@ -22,4 +22,20 @@ export class LoanRequest {
 
     return new LoanRequest(randomUUID(), client, amount, false, null)
   }
+
+  public static fromPrimitives(primitives: {
+	identifier: string,
+	client: User,
+	amount: number,
+	approved: boolean,
+	advisor: User | null,
+  }): LoanRequest {
+	return new LoanRequest(
+	  primitives.identifier,
+	  primitives.client,
+	  primitives.amount,
+	  primitives.approved,
+	  primitives.advisor,
+	);
+  }
 }
