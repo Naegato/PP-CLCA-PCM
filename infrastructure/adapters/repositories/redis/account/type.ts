@@ -1,43 +1,12 @@
 import { RedisClientType } from 'redis';
 import { randomUUID } from 'crypto';
-
 import { AccountTypeRepository } from "@pp-clca-pcm/application/repositories/type";
 import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
 import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
+import { RedisBaseRepository } from '../base';
 
-export class RedisAccountTypeRepository implements AccountTypeRepository {
-	readonly PREFIX = 'account_type:';
-
-	constructor(private readonly db: RedisClientType) { }
-
-	private key(account: AccountType | string): string {
-		const id = typeof account === 'string' ? account : account.name;
-		return `${this.PREFIX}${id}`;
-	}
-
-	async all(): Promise<AccountType[]> {
-		const result: AccountType[] = [];
-
-		for await (const key of this.db.scanIterator({ MATCH: `${this.PREFIX}*` })) {
-			await Promise.all(key.map(async k => {
-				const value = await this.db.get(k);
-				if (!value) return;
-
-				const data = JSON.parse(value);
-				result.push(
-					new AccountType(
-						data.identifier,
-						data.name,
-						data.rate,
-						data.limitByClient,
-						data.description
-					)
-				);
-			}))
-		}
-
-		return result;
-	}
+export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType> implements AccountTypeRepository {
+	readonly prefix = 'account_type:';
 
 	async save(
 		accountType: AccountType
@@ -70,13 +39,7 @@ export class RedisAccountTypeRepository implements AccountTypeRepository {
 		const existing = await this.db.get(key);
 		if (existing) {
 			const data = JSON.parse(existing) as AccountType;
-			return new AccountType(
-				data.identifier,
-				data.name,
-				data.rate,
-				data.limitByClient,
-				data.description
-			);
+			this.instanticate(data);
 		}
 
 		const saved = await this.save(accountType);
@@ -88,15 +51,19 @@ export class RedisAccountTypeRepository implements AccountTypeRepository {
 			}
 
 			const data = JSON.parse(value) as AccountType;
-			return new AccountType(
-				data.identifier,
-				data.name,
-				data.rate,
-				data.limitByClient,
-				data.description
-			);
+			return this.instanticate(data);
 		}
 
 		return saved;
+	}
+
+	protected instanticate(entity: AccountType): AccountType {
+		return new AccountType(
+			entity.identifier,
+			entity.name,
+			entity.rate,
+			entity.limitByClient,
+			entity.description
+		);
 	}
 }

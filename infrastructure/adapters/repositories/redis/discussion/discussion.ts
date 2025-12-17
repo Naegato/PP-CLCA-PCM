@@ -1,14 +1,10 @@
 import { DiscussionRepository } from "@pp-clca-pcm/application/repositories/discussion/discussion";
 import { Discussion } from "@pp-clca-pcm/domain/entities/discussion/discussion";
 import { randomUUID } from "crypto";
-import { RedisClientType } from "redis";
+import { RedisBaseRepository } from "../base";
 
-export class RedisDiscussionRepository implements DiscussionRepository{
-	readonly PREFIX = 'discussion:';
-
-	private constructor(
-		private readonly db: RedisClientType,
-	) {}
+export class RedisDiscussionRepository extends RedisBaseRepository<Discussion> implements DiscussionRepository{
+	readonly prefix = 'discussion:';
 
 	async save(discussion: Discussion): Promise<Discussion> {
 		const realDiscussion = new Discussion(
@@ -38,16 +34,15 @@ export class RedisDiscussionRepository implements DiscussionRepository{
 
 		const parsedData = JSON.parse(data);
 
-		return new Discussion(
-			parsedData.identifier,
-			parsedData.content,
-			parsedData.advisor,
-			parsedData.user,
-		);
+		return this.instanticate(parsedData);
 	}
 
-	private key(variable: Discussion | string): string {
-		const id = typeof variable === 'string' ? variable : variable.identifier;
-		return `${this.PREFIX}${id}`;
+	protected instanticate(entity: Discussion): Discussion {
+		return new Discussion(
+			entity.identifier,
+			entity.content,
+			entity.advisor,
+			entity.user,
+		);
 	}
 }

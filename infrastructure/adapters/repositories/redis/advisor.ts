@@ -1,17 +1,9 @@
-import { AccountDeleteError } from "@pp-clca-pcm/application/errors/account-delete";
 import { AdvisorRepository } from "@pp-clca-pcm/application/repositories/advisor";
-import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
 import { User } from "@pp-clca-pcm/domain/entities/user";
-import { randomUUID } from "crypto";
-import { RedisClientType } from "redis";
+import { RedisBaseRepository } from "./base";
 
-export class RedisAdvisorRepository implements AdvisorRepository {
-	readonly PREFIX = 'advisor:';
-
-	public constructor(
-		private readonly db: RedisClientType,
-	) {
-	}
+export class RedisAdvisorRepository extends RedisBaseRepository<User> implements AdvisorRepository {
+	readonly prefix = 'advisor:';
 
 	async save(advisor: User): Promise<User> {
 		const key = this.key(advisor);
@@ -23,9 +15,5 @@ export class RedisAdvisorRepository implements AdvisorRepository {
 		);
 
 		return advisor;
-	}
-
-	private key(advisor: User): string {
-		return `${this.PREFIX}${advisor.identifier}`;
 	}
 }

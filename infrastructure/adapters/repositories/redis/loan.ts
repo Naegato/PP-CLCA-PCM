@@ -1,13 +1,10 @@
-import { RedisClientType } from 'redis';
-import { randomUUID } from 'crypto';
 import { LoanRepository } from '@pp-clca-pcm/application/repositories/loan';
 import { Loan } from '@pp-clca-pcm/domain/entities/loan';
 import { User } from '@pp-clca-pcm/domain/entities/user';
+import { RedisBaseRepository } from './base';
 
-export class RedisLoanRepository implements LoanRepository {
-	readonly PREFIX = 'loan:';
-
-	constructor(private readonly db: RedisClientType) { }
+export class RedisLoanRepository extends RedisBaseRepository<Loan> implements LoanRepository {
+	readonly prefix = 'loan:';
 
 	async save(loan: Loan): Promise<Loan> {
 		const key = this.key(loan);
@@ -21,39 +18,22 @@ export class RedisLoanRepository implements LoanRepository {
 		return loan;
 	}
 
-	async all(): Promise<Loan[]> {
-		return this.fetchFromKey(`${this.PREFIX}*`);
-	}
-
 	async allByClient(client: User): Promise<Loan[]> {
-		return this.fetchFromKey(`${this.PREFIX}${client.identifier}:*`);
+		return this.fetchFromKey(`${this.prefix}${client.identifier}:*`);
 	}
 
-	private async fetchFromKey(keyToSearch: string): Promise<Loan[]> {
-		const result: Loan[] = [];
-
-		for await (const key of this.db.scanIterator({ MATCH: keyToSearch })) {
-			await Promise.all(key.map(async k => {
-				const value = await this.db.get(k);
-				if (!value) return;
-
-				const data = JSON.parse(value);
-				result.push(
-					Loan.fromPrimitives({
-						identifier: data.identifier,
-						client: data.client,
-						amount: data.amount,
-						advisor: data.advisor,
-						transaction: data.transactions,
-					})
-				);
-			}))
-		}
-
-		return result;
+	override key(loan: Loan): string {
+		return `${this.prefix}${loan.client.identifier}:${loan.identifier}`;
 	}
 
-	private key(loan: Loan): string {
-		return `${this.PREFIX}${loan.client.identifier}:${loan.identifier}`;
+	protected instanticate(entity: Loan): Loan {
+		return Loan.fromPrimitives({
+			identifier: entity.identifier,
+			client: entity.client,
+			amount: entity.amount,
+			advisor: entity.advisor,
+			transaction: entity.transactions,
+		})
+
 	}
 }
