@@ -3,6 +3,7 @@ import { AccountType } from './type';
 import { randomUUID } from 'node:crypto';
 import { User } from '../user';
 import { Iban } from '../../value-objects/iban';
+import { Portfolio } from '../portfolio/portfolio';
 
 export class Account {
   public constructor (
@@ -13,6 +14,7 @@ export class Account {
     public readonly receivedTransactions: Transaction[] = [],
     public readonly iban: Iban,
     public readonly name?: string,
+    public readonly portfolio: Portfolio = Portfolio.create(),
   ) { }
 
   public static create (
@@ -20,11 +22,12 @@ export class Account {
     type: AccountType,
     iban: Iban,
     name?: string,
+    portfolio?: Portfolio,
   ): Account {
-    return new Account(randomUUID(), owner, type, [], [], iban, name ?? randomUUID());
+    return new Account(randomUUID(), owner, type, [], [], iban, name ?? randomUUID(), portfolio ?? Portfolio.create());
   }
 
-  public update(props: Partial<Omit<Account, 'identifier' | 'owner'>>): Account {
+  public update(props: Partial<Omit<Account, 'identifier' | 'owner' | 'iban' | 'portfolio'>>): Account {
     return new Account(
       this.identifier,
       this.owner,
@@ -33,6 +36,7 @@ export class Account {
       props.receivedTransactions ?? this.receivedTransactions,
       this.iban,
       props.name ?? this.name,
+      this.portfolio,
     );
   }
 
@@ -48,7 +52,7 @@ export class Account {
 
     const dailyRate = rate / 100 / 365;
     const interestRaw = this.balance * dailyRate;
-    const interest = Math.round(interestRaw * 100) / 100; // round to cents
+    const interest = Math.round(interestRaw * 100) / 100; //round to cents
 
     return interest <= 0 ? 0 : interest;
   }

@@ -6,4 +6,5 @@ export interface OrderRepository {
   findOpenOppositeOrders(stockId: string, side: OrderSide): Promise<Order[]>;
   findOpenBuyOrders(): Promise<Order[]>;
   findOpenSellOrders(): Promise<Order[]>;
+  getCommittedSellQuantity(accountId: string, stockId: string): Promise<number>;
 }

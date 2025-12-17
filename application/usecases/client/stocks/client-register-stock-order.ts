@@ -39,10 +39,19 @@ export class ClientRegisterStockOrder {
     }
 
     if (side === OrderSide.SELL) {
-      // TODO: Check if the user has enough stock to sell.
+      const ownedQuantity = account.portfolio.getOwnedQuantity(stockId);
+      const committedToSell = await this.orderRepository.getCommittedSellQuantity(account.identifier!, stockId);
+      const availableToSell = ownedQuantity - committedToSell;
+
+      if (availableToSell < quantity) {
+        return new ClientRegisterStockOrderError(
+          `Insufficient stock to sell. Owned: ${ownedQuantity}, Committed to sell: ${committedToSell}, Available: ${availableToSell}, Requested: ${quantity}.`,
+        );
+      }
+
       if (account.balance < TRADING_FEE) {
         return new ClientRegisterStockOrderError(
-          `Insufficient balance to cover the 1€ fee for this sell order.`,
+          `Insufficient balance to cover the ${TRADING_FEE}€ fee for this sell order.`,
         );
       }
     }
