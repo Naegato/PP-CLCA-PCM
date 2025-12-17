@@ -33,4 +33,10 @@ export class Password {
 
     return new Password(hasPassword);
   }
+
+  public toJSON(): string {
+	return this.value;
+  }
+
+
 }
