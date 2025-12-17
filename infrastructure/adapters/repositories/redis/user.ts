@@ -1,14 +1,12 @@
 import { RedisClientType } from 'redis';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
 import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
 import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
+import { RedisBaseRepository } from './base';
 
-export class RedisUserRepository implements UserRepository {
-	readonly PREFIX = 'user:';
-
-	constructor(private readonly db: RedisClientType) { }
+export class RedisUserRepository extends RedisBaseRepository<User> implements UserRepository {
+	readonly prefix = 'user:';
 
 	async save(user: User): Promise<User | EmailAlreadyExistError> {
 		const key = this.key(user);
@@ -25,10 +23,6 @@ export class RedisUserRepository implements UserRepository {
 		);
 
 		return user;
-	}
-
-	async all(): Promise<User[]> {
-		return this.fetchFromKey(`${this.PREFIX}*`);
 	}
 
 	async find(user: User): Promise<User | null> {
@@ -80,6 +74,19 @@ export class RedisUserRepository implements UserRepository {
 
 
 	private key(entity: User): string {
-		return `${this.PREFIX}${entity.email.value}`;
+		return `${this.prefix}${entity.email.value}`;
+	}
+
+	override instanticate(entity: User): User {
+		return User.fromPrimitives({
+			identifier: entity.identifier,
+			firstname: entity.firstname,
+			lastname: entity.lastname,
+			email: entity.email,
+			password: entity.password,
+			clientProps: entity.clientProps,
+			advisorProps: entity.advisorProps,
+			directorProps: entity.directorProps,
+		});
 	}
 }

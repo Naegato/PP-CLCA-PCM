@@ -3,14 +3,10 @@ import { AccountRepository } from "@pp-clca-pcm/application/repositories/account
 import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
 import { randomUUID } from "crypto";
 import { RedisClientType } from "redis";
+import { RedisBaseRepository } from "../base";
 
-export class RedisAccountRepository implements AccountRepository {
-	readonly PREFIX = 'account:';
-
-	public constructor(
-		private readonly db: RedisClientType,
-	) {
-	}
+export class RedisAccountRepository extends RedisBaseRepository<Account> implements AccountRepository {
+	readonly prefix = 'account:';
 
 	public async save(account: Account): Promise<Account> {
 		const realAccount = new Account(
@@ -32,32 +28,6 @@ export class RedisAccountRepository implements AccountRepository {
 		);
 
 		return realAccount;
-	}
-
-	public async all(): Promise<Account[]> {
-		const result: Account[] = [];
-
-		for await (const key of this.db.scanIterator({ MATCH: `${this.PREFIX}*` })) {
-			await Promise.all(key.map(async k => {
-				const value = await this.db.get(k);
-				if (!value) return;
-
-				const data = JSON.parse(value);
-				result.push(
-					new Account(
-						data.identifier,
-						data.owner,
-						data.type,
-						data.emittedTransactions,
-						data.receivedTransactions,
-						data.iban,
-						data.name,
-					)
-				);
-			}))
-		}
-
-		return result;
 	}
 
 	public async delete(account: Account): Promise<Account | AccountDeleteError> {
@@ -87,8 +57,15 @@ export class RedisAccountRepository implements AccountRepository {
 		return `todo-i-guess`;
 	}
 
-	private key(account: Account | string): string {
-		const id = typeof account === 'string' ? account : account.identifier;
-		return `${this.PREFIX}${id}`;
+	protected instanticate(entity: Account): Account {
+		return new Account(
+			entity.identifier,
+			entity.owner,
+			entity.type,
+			entity.emittedTransactions,
+			entity.receivedTransactions,
+			entity.iban,
+			entity.name,
+		);
 	}
 }

@@ -1,16 +1,11 @@
-import { AccountDeleteError } from "@pp-clca-pcm/application/errors/account-delete";
 import { MessageRepository } from "@pp-clca-pcm/application/repositories/discussion/message";
 import { Message } from "@pp-clca-pcm/domain/entities/discussion/message";
 import { randomUUID } from "crypto";
 import { RedisClientType } from "redis";
+import { RedisBaseRepository } from "../base";
 
-export class RedisMessageRepository implements MessageRepository {
-	readonly PREFIX = 'message:';
-
-	public constructor(
-		private readonly db: RedisClientType,
-	) {
-	}
+export class RedisMessageRepository extends RedisBaseRepository<Message> implements MessageRepository {
+	readonly prefix = 'message:';
 
 	public async save(message: Message): Promise<Message> {
 		const realMessage = new Message(
@@ -30,8 +25,13 @@ export class RedisMessageRepository implements MessageRepository {
 		return realMessage;
 	}
 
-	private key(variable: Message | string): string {
-		const id = typeof variable === 'string' ? variable : variable.identifier;
-		return `${this.PREFIX}${id}`;
+	protected instanticate(entity: Message): Message {
+		return new Message(
+			entity.identifier,
+			entity.content,
+			entity.sendAt,
+			entity.sender,
+			entity.discussion,
+		);
 	}
 }
