@@ -8,13 +8,14 @@ export class Portfolio {
 
   constructor(
     public readonly identifier: string | null,
+    public readonly accountId: string,
     items?: Map<string, PortfolioItem>
   ) {
     this.items = items ? new Map(items) : new Map();
   }
 
-  public static create(items?: Map<string, PortfolioItem>): Portfolio {
-    return new Portfolio(randomUUID(), items);
+  public static create(accountId: string, items?: Map<string, PortfolioItem>): Portfolio {
+    return new Portfolio(randomUUID(), accountId, items);
   }
 
   public getOwnedQuantity(stockId: string): number {
@@ -35,7 +36,7 @@ export class Portfolio {
     const newItem = currentItem ? currentItem.add(quantity) : PortfolioItem.create(stock, quantity);
     const newItems = new Map(this.items).set(stock.identifier, newItem);
 
-    return new Portfolio(this.identifier, newItems);
+    return new Portfolio(this.identifier, this.accountId, newItems);
   }
 
   public removeStock(stock: Stock, quantity: number): Portfolio | PortfolioError {
@@ -63,6 +64,6 @@ export class Portfolio {
       newItems.set(stockId, newItem);
     }
 
-    return new Portfolio(this.identifier, newItems);
+    return new Portfolio(this.identifier, this.accountId, newItems);
   }
 }

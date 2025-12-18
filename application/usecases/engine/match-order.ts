@@ -4,20 +4,26 @@ import { TRADING_FEE } from '@pp-clca-pcm/domain/constants/bank';
 import { AccountRepository } from '../../repositories/account';
 import { OrderRepository } from '../../repositories/order';
 import { MatchOrderError } from '../../errors/match-order';
+import { PortfolioRepository } from '../../repositories/portfolio';
+import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
+import { PortfolioError } from '@pp-clca-pcm/domain/errors/portfolio';
 
 export class MatchOrder {
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly accountRepository: AccountRepository,
+    private readonly portfolioRepository: PortfolioRepository,
   ) {}
 
   public async execute(order: Order): Promise<number | MatchOrderError> {
-    //returns number of shares bought/sold from the order
-    const oppositeSide = order.side === OrderSide.BUY ? OrderSide.SELL : OrderSide.BUY;
+    if (!order.stock.identifier) {
+      return new MatchOrderError('Order stock has no identifier.');
+    }
 
     const oppositeOrders = await this.orderRepository.findOpenOppositeOrders(
-      order.stock.identifier!,
-      oppositeSide,
+      order.stock.identifier,
+      order.side,
+      order.price,
     );
 
     if (oppositeOrders.length === 0) {
@@ -42,12 +48,6 @@ export class MatchOrder {
     const oppositeOrder = oppositeOrders[0];
     const remainingOppositeOrders = oppositeOrders.slice(1);
 
-    const canMatch = currentOrder.side === OrderSide.BUY ? currentOrder.price >= oppositeOrder.price : currentOrder.price <= oppositeOrder.price;
-
-    if (!canMatch) {
-      return matchedQuantityAccumulator;
-    }
-
     const tradePrice = oppositeOrder.price;
     const tradeQuantity = Math.min(currentOrder.remainingQuantity, oppositeOrder.remainingQuantity);
 
@@ -59,6 +59,13 @@ export class MatchOrder {
 
     if (!buyerAccount || !sellerAccount) {
       return new MatchOrderError(`Could not find accounts for trade involving orders ${buyerOrder.identifier} and ${sellerOrder.identifier}.`);
+    }
+
+    if (!buyerAccount.identifier) {
+      return new MatchOrderError(`Buyer account has no identifier.`);
+    }
+    if (!sellerAccount.identifier) {
+      return new MatchOrderError(`Seller account has no identifier.`);
     }
 
     //buyer balance check
@@ -92,10 +99,7 @@ export class MatchOrder {
     });
 
     const updatedSellerAccount = sellerAccount.update({
-      receivedTransactions: [
-        ...sellerAccount.receivedTransactions,
-        sellerCredit,
-      ],
+      receivedTransactions: [...sellerAccount.receivedTransactions, sellerCredit],
       emittedTransactions: [...sellerAccount.emittedTransactions, sellerFee],
     });
 
@@ -107,7 +111,21 @@ export class MatchOrder {
     await this.accountRepository.update(updatedBuyerAccount);
     await this.accountRepository.update(updatedSellerAccount);
 
-    // TODO: Implement portfolio logic to transfer stock ownership
+    const sellerPortfolio = await this.portfolioRepository.findByAccountId(sellerAccount.identifier) ?? Portfolio.create(sellerAccount.identifier);
+    const buyerPortfolio = await this.portfolioRepository.findByAccountId(buyerAccount.identifier) ?? Portfolio.create(buyerAccount.identifier);
+
+    const updatedSellerPortfolio = sellerPortfolio.removeStock(sellerOrder.stock, tradeQuantity);
+    if (updatedSellerPortfolio instanceof PortfolioError) {
+      return new MatchOrderError(updatedSellerPortfolio.message);
+    }
+
+    const updatedBuyerPortfolio = buyerPortfolio.addStock(buyerOrder.stock, tradeQuantity);
+    if (updatedBuyerPortfolio instanceof PortfolioError) {
+      return new MatchOrderError(updatedBuyerPortfolio.message);
+    }
+
+    await this.portfolioRepository.save(updatedSellerPortfolio);
+    await this.portfolioRepository.save(updatedBuyerPortfolio);
 
     return this.processMatches(
       updatedCurrentOrder,

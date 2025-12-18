@@ -5,16 +5,34 @@ export class InMemoryStockRepository implements StockRepository {
   public readonly stocks: Stock[] = [];
 
   all(): Promise<Stock[]> {
-    return Promise.resolve(this.stocks);
+    return Promise.resolve([...this.stocks]);
+  }
+
+  findById(id: string): Promise<Stock | null> {
+    const found = this.stocks.find(stock => stock.identifier === id) ?? null;
+    return Promise.resolve(found);
   }
 
   findBySymbol(symbol: string): Promise<Stock | null> {
-    const found = this.stocks.find(s => s.symbol === symbol.toUpperCase()) ?? null;
+    const found = this.stocks.find(stock => stock.symbol === symbol.toUpperCase()) ?? null;
     return Promise.resolve(found);
   }
 
   save(stock: Stock): Promise<Stock> {
-    this.stocks.push(stock);
+    const existingIndex = this.stocks.findIndex(stock => stock.identifier === stock.identifier);
+    if (existingIndex !== -1) {
+      this.stocks[existingIndex] = stock;
+    } else {
+      this.stocks.push(stock);
+    }
     return Promise.resolve(stock);
+  }
+
+  async delete(stockId: string): Promise<void> {
+    const index = this.stocks.findIndex(stock => stock.identifier === stockId);
+    if (index !== -1) {
+      this.stocks.splice(index, 1);
+    }
+    return Promise.resolve();
   }
 }

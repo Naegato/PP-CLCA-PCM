@@ -5,4 +5,5 @@ export interface StockRepository {
   findById(id: string): Promise<Stock | null>;
   findBySymbol(symbol: string): Promise<Stock | null>;
   save(stock: Stock): Promise<Stock>;
+  delete(stockId: string): Promise<void>;
 }

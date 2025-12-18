@@ -5,6 +5,7 @@ import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { InMemoryUserRepository } from '../user';
 import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
 import { FRENCH_IBAN_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/iban-fr';
+import { User } from '@pp-clca-pcm/domain/entities/user';
 
 export class InMemoryAccountRepository implements AccountRepository {
   public readonly inMemoryAccounts: Account[] = [];
@@ -15,7 +16,15 @@ export class InMemoryAccountRepository implements AccountRepository {
   ) {}
 
   public async save(account: Account): Promise<Account> {
-    this.inMemoryAccounts.push(account);
+    const existingIndex = this.inMemoryAccounts.findIndex(
+      (existingAccount) => existingAccount.identifier === account.identifier
+    );
+
+    if (existingIndex !== -1) {
+      this.inMemoryAccounts[existingIndex] = account;
+    } else {
+      this.inMemoryAccounts.push(account);
+    }
 
     const user = await this.inMemoryUserRepository.find(account.owner);
 
@@ -30,11 +39,11 @@ export class InMemoryAccountRepository implements AccountRepository {
   }
 
   public async all(): Promise<Account[]> {
-    return Promise.resolve(this.inMemoryAccounts);
+    return Promise.resolve([...this.inMemoryAccounts]);
   }
 
   public async delete(account: Account): Promise<Account | AccountDeleteError> {
-    const index = this.inMemoryAccounts.findIndex((a) => a.identifier === account.identifier);
+    const index = this.inMemoryAccounts.findIndex((acc) => acc.identifier === account.identifier);
     if (index === -1) {
       return new AccountDeleteError('Account not found');
     }
@@ -44,7 +53,7 @@ export class InMemoryAccountRepository implements AccountRepository {
     return Promise.resolve(deletedAccount);
   }
   public async update(account: Account): Promise<Account | AccountUpdateError> {
-    const index = this.inMemoryAccounts.findIndex((a) => a.identifier === account.identifier);
+    const index = this.inMemoryAccounts.findIndex((acc) => acc.identifier === account.identifier);
     if (index === -1) {
       return new AccountUpdateError('Account not found');
     }
@@ -58,5 +67,15 @@ export class InMemoryAccountRepository implements AccountRepository {
     this.lastAccountNumber = this.lastAccountNumber + 1n;
     const accountNumberString = this.lastAccountNumber.toString();
     return accountNumberString.padStart(FRENCH_IBAN_ATTRIBUTES.ACCOUNT_NUMBER_LENGTH, '0');
+  }
+
+  public async findByOwner(owner: User): Promise<Account | null> {
+    const account = this.inMemoryAccounts.find(account => account.owner.identifier === owner.identifier);
+    return Promise.resolve(account || null);
+  }
+
+  public async findById(id: string): Promise<Account | null> {
+    const account = this.inMemoryAccounts.find(account => account.identifier === id);
+    return Promise.resolve(account || null);
   }
 }

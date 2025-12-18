@@ -10,4 +10,5 @@ export interface AccountRepository {
   update(account: Account): Promise<Account | AccountUpdateError>;
   generateAccountNumber(): Promise<string>;
   findByOwner(owner: User): Promise<Account | null>;
+  findById(id: string): Promise<Account | null>;
 }
