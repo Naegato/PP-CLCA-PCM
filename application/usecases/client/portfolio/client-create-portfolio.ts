@@ -14,12 +14,10 @@ export class ClientGetPortfolio {
       return null;
     }
 
-    let portfolio = await this.portfolioRepository.findByAccountId(accountId);
-    if (!portfolio) {
-      portfolio = Portfolio.create(accountId);
-      await this.portfolioRepository.save(portfolio);
-    }
+    const portfolio = Portfolio.create(account);
 
-    return portfolio;
+    const savedPortfolio = await this.portfolioRepository.save(portfolio);
+
+    return savedPortfolio;
   }
 }

@@ -2,20 +2,21 @@ import { PortfolioItem } from './portfolio-item';
 import { Stock } from '../stock';
 import { PortfolioError } from '../../errors/portfolio';
 import { randomUUID } from 'node:crypto';
+import { Account } from '../accounts/account';
 
 export class Portfolio {
   private readonly items: Map<string, PortfolioItem>;
 
   private constructor(
     public readonly identifier: string | null,
-    public readonly accountId: string,
+    public readonly account: Account,
     items?: Map<string, PortfolioItem>
   ) {
     this.items = items ? new Map(items) : new Map();
   }
 
-  public static create(accountId: string, items?: Map<string, PortfolioItem>): Portfolio {
-    return new Portfolio(randomUUID(), accountId, items);
+  public static create(account: Account, items?: Map<string, PortfolioItem>): Portfolio {
+    return new Portfolio(randomUUID(), account, items);
   }
 
   public getOwnedQuantity(stockId: string): number {
@@ -36,7 +37,7 @@ export class Portfolio {
     const newItem = currentItem ? currentItem.add(quantity) : PortfolioItem.create(stock, quantity);
     const newItems = new Map(this.items).set(stock.identifier, newItem);
 
-    return new Portfolio(this.identifier, this.accountId, newItems);
+    return new Portfolio(this.identifier, this.account, newItems);
   }
 
   public removeStock(stock: Stock, quantity: number): Portfolio | PortfolioError {
@@ -65,7 +66,7 @@ export class Portfolio {
         newItems.set(stockId, newItem);
       }
 
-      return new Portfolio(this.identifier, this.accountId, newItems);
+      return new Portfolio(this.identifier, this.account, newItems);
     } catch (error) {
       if (error instanceof PortfolioError) {
         return error;

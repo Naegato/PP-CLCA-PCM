@@ -1,26 +1,27 @@
-import { Order, OrderSide } from '@pp-clca-pcm/domain/entities/order';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
 import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
 import { TRADING_FEE } from '@pp-clca-pcm/domain/constants/bank';
-import { AccountRepository } from '../../repositories/account';
-import { OrderRepository } from '../../repositories/order';
-import { MatchOrderError } from '../../errors/match-order';
-import { PortfolioRepository } from '../../repositories/portfolio';
+import { AccountRepository } from '../../../repositories/account';
+import { StockOrderRepository } from '../../../repositories/stockOrder';
+import { MatchStockOrderError } from '../../../errors/match-stock-order';
+import { PortfolioRepository } from '../../../repositories/portfolio';
 import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
 import { PortfolioError } from '@pp-clca-pcm/domain/errors/portfolio';
 
-export class MatchOrder {
+//purpose of this function is to match an order to buy or sell a stock to other existing orders on the same stock, and if possible procede with the stocks' trade
+export class ClientMatchStockOrder {
   constructor(
-    private readonly orderRepository: OrderRepository,
+    private readonly stockOrderRepository: StockOrderRepository,
     private readonly accountRepository: AccountRepository,
     private readonly portfolioRepository: PortfolioRepository,
   ) {}
 
-  public async execute(order: Order): Promise<number | MatchOrderError> {
+  public async execute(order: StockOrder): Promise<number | MatchStockOrderError> {
     if (!order.stock.identifier) {
-      return new MatchOrderError('Order stock has no identifier.');
+      return new MatchStockOrderError('Order stock has no identifier.');
     }
 
-    const oppositeOrders = await this.orderRepository.findOpenOppositeOrders(
+    const oppositeOrders = await this.stockOrderRepository.findOpenOppositeOrders(
       order.stock.identifier,
       order.side,
       order.price,
@@ -36,10 +37,10 @@ export class MatchOrder {
   }
 
   private async processMatches(
-    currentOrder: Order,
-    oppositeOrders: Order[],
+    currentOrder: StockOrder,
+    oppositeOrders: StockOrder[],
     matchedQuantityAccumulator: number = 0,
-  ): Promise<number | MatchOrderError> {
+  ): Promise<number | MatchStockOrderError> {
 
     if (oppositeOrders.length === 0 || currentOrder.executed) {
       return matchedQuantityAccumulator;
@@ -54,24 +55,20 @@ export class MatchOrder {
     const buyerOrder = currentOrder.side === OrderSide.BUY ? currentOrder : oppositeOrder;
     const sellerOrder = currentOrder.side === OrderSide.SELL ? currentOrder : oppositeOrder;
 
-    const buyerAccount = await this.accountRepository.findByOwner(buyerOrder.owner);
-    const sellerAccount = await this.accountRepository.findByOwner(sellerOrder.owner);
-
-    if (!buyerAccount || !sellerAccount) {
-      return new MatchOrderError(`Could not find accounts for trade involving orders ${buyerOrder.identifier} and ${sellerOrder.identifier}.`);
-    }
+    const buyerAccount = buyerOrder.account;
+    const sellerAccount = sellerOrder.account;
 
     if (!buyerAccount.identifier) {
-      return new MatchOrderError(`Buyer account has no identifier.`);
+      return new MatchStockOrderError(`Buyer account has no identifier.`);
     }
     if (!sellerAccount.identifier) {
-      return new MatchOrderError(`Seller account has no identifier.`);
+      return new MatchStockOrderError(`Seller account has no identifier.`);
     }
 
     //buyer balance check
     const totalCostForBuyer = tradePrice * tradeQuantity + TRADING_FEE;
     if (buyerAccount.balance < totalCostForBuyer) {
-      return new MatchOrderError(`Buyer (Account ID: ${buyerAccount.identifier}) has insufficient funds for trade. Required: ${totalCostForBuyer}, Available: ${buyerAccount.balance}.`);
+      return new MatchStockOrderError(`Buyer (Account ID: ${buyerAccount.identifier}) has insufficient funds for trade. Required: ${totalCostForBuyer}, Available: ${buyerAccount.balance}.`);
     }
 
     const tradeAmount = tradePrice * tradeQuantity;
@@ -106,22 +103,22 @@ export class MatchOrder {
     const updatedCurrentOrder = currentOrder.reduceRemainingBy(tradeQuantity);
     const updatedOppositeOrder = oppositeOrder.reduceRemainingBy(tradeQuantity);
 
-    await this.orderRepository.save(updatedCurrentOrder);
-    await this.orderRepository.save(updatedOppositeOrder);
-    await this.accountRepository.update(updatedBuyerAccount);
-    await this.accountRepository.update(updatedSellerAccount);
+    await this.stockOrderRepository.save(updatedCurrentOrder);
+    await this.stockOrderRepository.save(updatedOppositeOrder);
+    await this.accountRepository.save(updatedBuyerAccount);
+    await this.accountRepository.save(updatedSellerAccount);
 
-    const sellerPortfolio = await this.portfolioRepository.findByAccountId(sellerAccount.identifier) ?? Portfolio.create(sellerAccount.identifier);
-    const buyerPortfolio = await this.portfolioRepository.findByAccountId(buyerAccount.identifier) ?? Portfolio.create(buyerAccount.identifier);
+    const sellerPortfolio = await this.portfolioRepository.findByAccountId(sellerAccount.identifier) ?? Portfolio.create(sellerAccount);
+    const buyerPortfolio = await this.portfolioRepository.findByAccountId(buyerAccount.identifier) ?? Portfolio.create(buyerAccount);
 
     const updatedSellerPortfolio = sellerPortfolio.removeStock(sellerOrder.stock, tradeQuantity);
     if (updatedSellerPortfolio instanceof PortfolioError) {
-      return new MatchOrderError(updatedSellerPortfolio.message);
+      return new MatchStockOrderError(updatedSellerPortfolio.message);
     }
 
     const updatedBuyerPortfolio = buyerPortfolio.addStock(buyerOrder.stock, tradeQuantity);
     if (updatedBuyerPortfolio instanceof PortfolioError) {
-      return new MatchOrderError(updatedBuyerPortfolio.message);
+      return new MatchStockOrderError(updatedBuyerPortfolio.message);
     }
 
     await this.portfolioRepository.save(updatedSellerPortfolio);

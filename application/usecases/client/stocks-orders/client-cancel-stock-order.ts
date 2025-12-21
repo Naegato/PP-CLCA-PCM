@@ -1,22 +1,22 @@
-import { OrderRepository } from '../../../repositories/order';
+import { StockOrderRepository } from '../../../repositories/stockOrder';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 import { ClientCancelStockOrderError } from '../../../errors/client-cancel-stock-order';
 
 export class ClientCancelStockOrder {
-  constructor(private readonly orderRepository: OrderRepository) {}
+  constructor(private readonly stockOrderRepository: StockOrderRepository) {}
 
   public async execute(orderId: string, user: User): Promise<void | ClientCancelStockOrderError> {
     if (!user.identifier) {
       return new ClientCancelStockOrderError('User has no identifier.');
     }
 
-    const order = await this.orderRepository.findById(orderId);
+    const order = await this.stockOrderRepository.findById(orderId);
 
     if (!order) {
       return new ClientCancelStockOrderError(`Order with id ${orderId} not found.`);
     }
 
-    if (order.owner.identifier !== user.identifier) {
+    if (order.account.owner.identifier !== user.identifier) {
       return new ClientCancelStockOrderError(`User is not the owner of order ${orderId}.`);
     }
 
@@ -24,6 +24,6 @@ export class ClientCancelStockOrder {
       return new ClientCancelStockOrderError(`Order ${orderId} is already executed and cannot be cancelled.`);
     }
 
-    await this.orderRepository.delete(orderId);
+    await this.stockOrderRepository.delete(orderId);
   }
 }

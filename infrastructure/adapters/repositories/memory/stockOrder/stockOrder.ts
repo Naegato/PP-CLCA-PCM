@@ -1,10 +1,10 @@
-import { Order, OrderSide } from '@pp-clca-pcm/domain/entities/order';
-import { OrderRepository } from '@pp-clca-pcm/application/repositories/order';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
+import { StockOrderRepository } from '@pp-clca-pcm/application/repositories/stockOrder';
 
-export class InMemoryOrderRepository implements OrderRepository {
-  public orders: Order[] = [];
+export class InMemoryStockOrderRepository implements StockOrderRepository {
+  public orders: StockOrder[] = [];
 
-  save(order: Order): Promise<Order> {
+  save(order: StockOrder): Promise<StockOrder> {
     const existingOrderIndex = this.orders.findIndex(existingOrder => existingOrder.identifier === order.identifier);
     if (existingOrderIndex !== -1) {
       this.orders[existingOrderIndex] = order;
@@ -14,11 +14,11 @@ export class InMemoryOrderRepository implements OrderRepository {
     return Promise.resolve(order);
   }
 
-  allByStock(stockId: string): Promise<Order[]> {
+  allByStock(stockId: string): Promise<StockOrder[]> {
     return Promise.resolve(this.orders.filter(order => order.stock.identifier === stockId));
   }
 
-  findOpenOppositeOrders(stockId: string, side: OrderSide, price?: number): Promise<Order[]> {
+  findOpenOppositeOrders(stockId: string, side: OrderSide, price?: number): Promise<StockOrder[]> {
     const oppositeSide = side === OrderSide.BUY ? OrderSide.SELL : OrderSide.BUY;
 
     let filtered = this.orders.filter(order =>
@@ -44,17 +44,17 @@ export class InMemoryOrderRepository implements OrderRepository {
     return Promise.resolve(filtered);
   }
 
-  findOpenBuyOrders(): Promise<Order[]> {
+  findOpenBuyOrders(): Promise<StockOrder[]> {
     return Promise.resolve(this.orders.filter(order => order.side === OrderSide.BUY && order.remainingQuantity > 0));
   }
 
-  findOpenSellOrders(): Promise<Order[]> {
+  findOpenSellOrders(): Promise<StockOrder[]> {
     return Promise.resolve(this.orders.filter(order => order.side === OrderSide.SELL && order.remainingQuantity > 0));
   }
 
   getCommittedSellQuantity(accountId: string, stockId: string): Promise<number> {
     const sellOrders = this.orders.filter(order =>
-      order.owner.identifier === accountId &&
+      order.account.identifier === accountId &&
       order.stock.identifier === stockId &&
       order.side === OrderSide.SELL &&
       order.remainingQuantity > 0
@@ -63,13 +63,13 @@ export class InMemoryOrderRepository implements OrderRepository {
     return Promise.resolve(committedQuantity);
   }
 
-  async findById(orderId: string): Promise<Order | null> {
+  async findById(orderId: string): Promise<StockOrder | null> {
     const order = this.orders.find(order => order.identifier === orderId);
     return Promise.resolve(order || null);
   }
 
-  async findAllByOwnerId(ownerId: string): Promise<Order[]> {
-    const orders = this.orders.filter(order => order.owner.identifier === ownerId);
+  async findAllByOwnerId(ownerId: string): Promise<StockOrder[]> {
+    const orders = this.orders.filter(order => order.account.owner.identifier === ownerId);
     return Promise.resolve(orders);
   }
 
@@ -81,7 +81,7 @@ export class InMemoryOrderRepository implements OrderRepository {
     return Promise.resolve();
   }
 
-  async findAllByStockId(stockId: string): Promise<Order[]> {
+  async findAllByStockId(stockId: string): Promise<StockOrder[]> {
     const orders = this.orders.filter(order => order.stock.identifier === stockId);
     return Promise.resolve(orders);
   }

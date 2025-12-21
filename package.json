@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "test": "cd infrastructure/tests && npm test"
+    "test": "cd infrastructure/tests && npm test",
+    "start:cron": "node infrastructure/adapters/main.ts"
   },
   "workspaces": [
     "application",

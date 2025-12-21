@@ -1,16 +1,16 @@
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { Order, OrderSide } from '@pp-clca-pcm/domain/entities/order';
-import { OrderRepository } from '../../../repositories/order';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
+import { StockOrderRepository } from '../../../repositories/stockOrder';
 import { StockRepository } from '../../../repositories/stock';
 import { TRADING_FEE } from '@pp-clca-pcm/domain/constants/bank';
-import { MatchOrder } from '../../engine/match-order';
+import { ClientMatchStockOrder } from './client-match-stock-order';
 import { ClientRegisterStockOrderError } from '../../../errors/client-register-stock-order';
 
 export class ClientRegisterStockOrder {
   constructor(
-    private readonly orderRepository: OrderRepository,
+    private readonly stockOrderRepository: StockOrderRepository,
     private readonly stockRepository: StockRepository,
-    private readonly matchOrder: MatchOrder,
+    private readonly matchStockOrder: ClientMatchStockOrder,
   ) {}
 
   public async execute(
@@ -19,7 +19,7 @@ export class ClientRegisterStockOrder {
     side: OrderSide,
     price: number,
     quantity: number,
-  ): Promise<Order | ClientRegisterStockOrderError> {
+  ): Promise<StockOrder | ClientRegisterStockOrderError> {
     const stock = await this.stockRepository.findById(stockId);
     if (!stock) {
       return new ClientRegisterStockOrderError(`Stock with ID ${stockId} not found.`);
@@ -39,8 +39,11 @@ export class ClientRegisterStockOrder {
     }
 
     if (side === OrderSide.SELL) {
+      if (!account.portfolio) {
+        return new ClientRegisterStockOrderError('Client does not have a portfolio.');
+      }
       const ownedQuantity = account.portfolio.getOwnedQuantity(stockId);
-      const committedToSell = await this.orderRepository.getCommittedSellQuantity(account.identifier!, stockId);
+      const committedToSell = await this.stockOrderRepository.getCommittedSellQuantity(account.identifier!, stockId);
       const availableToSell = ownedQuantity - committedToSell;
 
       if (availableToSell < quantity) {
@@ -56,11 +59,11 @@ export class ClientRegisterStockOrder {
       }
     }
 
-    const order = Order.create(stock, account.owner, side, price, quantity);
-    const savedOrder = await this.orderRepository.save(order);
+    const order = StockOrder.create(stock, account, side, price, quantity);
+    const savedOrder = await this.stockOrderRepository.save(order);
 
     //attempt to match the order immediately after registration
-    await this.matchOrder.execute(savedOrder);
+    await this.matchStockOrder.execute(savedOrder);
 
     return savedOrder;
   }

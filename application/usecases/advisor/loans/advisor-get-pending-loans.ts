@@ -5,7 +5,7 @@ import { Security } from "../../../services/security";
 export class AdvisorGetPendingLoans {
   public constructor(
     public readonly loanRequestRepository: LoanRequestRepository,
-	public readonly security: Security;
+    public readonly security: Security,
   ) {}
 
   public async execute() {

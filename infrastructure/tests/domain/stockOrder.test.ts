@@ -1,9 +1,12 @@
 import { describe, expect, test } from 'vitest';
-import { Order, OrderSide } from '@pp-clca-pcm/domain/entities/order';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
 import { Stock } from '@pp-clca-pcm/domain/entities/stock';
 import { User } from '@pp-clca-pcm/domain/entities/user';
+import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
+import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
+import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
 
-describe('Order Entity', () => {
+describe('StockOrder Entity', () => {
   const userResult = User.create('John', 'Doe', 'john.doe@example.com', 'Password123!');
   let user: User;
 
@@ -12,15 +15,20 @@ describe('Order Entity', () => {
   } else {
     throw new Error(`Failed to create user for tests: ${userResult.message}`);
   }
+  const accountType = AccountType.create('Courant', 0, 'description');
+  const ibanOrError = Iban.create('FR7630001007941234567890185');
+  if (ibanOrError instanceof Error) throw ibanOrError;
+  const iban = ibanOrError;
+  const account = Account.create(user, accountType, iban);
   const stock = Stock.create('AAPL', 'Apple Inc.');
 
   test('should create an order successfully', () => {
-    const order = Order.create(stock, user, OrderSide.BUY, 150.00, 10);
+    const order = StockOrder.create(stock, account, OrderSide.BUY, 150.00, 10);
 
-    expect(order).toBeInstanceOf(Order);
+    expect(order).toBeInstanceOf(StockOrder);
     expect(order.identifier).toBeDefined();
     expect(order.stock).toEqual(stock);
-    expect(order.owner).toEqual(user);
+    expect(order.account).toEqual(account);
     expect(order.side).toBe(OrderSide.BUY);
     expect(order.price).toBe(150.00);
     expect(order.quantity).toBe(10);
@@ -30,7 +38,7 @@ describe('Order Entity', () => {
   });
 
   test('should reduce remaining quantity correctly', () => {
-    const initialOrder = Order.create(stock, user, OrderSide.BUY, 150.00, 10);
+    const initialOrder = StockOrder.create(stock, account, OrderSide.BUY, 150.00, 10);
     const updatedOrder = initialOrder.reduceRemainingBy(5);
 
     expect(updatedOrder.remainingQuantity).toBe(5);
@@ -42,7 +50,7 @@ describe('Order Entity', () => {
   });
 
   test('should not reduce remaining quantity below zero', () => {
-    const initialOrder = Order.create(stock, user, OrderSide.BUY, 150.00, 10);
+    const initialOrder = StockOrder.create(stock, account, OrderSide.BUY, 150.00, 10);
     const updatedOrder = initialOrder.reduceRemainingBy(15);
 
     expect(updatedOrder.remainingQuantity).toBe(0);
@@ -50,7 +58,7 @@ describe('Order Entity', () => {
   });
 
   test('should update order properties correctly', () => {
-    const initialOrder = Order.create(stock, user, OrderSide.BUY, 150.00, 10);
+    const initialOrder = StockOrder.create(stock, account, OrderSide.BUY, 150.00, 10);
     const newStock = Stock.create('GOOG', 'Google Inc.');
     const updatedOrder = initialOrder.update({
       stock: newStock,
@@ -70,7 +78,7 @@ describe('Order Entity', () => {
   });
 
   test('should handle invalid remaining quantity during update', () => {
-    const initialOrder = Order.create(stock, user, OrderSide.BUY, 150.00, 10);
+    const initialOrder = StockOrder.create(stock, account, OrderSide.BUY, 150.00, 10);
     const updatedOrderNegative = initialOrder.update({ remainingQuantity: -5 });
     expect(updatedOrderNegative.remainingQuantity).toBe(0);
 
@@ -79,12 +87,12 @@ describe('Order Entity', () => {
   });
 
   test('should return true for executed when remaining quantity is zero', () => {
-    const order = Order.create(stock, user, OrderSide.BUY, 150.00, 10).reduceRemainingBy(10);
+    const order = StockOrder.create(stock, account, OrderSide.BUY, 150.00, 10).reduceRemainingBy(10);
     expect(order.executed).toBe(true);
   });
 
   test('should return false for executed when remaining quantity is not zero', () => {
-    const order = Order.create(stock, user, OrderSide.BUY, 150.00, 10).reduceRemainingBy(5);
+    const order = StockOrder.create(stock, account, OrderSide.BUY, 150.00, 10).reduceRemainingBy(5);
     expect(order.executed).toBe(false);
   });
 });

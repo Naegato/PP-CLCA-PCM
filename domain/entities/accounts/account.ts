@@ -14,7 +14,7 @@ export class Account {
     public readonly receivedTransactions: Transaction[] = [],
     public readonly iban: Iban,
     public readonly name?: string,
-    public readonly portfolio: Portfolio = Portfolio.create(),
+    public readonly portfolio?: Portfolio,
   ) { }
 
   public static create (
@@ -24,7 +24,7 @@ export class Account {
     name?: string,
     portfolio?: Portfolio,
   ): Account {
-    return new Account(randomUUID(), owner, type, [], [], iban, name ?? randomUUID(), portfolio ?? Portfolio.create());
+    return new Account(randomUUID(), owner, type, [], [], iban, name ?? randomUUID(), portfolio);
   }
 
   public update(props: Partial<Omit<Account, 'identifier' | 'owner' | 'iban' | 'portfolio'>>): Account {

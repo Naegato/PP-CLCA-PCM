@@ -9,7 +9,7 @@ import { AccountCreateError } from '../../../errors/account-create';
 import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
 import { AccountLimitValidator } from '@pp-clca-pcm/domain/utils/account-limit-validator';
 
-export class ClientAccountCreate {
+export class ClientCreateAccount {
   public constructor(
     public readonly defaultAccountType: AccountType,
     public readonly accountRepository: AccountRepository,
