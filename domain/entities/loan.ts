@@ -18,4 +18,14 @@ export class Loan {
   ) {
     return new Loan(randomUUID(), client, amount, advisor, []);
   }
+
+  public static fromPrimitives(data: any) {
+	return new Loan(
+	  data.identifier,
+	  data.client,
+	  data.amount,
+	  data.advisor,
+	  data.transactions,
+	);
+  }
 }

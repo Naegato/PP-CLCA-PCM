@@ -12,4 +12,8 @@ export class Email {
     }
     return new Email(value);
   }
+
+  public toJSON(): string {
+	return this.value;
+  }
 }
