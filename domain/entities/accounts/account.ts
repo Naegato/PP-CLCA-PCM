@@ -6,7 +6,7 @@ import { Iban } from '../../value-objects/iban';
 import { Portfolio } from '../portfolio/portfolio';
 
 export class Account {
-  public constructor (
+  private constructor (
     public readonly identifier: string | null,
     public readonly owner: User,
     public readonly type: AccountType,

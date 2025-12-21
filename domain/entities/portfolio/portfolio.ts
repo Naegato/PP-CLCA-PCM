@@ -6,7 +6,7 @@ import { randomUUID } from 'node:crypto';
 export class Portfolio {
   private readonly items: Map<string, PortfolioItem>;
 
-  constructor(
+  private constructor(
     public readonly identifier: string | null,
     public readonly accountId: string,
     items?: Map<string, PortfolioItem>
@@ -55,15 +55,22 @@ export class Portfolio {
       return new PortfolioError(`Cannot remove ${quantity} of stock ${stockId}: not found in portfolio.`);
     }
 
-    const newItem = currentItem.remove(quantity);
-    const newItems = new Map(this.items);
+    try {
+      const newItem = currentItem.remove(quantity);
+      const newItems = new Map(this.items);
 
-    if (newItem.quantity === 0) {
-      newItems.delete(stockId);
-    } else {
-      newItems.set(stockId, newItem);
+      if (newItem.quantity === 0) {
+        newItems.delete(stockId);
+      } else {
+        newItems.set(stockId, newItem);
+      }
+
+      return new Portfolio(this.identifier, this.accountId, newItems);
+    } catch (error) {
+      if (error instanceof PortfolioError) {
+        return error;
+      }
+      throw error;
     }
-
-    return new Portfolio(this.identifier, this.accountId, newItems);
   }
 }

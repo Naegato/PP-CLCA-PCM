@@ -8,7 +8,7 @@ export enum OrderSide {
 }
 
 export class Order {
-  constructor(
+  private constructor(
     public readonly identifier: string | null,
     public readonly stock: Stock,
     public readonly owner: User,

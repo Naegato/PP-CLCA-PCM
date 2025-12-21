@@ -3,7 +3,7 @@ import { PortfolioError } from '../../errors/portfolio';
 import { randomUUID } from 'node:crypto';
 
 export class PortfolioItem {
-  constructor(
+  private constructor(
     public readonly identifier: string | null,
     public readonly stock: Stock,
     public readonly quantity: number,

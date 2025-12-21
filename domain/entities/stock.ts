@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 export type StockSymbol = string;
 
 export class Stock {
-  constructor(
+  private constructor(
     public readonly identifier: string | null,
     public readonly symbol: StockSymbol,
     public readonly name: string,

@@ -5,7 +5,7 @@ import { PasswordSpecialError } from '@pp-clca-pcm/domain/errors/password-specia
 import { PasswordDigitError } from '@pp-clca-pcm/domain/errors/password-digit';
 
 export class Password {
-  public constructor (public readonly value: string) { }
+  private constructor (public readonly value: string) { }
 
   public static create (value: string) {
 
