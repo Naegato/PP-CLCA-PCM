@@ -81,6 +81,9 @@ export class User {
 			props.lastname ?? this.lastname,
 			props.email ?? this.email,
 			props.password ?? this.password,
+			this.clientProps,
+			this.advisorProps,
+			this.directorProps,
 		);
 	}
 
