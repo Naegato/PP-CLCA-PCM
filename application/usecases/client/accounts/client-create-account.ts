@@ -1,4 +1,3 @@
-
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
 import { User } from '@pp-clca-pcm/domain/entities/user';
@@ -8,14 +7,21 @@ import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
 import { InvalidIbanError } from '@pp-clca-pcm/domain/errors/invalid-iban-format';
 import { AccountCreateError } from '../../../errors/account-create';
 import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
+import { AccountLimitValidator } from '@pp-clca-pcm/domain/utils/account-limit-validator';
 
-export class ClientAccountCreate {
+export class ClientCreateAccount {
   public constructor(
     public readonly defaultAccountType: AccountType,
     public readonly accountRepository: AccountRepository,
   ) {}
 
   public async execute(user: User, name: string): Promise<Account | AccountCreateError> {
+
+    if (!AccountLimitValidator.canCreateAccount(user, this.defaultAccountType)) {
+      const accountErrorMessage = AccountLimitValidator.getLimitReachedMessage(this.defaultAccountType.identifier, this.defaultAccountType.limitByClient);
+      return new AccountCreateError(accountErrorMessage);
+    }
+
     // get next account number from repo
     const accountNumber = await this.accountRepository.generateAccountNumber();
 
@@ -27,10 +33,7 @@ export class ClientAccountCreate {
 
     const account = Account.create(user, this.defaultAccountType, ibanOrError, name);
 
-    user.updateClientProps(new ClientProps([
-      ...user.clientProps?.accounts ?? [],
-      account
-    ]));
+    user.updateClientProps(new ClientProps([...user.clientProps?.accounts ?? [], account]));
 
     const savedAccount = await this.accountRepository.save(account);
 

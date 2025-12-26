@@ -5,11 +5,14 @@
   "name": "@pp-clca-pcm/adapters",
   "scripts": {
     "p:g": "prisma generate",
-    "p:m": "prisma migrate dev"
+    "p:m": "prisma migrate dev",
+    "dev": "npx tsx watch main.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.1.0",
+    "@types/cron": "^2.0.1",
+    "cron": "^4.4.0",
     "dotenv": "^17.2.3",
     "jsonwebtoken": "^9.0.2",
     "mariadb": "^3.4.5",
@@ -19,6 +22,8 @@
   "devDependencies": {
     "@types/node": "^24.7.0",
     "@types/pg": "^8.16.0",
-    "prisma": "^7.1.0"
+    "prisma": "^7.1.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

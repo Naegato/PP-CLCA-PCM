@@ -1,7 +1,7 @@
 import { AccountRepository } from '../../../repositories/account';
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 
-export class ClientAccountUpdateName {
+export class ClientUpdateNameAccount {
   public constructor(
     public readonly accountRepository: AccountRepository,
   ) {}

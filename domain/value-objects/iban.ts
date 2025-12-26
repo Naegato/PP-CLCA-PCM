@@ -3,7 +3,7 @@ import { mod97 } from "../utils/iban";
 import { FRENCH_IBAN_ATTRIBUTES } from "../constants/iban-fr";
 
 export class Iban {
-  public constructor(
+  private constructor(
     public readonly value: string,
   ) { }
 

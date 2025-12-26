@@ -1,7 +1,7 @@
 import { InvalidEmailFormatError } from '../errors/invalid-email-format';
 
 export class Email {
-  public constructor (
+  private constructor (
     public readonly value: string,
   ) { }
 

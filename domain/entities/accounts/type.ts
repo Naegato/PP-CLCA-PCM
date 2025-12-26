@@ -6,7 +6,7 @@ export enum AccountTypeNameEnum {
 export type AccountTypeName = keyof typeof AccountTypeNameEnum | string;
 
 export class AccountType {
-  constructor(
+  private constructor(
     public readonly identifier: string | null,
     public readonly name: AccountTypeName,
     public readonly rate: number,
