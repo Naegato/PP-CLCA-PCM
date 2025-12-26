@@ -16,7 +16,7 @@ export class GenerateDailyInterest {
 			totalAccountsProcessed++;
 			const interest = account.calculateDailyInterest();
 
-			if (interest <= 0) continue; // No interest to apply for this account
+			if (interest <= 0) continue;
 
 			const tx = Transaction.create(account, interest, 'Daily savings interest');
 

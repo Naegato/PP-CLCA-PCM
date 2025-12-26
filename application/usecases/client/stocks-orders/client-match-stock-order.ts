@@ -21,11 +21,13 @@ export class ClientMatchStockOrder {
       return new MatchStockOrderError('Order stock has no identifier.');
     }
 
-    const oppositeOrders = await this.stockOrderRepository.findOpenOppositeOrders(
-      order.stock.identifier,
-      order.side,
-      order.price,
-    );
+    let oppositeOrders: StockOrder[] = [];
+
+    if (order.side === OrderSide.BUY) {
+      oppositeOrders = await this.stockOrderRepository.findOpenSellOrders(order.stock.identifier, order.price);
+    } else {
+      oppositeOrders = await this.stockOrderRepository.findOpenBuyOrders(order.stock.identifier, order.price);
+    }
 
     if (oppositeOrders.length === 0) {
       return 0;
