@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__context7",
+      "Edit",
+      "Write",
+      "Bash(cat:*)",
+      "Bash(npm:*)"
+    ]
+  }
+}

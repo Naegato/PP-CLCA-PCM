@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@pp-clca-pcm/application/*": ["application/*"],
+      "@pp-clca-pcm/domain/*": ["domain/*"],
+      "@pp-clca-pcm/adapters/*": ["infrastructure/adapters/*"],
+      "@pp-clca-pcm/tests/*": ["infrastructure/tests/*"],
+    }
+  }
+}
+
