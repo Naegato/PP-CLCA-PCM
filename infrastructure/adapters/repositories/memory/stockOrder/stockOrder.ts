@@ -18,38 +18,22 @@ export class InMemoryStockOrderRepository implements StockOrderRepository {
     return Promise.resolve(this.orders.filter(order => order.stock.identifier === stockId));
   }
 
-  findOpenOppositeOrders(stockId: string, side: OrderSide, price?: number): Promise<StockOrder[]> {
-    const oppositeSide = side === OrderSide.BUY ? OrderSide.SELL : OrderSide.BUY;
-
-    let filtered = this.orders.filter(order =>
-      order.stock.identifier === stockId &&
-      order.side === oppositeSide &&
-      order.remainingQuantity > 0
+  async findOpenBuyOrders(stockId?: string, price?: number): Promise<StockOrder[]> {
+    return this.orders.filter(order =>
+      order.side === OrderSide.BUY &&
+      order.remainingQuantity > 0 &&
+      (stockId === undefined || order.stock.identifier === stockId) &&
+      (price === undefined || order.price <= price)
     );
-
-    if (price !== undefined) {
-      if (side === OrderSide.BUY) {
-        filtered = filtered.filter(order => order.price <= price);
-      } else {
-        filtered = filtered.filter(order => order.price >= price);
-      }
-    }
-
-    if (oppositeSide === OrderSide.SELL) {
-      filtered.sort((a, b) => a.price - b.price);
-    } else {
-      filtered.sort((a, b) => b.price - a.price);
-    }
-
-    return Promise.resolve(filtered);
   }
 
-  findOpenBuyOrders(): Promise<StockOrder[]> {
-    return Promise.resolve(this.orders.filter(order => order.side === OrderSide.BUY && order.remainingQuantity > 0));
-  }
-
-  findOpenSellOrders(): Promise<StockOrder[]> {
-    return Promise.resolve(this.orders.filter(order => order.side === OrderSide.SELL && order.remainingQuantity > 0));
+  async findOpenSellOrders(stockId?: string, price?: number): Promise<StockOrder[]> {
+    return this.orders.filter(order =>
+      order.side === OrderSide.SELL &&
+      order.remainingQuantity > 0 &&
+      (stockId === undefined || order.stock.identifier === stockId) &&
+      (price === undefined || order.price >= price)
+    );
   }
 
   getCommittedSellQuantity(accountId: string, stockId: string): Promise<number> {

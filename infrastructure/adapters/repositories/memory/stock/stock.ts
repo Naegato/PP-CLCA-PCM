@@ -8,6 +8,10 @@ export class InMemoryStockRepository implements StockRepository {
     return Promise.resolve([...this.stocks]);
   }
 
+  getListedStocks(): Promise<Stock[]> {
+    return Promise.resolve(this.stocks.filter(stock => stock.isListed));
+  }
+
   findById(id: string): Promise<Stock | null> {
     const found = this.stocks.find(stock => stock.identifier === id) ?? null;
     return Promise.resolve(found);
