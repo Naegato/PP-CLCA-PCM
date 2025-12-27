@@ -1,11 +1,13 @@
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain/entities/accounts/type';
 import { User } from '@pp-clca-pcm/domain/entities/user';
-
 import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
 import { AccountRepository } from '@pp-clca-pcm/application/repositories/account';
 import { AccountTypeRepository } from '@pp-clca-pcm/application/repositories/type';
 import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
+import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
+import { InvalidIbanError } from '@pp-clca-pcm/domain/errors/invalid-iban-format';
+import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
 
 export class ClientRegistration {
   public constructor (
@@ -33,7 +35,18 @@ export class ClientRegistration {
     }
 
     const defaultAccountType = await this.accountTypeRepository.getOrSave(AccountTypeNameEnum.DEFAULT, AccountType.create(AccountTypeNameEnum.DEFAULT, 0));
-    const account = Account.create(savedClient, defaultAccountType,'Main Account');
+
+    const accountNumber = await this.accountRepository.generateAccountNumber();
+    const ibanOrError = Iban.generate(BANK_ATTRIBUTES.BANK_CODE, BANK_ATTRIBUTES.BRANCH_CODE, accountNumber);
+
+    if (ibanOrError instanceof InvalidIbanError) {
+      return new Error("Failed to generate IBAN for new account.");
+    }
+
+    const account = Account.create(savedClient, defaultAccountType, ibanOrError, 'Main Account');
+
+    savedClient.updateClientProps(new ClientProps([...savedClient.clientProps?.accounts ?? [], account]));
+
     const savedAccount = await this.accountRepository.save(account);
 
     const finalClient = await this.userRepository.find(savedClient);
