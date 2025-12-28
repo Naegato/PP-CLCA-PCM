@@ -9,6 +9,6 @@ export interface AccountRepository {
   delete(account: Account): Promise<Account | AccountDeleteError>;
   update(account: Account): Promise<Account | AccountUpdateError>;
   generateAccountNumber(): Promise<string>;
-  findByOwner(owner: User): Promise<Account | null>;
+  findByOwner(owner: User): Promise<Account[] | null>;
   findById(id: string): Promise<Account | null>;
 }

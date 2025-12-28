@@ -69,9 +69,9 @@ export class InMemoryAccountRepository implements AccountRepository {
     return accountNumberString.padStart(FRENCH_IBAN_ATTRIBUTES.ACCOUNT_NUMBER_LENGTH, '0');
   }
 
-  public async findByOwner(owner: User): Promise<Account | null> {
-    const account = this.inMemoryAccounts.find(account => account.owner.identifier === owner.identifier);
-    return Promise.resolve(account || null);
+  public async findByOwner(owner: User): Promise<Account[] | null> {
+    const accounts = this.inMemoryAccounts.filter(account => account.owner.identifier === owner.identifier);
+    return Promise.resolve(accounts || null);
   }
 
   public async findById(id: string): Promise<Account | null> {

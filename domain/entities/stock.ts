@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { Company } from './company';
 
 export type StockSymbol = string;
 
@@ -9,10 +10,11 @@ export class Stock {
     public readonly name: string,
     public readonly isListed: boolean,
     public readonly createdAt: Date,
+    public readonly company: Company,
   ) {}
 
-  public static create(symbol: StockSymbol, name: string): Stock {
-    return new Stock(randomUUID(), symbol.toUpperCase(), name, true, new Date());
+  public static create(symbol: StockSymbol, name: string, company: Company): Stock {
+    return new Stock(randomUUID(), symbol.toUpperCase(), name, true, new Date(), company);
   }
 
   public update(props: Partial<Omit<Stock, 'identifier' | 'createdAt'>>): Stock {
@@ -21,7 +23,8 @@ export class Stock {
       props.symbol ?? this.symbol,
       props.name ?? this.name,
       props.isListed ?? this.isListed,
-      this.createdAt
+      this.createdAt,
+      props.company ?? this.company
     );
   }
 
@@ -31,7 +34,8 @@ export class Stock {
       this.symbol,
       this.name,
       !this.isListed,
-      this.createdAt
+      this.createdAt,
+      this.company
     );
   }
 }

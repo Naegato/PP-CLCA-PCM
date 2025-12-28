@@ -23,7 +23,7 @@ export class InMemoryStockRepository implements StockRepository {
   }
 
   save(stock: Stock): Promise<Stock> {
-    const existingIndex = this.stocks.findIndex(stock => stock.identifier === stock.identifier);
+    const existingIndex = this.stocks.findIndex(s => s.identifier === stock.identifier);
     if (existingIndex !== -1) {
       this.stocks[existingIndex] = stock;
     } else {
@@ -38,5 +38,10 @@ export class InMemoryStockRepository implements StockRepository {
       this.stocks.splice(index, 1);
     }
     return Promise.resolve();
+  }
+
+  findAllByCompanyId(companyId: string): Promise<Stock[]> {
+    const found = this.stocks.filter(stock => stock.company.identifier === companyId);
+    return Promise.resolve(found);
   }
 }
