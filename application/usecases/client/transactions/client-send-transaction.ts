@@ -41,7 +41,6 @@ export class ClientSendTransaction {
       return new TransactionError('Failed to persist receiver account');
     }
 
-    // return sender's new balance
-    return (savedSender as Account).balance;
+    return savedSender.balance;
   }
 }
