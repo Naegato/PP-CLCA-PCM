@@ -19,6 +19,16 @@ export class Loan {
     return new Loan(randomUUID(), client, amount, advisor, []);
   }
 
+  public getTotalPaidAmount(): number {
+	return this.transactions
+	  .filter(tx => tx.amount > 0)
+	  .reduce((sum, tx) => sum + tx.amount, 0);
+  }
+
+  public isFullyPaid(): boolean {
+	return this.getTotalPaidAmount() >= this.amount;
+  }
+
   public static fromPrimitives(data: any) {
 	return new Loan(
 	  data.identifier,
