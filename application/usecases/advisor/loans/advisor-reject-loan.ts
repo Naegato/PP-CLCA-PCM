@@ -21,10 +21,10 @@ export class AdvisorRejectLoan {
 		return null;
 	}
 
-	loanRequest.reject(advisor.id);
+	const newLoanRequest = loanRequest.reject(advisor);
 
-	this.loanRequestRepository.save(loanRequest);
+	this.loanRequestRepository.save(newLoanRequest);
 
-    return loanRequest;
+    return newLoanRequest;
   }
 }

@@ -21,11 +21,11 @@ export class AdvisorGrantLoan {
 		return null;
 	}
 
-	loanRequest.grant(advisor.id);
-	this.loanRequestRepository.save(loanRequest);
+	const newLoanRequest = loanRequest.grant(advisor);
+	this.loanRequestRepository.save(newLoanRequest);
 
 	// todo create loan entity
 
-    return loanRequest;
+    return newLoanRequest;
   }
 }

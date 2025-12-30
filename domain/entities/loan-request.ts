@@ -23,6 +23,26 @@ export class LoanRequest {
     return new LoanRequest(randomUUID(), client, amount, false, null)
   }
 
+  grant(advisor: User): LoanRequest {
+	return new LoanRequest(
+	  this.identifier,
+	  this.client,
+	  this.amount,
+	  true,
+	  advisor,
+	);
+  }
+
+  reject(advisor: User): LoanRequest {
+	return new LoanRequest(
+	  this.identifier,
+	  this.client,
+	  this.amount,
+	  false,
+	  advisor,
+	)
+  }
+
   public static fromPrimitives(primitives: {
 	identifier: string,
 	client: User,
