@@ -1,11 +1,13 @@
 import { describe, expect, test } from 'vitest';
 import { User } from '@pp-clca-pcm/domain/entities/user';
+import { Loan } from '@pp-clca-pcm/domain/entities/loan';
 import { LoanRequest } from '@pp-clca-pcm/domain/entities/loan-request';
 import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
 import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
 import { AdvisorGrantLoan } from '@pp-clca-pcm/application/usecases/advisor/loans/advisor-grant-loan';
 import { NotAdvisor } from '@pp-clca-pcm/application/errors/not-advisor';
 import { LoanRequestRepository } from '@pp-clca-pcm/application/repositories/request-loan';
+import { LoanRepository } from '@pp-clca-pcm/application/repositories/loan';
 import { Security } from '@pp-clca-pcm/application/services/security';
 
 class InMemoryLoanRequestRepository implements LoanRequestRepository {
@@ -31,6 +33,23 @@ class InMemoryLoanRequestRepository implements LoanRequestRepository {
 
   async getAllByAdvisor(advisor: User): Promise<LoanRequest[]> {
     return this.loanRequests.filter(lr => lr.advisor?.identifier === advisor.identifier);
+  }
+}
+
+class InMemoryLoanRepository implements LoanRepository {
+  public readonly loans: Loan[] = [];
+
+  async save(loan: Loan): Promise<Loan> {
+    this.loans.push(loan);
+    return loan;
+  }
+
+  async all(): Promise<Loan[]> {
+    return [...this.loans];
+  }
+
+  async allByClient(client: User): Promise<Loan[]> {
+    return this.loans.filter(l => l.client.identifier === client.identifier);
   }
 }
 
@@ -71,20 +90,22 @@ describe('Advisor Grant Loan', () => {
 
   const getData = (currentUser: User) => {
     const loanRequestRepository = new InMemoryLoanRequestRepository();
+    const loanRepository = new InMemoryLoanRepository();
     const security = new MockSecurity(currentUser);
-    const useCase = new AdvisorGrantLoan(loanRequestRepository, security);
+    const useCase = new AdvisorGrantLoan(loanRequestRepository, loanRepository, security);
 
     return {
       useCase,
       loanRequestRepository,
+      loanRepository,
       security,
     };
   };
 
-  test('Should grant loan request successfully', async () => {
+  test('Should grant loan request and create loan successfully', async () => {
     const advisor = createTestAdvisor();
     const client = createTestClient();
-    const { useCase, loanRequestRepository } = getData(advisor);
+    const { useCase, loanRequestRepository, loanRepository } = getData(advisor);
 
     const loanRequest = LoanRequest.create(client, 10000) as LoanRequest;
     await loanRequestRepository.save(loanRequest);
@@ -92,11 +113,14 @@ describe('Advisor Grant Loan', () => {
     const result = await useCase.execute(loanRequest.identifier);
 
     expect(result).not.toBeInstanceOf(NotAdvisor);
-    expect(result).toBeInstanceOf(LoanRequest);
+    expect(result).toBeInstanceOf(Loan);
 
-    const grantedLoan = result as LoanRequest;
-    expect(grantedLoan.approved).toBe(true);
-    expect(grantedLoan.advisor?.identifier).toBe(advisor.identifier);
+    const createdLoan = result as Loan;
+    expect(createdLoan.amount).toBe(10000);
+    expect(createdLoan.client.identifier).toBe(client.identifier);
+    expect(createdLoan.advisor.identifier).toBe(advisor.identifier);
+
+    expect(loanRepository.loans).toHaveLength(1);
   });
 
   test('Should return NotAdvisor error when user is not an advisor', async () => {

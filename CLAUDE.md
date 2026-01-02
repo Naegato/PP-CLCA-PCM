@@ -77,9 +77,18 @@ Required environment variables:
 ## Monorepo Structure
 
 npm workspaces with packages:
-- `domain` - Domain entities and value objects
-- `application` - Use cases and interfaces
-- `infrastructure/adapters` - Database/service implementations
-- `infrastructure/tests` - Vitest test suite
+- `domain` (`@pp-clca-pcm/domain`) - Domain entities and value objects
+- `application` (`@pp-clca-pcm/application`) - Use cases and interfaces
+- `infrastructure/adapters` (`@pp-clca-pcm/adapters`) - Database/service implementations
+- `infrastructure/tests` (`@pp-clca-pcm/tests`) - Vitest test suite
+- `infrastructure/apps/api/nest-js` (`@pp-clca-pcm/api-nestjs`) - NestJS API
+- `infrastructure/apps/front/next-js` (`@pp-clca-pcm/front-nextjs`) - Next.js frontend (with server-side API)
 
 Cross-package imports use `@pp-clca-pcm/*` paths.
+
+## Applications (DO NOT MODIFY unless explicitly requested)
+
+The following directories contain deployable applications. **Do not read, modify, or include these in context unless the user explicitly asks.**
+
+- `infrastructure/apps/api/nest-js/` - NestJS backend API (`@pp-clca-pcm/api-nestjs`)
+- `infrastructure/apps/front/next-js/` - Next.js frontend with server-side capabilities (`@pp-clca-pcm/front-nextjs`)

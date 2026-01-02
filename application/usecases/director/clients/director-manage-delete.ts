@@ -1,0 +1,27 @@
+import { NotDirector } from "../../../errors/not-director";
+import { UserNotFoundByIdError } from "../../../errors/user-not-found-by-id";
+import { UserRepository } from "../../../repositories/user";
+import { Security } from "../../../services/security";
+
+export class DirectorManageDelete {
+  public constructor(
+    private readonly userRepository: UserRepository,
+    private readonly security: Security,
+  ) {}
+
+  public async execute(userId: string): Promise<void | NotDirector | UserNotFoundByIdError> {
+    const director = this.security.getCurrentUser();
+
+    if (!director.isDirector()) {
+      return new NotDirector();
+    }
+
+    const user = await this.userRepository.findById(userId);
+
+    if (user instanceof Error) {
+      return user;
+    }
+
+    await this.userRepository.delete(userId);
+  }
+}

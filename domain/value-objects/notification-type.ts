@@ -1,0 +1,5 @@
+export enum NotificationType {
+  LOAN_STATUS = 'LOAN_STATUS',
+  SAVING_RATE_CHANGE = 'SAVING_RATE_CHANGE',
+  GENERAL = 'GENERAL',
+}

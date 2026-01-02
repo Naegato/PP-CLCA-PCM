@@ -11,4 +11,5 @@ export interface UserRepository {
   findByEmail(email: string): Promise<User | UserNotFoundByEmailError>;
   findById(id: string): Promise<User | UserNotFoundByIdError>;
   update(user: User): Promise<User | UserUpdateError>;
+  delete(userId: string): Promise<void>;
 }

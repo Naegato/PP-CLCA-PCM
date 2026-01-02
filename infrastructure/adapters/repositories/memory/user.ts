@@ -56,4 +56,12 @@ export class InMemoryUserRepository implements UserRepository {
     this.inMemoryUsers[index] = user;
     return Promise.resolve(user);
   }
+
+  delete(userId: string): Promise<void> {
+    const index = this.inMemoryUsers.findIndex((u) => u.identifier === userId);
+    if (index !== -1) {
+      this.inMemoryUsers.splice(index, 1);
+    }
+    return Promise.resolve();
+  }
 }

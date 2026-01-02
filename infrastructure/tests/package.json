@@ -12,6 +12,9 @@
   "dependencies": {
     "@types/node": "^24.7.0",
     "dotenv": "^17.2.3",
-    "redis": "^5.10.0"
+    "redis": "^5.10.0",
+    "@pp-clca-pcm/application": "*",
+    "@pp-clca-pcm/domain": "*",
+    "@pp-clca-pcm/adapters": "*"
   }
 }
