@@ -31,6 +31,16 @@ import { AdvisorRegistration } from "@pp-clca-pcm/application/usecases/advisor/a
 
 import { AdvisorGetPendingLoans } from "@pp-clca-pcm/application/usecases/advisor/loans/advisor-get-pending-loans";
 
+import { AdvisorGrantLoan } from '@pp-clca-pcm/application/usecases/advisor/loans/advisor-grant-loan';
+
+import { AdvisorRejectLoan } from '@pp-clca-pcm/application/usecases/advisor/loans/advisor-reject-loan';
+
+import { AdvisorCloseChat } from '@pp-clca-pcm/application/usecases/advisor/messages/advisor-close-chat';
+
+import { AdvisorReplyMessage } from '@pp-clca-pcm/application/usecases/advisor/messages/advisor-reply-message';
+
+import { AdvisorTransferChat } from '@pp-clca-pcm/application/usecases/advisor/messages/advisor-transfer-chat';
+
 import { Argon2PasswordService } from "@pp-clca-pcm/adapters/services/argon2-password";
 import { JwtTokenService } from "@pp-clca-pcm/adapters/services/jwt-token";
 
@@ -50,7 +60,7 @@ let dbConnection: any = null;
 let accountRepository: AccountRepository|null = null;
 let accountTypeRepository: AccountTypeRepository|null = null;
 
-let disccussionRepository: DiscussionRepository|null = null;
+let discussionRepository: DiscussionRepository|null = null;
 let messageRepository: MessageRepository|null = null;
 
 let advisorRepository: AdvisorRepository|null = null;
@@ -67,7 +77,7 @@ if (databaseProvider === "postgresql") {
   accountRepository = new RedisAccountRepository(dbConnection);
   accountTypeRepository = new RedisAccountTypeRepository(dbConnection);
 
-  disccussionRepository = new RedisDiscussionRepository(dbConnection);
+  discussionRepository = new RedisDiscussionRepository(dbConnection);
   messageRepository = new RedisMessageRepository(dbConnection);
 
   advisorRepository = new RedisAdvisorRepository(dbConnection);
@@ -103,6 +113,32 @@ const advisorGetPendingLoans = new AdvisorGetPendingLoans(
   security,
 );
 
+const advisorGrantLoan = new AdvisorGrantLoan(
+  loanRequestRepository,
+  loanRepository,
+  security,
+);
+
+const advisorRejectLoan = new AdvisorRejectLoan(
+  loanRequestRepository,
+  security
+);
+
+const advisorCloseChat = new AdvisorCloseChat(
+  discussionRepository,
+  security,
+);
+
+const advisorReplyMessage = new AdvisorReplyMessage(
+  messageRepository,
+  security,
+);
+
+const advisorTransferChat = new AdvisorTransferChat(
+  security,
+  discussionRepository,
+);
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -134,6 +170,48 @@ app.get("/advisor/pending-loans", async (req, res) => {
 
   res.send(content);
 });
+
+app.post("/advisor/loan/:id/grant", async (req, res) => {
+  const { id } = req.params;
+
+  const content = await advisorGrantLoan.execute(id);
+
+  res.send(content);
+})
+
+app.post("/advisor/loan/:id/reject", async (req, res) => {
+  const { id } = req.params;
+
+  const content = await advisorRejectLoan.execute(id);
+
+  res.send(content);
+})
+
+app.post("/adviosr/discussion/:id/close", async (req, res) => {
+  const { id } = req.params;
+
+  const content = await advisorCloseChat.execute(id);
+
+  res.send(content);
+})
+
+app.post("/adviosr/message/:id/reply", async (req, res) => {
+  const { id } = req.params;
+
+  // const content = await advisorReplyMessage.execute(req.body.text);
+  const content = "todo voir avec les autres";
+
+  res.send(content);
+})
+
+app.post("/adviosr/discussion/:id/transfer", async (req, res) => {
+  const { id } = req.params;
+
+  // const content = await advisorTransferMessage.execute(id, req.body.advisor);
+  const content = "todo voir avec les autres";
+
+  res.send(content);
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
