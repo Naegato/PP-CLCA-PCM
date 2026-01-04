@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 import path from "path";
 import express from 'express';
 
+import { Security } from '@pp-clca-pcm/application/services/security';
+
 import { AccountRepository } from "@pp-clca-pcm/application/repositories/account";
 import { RedisAccountRepository } from '@pp-clca-pcm/adapters/repositories/redis/account/account';
 
@@ -23,8 +25,11 @@ import { RedisTransactionRepository } from '@pp-clca-pcm/adapters/repositories/r
 import { RedisUserRepository } from '@pp-clca-pcm/adapters/repositories/redis/user';
 
 import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
+
 import { AdvisorLogin } from "@pp-clca-pcm/application/usecases/advisor/auth/advisor-login";
 import { AdvisorRegistration } from "@pp-clca-pcm/application/usecases/advisor/auth/advisor-registration";
+
+import { AdvisorGetPendingLoans } from "@pp-clca-pcm/application/usecases/advisor/loans/advisor-get-pending-loans";
 
 import { Argon2PasswordService } from "@pp-clca-pcm/adapters/services/argon2-password";
 import { JwtTokenService } from "@pp-clca-pcm/adapters/services/jwt-token";
@@ -75,6 +80,11 @@ if (databaseProvider === "postgresql") {
 // Init service
 const passwordService = new Argon2PasswordService();
 const tokenService = new JwtTokenService();
+const security = new class implements Security {
+  getCurrentUser() {
+      return 'todo';
+  }
+}
 
 // Init use cases
 
@@ -86,6 +96,11 @@ const advisorLogin = new AdvisorLogin(
 
 const advisorRegistrattion = new AdvisorRegistration(
   userRepository,
+);
+
+const advisorGetPendingLoans = new AdvisorGetPendingLoans(
+  loanRequestRepository,
+  security,
 );
 
 app.use(express.json());
@@ -113,6 +128,13 @@ app.post("/advisor/register", async (req, res) => {
 
   res.send(content);
 });
+
+app.get("/advisor/pending-loans", async (req, res) => {
+  const content = await advisorGetPendingLoans.execute();
+
+  res.send(content);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
