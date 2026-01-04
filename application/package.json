@@ -6,6 +6,6 @@
   "dependencies": {
     "@types/node": "^24.7.0",
     "exhaustive": "^1.1.2",
-    "@pp-clca-pcm/domain": "*"
+    "@pp-clca-pcm/domain": "workspace:*"
   }
 }

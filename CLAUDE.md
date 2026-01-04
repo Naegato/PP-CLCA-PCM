@@ -10,13 +10,13 @@ PP-CLCA-PCM is a TypeScript banking backend application implementing Clean Archi
 
 ```bash
 # Run all tests
-npm test
+pnpm test
 
 # Generate Prisma client (run from infrastructure/adapters)
-cd infrastructure/adapters && npm run p:g
+pnpm --filter @pp-clca-pcm/adapters p:g
 
 # Run database migrations (run from infrastructure/adapters)
-cd infrastructure/adapters && npm run p:m
+pnpm --filter @pp-clca-pcm/adapters p:m
 
 # Start Docker services (PostgreSQL, Redis, MariaDB)
 docker compose up -d
@@ -76,7 +76,7 @@ Required environment variables:
 
 ## Monorepo Structure
 
-npm workspaces with packages:
+pnpm workspaces with packages:
 - `domain` (`@pp-clca-pcm/domain`) - Domain entities and value objects
 - `application` (`@pp-clca-pcm/application`) - Use cases and interfaces
 - `infrastructure/adapters` (`@pp-clca-pcm/adapters`) - Database/service implementations

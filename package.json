@@ -3,14 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "test": "cd infrastructure/tests && npm test"
+    "test": "pnpm --filter @pp-clca-pcm/tests test"
   },
-  "workspaces": [
-    "application",
-    "domain",
-    "infrastructure/adapters",
-    "infrastructure/tests",
-    "infrastructure/apps/api/nest-js",
-    "infrastructure/apps/front/next-js"
-  ]
+  "packageManager": "pnpm@9.15.4"
 }
