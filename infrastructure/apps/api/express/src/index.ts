@@ -24,6 +24,7 @@ import { RedisUserRepository } from '@pp-clca-pcm/adapters/repositories/redis/us
 
 import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
 import { AdvisorLogin } from "@pp-clca-pcm/application/usecases/advisor/auth/advisor-login";
+import { AdvisorRegistration } from "@pp-clca-pcm/application/usecases/advisor/auth/advisor-registration";
 
 import { Argon2PasswordService } from "@pp-clca-pcm/adapters/services/argon2-password";
 import { JwtTokenService } from "@pp-clca-pcm/adapters/services/jwt-token";
@@ -51,7 +52,7 @@ let advisorRepository: AdvisorRepository|null = null;
 let loanRepository: any = null;
 let loanRequestRepository: any = null;
 let transactionRepository: any = null;
-let redisUserRepository: any = null;
+let userRepository: any = null;
 
 if (databaseProvider === "postgresql") {
 } else if (databaseProvider === "redis") {
@@ -83,7 +84,12 @@ const advisorLogin = new AdvisorLogin(
   tokenService
 );
 
+const advisorRegistrattion = new AdvisorRegistration(
+  userRepository,
+);
+
 app.use(express.json());
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
@@ -97,6 +103,16 @@ app.post("/advisor/login", async (req, res) => {
   res.send(content);
 });
 
+app.post("/advisor/register", async (req, res) => {
+  const content = await advisorRegistrattion.execute(
+    req.body.firstname,
+	req.body.lastname,
+	req.body.email,
+	req.body.password,
+  );
+
+  res.send(content);
+});
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
