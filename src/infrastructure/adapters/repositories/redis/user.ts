@@ -1,9 +1,10 @@
-import { RedisClientType } from 'redis';
 import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
 import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
 import { RedisBaseRepository } from './base.js';
+import { RedisBaseRepository } from './base';
+import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-not-found-by-email';
 
 export class RedisUserRepository extends RedisBaseRepository<User> implements UserRepository {
 	readonly prefix = 'user:';
@@ -27,6 +28,17 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 
 	async find(user: User): Promise<User | null> {
 		return this.fetchFromKey(this.key(user)).then(results => results.length ? results[0] : null);
+	}
+
+	async findByEmail(email: string): Promise<User | UserNotFoundByEmailError> {
+		const key = `${this.prefix}${email}`;
+		const results = await this.fetchFromKey(key);
+
+		if (!results.length) {
+			return new UserNotFoundByEmailError();
+		}
+
+		return results[0];
 	}
 
 	async update(user: User): Promise<User | UserUpdateError> {
@@ -108,6 +120,7 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 	}
 
 	protected override key(entity: User): string {
+	private key(entity: User): string {
 		return `${this.prefix}${entity.email.value}`;
 	}
 
