@@ -1,0 +1,1 @@
+{"version":3,"file":"director-get-company.js","sourceRoot":"","sources":["../../errors/director-get-company.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,uBAAwB,SAAQ,KAAK;IAChC,IAAI,GAAG,yBAAyB,CAAC;IAEjD,YAAmB,OAAgB;QACjC,KAAK,CAAC,OAAO,CAAC,CAAC;IACjB,CAAC;CACF"}

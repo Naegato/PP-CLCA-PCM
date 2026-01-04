@@ -17,8 +17,8 @@
 
 import * as runtime from "@prisma/client/runtime/index-browser"
 
-export type * from '../models.js'
-export type * from './prismaNamespace.js'
+export type * from '../models'
+export type * from './prismaNamespace'
 
 export const Decimal = runtime.Decimal
 
@@ -51,7 +51,12 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  AccountType: 'AccountType'
+  User: 'User',
+  ClientProps: 'ClientProps',
+  AdvisorProps: 'AdvisorProps',
+  DirectorProps: 'DirectorProps',
+  AccountType: 'AccountType',
+  Account: 'Account'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -70,6 +75,44 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const UserScalarFieldEnum = {
+  identifier: 'identifier',
+  firstname: 'firstname',
+  lastname: 'lastname',
+  email: 'email',
+  password: 'password',
+  advisorId: 'advisorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const ClientPropsScalarFieldEnum = {
+  identifier: 'identifier',
+  userId: 'userId'
+} as const
+
+export type ClientPropsScalarFieldEnum = (typeof ClientPropsScalarFieldEnum)[keyof typeof ClientPropsScalarFieldEnum]
+
+
+export const AdvisorPropsScalarFieldEnum = {
+  identifier: 'identifier',
+  userId: 'userId'
+} as const
+
+export type AdvisorPropsScalarFieldEnum = (typeof AdvisorPropsScalarFieldEnum)[keyof typeof AdvisorPropsScalarFieldEnum]
+
+
+export const DirectorPropsScalarFieldEnum = {
+  identifier: 'identifier',
+  userId: 'userId'
+} as const
+
+export type DirectorPropsScalarFieldEnum = (typeof DirectorPropsScalarFieldEnum)[keyof typeof DirectorPropsScalarFieldEnum]
+
+
 export const AccountTypeScalarFieldEnum = {
   identifier: 'identifier',
   name: 'name',
@@ -79,6 +122,20 @@ export const AccountTypeScalarFieldEnum = {
 } as const
 
 export type AccountTypeScalarFieldEnum = (typeof AccountTypeScalarFieldEnum)[keyof typeof AccountTypeScalarFieldEnum]
+
+
+export const AccountScalarFieldEnum = {
+  identifier: 'identifier',
+  name: 'name',
+  iban: 'iban',
+  balance: 'balance',
+  ownerId: 'ownerId',
+  typeId: 'typeId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
 
 
 export const SortOrder = {

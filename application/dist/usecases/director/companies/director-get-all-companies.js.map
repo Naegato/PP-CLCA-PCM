@@ -1,0 +1,1 @@
+{"version":3,"file":"director-get-all-companies.js","sourceRoot":"","sources":["../../../../usecases/director/companies/director-get-all-companies.ts"],"names":[],"mappings":"AAGA,MAAM,OAAO,uBAAuB;IACL;IAA7B,YAA6B,iBAAoC;QAApC,sBAAiB,GAAjB,iBAAiB,CAAmB;IAAG,CAAC;IAE9D,KAAK,CAAC,OAAO;QAClB,OAAO,IAAI,CAAC,iBAAiB,CAAC,OAAO,EAAE,CAAC;IAC1C,CAAC;CACF"}

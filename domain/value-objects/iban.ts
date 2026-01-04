@@ -1,6 +1,6 @@
-import { InvalidIbanError } from "../errors/invalid-iban-format";
-import { mod97 } from "../utils/iban";
-import { FRENCH_IBAN_ATTRIBUTES } from "../constants/iban-fr";
+import { InvalidIbanError } from "@pp-clca-pcm/domain/errors/invalid-iban-format";
+import { mod97 } from "@pp-clca-pcm/domain/utils/iban";
+import { FRENCH_IBAN_ATTRIBUTES } from "@pp-clca-pcm/domain/constants/iban-fr";
 
 export class Iban {
   private constructor(

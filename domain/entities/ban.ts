@@ -18,7 +18,7 @@ export class Ban {
     reason?: string,
     end?: Date,
   ) {
-    return new Ban(randomUUID(), user, author, start, reason, end)
+    return new Ban(randomUUID(), user, author, start, reason ?? "", end ?? null)
   }
 
 }

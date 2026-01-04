@@ -1,0 +1,1 @@
+{"version":3,"file":"advisor.d.ts","sourceRoot":"","sources":["../../repositories/advisor.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,EAAE,MAAM,mCAAmC,CAAC;AAEzD,MAAM,WAAW,iBAAiB;IAChC,IAAI,CAAC,OAAO,EAAE,IAAI,GAAG,OAAO,CAAC,IAAI,CAAC,CAAC;CACpC"}

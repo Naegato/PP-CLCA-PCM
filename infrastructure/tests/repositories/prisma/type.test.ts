@@ -12,6 +12,7 @@ describe.skipIf(!isPostgres)('Prisma type Repository', async () => {
 
   beforeAll(() => {
     return prisma.$transaction([
+      prisma.account.deleteMany(),
       prisma.accountType.deleteMany(),
     ]);
   })

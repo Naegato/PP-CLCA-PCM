@@ -1,0 +1,1 @@
+{"version":3,"file":"market.d.ts","sourceRoot":"","sources":["../../services/market.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,oBAAoB,EAAE,MAAM,4BAA4B,CAAC;AAGlE,qBAAa,aAAa;IACZ,OAAO,CAAC,QAAQ,CAAC,oBAAoB;gBAApB,oBAAoB,EAAE,oBAAoB;IAE1D,YAAY,CAAC,OAAO,EAAE,MAAM,GAAG,OAAO,CAAC,MAAM,CAAC;CA4B5D"}

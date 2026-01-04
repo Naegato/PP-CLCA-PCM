@@ -31,4 +31,14 @@ export class AccountType {
       props.description ?? this.description,
     );
   }
+
+  public static createFromRaw(
+    identifier: string,
+    name: AccountTypeName,
+    rate: number,
+    limitByClient?: number | null,
+    description?: string | null,
+  ): AccountType {
+    return new AccountType(identifier, name, rate, limitByClient, description);
+  }
 }

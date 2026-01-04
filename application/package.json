@@ -3,9 +3,24 @@
   "version": "0.1.0",
   "type": "module",
   "name": "@pp-clca-pcm/application",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  },
   "dependencies": {
     "@types/node": "^24.7.0",
     "exhaustive": "^1.1.2",
     "@pp-clca-pcm/domain": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }

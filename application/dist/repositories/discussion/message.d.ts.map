@@ -1,0 +1,1 @@
+{"version":3,"file":"message.d.ts","sourceRoot":"","sources":["../../../repositories/discussion/message.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,iDAAiD,CAAC;AAE1E,MAAM,WAAW,iBAAiB;IAChC,IAAI,CAAC,OAAO,EAAE,OAAO,GAAG,OAAO,CAAC,OAAO,CAAC,CAAC;CAC1C"}

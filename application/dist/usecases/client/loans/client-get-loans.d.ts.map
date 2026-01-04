@@ -1,0 +1,1 @@
+{"version":3,"file":"client-get-loans.d.ts","sourceRoot":"","sources":["../../../../usecases/client/loans/client-get-loans.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,4CAA4C,CAAC;AAC5E,OAAO,EAAE,IAAI,EAAE,MAAM,mCAAmC,CAAC;AAEzD,qBAAa,cAAc;aAEP,cAAc,EAAE,cAAc;gBAA9B,cAAc,EAAE,cAAc;IAGnC,OAAO,CAAC,MAAM,EAAE,IAAI;CAKlC"}

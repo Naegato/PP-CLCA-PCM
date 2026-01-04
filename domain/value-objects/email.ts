@@ -1,4 +1,4 @@
-import { InvalidEmailFormatError } from '../errors/invalid-email-format';
+import { InvalidEmailFormatError } from '@pp-clca-pcm/domain/errors/invalid-email-format';
 
 export class Email {
   private constructor (

@@ -12,7 +12,7 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "./prismaNamespace.js"
+import type * as Prisma from "./prismaNamespace"
 
 
 const config: runtime.GetPrismaClientConfig = {
@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../repositories/prisma/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel AccountType {\n  identifier    String  @id @default(uuid())\n  name          String  @unique\n  rate          Float\n  limitByClient Int?\n  description   String?\n\n  @@map(\"account_types\")\n}\n",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../repositories/prisma/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  identifier String @id @default(uuid())\n  firstname  String\n  lastname   String\n  email      String @unique\n  password   String\n\n  clientProps   ClientProps?\n  advisorProps  AdvisorProps?\n  directorProps DirectorProps?\n\n  accounts  Account[]\n  advisor   User?     @relation(\"ClientAdvisor\", fields: [advisorId], references: [identifier])\n  advisorId String?\n  clients   User[]    @relation(\"ClientAdvisor\")\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"users\")\n}\n\nmodel ClientProps {\n  identifier String @id @default(uuid())\n  user       User   @relation(fields: [userId], references: [identifier], onDelete: Cascade)\n  userId     String @unique\n\n  @@map(\"client_props\")\n}\n\nmodel AdvisorProps {\n  identifier String @id @default(uuid())\n  user       User   @relation(fields: [userId], references: [identifier], onDelete: Cascade)\n  userId     String @unique\n\n  @@map(\"advisor_props\")\n}\n\nmodel DirectorProps {\n  identifier String @id @default(uuid())\n  user       User   @relation(fields: [userId], references: [identifier], onDelete: Cascade)\n  userId     String @unique\n\n  @@map(\"director_props\")\n}\n\nmodel AccountType {\n  identifier    String  @id @default(uuid())\n  name          String  @unique\n  rate          Float\n  limitByClient Int?\n  description   String?\n\n  accounts Account[]\n\n  @@map(\"account_types\")\n}\n\nmodel Account {\n  identifier  String      @id @default(uuid())\n  name        String\n  iban        String      @unique\n  balance     Float       @default(0)\n  owner       User        @relation(fields: [ownerId], references: [identifier])\n  ownerId     String\n  accountType AccountType @relation(fields: [typeId], references: [identifier])\n  typeId      String\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"accounts\")\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"AccountType\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"limitByClient\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"account_types\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"firstname\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastname\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"clientProps\",\"kind\":\"object\",\"type\":\"ClientProps\",\"relationName\":\"ClientPropsToUser\"},{\"name\":\"advisorProps\",\"kind\":\"object\",\"type\":\"AdvisorProps\",\"relationName\":\"AdvisorPropsToUser\"},{\"name\":\"directorProps\",\"kind\":\"object\",\"type\":\"DirectorProps\",\"relationName\":\"DirectorPropsToUser\"},{\"name\":\"accounts\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"AccountToUser\"},{\"name\":\"advisor\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ClientAdvisor\"},{\"name\":\"advisorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"clients\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ClientAdvisor\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"users\"},\"ClientProps\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ClientPropsToUser\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"client_props\"},\"AdvisorProps\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AdvisorPropsToUser\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"advisor_props\"},\"DirectorProps\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"DirectorPropsToUser\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"director_props\"},\"AccountType\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"limitByClient\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accounts\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"AccountToAccountType\"}],\"dbName\":\"account_types\"},\"Account\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"iban\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"balance\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"owner\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AccountToUser\"},{\"name\":\"ownerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accountType\",\"kind\":\"object\",\"type\":\"AccountType\",\"relationName\":\"AccountToAccountType\"},{\"name\":\"typeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"accounts\"}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -58,8 +58,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more AccountTypes
-   * const accountTypes = await prisma.accountType.findMany()
+   * // Fetch zero or more Users
+   * const users = await prisma.user.findMany()
    * ```
    * 
    * Read more in our [docs](https://pris.ly/d/client).
@@ -80,8 +80,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more AccountTypes
- * const accountTypes = await prisma.accountType.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -175,6 +175,46 @@ export interface PrismaClient<
   }>>
 
       /**
+   * `prisma.user`: Exposes CRUD operations for the **User** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Users
+    * const users = await prisma.user.findMany()
+    * ```
+    */
+  get user(): Prisma.UserDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.clientProps`: Exposes CRUD operations for the **ClientProps** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ClientProps
+    * const clientProps = await prisma.clientProps.findMany()
+    * ```
+    */
+  get clientProps(): Prisma.ClientPropsDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.advisorProps`: Exposes CRUD operations for the **AdvisorProps** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AdvisorProps
+    * const advisorProps = await prisma.advisorProps.findMany()
+    * ```
+    */
+  get advisorProps(): Prisma.AdvisorPropsDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.directorProps`: Exposes CRUD operations for the **DirectorProps** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DirectorProps
+    * const directorProps = await prisma.directorProps.findMany()
+    * ```
+    */
+  get directorProps(): Prisma.DirectorPropsDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
    * `prisma.accountType`: Exposes CRUD operations for the **AccountType** model.
     * Example usage:
     * ```ts
@@ -183,6 +223,16 @@ export interface PrismaClient<
     * ```
     */
   get accountType(): Prisma.AccountTypeDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.account`: Exposes CRUD operations for the **Account** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Accounts
+    * const accounts = await prisma.account.findMany()
+    * ```
+    */
+  get account(): Prisma.AccountDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {

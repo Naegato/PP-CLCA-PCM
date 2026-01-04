@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { Company } from './company';
+import { Company } from '@pp-clca-pcm/domain/entities/company';
 
 export type StockSymbol = string;
 

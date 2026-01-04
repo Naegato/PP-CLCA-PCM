@@ -1,0 +1,1 @@
+{"version":3,"file":"account-delete.js","sourceRoot":"","sources":["../../errors/account-delete.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,kBAAmB,SAAQ,KAAK;IAC3B,IAAI,GAAG,oBAAoB,CAAC;IAE5C,YAAmB,OAAgB;QACjC,KAAK,CAAC,OAAO,CAAC,CAAC;IACjB,CAAC;CACF"}

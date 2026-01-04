@@ -26,7 +26,7 @@ export class DirectorLogin {
       return new LoginInvalidCredentialsError();
     }
 
-    const token = await this.tokenService.generateToken(user.identifier);
+    const token = await this.tokenService.generateToken(user.identifier!);
 
     if (token instanceof Error) {
       return token;

@@ -1,5 +1,5 @@
-import { Discussion } from "../../../../domain/entities/discussion/discussion";
-import { User } from "../../../../domain/entities/user";
+import { Discussion } from "@pp-clca-pcm/domain/entities/discussion/discussion";
+import { User } from "@pp-clca-pcm/domain/entities/user";
 import { NotAdvisor } from "../../../errors/not-advisor";
 import { DiscussionRepository } from "../../../repositories/discussion/discussion";
 import { Security } from "../../../services/security";

@@ -13,6 +13,52 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  identifier String @id @default(uuid())
+  firstname  String
+  lastname   String
+  email      String @unique
+  password   String
+
+  clientProps   ClientProps?
+  advisorProps  AdvisorProps?
+  directorProps DirectorProps?
+
+  accounts Account[]
+  advisor  User?     @relation("ClientAdvisor", fields: [advisorId], references: [identifier])
+  advisorId String?
+  clients  User[]    @relation("ClientAdvisor")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model ClientProps {
+  identifier String @id @default(uuid())
+  user       User   @relation(fields: [userId], references: [identifier], onDelete: Cascade)
+  userId     String @unique
+
+  @@map("client_props")
+}
+
+model AdvisorProps {
+  identifier String @id @default(uuid())
+  user       User   @relation(fields: [userId], references: [identifier], onDelete: Cascade)
+  userId     String @unique
+
+  @@map("advisor_props")
+}
+
+model DirectorProps {
+  identifier String @id @default(uuid())
+  user       User   @relation(fields: [userId], references: [identifier], onDelete: Cascade)
+  userId     String @unique
+
+  @@map("director_props")
+}
+
 model AccountType {
   identifier    String  @id @default(uuid())
   name          String  @unique
@@ -20,5 +66,23 @@ model AccountType {
   limitByClient Int?
   description   String?
 
+  accounts Account[]
+
   @@map("account_types")
+}
+
+model Account {
+  identifier  String      @id @default(uuid())
+  name        String
+  iban        String      @unique
+  balance     Float       @default(0)
+  owner       User        @relation(fields: [ownerId], references: [identifier])
+  ownerId     String
+  accountType AccountType @relation(fields: [typeId], references: [identifier])
+  typeId      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("accounts")
 }

@@ -1,5 +1,6 @@
 import { AccountTypeRepository } from '@pp-clca-pcm/application/repositories/type';
 import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
+import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application/errors/account-type-does-not-exist';
 import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
 import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
 
@@ -9,7 +10,7 @@ export class PrismaAccountTypeRepository implements AccountTypeRepository {
 
   async all(): Promise<AccountType[]> {
     const types = await this.db.accountType.findMany();
-    return types.map(typeRow => new AccountType(
+    return types.map(typeRow => AccountType.createFromRaw(
       typeRow.identifier,
       typeRow.name as AccountTypeName,
       typeRow.rate,
@@ -24,7 +25,7 @@ export class PrismaAccountTypeRepository implements AccountTypeRepository {
     });
 
     if (existingType) {
-      return new AccountType(
+      return AccountType.createFromRaw(
         existingType.identifier,
         existingType.name as AccountTypeName,
         existingType.rate,
@@ -58,7 +59,7 @@ export class PrismaAccountTypeRepository implements AccountTypeRepository {
       },
     });
 
-    return new AccountType(
+    return AccountType.createFromRaw(
       savedType.identifier,
       savedType.name as AccountTypeName,
       savedType.rate,
@@ -67,4 +68,35 @@ export class PrismaAccountTypeRepository implements AccountTypeRepository {
     );
   }
 
+  async update(accountType: AccountType): Promise<AccountType | AccountTypeDoesNotExistError> {
+    if (!accountType.identifier) {
+      return new AccountTypeDoesNotExistError(accountType.name);
+    }
+
+    const existingType = await this.db.accountType.findUnique({
+      where: { identifier: accountType.identifier },
+    });
+
+    if (!existingType) {
+      return new AccountTypeDoesNotExistError(accountType.name);
+    }
+
+    const updatedType = await this.db.accountType.update({
+      where: { identifier: accountType.identifier },
+      data: {
+        name: accountType.name,
+        rate: accountType.rate,
+        limitByClient: accountType.limitByClient,
+        description: accountType.description,
+      },
+    });
+
+    return AccountType.createFromRaw(
+      updatedType.identifier,
+      updatedType.name as AccountTypeName,
+      updatedType.rate,
+      updatedType.limitByClient,
+      updatedType.description,
+    );
+  }
 }

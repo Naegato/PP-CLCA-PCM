@@ -1,9 +1,9 @@
-import { Transaction } from '../transaction';
-import { AccountType } from './type';
+import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
+import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
 import { randomUUID } from 'node:crypto';
-import { User } from '../user';
-import { Iban } from '../../value-objects/iban';
-import { Portfolio } from '../portfolio/portfolio';
+import { User } from '@pp-clca-pcm/domain/entities/user';
+import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
+import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
 
 export class Account {
   private constructor (
@@ -25,6 +25,19 @@ export class Account {
     portfolio?: Portfolio,
   ): Account {
     return new Account(randomUUID(), owner, type, [], [], iban, name ?? randomUUID(), portfolio);
+  }
+
+  public static createFromRaw(
+    identifier: string,
+    owner: User,
+    type: AccountType,
+    iban: Iban,
+    name?: string,
+    emittedTransactions: Transaction[] = [],
+    receivedTransactions: Transaction[] = [],
+    portfolio?: Portfolio,
+  ): Account {
+    return new Account(identifier, owner, type, emittedTransactions, receivedTransactions, iban, name, portfolio);
   }
 
   public update(props: Partial<Omit<Account, 'identifier' | 'owner' | 'iban' | 'portfolio'>>): Account {

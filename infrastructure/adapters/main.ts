@@ -1,5 +1,5 @@
 
-import { GenerateDailyInterest } from '../../application/usecases/engine/generate-daily-interest';
+import { GenerateDailyInterest } from '@pp-clca-pcm/application/usecases/engine/generate-daily-interest';
 import { DailyInterestCron } from './cron/DailyInterestCron';
 import { InMemoryAccountRepository } from './repositories/memory/account/account';
 import { InMemoryUserRepository } from './repositories/memory/user';

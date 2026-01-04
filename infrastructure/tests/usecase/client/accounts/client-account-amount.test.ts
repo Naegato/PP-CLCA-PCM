@@ -155,7 +155,9 @@ describe('Client Get Balance Account', () => {
   test('Should throw ClientGetBalanceAccountError when account not found', async () => {
     const { useCase } = getData();
 
-    await expect(useCase.execute('non-existent-id')).rejects.toThrow(ClientGetBalanceAccountError);
+    const data = await useCase.execute('non-existent-id');
+
+    expect(data).toBeInstanceOf(ClientGetBalanceAccountError);
   });
 
   test('Should return zero balance when received equals emitted', async () => {

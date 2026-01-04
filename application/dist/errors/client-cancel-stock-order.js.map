@@ -1,0 +1,1 @@
+{"version":3,"file":"client-cancel-stock-order.js","sourceRoot":"","sources":["../../errors/client-cancel-stock-order.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,2BAA4B,SAAQ,KAAK;IACpD,YAAY,OAAe;QACzB,KAAK,CAAC,OAAO,CAAC,CAAC;QACf,IAAI,CAAC,IAAI,GAAG,6BAA6B,CAAC;IAC5C,CAAC;CACF"}

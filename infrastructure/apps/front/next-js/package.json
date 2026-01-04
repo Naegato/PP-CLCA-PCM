@@ -2,6 +2,7 @@
   "name": "@pp-clca-pcm/front-nextjs",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,12 +10,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@pp-clca-pcm/domain": "workspace:*",
+    "@pp-clca-pcm/application": "workspace:*",
     "next": "16.1.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "@pp-clca-pcm/application": "workspace:*",
-    "@pp-clca-pcm/domain": "workspace:*",
-    "@pp-clca-pcm/adapters": "workspace:*"
+    "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -1,0 +1,1 @@
+{"version":3,"file":"client-get-balance-account.d.ts","sourceRoot":"","sources":["../../../../usecases/client/accounts/client-get-balance-account.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,iBAAiB,EAAE,MAAM,+CAA+C,CAAC;AAClF,OAAO,EAAE,4BAA4B,EAAE,MAAM,4DAA4D,CAAC;AAE1G,qBAAa,uBAAuB;IACf,OAAO,CAAC,QAAQ,CAAC,iBAAiB;gBAAjB,iBAAiB,EAAE,iBAAiB;IAE3D,OAAO,CAAC,SAAS,EAAE,MAAM;CAWvC"}

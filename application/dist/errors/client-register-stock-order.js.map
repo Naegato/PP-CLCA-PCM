@@ -1,0 +1,1 @@
+{"version":3,"file":"client-register-stock-order.js","sourceRoot":"","sources":["../../errors/client-register-stock-order.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,6BAA8B,SAAQ,KAAK;IACtC,IAAI,GAAG,+BAA+B,CAAC;IAEvD,YAAmB,OAAgB;QACjC,KAAK,CAAC,OAAO,CAAC,CAAC;IACjB,CAAC;CACF"}

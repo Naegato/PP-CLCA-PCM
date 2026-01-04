@@ -1,8 +1,9 @@
-.PHONY: up up-nextjs up-nestjs db clear install prisma-generate prisma-migrate up-db tests help
+.PHONY: up up-nextjs up-nestjs db clear install build prisma-generate prisma-migrate up-db tests help
 
 help:
 	@echo "Available targets:"
 	@echo "  make install         - Install all dependencies with pnpm"
+	@echo "  make build           - Build all packages (domain, application, adapters)"
 	@echo "  make db              - Start Docker containers (PostgreSQL, MariaDB, Redis)"
 	@echo "  make prisma-generate - Generate Prisma client"
 	@echo "  make prisma-migrate  - Run Prisma migrations"
@@ -23,6 +24,9 @@ help:
 
 install:
 	pnpm install
+
+build:
+	pnpm run build
 
 db: .env
 	docker compose up -d

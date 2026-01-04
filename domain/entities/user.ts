@@ -1,9 +1,9 @@
-import { ClientProps } from '../value-objects/user/client';
-import { AdvisorProps } from '../value-objects/user/advisor';
-import { DirectorProps } from '../value-objects/user/director';
+import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
+import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
+import { DirectorProps } from '@pp-clca-pcm/domain/value-objects/user/director';
+import { Password } from '@pp-clca-pcm/domain/value-objects/password';
+import { Email } from '@pp-clca-pcm/domain/value-objects/email';
 import { randomUUID } from 'node:crypto';
-import { Password } from '../value-objects/password';
-import { Email } from '../value-objects/email';
 
 export class User {
 	private constructor(

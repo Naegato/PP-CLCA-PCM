@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "build": "pnpm --filter @pp-clca-pcm/domain build && pnpm --filter @pp-clca-pcm/application build && pnpm --filter @pp-clca-pcm/adapters build",
+    "build:domain": "pnpm --filter @pp-clca-pcm/domain build",
+    "build:application": "pnpm --filter @pp-clca-pcm/application build",
+    "build:adapters": "pnpm --filter @pp-clca-pcm/adapters build",
     "test": "pnpm --filter @pp-clca-pcm/tests test"
   },
   "packageManager": "pnpm@9.15.4"

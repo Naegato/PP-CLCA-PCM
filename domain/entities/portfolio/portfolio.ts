@@ -1,8 +1,8 @@
-import { PortfolioItem } from './portfolio-item';
-import { Stock } from '../stock';
-import { PortfolioError } from '../../errors/portfolio';
+import { PortfolioItem } from '@pp-clca-pcm/domain/entities/portfolio/portfolio-item';
+import { Stock } from '@pp-clca-pcm/domain/entities/stock';
+import { PortfolioError } from '@pp-clca-pcm/domain/errors/portfolio';
 import { randomUUID } from 'node:crypto';
-import { Account } from '../accounts/account';
+import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 
 export class Portfolio {
   private readonly items: Map<string, PortfolioItem>;

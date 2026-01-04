@@ -1,5 +1,5 @@
-import { User } from "./user";
-import { Transaction } from "./transaction";
+import { User } from "@pp-clca-pcm/domain/entities/user";
+import { Transaction } from "@pp-clca-pcm/domain/entities/transaction";
 import { randomUUID } from "node:crypto";
 
 export class Loan {

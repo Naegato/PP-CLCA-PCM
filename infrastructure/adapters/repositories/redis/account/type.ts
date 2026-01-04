@@ -1,8 +1,8 @@
-import { RedisClientType } from 'redis';
 import { randomUUID } from 'crypto';
 import { AccountTypeRepository } from "@pp-clca-pcm/application/repositories/type";
 import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
 import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
+import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application/errors/account-type-does-not-exist';
 import { RedisBaseRepository } from '../base';
 
 export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType> implements AccountTypeRepository {
@@ -39,7 +39,7 @@ export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType>
 		const existing = await this.db.get(key);
 		if (existing) {
 			const data = JSON.parse(existing) as AccountType;
-			this.instanticate(data);
+			return this.instanticate(data);
 		}
 
 		const saved = await this.save(accountType);
@@ -57,9 +57,25 @@ export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType>
 		return saved;
 	}
 
+	async update(accountType: AccountType): Promise<AccountType | AccountTypeDoesNotExistError> {
+		if (!accountType.identifier) {
+			return new AccountTypeDoesNotExistError(accountType.name);
+		}
+
+		const key = this.key(accountType);
+		const existing = await this.db.get(key);
+
+		if (!existing) {
+			return new AccountTypeDoesNotExistError(accountType.name);
+		}
+
+		await this.db.set(key, JSON.stringify(accountType));
+		return accountType;
+	}
+
 	protected instanticate(entity: AccountType): AccountType {
-		return new AccountType(
-			entity.identifier,
+		return AccountType.createFromRaw(
+			entity.identifier!,
 			entity.name,
 			entity.rate,
 			entity.limitByClient,

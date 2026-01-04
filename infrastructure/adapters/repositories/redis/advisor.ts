@@ -8,12 +8,25 @@ export class RedisAdvisorRepository extends RedisBaseRepository<User> implements
 	async save(advisor: User): Promise<User> {
 		const key = this.key(advisor);
 
-		const result = await this.db.set(
+		await this.db.set(
 			key,
 			JSON.stringify(advisor),
 			{ NX: true }
 		);
 
 		return advisor;
+	}
+
+	protected instanticate(entity: User): User {
+		return User.fromPrimitives({
+			identifier: entity.identifier!,
+			firstname: entity.firstname,
+			lastname: entity.lastname,
+			email: entity.email.value,
+			password: entity.password.value,
+			clientProps: entity.clientProps,
+			advisorProps: entity.advisorProps,
+			directorProps: entity.directorProps,
+		});
 	}
 }

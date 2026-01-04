@@ -1,4 +1,3 @@
-import { RedisClientType } from 'redis';
 import { TransactionRepository } from '@pp-clca-pcm/application/repositories/transaction';
 import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
 import { RedisBaseRepository } from './base';
@@ -21,15 +20,15 @@ export class RedisTransactionRepository extends RedisBaseRepository<Transaction>
 	async delete(transaction: Transaction): Promise<Transaction> {
 		const key = this.key(transaction);
 
-		const result = await this.db.del(key);
+		await this.db.del(key);
 
 		return transaction;
 	}
 
 	protected instanticate(entity: Transaction): Transaction {
 		return Transaction.fromPrimitives({
-			identifier: entity.identifier,
-			accountId: entity.accountId,
+			identifier: entity.identifier!,
+			identified: entity.identified,
 			amount: entity.amount,
 			date: entity.date,
 			description: entity.description,

@@ -1,4 +1,4 @@
-import { Account } from '../../entities/accounts/account';
+import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 
 export class ClientProps {
   public constructor(

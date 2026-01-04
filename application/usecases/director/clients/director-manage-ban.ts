@@ -29,7 +29,7 @@ export class DirectorManageBan {
       return user;
     }
 
-    const ban = Ban.create(user, director, new Date(), reason, endDate ?? null);
+    const ban = Ban.create(user, director, new Date(), reason, endDate);
     return await this.banRepository.save(ban);
   }
 }

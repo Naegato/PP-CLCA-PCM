@@ -1,6 +1,6 @@
-import { Account } from './accounts/account';
+import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { randomUUID } from "node:crypto";
-import { Loan } from './loan';
+import { Loan } from '@pp-clca-pcm/domain/entities/loan';
 
 export class Transaction {
 	private constructor(

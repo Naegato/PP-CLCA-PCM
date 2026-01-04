@@ -1,0 +1,1 @@
+{"version":3,"file":"client-get-loans.js","sourceRoot":"","sources":["../../../../usecases/client/loans/client-get-loans.ts"],"names":[],"mappings":"AAGA,MAAM,OAAO,cAAc;IAEP;IADlB,YACkB,cAA8B;QAA9B,mBAAc,GAAd,cAAc,CAAgB;IAC7C,CAAC;IAEG,KAAK,CAAC,OAAO,CAAC,MAAY;QAC/B,MAAM,KAAK,GAAG,MAAM,IAAI,CAAC,cAAc,CAAC,WAAW,CAAC,MAAM,CAAC,CAAC;QAE5D,OAAO,KAAK,CAAC;IACf,CAAC;CACF"}

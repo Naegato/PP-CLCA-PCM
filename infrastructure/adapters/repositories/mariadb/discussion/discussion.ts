@@ -3,23 +3,34 @@ import { Database } from '@pp-clca-pcm/adapters/repositories/mariadb/database';
 import { DiscussionRepository } from '@pp-clca-pcm/application/repositories/discussion/discussion';
 
 export class MariadbDiscussionRepository implements DiscussionRepository {
-public constructor(
-		private connection: Database,
-	) {
-	}
+  public constructor(
+    private connection: Database,
+  ) {
+  }
 
-	save(discussion: Discussion): Promise<Discussion> {
-		this.connection.sql(
-			'INSERT INTO discussion value (?, ?, ?)',
-			[discussion.content, discussion.advisor.id, discussion.user.id]
-		);
+  async save(discussion: Discussion): Promise<Discussion> {
+    await this.connection.sql(
+      'INSERT INTO discussion value (?, ?, ?)',
+      [discussion.content, discussion.advisor?.identifier, discussion.user?.identifier]
+    );
 
-		return Promise.resolve(discussion);
-	}
+    return discussion;
+  }
 
-	get(id: string): Promise<Discussion | null> {
-		const [ res ] = this.connection.sql('SELECT * FROM discussion where id = ?', [id]);
+  async get(id: string): Promise<Discussion | null> {
+    const rows = await this.connection.sql('SELECT * FROM discussion where id = ?', [id]);
 
-		return Promise.resolve(new Discussion(...res))
-	}
+    if (rows.length === 0) {
+      return null;
+    }
+
+    const row = rows[0];
+    return new Discussion(
+      row.id?.toString() ?? null,
+      null,
+      null,
+      null,
+      row.status
+    );
+  }
 }

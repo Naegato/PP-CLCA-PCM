@@ -1,0 +1,1 @@
+{"version":3,"file":"iban-fr.js","sourceRoot":"","sources":["../../constants/iban-fr.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,MAAM,sBAAsB,GAW/B;IACF,YAAY,EAAE,IAAI;IAClB,mBAAmB,EAAE,CAAC;IACtB,mBAAmB,EAAE,CAAC;IACtB,gBAAgB,EAAE,CAAC;IACnB,kBAAkB,EAAE,CAAC;IACrB,qBAAqB,EAAE,EAAE;IACzB,cAAc,EAAE,CAAC;IACjB,iBAAiB,EAAE,EAAE;IACrB,kBAAkB,EAAE,CAAC;IACrB,WAAW,EAAE,EAAE;CAChB,CAAC"}

@@ -1,6 +1,6 @@
-import { RedisClientType } from 'redis';
 import { LoanRequest } from '@pp-clca-pcm/domain/entities/loan-request';
 import { LoanRequestRepository } from '@pp-clca-pcm/application/repositories/request-loan';
+import { User } from '@pp-clca-pcm/domain/entities/user';
 import { RedisBaseRepository } from './base';
 
 export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest> implements LoanRequestRepository {
@@ -18,7 +18,8 @@ export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest>
 		return loan;
 	}
 
-	async getAllByAdvisor(advisorId: string): Promise<LoanRequest[]> {
+	async getAllByAdvisor(advisor: User): Promise<LoanRequest[]> {
+		const advisorId = advisor.identifier ?? 'null';
 		return this.fetchFromKey(`${this.prefix}${advisorId}:*`);
 	}
 
@@ -34,7 +35,7 @@ export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest>
 
 	protected instanticate(entity: LoanRequest): LoanRequest {
 		return LoanRequest.fromPrimitives({
-			identifier: entity.identifier,
+			identifier: entity.identifier!,
 			client: entity.client,
 			amount: entity.amount,
 			approved: entity.approved,

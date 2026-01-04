@@ -8,5 +8,10 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/AccountType.js'
-export type * from './commonInputTypes.js'
+export type * from './models/User'
+export type * from './models/ClientProps'
+export type * from './models/AdvisorProps'
+export type * from './models/DirectorProps'
+export type * from './models/AccountType'
+export type * from './models/Account'
+export type * from './commonInputTypes'

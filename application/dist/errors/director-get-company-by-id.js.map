@@ -1,0 +1,1 @@
+{"version":3,"file":"director-get-company-by-id.js","sourceRoot":"","sources":["../../errors/director-get-company-by-id.ts"],"names":[],"mappings":"AAAA,MAAM,OAAO,2BAA4B,SAAQ,KAAK;IACpC,IAAI,GAAG,6BAA6B,CAAC;IAErD,YAAmB,OAAgB;QACjC,KAAK,CAAC,OAAO,CAAC,CAAC;IACjB,CAAC;CACF"}

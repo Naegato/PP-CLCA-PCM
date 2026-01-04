@@ -1,5 +1,5 @@
-import { Stock } from '../stock';
-import { PortfolioError } from '../../errors/portfolio';
+import { Stock } from '@pp-clca-pcm/domain/entities/stock';
+import { PortfolioError } from '@pp-clca-pcm/domain/errors/portfolio';
 import { randomUUID } from 'node:crypto';
 
 export class PortfolioItem {

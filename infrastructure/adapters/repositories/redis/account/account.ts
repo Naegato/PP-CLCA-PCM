@@ -1,22 +1,22 @@
 import { AccountDeleteError } from "@pp-clca-pcm/application/errors/account-delete";
 import { AccountRepository } from "@pp-clca-pcm/application/repositories/account";
 import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
+import { User } from "@pp-clca-pcm/domain/entities/user";
 import { randomUUID } from "crypto";
-import { RedisClientType } from "redis";
 import { RedisBaseRepository } from "../base";
 
 export class RedisAccountRepository extends RedisBaseRepository<Account> implements AccountRepository {
 	readonly prefix = 'account:';
 
 	public async save(account: Account): Promise<Account> {
-		const realAccount = new Account(
+		const realAccount = Account.createFromRaw(
 			randomUUID(),
 			account.owner,
 			account.type,
-			account.emittedTransactions,
-			account.receivedTransactions,
 			account.iban,
 			account.name,
+			account.emittedTransactions,
+			account.receivedTransactions,
 		);
 
 		const key = this.key(realAccount);
@@ -57,15 +57,32 @@ export class RedisAccountRepository extends RedisBaseRepository<Account> impleme
 		return `todo-i-guess`;
 	}
 
+	public async findByOwner(owner: User): Promise<Account[] | null> {
+		const allAccounts = await this.all();
+		const ownerAccounts = allAccounts.filter(
+			account => account.owner.identifier === owner.identifier
+		);
+		return ownerAccounts.length > 0 ? ownerAccounts : null;
+	}
+
+	public async findById(id: string): Promise<Account | null> {
+		const key = this.key(id);
+		const value = await this.db.get(key);
+		if (!value) return null;
+
+		const data = JSON.parse(value);
+		return this.instanticate(data);
+	}
+
 	protected instanticate(entity: Account): Account {
-		return new Account(
-			entity.identifier,
+		return Account.createFromRaw(
+			entity.identifier!,
 			entity.owner,
 			entity.type,
-			entity.emittedTransactions,
-			entity.receivedTransactions,
 			entity.iban,
 			entity.name,
+			entity.emittedTransactions,
+			entity.receivedTransactions,
 		);
 	}
 }

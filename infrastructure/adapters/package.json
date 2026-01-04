@@ -3,7 +3,17 @@
   "version": "0.1.0",
   "type": "module",
   "name": "@pp-clca-pcm/adapters",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js"
+    }
+  },
   "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
     "p:g": "prisma generate",
     "p:m": "prisma migrate dev",
     "p:m:r": "prisma migrate reset",

@@ -1,0 +1,1 @@
+{"version":3,"file":"client-simulate-loan.js","sourceRoot":"","sources":["../../../../usecases/client/loans/client-simulate-loan.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,aAAa,EAAE,MAAM,6CAA6C,CAAC;AAG5E,MAAM,OAAO,kBAAkB;IACtB,KAAK,CAAC,OAAO,CAClB,SAAiB,EACjB,YAAoB,EACpB,cAAsB;QAEtB,OAAO,aAAa,CAAC,MAAM,CAAC,SAAS,EAAE,YAAY,EAAE,cAAc,CAAC,CAAC;IACvE,CAAC;CACF"}

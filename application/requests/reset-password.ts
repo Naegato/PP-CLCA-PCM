@@ -1,4 +1,6 @@
 export class ResetPasswordRequest {
-  public readonly token: string;
-  public readonly newPassword: string;
+  public constructor(
+    public readonly token: string,
+    public readonly newPassword: string,
+  ) {}
 }
