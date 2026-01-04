@@ -50,6 +50,15 @@ describe.skipIf(!isRedis)('Redis user repository adapter', () => {
 		expect(findedEntity).toEqual(entity);
 	});
 
+	test('findByEmail', async () => {
+		await client.flushDb();
+		const entity = createUser('find@test.com');
+		const savedEntity = await repository.save(entity);
+
+		const findedEntity = await repository.findByEmail('find@test.com');
+		expect(findedEntity).toEqual(entity);
+	});
+
 	test('update', async () => {
 		const entity = createUser('update@test.com');
 		const savedEntity = await repository.save(entity);

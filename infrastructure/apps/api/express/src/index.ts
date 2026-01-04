@@ -23,6 +23,10 @@ import { RedisTransactionRepository } from '@pp-clca-pcm/adapters/repositories/r
 import { RedisUserRepository } from '@pp-clca-pcm/adapters/repositories/redis/user';
 
 import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
+import { AdvisorLogin } from "@pp-clca-pcm/application/usecases/advisor/auth/advisor-login";
+
+import { Argon2PasswordService } from "@pp-clca-pcm/adapters/services/argon2-password";
+import { JwtTokenService } from "@pp-clca-pcm/adapters/services/jwt-token";
 
 dotenv.config({
   path: path.resolve(__dirname, "../../../../../.env"),
@@ -33,7 +37,6 @@ const port = 3000
 
 // Init repositories
 
-connectRedis();
 const databaseProvider = process.env.DB_PROVIDER;
 
 let dbConnection: any = null;
@@ -48,28 +51,51 @@ let advisorRepository: AdvisorRepository|null = null;
 let loanRepository: any = null;
 let loanRequestRepository: any = null;
 let transactionRepository: any = null;
-let RedisUserRepository: any = null;
+let redisUserRepository: any = null;
 
-if (databaseProvider === 'postgresql') {
-} else if (databaseProvider === 'redis') {
-	dbConnection = getRedisClient;
+if (databaseProvider === "postgresql") {
+} else if (databaseProvider === "redis") {
+  connectRedis();
+  dbConnection = getRedisClient();
 
-	accountRepository = new RedisAccountRepository(dbConnection)
-	accountTypeRepository = new RedisAccountTypeRepository(dbConnection);
+  accountRepository = new RedisAccountRepository(dbConnection);
+  accountTypeRepository = new RedisAccountTypeRepository(dbConnection);
 
-	disccussionRepository = new RedisDiscussionRepository(dbConnection);
-	messageRepository = new RedisMessageRepository(dbConnection);
+  disccussionRepository = new RedisDiscussionRepository(dbConnection);
+  messageRepository = new RedisMessageRepository(dbConnection);
 
-	advisorRepository = new RedisAdvisorRepository(dbConnection);
-	loanRepository = new RedisLoanRepository(dbConnection);
-	loanRequestRepository = new RedisLoanRequestRepository(dbConnection);
-	transactionRepository = new RedisTransactionRepository(dbConnection);
-	userRepository = new RedisUserRepository(dbConnection);
+  advisorRepository = new RedisAdvisorRepository(dbConnection);
+  loanRepository = new RedisLoanRepository(dbConnection);
+  loanRequestRepository = new RedisLoanRequestRepository(dbConnection);
+  transactionRepository = new RedisTransactionRepository(dbConnection);
+  userRepository = new RedisUserRepository(dbConnection);
 }
 
+// Init service
+const passwordService = new Argon2PasswordService();
+const tokenService = new JwtTokenService();
+
+// Init use cases
+
+const advisorLogin = new AdvisorLogin(
+  userRepository,
+  passwordService,
+  tokenService
+);
+
+app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
+
+app.post("/advisor/login", async (req, res) => {
+  const content = await advisorLogin.execute({
+    email: req.body.email,
+    password: req.body.password,
+  });
+
+  res.send(content);
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
