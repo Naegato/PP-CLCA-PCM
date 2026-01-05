@@ -16,4 +16,17 @@ export class RedisAdvisorRepository extends RedisBaseRepository<User> implements
 
 		return advisor;
 	}
+
+	protected instanticate(entity: User): User {
+		return User.fromPrimitives({
+			identifier: entity.identifier || '',
+			firstname: entity.firstname,
+			lastname: entity.lastname,
+			email: (entity.email as any)?.value ?? entity.email,
+			password: (entity.password as any)?.value ?? entity.password,
+			clientProps: entity.clientProps,
+			advisorProps: entity.advisorProps,
+			directorProps: entity.directorProps,
+		});
+	}
 }

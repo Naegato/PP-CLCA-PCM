@@ -57,13 +57,24 @@ export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType>
 		return saved;
 	}
 
-	protected instanticate(entity: AccountType): AccountType {
-		return new AccountType(
-			entity.identifier,
-			entity.name,
-			entity.rate,
-			entity.limitByClient,
-			entity.description
+	async update(accountType: AccountType): Promise<AccountType> {
+		const key = this.key(accountType);
+
+		await this.db.set(
+			key,
+			JSON.stringify(accountType),
 		);
+
+		return accountType;
+	}
+
+	protected instanticate(entity: AccountType): AccountType {
+		return AccountType.fromPrimitives({
+			identifier: entity.identifier,
+			name: entity.name,
+			rate: entity.rate,
+			limitByClient: entity.limitByClient,
+			description: entity.description,
+		});
 	}
 }

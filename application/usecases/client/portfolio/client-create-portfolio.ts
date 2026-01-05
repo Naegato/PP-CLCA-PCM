@@ -2,7 +2,7 @@ import { PortfolioRepository } from '../../../repositories/portfolio';
 import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
 import { AccountRepository } from '../../../repositories/account';
 
-export class ClientGetPortfolio {
+export class ClientCreatePortfolio {
   constructor(
     private readonly portfolioRepository: PortfolioRepository,
     private readonly accountRepository: AccountRepository,
