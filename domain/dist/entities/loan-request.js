@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { LoanRequestAmountError } from "../errors/loan-request-amount";
+import { LoanRequestAmountError } from "../errors/loan-request-amount.js";
 export class LoanRequest {
     identifier;
     client;

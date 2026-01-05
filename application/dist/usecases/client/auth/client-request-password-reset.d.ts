@@ -7,6 +7,6 @@ export declare class ClientRequestPasswordReset {
     readonly userRepository: UserRepository;
     readonly tokenService: TokenService;
     constructor(userRepository: UserRepository, tokenService: TokenService);
-    execute(request: RequestPasswordResetRequest): Promise<import("../../../errors/token-secret-not-defined-error").TokenSecretNotDefinedError | UserNotFoundByEmailError | RequestPasswordResetResponse>;
+    execute(request: RequestPasswordResetRequest): Promise<import("../../../index.js").TokenSecretNotDefinedError | UserNotFoundByEmailError | RequestPasswordResetResponse>;
 }
 //# sourceMappingURL=client-request-password-reset.d.ts.map

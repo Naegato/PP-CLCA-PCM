@@ -1,4 +1,4 @@
-import { DirectorDeleteStockError } from '../../../errors/director-delete-stock';
+import { DirectorDeleteStockError } from '../../../errors/director-delete-stock.js';
 export class DirectorDeleteStock {
     stockRepository;
     portfolioRepository;

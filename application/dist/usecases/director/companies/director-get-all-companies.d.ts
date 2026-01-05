@@ -1,5 +1,5 @@
 import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { CompanyRepository } from '../../../repositories/company';
+import { CompanyRepository } from '../../../repositories/company.js';
 export declare class DirectorGetAllCompanies {
     private readonly companyRepository;
     constructor(companyRepository: CompanyRepository);

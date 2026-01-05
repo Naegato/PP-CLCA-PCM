@@ -1,7 +1,7 @@
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { User } from '@pp-clca-pcm/domain/entities/user';
-import { AccountDeleteError } from '../errors/account-delete';
-import { AccountUpdateError } from '../errors/account-update';
+import { AccountDeleteError } from '../errors/account-delete.js';
+import { AccountUpdateError } from '../errors/account-update.js';
 
 export interface AccountRepository {
   save(account: Account): Promise<Account>;

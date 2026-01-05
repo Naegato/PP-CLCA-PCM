@@ -2,7 +2,7 @@ export class AccountLimitValidator {
     static canCreateAccount(user, accountType) {
         const existingAccounts = user.clientProps?.accounts ?? [];
         const accountTypeId = accountType.identifier;
-        const existingTypeCount = existingAccounts.filter(account => account.type.identifier === accountTypeId).length;
+        const existingTypeCount = existingAccounts.filter((account) => account.type.identifier === accountTypeId).length;
         if (accountType.limitByClient === undefined || accountType.limitByClient === null) {
             return true;
         }

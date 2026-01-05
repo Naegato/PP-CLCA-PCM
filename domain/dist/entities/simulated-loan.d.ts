@@ -1,4 +1,4 @@
-import { SimulatedLoanError } from "../errors/simulated-loan";
+import { SimulatedLoanError } from "../errors/simulated-loan.js";
 export declare class SimulatedLoan {
     readonly principal: number;
     readonly interestRate: number;

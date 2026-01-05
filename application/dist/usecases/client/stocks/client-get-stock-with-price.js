@@ -1,4 +1,4 @@
-import { ClientGetStockWithPriceError } from '../../../errors/client-get-stock-with-price';
+import { ClientGetStockWithPriceError } from '../../../errors/client-get-stock-with-price.js';
 export class ClientGetStockWithPrice {
     stockRepository;
     marketService;

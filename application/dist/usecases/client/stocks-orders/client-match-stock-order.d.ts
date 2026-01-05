@@ -1,8 +1,8 @@
 import { StockOrder } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { AccountRepository } from '../../../repositories/account';
-import { StockOrderRepository } from '../../../repositories/stockOrder';
-import { MatchStockOrderError } from '../../../errors/match-stock-order';
-import { PortfolioRepository } from '../../../repositories/portfolio';
+import { AccountRepository } from '../../../repositories/account.js';
+import { StockOrderRepository } from '../../../repositories/stockOrder.js';
+import { MatchStockOrderError } from '../../../errors/match-stock-order.js';
+import { PortfolioRepository } from '../../../repositories/portfolio.js';
 export declare class ClientMatchStockOrder {
     private readonly stockOrderRepository;
     private readonly accountRepository;

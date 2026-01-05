@@ -1,7 +1,7 @@
 import { OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
 import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
 import { TRADING_FEE } from '@pp-clca-pcm/domain/constants/bank';
-import { MatchStockOrderError } from '../../../errors/match-stock-order';
+import { MatchStockOrderError } from '../../../errors/match-stock-order.js';
 import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
 import { PortfolioError } from '@pp-clca-pcm/domain/errors/portfolio';
 //purpose of this function is to match an order to buy or sell a stock to other existing orders on the same stock, and if possible procede with the stocks' trade

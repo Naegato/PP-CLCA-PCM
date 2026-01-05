@@ -1,7 +1,7 @@
-import { NotAdvisor } from "../../../errors/not-advisor";
-import { LoanRequestRepository } from "../../../repositories/request-loan";
-import { LoanRepository } from "../../../repositories/loan";
-import { Security } from "../../../services/security";
+import { NotAdvisor } from "../../../errors/not-advisor.js";
+import { LoanRequestRepository } from "../../../repositories/request-loan.js";
+import { LoanRepository } from "../../../repositories/loan.js";
+import { Security } from "../../../services/security.js";
 import { Loan } from "@pp-clca-pcm/domain/entities/loan";
 export declare class AdvisorGrantLoan {
     readonly loanRequestRepository: LoanRequestRepository;

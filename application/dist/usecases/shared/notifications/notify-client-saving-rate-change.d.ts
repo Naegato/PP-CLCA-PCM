@@ -1,6 +1,6 @@
-import { NotificationRepository } from "../../../repositories/notification";
-import { Notifier } from "../../../services/notifier";
-import { UserRepository } from "../../../repositories/user";
+import { NotificationRepository } from "../../../repositories/notification.js";
+import { Notifier } from "../../../services/notifier.js";
+import { UserRepository } from "../../../repositories/user.js";
 export declare class NotifyClientSavingRateChange {
     private readonly notificationRepository;
     private readonly notifier;

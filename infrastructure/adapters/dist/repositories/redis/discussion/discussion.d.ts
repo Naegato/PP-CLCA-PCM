@@ -1,6 +1,6 @@
 import { DiscussionRepository } from "@pp-clca-pcm/application/repositories/discussion/discussion";
 import { Discussion } from "@pp-clca-pcm/domain/entities/discussion/discussion";
-import { RedisBaseRepository } from "../base";
+import { RedisBaseRepository } from "../base.js";
 export declare class RedisDiscussionRepository extends RedisBaseRepository<Discussion> implements DiscussionRepository {
     readonly prefix = "discussion:";
     save(discussion: Discussion): Promise<Discussion>;

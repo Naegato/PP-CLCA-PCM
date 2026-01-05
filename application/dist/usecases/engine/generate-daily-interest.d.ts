@@ -1,5 +1,5 @@
-import { AccountRepository } from '../../repositories/account';
-import { GenerateDailyInterestError } from '../../errors/generate-daily-interest';
+import { AccountRepository } from '../../repositories/account.js';
+import { GenerateDailyInterestError } from '../../errors/generate-daily-interest.js';
 export declare class GenerateDailyInterest {
     private readonly accountRepository;
     constructor(accountRepository: AccountRepository);

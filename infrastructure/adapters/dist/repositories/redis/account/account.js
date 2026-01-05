@@ -1,7 +1,7 @@
 import { AccountDeleteError } from "@pp-clca-pcm/application/errors/account-delete";
 import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
 import { randomUUID } from "crypto";
-import { RedisBaseRepository } from "../base";
+import { RedisBaseRepository } from "../base.js";
 export class RedisAccountRepository extends RedisBaseRepository {
     prefix = 'account:';
     async save(account) {

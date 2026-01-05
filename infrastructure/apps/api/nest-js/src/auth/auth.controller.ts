@@ -1,5 +1,4 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ClientLogin } from '@pp-clca-pcm/application/usecases/client/auth/client-login';
 import { LoginDto } from 'src/auth/dto/login.dto';
 import { AuthService } from './auth.service';
 

@@ -1,4 +1,4 @@
-import { ClientCancelStockOrderError } from '../../../errors/client-cancel-stock-order';
+import { ClientCancelStockOrderError } from '../../../errors/client-cancel-stock-order.js';
 export class ClientCancelStockOrder {
     stockOrderRepository;
     constructor(stockOrderRepository) {

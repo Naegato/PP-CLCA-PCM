@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { LoginRequest } from '@pp-clca-pcm/application/requests/login';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { LoginRequest } from '@pp-clca-pcm/application';
 
 export class LoginDto extends LoginRequest {
   @ApiProperty({

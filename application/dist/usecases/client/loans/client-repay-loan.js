@@ -1,5 +1,5 @@
 import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { TransactionError } from '../../../errors/transaction';
+import { TransactionError } from '../../../errors/transaction.js';
 export class ClientRepayLoan {
     transactionRepository;
     constructor(transactionRepository) {

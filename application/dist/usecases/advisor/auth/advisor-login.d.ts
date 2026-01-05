@@ -9,6 +9,6 @@ export declare class AdvisorLogin {
     readonly passwordService: PasswordService;
     readonly tokenService: TokenService;
     constructor(userRepository: UserRepository, passwordService: PasswordService, tokenService: TokenService);
-    execute(request: LoginRequest): Promise<LoginInvalidCredentialsError | import("../../../errors/token-secret-not-defined-error").TokenSecretNotDefinedError | import("../../../errors/user-not-found-by-email").UserNotFoundByEmailError | LoginResponse>;
+    execute(request: LoginRequest): Promise<LoginInvalidCredentialsError | import("../../../index.js").TokenSecretNotDefinedError | import("../../../index.js").UserNotFoundByEmailError | LoginResponse>;
 }
 //# sourceMappingURL=advisor-login.d.ts.map

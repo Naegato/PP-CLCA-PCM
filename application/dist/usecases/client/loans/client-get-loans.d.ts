@@ -3,6 +3,6 @@ import { User } from '@pp-clca-pcm/domain/entities/user';
 export declare class ClientGetLoans {
     readonly loanRepository: LoanRepository;
     constructor(loanRepository: LoanRepository);
-    execute(client: User): Promise<import("@pp-clca-pcm/domain/entities/loan").Loan[]>;
+    execute(client: User): Promise<import("@pp-clca-pcm/domain/index").Loan[]>;
 }
 //# sourceMappingURL=client-get-loans.d.ts.map

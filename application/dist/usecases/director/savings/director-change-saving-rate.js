@@ -1,5 +1,5 @@
 import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { AccountTypeDoesNotExistError } from '../../../errors/account-type-does-not-exist';
+import { AccountTypeDoesNotExistError } from '../../../errors/account-type-does-not-exist.js';
 export class DirectorChangeSavingRate {
     accountTypeRepository;
     constructor(accountTypeRepository) {

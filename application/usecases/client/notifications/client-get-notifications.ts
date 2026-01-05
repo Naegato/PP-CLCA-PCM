@@ -1,7 +1,7 @@
 import { Notification } from "@pp-clca-pcm/domain/entities/notification";
-import { NotClient } from "../../../errors/not-client";
-import { NotificationRepository } from "../../../repositories/notification";
-import { Security } from "../../../services/security";
+import { NotClient } from "../../../errors/not-client.js";
+import { NotificationRepository } from "../../../repositories/notification.js";
+import { Security } from "../../../services/security.js";
 
 export class ClientGetNotifications {
   public constructor(

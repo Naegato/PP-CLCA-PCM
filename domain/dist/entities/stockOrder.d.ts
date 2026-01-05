@@ -1,5 +1,5 @@
-import { Stock } from './stock';
-import { Account } from './accounts/account';
+import { Stock } from './stock.js';
+import { Account } from './accounts/account.js';
 export declare enum OrderSide {
     BUY = "BUY",
     SELL = "SELL"

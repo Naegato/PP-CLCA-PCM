@@ -1,5 +1,5 @@
 import { LoanRequest } from '@pp-clca-pcm/domain/entities/loan-request';
-import { RedisBaseRepository } from './base';
+import { RedisBaseRepository } from './base.js';
 export class RedisLoanRequestRepository extends RedisBaseRepository {
     prefix = 'loan-request:';
     async save(loan) {

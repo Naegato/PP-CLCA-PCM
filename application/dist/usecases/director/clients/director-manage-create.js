@@ -1,5 +1,5 @@
 import { User } from "@pp-clca-pcm/domain/entities/user";
-import { NotDirector } from "../../../errors/not-director";
+import { NotDirector } from "../../../errors/not-director.js";
 export class DirectorManageCreate {
     userRepository;
     security;

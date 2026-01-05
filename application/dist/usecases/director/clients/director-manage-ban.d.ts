@@ -1,9 +1,9 @@
 import { Ban } from "@pp-clca-pcm/domain/entities/ban";
-import { NotDirector } from "../../../errors/not-director";
-import { UserNotFoundByIdError } from "../../../errors/user-not-found-by-id";
-import { UserRepository } from "../../../repositories/user";
-import { BanRepository } from "../../../repositories/ban";
-import { Security } from "../../../services/security";
+import { NotDirector } from "../../../errors/not-director.js";
+import { UserNotFoundByIdError } from "../../../errors/user-not-found-by-id.js";
+import { UserRepository } from "../../../repositories/user.js";
+import { BanRepository } from "../../../repositories/ban.js";
+import { Security } from "../../../services/security.js";
 export declare class DirectorManageBan {
     private readonly userRepository;
     private readonly banRepository;

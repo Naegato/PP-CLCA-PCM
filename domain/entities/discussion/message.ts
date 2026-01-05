@@ -1,5 +1,5 @@
-import { User } from "../user";
-import { Discussion } from "./discussion";
+import { User } from "../user.js";
+import { Discussion } from "./discussion.js";
 
 export class Message {
   constructor(

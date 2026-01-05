@@ -1,6 +1,6 @@
 import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { CompanyRepository } from '../../../repositories/company';
-import { DirectorCreateCompanyError } from '../../../errors/director-create-company';
+import { CompanyRepository } from '../../../repositories/company.js';
+import { DirectorCreateCompanyError } from '../../../errors/director-create-company.js';
 
 export class DirectorCreateCompany {
   constructor(private readonly companyRepository: CompanyRepository) {}

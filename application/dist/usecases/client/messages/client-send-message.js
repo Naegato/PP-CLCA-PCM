@@ -1,7 +1,7 @@
 import { Message } from "@pp-clca-pcm/domain/entities/discussion/message";
 import { Discussion } from "@pp-clca-pcm/domain/entities/discussion/discussion";
-import { NotClient } from "../../../errors/not-client";
-import { DiscussionNotFoundError } from "../../../errors/discussion-not-found";
+import { NotClient } from "../../../errors/not-client.js";
+import { DiscussionNotFoundError } from "../../../errors/discussion-not-found.js";
 export class ClientSendMessage {
     messageRepository;
     discussionRepository;

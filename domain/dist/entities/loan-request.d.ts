@@ -1,5 +1,5 @@
-import { User } from "./user";
-import { LoanRequestAmountError } from "../errors/loan-request-amount";
+import { User } from "./user.js";
+import { LoanRequestAmountError } from "../errors/loan-request-amount.js";
 export declare class LoanRequest {
     readonly identifier: string;
     readonly client: User;

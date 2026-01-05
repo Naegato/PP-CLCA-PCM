@@ -1,6 +1,6 @@
-import { StockRepository } from '../../../repositories/stock';
+import { StockRepository } from '../../../repositories/stock.js';
 import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { DirectorToggleStockListingError } from '../../../errors/director-toggle-stock-listing';
+import { DirectorToggleStockListingError } from '../../../errors/director-toggle-stock-listing.js';
 export declare class DirectorToggleStockListing {
     private readonly stockRepository;
     constructor(stockRepository: StockRepository);

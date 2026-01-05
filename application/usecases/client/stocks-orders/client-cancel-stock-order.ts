@@ -1,6 +1,6 @@
-import { StockOrderRepository } from '../../../repositories/stockOrder';
+import { StockOrderRepository } from '../../../repositories/stockOrder.js';
 import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientCancelStockOrderError } from '../../../errors/client-cancel-stock-order';
+import { ClientCancelStockOrderError } from '../../../errors/client-cancel-stock-order.js';
 
 export class ClientCancelStockOrder {
   constructor(private readonly stockOrderRepository: StockOrderRepository) {}

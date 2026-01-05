@@ -1,5 +1,5 @@
 import { Ban } from "@pp-clca-pcm/domain/entities/ban";
-import { NotDirector } from "../../../errors/not-director";
+import { NotDirector } from "../../../errors/not-director.js";
 export class DirectorManageBan {
     userRepository;
     banRepository;

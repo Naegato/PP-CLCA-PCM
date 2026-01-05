@@ -1,5 +1,5 @@
 import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
-import { AccountRepository } from '../../../repositories/account';
+import { AccountRepository } from '../../../repositories/account.js';
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { AccountDeleteError } from '@pp-clca-pcm/application/errors/account-delete';
 export declare class ClientDeleteAccount {

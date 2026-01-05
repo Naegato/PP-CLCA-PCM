@@ -127,16 +127,20 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
   });
 
   test('update', async () => {
-    const savedUser = await repository.findByEmail('client@test.com') as User;
-    const updatedUser = savedUser.update({ firstname: 'UpdatedFirstName' });
+    const savedUser = await repository.findByEmail('client@test.com');
+    expect(savedUser).instanceof(User);
 
-    const result = await repository.update(updatedUser);
+    if (savedUser instanceof User) {
+      const updatedUser = savedUser.update({ firstname: 'UpdatedFirstName' });
 
-    expect(result).instanceof(User);
-    expect((result as User).firstname).toBe('UpdatedFirstName');
+      const result = await repository.update(updatedUser);
 
-    const verifyUser = await repository.findById(savedUser.identifier!) as User;
-    expect(verifyUser.firstname).toBe('UpdatedFirstName');
+      expect(result).instanceof(User);
+      expect((result as User).firstname).toBe('UpdatedFirstName');
+
+      const verifyUser = await repository.findById(savedUser.identifier!) as User;
+      expect(verifyUser.firstname).toBe('UpdatedFirstName');
+    }
   });
 
   test('delete', async () => {

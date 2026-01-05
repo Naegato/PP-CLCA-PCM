@@ -1,5 +1,5 @@
 import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { RedisBaseRepository } from './base';
+import { RedisBaseRepository } from './base.js';
 export class RedisTransactionRepository extends RedisBaseRepository {
     prefix = 'transaction:';
     async save(entity) {

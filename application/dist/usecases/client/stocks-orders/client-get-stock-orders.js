@@ -1,4 +1,4 @@
-import { ClientGetStockOrdersError } from '../../../errors/client-get-stock-orders';
+import { ClientGetStockOrdersError } from '../../../errors/client-get-stock-orders.js';
 export class ClientGetStockOrders {
     stockOrderRepository;
     constructor(stockOrderRepository) {

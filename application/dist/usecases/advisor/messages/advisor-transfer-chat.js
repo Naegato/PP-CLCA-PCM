@@ -1,4 +1,4 @@
-import { NotAdvisor } from "../../../errors/not-advisor";
+import { NotAdvisor } from "../../../errors/not-advisor.js";
 export class AdvisorTransferChat {
     security;
     discussionRepository;

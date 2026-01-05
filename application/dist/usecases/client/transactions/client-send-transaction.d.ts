@@ -1,6 +1,6 @@
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { TransactionError } from '../../../errors/transaction';
-import { AccountRepository } from '../../../repositories/account';
+import { TransactionError } from '../../../errors/transaction.js';
+import { AccountRepository } from '../../../repositories/account.js';
 export declare class ClientSendTransaction {
     private readonly accountRepository;
     constructor(accountRepository: AccountRepository);

@@ -1,4 +1,4 @@
-import { NotDirector } from "../../../errors/not-director";
+import { NotDirector } from "../../../errors/not-director.js";
 export class DirectorManageDelete {
     userRepository;
     security;

@@ -1,6 +1,6 @@
 import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { AccountUpdateError } from '../../errors/account-update';
-import { GenerateDailyInterestError } from '../../errors/generate-daily-interest';
+import { AccountUpdateError } from '../../errors/account-update.js';
+import { GenerateDailyInterestError } from '../../errors/generate-daily-interest.js';
 export class GenerateDailyInterest {
     accountRepository;
     constructor(accountRepository) {

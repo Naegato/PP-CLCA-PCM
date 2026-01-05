@@ -8,7 +8,7 @@ import { AccountUpdateError } from '@pp-clca-pcm/application/errors/account-upda
 import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
 import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
 import { DirectorProps } from '@pp-clca-pcm/domain/value-objects/user/director';
-import { PrismaClient } from './generated/client';
+import { PrismaClient } from './generated/client.js';
 
 export class PrismaAccountRepository implements AccountRepository {
   constructor(private readonly prisma: PrismaClient) {}

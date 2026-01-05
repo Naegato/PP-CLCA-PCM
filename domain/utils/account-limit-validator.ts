@@ -1,5 +1,6 @@
-import { User } from '../entities/user';
-import { AccountType } from '../entities/accounts/type';
+import { User } from '../entities/user.js';
+import { AccountType } from '../entities/accounts/type.js';
+import type { Account } from '../entities/accounts/account.js';
 
 export class AccountLimitValidator {
 
@@ -7,7 +8,7 @@ export class AccountLimitValidator {
     const existingAccounts = user.clientProps?.accounts ?? [];
     const accountTypeId = accountType.identifier;
     const existingTypeCount = existingAccounts.filter(
-      account => account.type.identifier === accountTypeId
+      (account: Account) => account.type.identifier === accountTypeId
     ).length;
 
     if (accountType.limitByClient === undefined || accountType.limitByClient === null) {

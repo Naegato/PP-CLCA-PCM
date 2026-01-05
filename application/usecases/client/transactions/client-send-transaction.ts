@@ -1,9 +1,9 @@
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { TransactionError } from '../../../errors/transaction';
+import { TransactionError } from '../../../errors/transaction.js';
 import { User } from '@pp-clca-pcm/domain/entities/user';
-import { AccountRepository } from '../../../repositories/account';
-import { AccountUpdateError } from '../../../errors/account-update';
+import { AccountRepository } from '../../../repositories/account.js';
+import { AccountUpdateError } from '../../../errors/account-update.js';
 
 export class ClientSendTransaction {
 

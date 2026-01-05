@@ -25,7 +25,7 @@ help:
 install:
 	pnpm install
 
-build:
+build: install
 	pnpm run build
 
 db: .env
@@ -41,7 +41,7 @@ prisma-migrate: db
 
 up-db: db prisma-generate prisma-migrate
 
-tests: up-db
+tests: up-db build
 	pnpm test
 
 up: tests
@@ -50,10 +50,10 @@ up: tests
 	pnpm --filter @pp-clca-pcm/front-nextjs dev & \
 	wait
 
-up-nestjs: install
+up-nestjs: install build
 	pnpm --filter @pp-clca-pcm/api-nestjs start:dev
 
-up-nextjs: install
+up-nextjs: install build
 	pnpm --filter @pp-clca-pcm/front-nextjs dev
 
 clear:

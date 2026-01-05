@@ -1,4 +1,4 @@
-import { DirectorUpdateCompanyError } from '../../../errors/director-update-company';
+import { DirectorUpdateCompanyError } from '../../../errors/director-update-company.js';
 export class DirectorUpdateCompany {
     companyRepository;
     constructor(companyRepository) {

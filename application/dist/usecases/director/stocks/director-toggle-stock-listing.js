@@ -1,4 +1,4 @@
-import { DirectorToggleStockListingError } from '../../../errors/director-toggle-stock-listing';
+import { DirectorToggleStockListingError } from '../../../errors/director-toggle-stock-listing.js';
 export class DirectorToggleStockListing {
     stockRepository;
     constructor(stockRepository) {

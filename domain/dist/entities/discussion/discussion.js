@@ -1,4 +1,4 @@
-import { DiscussionStatus } from "../../value-objects/discussion-status";
+import { DiscussionStatus } from "../../value-objects/discussion-status.js";
 export class Discussion {
     identifier;
     content;

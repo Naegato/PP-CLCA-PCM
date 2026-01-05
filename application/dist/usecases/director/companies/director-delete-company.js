@@ -1,4 +1,4 @@
-import { DirectorDeleteCompanyError } from '../../../errors/director-delete-company';
+import { DirectorDeleteCompanyError } from '../../../errors/director-delete-company.js';
 export class DirectorDeleteCompany {
     companyRepository;
     stockRepository;

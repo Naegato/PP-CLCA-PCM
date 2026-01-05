@@ -4,7 +4,7 @@ import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-n
 import { UserNotFoundByIdError } from '@pp-clca-pcm/application/errors/user-not-found-by-id';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
-import { RedisBaseRepository } from './base';
+import { RedisBaseRepository } from './base.js';
 
 export class RedisUserRepository extends RedisBaseRepository<User> implements UserRepository {
 	readonly prefix = 'user:';

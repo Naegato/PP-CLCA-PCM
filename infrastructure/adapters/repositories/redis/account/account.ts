@@ -3,7 +3,7 @@ import { AccountRepository } from "@pp-clca-pcm/application/repositories/account
 import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
 import { User } from "@pp-clca-pcm/domain/entities/user";
 import { randomUUID } from "crypto";
-import { RedisBaseRepository } from "../base";
+import { RedisBaseRepository } from "../base.js";
 
 export class RedisAccountRepository extends RedisBaseRepository<Account> implements AccountRepository {
 	readonly prefix = 'account:';

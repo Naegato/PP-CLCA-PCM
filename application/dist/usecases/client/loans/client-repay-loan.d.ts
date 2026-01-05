@@ -1,8 +1,8 @@
-import { TransactionRepository } from '../../../repositories/transaction';
+import { TransactionRepository } from '../../../repositories/transaction.js';
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { Loan } from '@pp-clca-pcm/domain/entities/loan';
 import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { TransactionError } from '../../../errors/transaction';
+import { TransactionError } from '../../../errors/transaction.js';
 export declare class ClientRepayLoan {
     readonly transactionRepository: TransactionRepository;
     constructor(transactionRepository: TransactionRepository);

@@ -1,5 +1,5 @@
 import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { DirectorCreateStockError } from '../../../errors/director-create-stock';
+import { DirectorCreateStockError } from '../../../errors/director-create-stock.js';
 export class DirectorCreateStock {
     stockRepository;
     companyRepository;

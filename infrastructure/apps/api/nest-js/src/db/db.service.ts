@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaUserRepository } from '@pp-clca-pcm/adapters/repositories/prisma/user';
+import { PrismaUserRepository } from '@pp-clca-pcm/adapters';
 
 const Adapters = {
-  'prisma': {
-    'user': PrismaUserRepository
-  }
-}
+  prisma: {
+    user: PrismaUserRepository,
+  },
+};
 
 @Injectable()
-export class DbService {
-}
+export class DbService {}

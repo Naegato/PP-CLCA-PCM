@@ -1,5 +1,5 @@
 import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { DirectorCreateCompanyError } from '../../../errors/director-create-company';
+import { DirectorCreateCompanyError } from '../../../errors/director-create-company.js';
 export class DirectorCreateCompany {
     companyRepository;
     constructor(companyRepository) {

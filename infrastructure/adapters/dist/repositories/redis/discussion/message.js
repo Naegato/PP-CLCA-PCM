@@ -1,6 +1,6 @@
 import { Message } from "@pp-clca-pcm/domain/entities/discussion/message";
 import { randomUUID } from "crypto";
-import { RedisBaseRepository } from "../base";
+import { RedisBaseRepository } from "../base.js";
 export class RedisMessageRepository extends RedisBaseRepository {
     prefix = 'message:';
     async save(message) {

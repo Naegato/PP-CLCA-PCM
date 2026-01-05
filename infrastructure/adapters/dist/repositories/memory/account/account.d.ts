@@ -2,7 +2,7 @@ import { AccountDeleteError } from '@pp-clca-pcm/application/errors/account-dele
 import { AccountRepository } from '@pp-clca-pcm/application/repositories/account';
 import { AccountUpdateError } from '@pp-clca-pcm/application/errors/account-update';
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { InMemoryUserRepository } from '../user';
+import { InMemoryUserRepository } from '../user.js';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 export declare class InMemoryAccountRepository implements AccountRepository {
     readonly inMemoryUserRepository: InMemoryUserRepository;

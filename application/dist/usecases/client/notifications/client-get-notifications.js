@@ -1,4 +1,4 @@
-import { NotClient } from "../../../errors/not-client";
+import { NotClient } from "../../../errors/not-client.js";
 export class ClientGetNotifications {
     notificationRepository;
     security;

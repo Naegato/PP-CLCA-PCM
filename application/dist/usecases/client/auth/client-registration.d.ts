@@ -7,6 +7,6 @@ export declare class ClientRegistration {
     readonly accountRepository: AccountRepository;
     readonly accountTypeRepository: AccountTypeRepository;
     constructor(userRepository: UserRepository, accountRepository: AccountRepository, accountTypeRepository: AccountTypeRepository);
-    execute(firstname: string, lastname: string, email: string, password: string): Promise<Error | import("../../../errors/email-already-exist").EmailAlreadyExistError | User | import("@pp-clca-pcm/domain/errors/password-length").PasswordLengthError | import("@pp-clca-pcm/domain/errors/password-uppercase").PasswordUppercaseError | import("@pp-clca-pcm/domain/errors/password-lowercase").PasswordLowercaseError | import("@pp-clca-pcm/domain/errors/password-special").PasswordSpecialError | import("@pp-clca-pcm/domain/errors/password-digit").PasswordDigitError | import("@pp-clca-pcm/domain/errors/invalid-email-format").InvalidEmailFormatError | null>;
+    execute(firstname: string, lastname: string, email: string, password: string): Promise<Error | import("../../../index.js").EmailAlreadyExistError | User | import("@pp-clca-pcm/domain/index").PasswordLengthError | import("@pp-clca-pcm/domain/index").PasswordUppercaseError | import("@pp-clca-pcm/domain/index").PasswordLowercaseError | import("@pp-clca-pcm/domain/index").PasswordSpecialError | import("@pp-clca-pcm/domain/index").PasswordDigitError | import("@pp-clca-pcm/domain/index").InvalidEmailFormatError | null>;
 }
 //# sourceMappingURL=client-registration.d.ts.map

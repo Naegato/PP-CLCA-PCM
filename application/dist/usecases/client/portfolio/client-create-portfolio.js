@@ -1,5 +1,5 @@
 import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
-export class ClientGetPortfolio {
+export class ClientCreatePortfolio {
     portfolioRepository;
     accountRepository;
     constructor(portfolioRepository, accountRepository) {

@@ -1,5 +1,5 @@
-import { NotAdvisor } from "../../../errors/not-advisor";
-import { DiscussionNotFoundError } from "../../../errors/discussion-not-found";
+import { NotAdvisor } from "../../../errors/not-advisor.js";
+import { DiscussionNotFoundError } from "../../../errors/discussion-not-found.js";
 export class AdvisorCloseChat {
     discussionRepository;
     security;

@@ -1,5 +1,5 @@
 import { User } from "@pp-clca-pcm/domain/entities/user";
-import { RedisBaseRepository } from "./base";
+import { RedisBaseRepository } from "./base.js";
 export class RedisAdvisorRepository extends RedisBaseRepository {
     prefix = 'advisor:';
     async save(advisor) {

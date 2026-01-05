@@ -1,7 +1,7 @@
 import { GenerateDailyInterest } from '@pp-clca-pcm/application/usecases/engine/generate-daily-interest';
-import { DailyInterestCron } from './cron/DailyInterestCron';
-import { InMemoryAccountRepository } from './repositories/memory/account/account';
-import { InMemoryUserRepository } from './repositories/memory/user';
+import { DailyInterestCron } from './cron/DailyInterestCron.js';
+import { InMemoryAccountRepository } from './repositories/memory/account/account.js';
+import { InMemoryUserRepository } from './repositories/memory/user.js';
 const inMemoryUserRepository = new InMemoryUserRepository();
 const accountRepository = new InMemoryAccountRepository(inMemoryUserRepository);
 const generateDailyInterest = new GenerateDailyInterest(accountRepository);

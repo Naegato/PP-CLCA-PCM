@@ -2,7 +2,7 @@ import { AccountDeleteError } from "@pp-clca-pcm/application/errors/account-dele
 import { AccountRepository } from "@pp-clca-pcm/application/repositories/account";
 import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
 import { User } from "@pp-clca-pcm/domain/entities/user";
-import { RedisBaseRepository } from "../base";
+import { RedisBaseRepository } from "../base.js";
 export declare class RedisAccountRepository extends RedisBaseRepository<Account> implements AccountRepository {
     readonly prefix = "account:";
     save(account: Account): Promise<Account>;

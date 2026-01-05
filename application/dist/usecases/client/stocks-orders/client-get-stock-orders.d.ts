@@ -1,7 +1,7 @@
-import { StockOrderRepository } from '../../../repositories/stockOrder';
+import { StockOrderRepository } from '../../../repositories/stockOrder.js';
 import { StockOrder } from '@pp-clca-pcm/domain/entities/stockOrder';
 import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientGetStockOrdersError } from '../../../errors/client-get-stock-orders';
+import { ClientGetStockOrdersError } from '../../../errors/client-get-stock-orders.js';
 export declare class ClientGetStockOrders {
     private readonly stockOrderRepository;
     constructor(stockOrderRepository: StockOrderRepository);

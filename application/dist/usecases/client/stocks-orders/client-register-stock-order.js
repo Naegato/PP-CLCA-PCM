@@ -1,6 +1,6 @@
 import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
 import { TRADING_FEE } from '@pp-clca-pcm/domain/constants/bank';
-import { ClientRegisterStockOrderError } from '../../../errors/client-register-stock-order';
+import { ClientRegisterStockOrderError } from '../../../errors/client-register-stock-order.js';
 export class ClientRegisterStockOrder {
     stockOrderRepository;
     stockRepository;

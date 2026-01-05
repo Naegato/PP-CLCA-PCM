@@ -9,6 +9,6 @@ export declare class ClientResetPassword {
     readonly tokenService: TokenService;
     readonly passwordService: PasswordService;
     constructor(userRepository: UserRepository, tokenService: TokenService, passwordService: PasswordService);
-    execute(request: ResetPasswordRequest): Promise<import("../../../errors/invalid-reset-token").InvalidResetTokenError | import("../../../errors/token-secret-not-defined-error").TokenSecretNotDefinedError | UserNotFoundByIdError | import("../../../errors/user-update").UserUpdateError | ResetPasswordResponse | import("@pp-clca-pcm/domain/errors/password-length").PasswordLengthError | import("@pp-clca-pcm/domain/errors/password-uppercase").PasswordUppercaseError | import("@pp-clca-pcm/domain/errors/password-lowercase").PasswordLowercaseError | import("@pp-clca-pcm/domain/errors/password-special").PasswordSpecialError | import("@pp-clca-pcm/domain/errors/password-digit").PasswordDigitError>;
+    execute(request: ResetPasswordRequest): Promise<import("../../../index.js").InvalidResetTokenError | import("../../../index.js").TokenSecretNotDefinedError | UserNotFoundByIdError | import("../../../index.js").UserUpdateError | ResetPasswordResponse | import("@pp-clca-pcm/domain/index").PasswordLengthError | import("@pp-clca-pcm/domain/index").PasswordUppercaseError | import("@pp-clca-pcm/domain/index").PasswordLowercaseError | import("@pp-clca-pcm/domain/index").PasswordSpecialError | import("@pp-clca-pcm/domain/index").PasswordDigitError>;
 }
 //# sourceMappingURL=client-reset-password.d.ts.map

@@ -1,6 +1,6 @@
-import { User } from "../user";
-import { Message } from "./message";
-import { DiscussionStatus } from "../../value-objects/discussion-status";
+import { User } from "../user.js";
+import { Message } from "./message.js";
+import { DiscussionStatus } from "../../value-objects/discussion-status.js";
 export declare class Discussion {
     readonly identifier: string | null;
     readonly content: Message[] | null;

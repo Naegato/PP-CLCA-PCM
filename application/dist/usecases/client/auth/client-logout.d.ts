@@ -1,6 +1,6 @@
-import { NotClient } from "../../../errors/not-client";
-import { LogoutService } from "../../../services/logout";
-import { Security } from "../../../services/security";
+import { NotClient } from "../../../errors/not-client.js";
+import { LogoutService } from "../../../services/logout.js";
+import { Security } from "../../../services/security.js";
 export declare class ClientLogout {
     private readonly logoutService;
     private readonly security;

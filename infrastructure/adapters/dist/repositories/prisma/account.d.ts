@@ -3,7 +3,7 @@ import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 import { AccountDeleteError } from '@pp-clca-pcm/application/errors/account-delete';
 import { AccountUpdateError } from '@pp-clca-pcm/application/errors/account-update';
-import { PrismaClient } from './generated/client';
+import { PrismaClient } from './generated/client.js';
 export declare class PrismaAccountRepository implements AccountRepository {
     private readonly prisma;
     constructor(prisma: PrismaClient);

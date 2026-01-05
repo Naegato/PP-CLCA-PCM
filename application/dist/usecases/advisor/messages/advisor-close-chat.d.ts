@@ -1,8 +1,8 @@
 import { Discussion } from "@pp-clca-pcm/domain/entities/discussion/discussion";
-import { NotAdvisor } from "../../../errors/not-advisor";
-import { DiscussionNotFoundError } from "../../../errors/discussion-not-found";
-import { DiscussionRepository } from "../../../repositories/discussion/discussion";
-import { Security } from "../../../services/security";
+import { NotAdvisor } from "../../../errors/not-advisor.js";
+import { DiscussionNotFoundError } from "../../../errors/discussion-not-found.js";
+import { DiscussionRepository } from "../../../repositories/discussion/discussion.js";
+import { Security } from "../../../services/security.js";
 export declare class AdvisorCloseChat {
     private readonly discussionRepository;
     private readonly security;

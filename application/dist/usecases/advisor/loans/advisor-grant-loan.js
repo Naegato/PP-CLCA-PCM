@@ -1,4 +1,4 @@
-import { NotAdvisor } from "../../../errors/not-advisor";
+import { NotAdvisor } from "../../../errors/not-advisor.js";
 import { Loan } from "@pp-clca-pcm/domain/entities/loan";
 export class AdvisorGrantLoan {
     loanRequestRepository;

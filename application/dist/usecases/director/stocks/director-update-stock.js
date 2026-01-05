@@ -1,4 +1,4 @@
-import { DirectorUpdateStockError } from '../../../errors/director-update-stock';
+import { DirectorUpdateStockError } from '../../../errors/director-update-stock.js';
 export class DirectorUpdateStock {
     stockRepository;
     companyRepository;

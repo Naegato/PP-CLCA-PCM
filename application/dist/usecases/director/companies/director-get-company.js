@@ -1,4 +1,4 @@
-import { DirectorGetCompanyError } from '../../../errors/director-get-company';
+import { DirectorGetCompanyError } from '../../../errors/director-get-company.js';
 export class DirectorGetCompany {
     companyRepository;
     constructor(companyRepository) {

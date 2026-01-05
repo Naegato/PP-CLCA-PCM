@@ -1,4 +1,4 @@
-import { User } from "./user";
+import { User } from "./user.js";
 export declare class Ban {
     readonly identifier: string;
     readonly user: User;
