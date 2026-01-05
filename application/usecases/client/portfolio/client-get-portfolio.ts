@@ -8,7 +8,7 @@ export class ClientGetPortfolio {
     private readonly accountRepository: AccountRepository,
   ) {}
 
-  public async execute(accountId: string): Promise<Portfolio | null> {
+  public async execute(accountId: string) {
     const account = await this.accountRepository.findById(accountId);
     if (!account) {
       return null;

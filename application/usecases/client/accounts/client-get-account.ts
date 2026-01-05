@@ -6,7 +6,7 @@ export class ClientGetAccount {
     private readonly accountRepository: AccountRepository,
   ) {}
 
-  public async execute(accountId: string): Promise<Account | null> {
+  public async execute(accountId: string) {
     const account = await this.accountRepository.findById(accountId);
     if (!account) {
       return null;

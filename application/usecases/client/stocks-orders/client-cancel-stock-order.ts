@@ -16,6 +16,10 @@ export class ClientCancelStockOrder {
       return new ClientCancelStockOrderError(`Order with id ${orderId} not found.`);
     }
 
+    if (order instanceof Error) {
+      return order;
+    }
+
     if (order.account.owner.identifier !== user.identifier) {
       return new ClientCancelStockOrderError(`User is not the owner of order ${orderId}.`);
     }

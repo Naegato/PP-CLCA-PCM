@@ -17,8 +17,8 @@
 
 import * as runtime from "@prisma/client/runtime/index-browser"
 
-export type * from '../models.js'
-export type * from './prismaNamespace.js'
+export type * from '../models'
+export type * from './prismaNamespace'
 
 export const Decimal = runtime.Decimal
 
@@ -51,7 +51,17 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  AccountType: 'AccountType'
+  User: 'User',
+  AccountType: 'AccountType',
+  Account: 'Account',
+  Ban: 'Ban',
+  Company: 'Company',
+  Stock: 'Stock',
+  Portfolio: 'Portfolio',
+  PortfolioItem: 'PortfolioItem',
+  StockOrder: 'StockOrder',
+  Notification: 'Notification',
+  Transaction: 'Transaction'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -70,6 +80,20 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const UserScalarFieldEnum = {
+  identifier: 'identifier',
+  firstname: 'firstname',
+  lastname: 'lastname',
+  email: 'email',
+  password: 'password',
+  clientProps: 'clientProps',
+  advisorProps: 'advisorProps',
+  directorProps: 'directorProps'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
 export const AccountTypeScalarFieldEnum = {
   identifier: 'identifier',
   name: 'name',
@@ -79,6 +103,105 @@ export const AccountTypeScalarFieldEnum = {
 } as const
 
 export type AccountTypeScalarFieldEnum = (typeof AccountTypeScalarFieldEnum)[keyof typeof AccountTypeScalarFieldEnum]
+
+
+export const AccountScalarFieldEnum = {
+  identifier: 'identifier',
+  ownerId: 'ownerId',
+  typeId: 'typeId',
+  iban: 'iban',
+  name: 'name',
+  createdAt: 'createdAt'
+} as const
+
+export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+
+
+export const BanScalarFieldEnum = {
+  identifier: 'identifier',
+  userId: 'userId',
+  authorId: 'authorId',
+  start: 'start',
+  end: 'end',
+  reason: 'reason'
+} as const
+
+export type BanScalarFieldEnum = (typeof BanScalarFieldEnum)[keyof typeof BanScalarFieldEnum]
+
+
+export const CompanyScalarFieldEnum = {
+  identifier: 'identifier',
+  name: 'name'
+} as const
+
+export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
+
+
+export const StockScalarFieldEnum = {
+  identifier: 'identifier',
+  symbol: 'symbol',
+  name: 'name',
+  isListed: 'isListed',
+  createdAt: 'createdAt',
+  companyId: 'companyId'
+} as const
+
+export type StockScalarFieldEnum = (typeof StockScalarFieldEnum)[keyof typeof StockScalarFieldEnum]
+
+
+export const PortfolioScalarFieldEnum = {
+  identifier: 'identifier',
+  accountId: 'accountId'
+} as const
+
+export type PortfolioScalarFieldEnum = (typeof PortfolioScalarFieldEnum)[keyof typeof PortfolioScalarFieldEnum]
+
+
+export const PortfolioItemScalarFieldEnum = {
+  identifier: 'identifier',
+  portfolioId: 'portfolioId',
+  stockId: 'stockId',
+  quantity: 'quantity'
+} as const
+
+export type PortfolioItemScalarFieldEnum = (typeof PortfolioItemScalarFieldEnum)[keyof typeof PortfolioItemScalarFieldEnum]
+
+
+export const StockOrderScalarFieldEnum = {
+  identifier: 'identifier',
+  stockId: 'stockId',
+  accountId: 'accountId',
+  side: 'side',
+  price: 'price',
+  quantity: 'quantity',
+  remainingQuantity: 'remainingQuantity',
+  createdAt: 'createdAt'
+} as const
+
+export type StockOrderScalarFieldEnum = (typeof StockOrderScalarFieldEnum)[keyof typeof StockOrderScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  identifier: 'identifier',
+  recipientId: 'recipientId',
+  message: 'message',
+  type: 'type',
+  isRead: 'isRead',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const TransactionScalarFieldEnum = {
+  identifier: 'identifier',
+  emitterId: 'emitterId',
+  receiverId: 'receiverId',
+  amount: 'amount',
+  createdAt: 'createdAt'
+} as const
+
+export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -47,4 +47,26 @@ export class StockOrder {
   public get executed(): boolean {
     return this.remainingQuantity === 0;
   }
+
+  public static createFromRaw(
+    identifier: string,
+    stock: Stock,
+    account: Account,
+    side: OrderSide,
+    price: number,
+    quantity: number,
+    remainingQuantity: number,
+    createdAt: Date,
+  ) {
+    return new StockOrder(
+      identifier,
+      stock,
+      account,
+      side,
+      price,
+      quantity,
+      remainingQuantity,
+      createdAt,
+    )
+  }
 }

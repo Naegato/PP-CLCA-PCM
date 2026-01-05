@@ -28,8 +28,8 @@ export class RedisTransactionRepository extends RedisBaseRepository<Transaction>
 
 	protected instanticate(entity: Transaction): Transaction {
 		return Transaction.fromPrimitives({
-			identifier: entity.identifier,
-			accountId: entity.accountId,
+			identifier: entity.identifier!,
+			identified: entity.identified,
 			amount: entity.amount,
 			date: entity.date,
 			description: entity.description,

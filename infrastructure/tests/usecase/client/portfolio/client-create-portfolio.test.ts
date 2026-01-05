@@ -12,7 +12,7 @@ import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memor
 import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/account';
 
 // Import the usecase from client-create-portfolio.ts (which exports ClientGetPortfolio that creates portfolios)
-import { ClientGetPortfolio } from '@pp-clca-pcm/application/usecases/client/portfolio/client-create-portfolio';
+import { ClientCreatePortfolio } from '@pp-clca-pcm/application/usecases/client/portfolio/client-create-portfolio';
 
 // Simple InMemory implementation for testing
 class InMemoryPortfolioRepository implements PortfolioRepository {
@@ -49,7 +49,7 @@ describe('Client Create Portfolio', () => {
     const accountRepository = new InMemoryAccountRepository(userRepository);
     const portfolioRepository = new InMemoryPortfolioRepository();
 
-    const useCase = new ClientGetPortfolio(portfolioRepository, accountRepository);
+    const useCase = new ClientCreatePortfolio(portfolioRepository, accountRepository);
 
     return {
       useCase,

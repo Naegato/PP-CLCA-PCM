@@ -19,7 +19,17 @@ export class AccountType {
     rate: number,
     description?: string | null,
   ): AccountType {
-    return new AccountType(null, name, rate,null, description ?? null);
+    return new AccountType(null, name, rate, null, description ?? null);
+  }
+
+  public static createFromRaw(
+    identifier: string,
+    name: AccountTypeName,
+    rate: number,
+    limitByClient?: number | null,
+    description?: string | null,
+  ): AccountType {
+    return new AccountType(identifier, name, rate, limitByClient ?? null, description ?? null);
   }
 
   public update(props: Partial<AccountType>): AccountType {

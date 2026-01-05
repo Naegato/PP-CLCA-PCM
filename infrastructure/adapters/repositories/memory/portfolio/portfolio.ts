@@ -6,7 +6,7 @@ export class InMemoryPortfolioRepository implements PortfolioRepository {
 
   async findByAccountId(accountId: string): Promise<Portfolio | null> {
     for (const portfolio of this.portfolios.values()) {
-      if (portfolio.accountId === accountId) {
+      if (portfolio.account.identifier === accountId) {
         return portfolio;
       }
     }
