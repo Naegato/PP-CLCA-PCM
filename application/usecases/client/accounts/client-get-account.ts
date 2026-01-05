@@ -1,15 +1,15 @@
+import { ClientGetAccountError } from "@pp-clca-pcm/application/errors/client-get-account";
 import { AccountRepository } from "../../../repositories/account";
-import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
 
 export class ClientGetAccount {
   constructor(
     private readonly accountRepository: AccountRepository,
   ) {}
 
-  public async execute(accountId: string): Promise<Account | null> {
+  public async execute(accountId: string) {
     const account = await this.accountRepository.findById(accountId);
     if (!account) {
-      return null;
+      return new ClientGetAccountError('Account not found.');
     }
 
     return account;

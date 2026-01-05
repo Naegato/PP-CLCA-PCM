@@ -1,6 +1,7 @@
 import { PortfolioRepository } from '../../../repositories/portfolio';
 import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
 import { AccountRepository } from '../../../repositories/account';
+import { ClientCreatePortfolioError } from '@pp-clca-pcm/application/errors/client-create-portfolio';
 
 export class ClientGetPortfolio {
   constructor(
@@ -8,10 +9,10 @@ export class ClientGetPortfolio {
     private readonly accountRepository: AccountRepository,
   ) {}
 
-  public async execute(accountId: string): Promise<Portfolio | null> {
+  public async execute(accountId: string) {
     const account = await this.accountRepository.findById(accountId);
     if (!account) {
-      return null;
+      return new ClientCreatePortfolioError('Account not found.');
     }
 
     const portfolio = Portfolio.create(account);
