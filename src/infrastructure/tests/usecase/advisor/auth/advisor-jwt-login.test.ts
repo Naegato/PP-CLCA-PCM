@@ -47,8 +47,8 @@ describe('Advisor JWT Login', () => {
       password: plainPassword,
     });
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(LoginResponse);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(LoginResponse);
     const assertedResult = result as LoginResponse;
     expect(assertedResult).toHaveProperty('token');
     expect(assertedResult.token).toBeTypeOf('string');
@@ -75,7 +75,7 @@ describe('Advisor JWT Login', () => {
       password: plainPassword,
     });
 
-    expect(result).toBeInstanceOf(UserNotFoundByEmailError);
+    expect(result).instanceof(UserNotFoundByEmailError);
   });
 
   test('Should fail login with wrong password', async () => {
@@ -99,7 +99,7 @@ describe('Advisor JWT Login', () => {
       password: 'WrongPassword123@',
     });
 
-    expect(result).toBeInstanceOf(LoginInvalidCredentialsError);
+    expect(result).instanceof(LoginInvalidCredentialsError);
   });
 
   test('Should fail login if user is not an advisor', async () => {
@@ -123,6 +123,6 @@ describe('Advisor JWT Login', () => {
       password: plainPassword,
     });
 
-    expect(result).toBeInstanceOf(LoginInvalidCredentialsError);
+    expect(result).instanceof(LoginInvalidCredentialsError);
   });
 });

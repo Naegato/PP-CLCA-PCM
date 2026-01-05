@@ -74,7 +74,7 @@ describe('Director Delete Stock', () => {
 
     const result = await useCase.execute('non-existent-id');
 
-    expect(result).toBeInstanceOf(DirectorDeleteStockError);
+    expect(result).instanceof(DirectorDeleteStockError);
   });
 
   test('Should return error when stock has open orders', async () => {
@@ -88,7 +88,7 @@ describe('Director Delete Stock', () => {
 
     const result = await useCase.execute(stock.identifier!);
 
-    expect(result).toBeInstanceOf(DirectorDeleteStockError);
+    expect(result).instanceof(DirectorDeleteStockError);
     expect(stockRepository.stocks).toHaveLength(1);
   });
 
@@ -105,7 +105,7 @@ describe('Director Delete Stock', () => {
 
     const result = await useCase.execute(stock.identifier!);
 
-    expect(result).toBeInstanceOf(DirectorDeleteStockError);
+    expect(result).instanceof(DirectorDeleteStockError);
     expect(stockRepository.stocks).toHaveLength(1);
   });
 

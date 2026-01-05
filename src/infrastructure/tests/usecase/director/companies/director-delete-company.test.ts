@@ -38,7 +38,7 @@ describe('Director Delete Company', () => {
 
     const result = await useCase.execute('non-existent-id');
 
-    expect(result).toBeInstanceOf(DirectorDeleteCompanyError);
+    expect(result).instanceof(DirectorDeleteCompanyError);
   });
 
   test('Should return error when company has associated stocks', async () => {
@@ -52,7 +52,7 @@ describe('Director Delete Company', () => {
 
     const result = await useCase.execute(company.identifier);
 
-    expect(result).toBeInstanceOf(DirectorDeleteCompanyError);
+    expect(result).instanceof(DirectorDeleteCompanyError);
     expect(companyRepository.companies).toHaveLength(1);
   });
 

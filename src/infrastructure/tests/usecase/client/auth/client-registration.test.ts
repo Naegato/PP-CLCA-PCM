@@ -77,6 +77,6 @@ describe('Client Registration ', () => {
     );
 
     expect(user).instanceof(User);
-    expect(user2).toBeInstanceOf(EmailAlreadyExistError);
+    expect(user2).instanceof(EmailAlreadyExistError);
   });
 });

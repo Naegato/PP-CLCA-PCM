@@ -9,7 +9,7 @@ describe('Client Simulate Loan', () => {
   test('Should simulate loan successfully', async () => {
     const result = await useCase.execute(10000, 5, 12);
 
-    expect(result).toBeInstanceOf(SimulatedLoan);
+    expect(result).instanceof(SimulatedLoan);
 
     const simulation = result as SimulatedLoan;
     expect(simulation.principal).toBe(10000);
@@ -23,7 +23,7 @@ describe('Client Simulate Loan', () => {
   test('Should simulate loan with zero interest rate', async () => {
     const result = await useCase.execute(12000, 0, 12);
 
-    expect(result).toBeInstanceOf(SimulatedLoan);
+    expect(result).instanceof(SimulatedLoan);
 
     const simulation = result as SimulatedLoan;
     expect(simulation.monthlyPayment).toBe(1000);
@@ -34,30 +34,30 @@ describe('Client Simulate Loan', () => {
   test('Should return error for negative principal', async () => {
     const result = await useCase.execute(-1000, 5, 12);
 
-    expect(result).toBeInstanceOf(SimulatedLoanError);
+    expect(result).instanceof(SimulatedLoanError);
   });
 
   test('Should return error for zero principal', async () => {
     const result = await useCase.execute(0, 5, 12);
 
-    expect(result).toBeInstanceOf(SimulatedLoanError);
+    expect(result).instanceof(SimulatedLoanError);
   });
 
   test('Should return error for negative interest rate', async () => {
     const result = await useCase.execute(10000, -5, 12);
 
-    expect(result).toBeInstanceOf(SimulatedLoanError);
+    expect(result).instanceof(SimulatedLoanError);
   });
 
   test('Should return error for zero duration', async () => {
     const result = await useCase.execute(10000, 5, 0);
 
-    expect(result).toBeInstanceOf(SimulatedLoanError);
+    expect(result).instanceof(SimulatedLoanError);
   });
 
   test('Should return error for negative duration', async () => {
     const result = await useCase.execute(10000, 5, -12);
 
-    expect(result).toBeInstanceOf(SimulatedLoanError);
+    expect(result).instanceof(SimulatedLoanError);
   });
 });

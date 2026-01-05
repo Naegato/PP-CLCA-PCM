@@ -88,8 +88,8 @@ describe('Advisor Transfer Chat', () => {
 
     const result = await useCase.execute(discussion, advisor2);
 
-    expect(result).not.toBeInstanceOf(NotAdvisor);
-    expect(result).toBeInstanceOf(Discussion);
+    expect(result).not.instanceof(NotAdvisor);
+    expect(result).instanceof(Discussion);
 
     const transferredDiscussion = result as Discussion;
     expect(transferredDiscussion.advisor?.identifier).toBe(advisor2.identifier);
@@ -105,7 +105,7 @@ describe('Advisor Transfer Chat', () => {
 
     const result = await useCase.execute(discussion, newAdvisor);
 
-    expect(result).toBeInstanceOf(NotAdvisor);
+    expect(result).instanceof(NotAdvisor);
   });
 
   test('Should return NotAdvisor error when current user is not the discussion advisor', async () => {
@@ -119,7 +119,7 @@ describe('Advisor Transfer Chat', () => {
 
     const result = await useCase.execute(discussion, advisor3);
 
-    expect(result).toBeInstanceOf(NotAdvisor);
+    expect(result).instanceof(NotAdvisor);
   });
 
   test('Should save updated discussion to repository', async () => {

@@ -98,8 +98,8 @@ describe('Advisor Get Pending Loans', () => {
 
     const result = await useCase.execute();
 
-    expect(result).not.toBeInstanceOf(NotAdvisor);
-    expect(result).toBeInstanceOf(Array);
+    expect(result).not.instanceof(NotAdvisor);
+    expect(result).instanceof(Array);
     expect(result).toHaveLength(2);
   });
 
@@ -109,7 +109,7 @@ describe('Advisor Get Pending Loans', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(NotAdvisor);
+    expect(result).instanceof(NotAdvisor);
   });
 
   test('Should return empty array when no loans for advisor', async () => {
@@ -118,7 +118,7 @@ describe('Advisor Get Pending Loans', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(Array);
+    expect(result).instanceof(Array);
     expect(result).toHaveLength(0);
   });
 
@@ -139,7 +139,7 @@ describe('Advisor Get Pending Loans', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(Array);
+    expect(result).instanceof(Array);
     expect(result).toHaveLength(1);
   });
 });

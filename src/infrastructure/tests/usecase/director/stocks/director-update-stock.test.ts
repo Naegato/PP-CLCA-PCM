@@ -43,8 +43,8 @@ describe('Director Update Stock', () => {
 
     const result = await useCase.execute(stock.identifier!, 'New Apple Name');
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Stock);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Stock);
 
     const updatedStock = result as Stock;
     expect(updatedStock.name).toBe('New Apple Name');
@@ -58,7 +58,7 @@ describe('Director Update Stock', () => {
 
     const result = await useCase.execute(stock.identifier!, undefined, 'APPL');
 
-    expect(result).toBeInstanceOf(Stock);
+    expect(result).instanceof(Stock);
     const updatedStock = result as Stock;
     expect(updatedStock.symbol).toBe('APPL');
   });
@@ -72,7 +72,7 @@ describe('Director Update Stock', () => {
 
     const result = await useCase.execute(stock.identifier!, undefined, undefined, false);
 
-    expect(result).toBeInstanceOf(Stock);
+    expect(result).instanceof(Stock);
     const updatedStock = result as Stock;
     expect(updatedStock.isListed).toBe(false);
   });
@@ -85,7 +85,7 @@ describe('Director Update Stock', () => {
 
     const result = await useCase.execute(stock.identifier!, undefined, undefined, undefined, company2.identifier);
 
-    expect(result).toBeInstanceOf(Stock);
+    expect(result).instanceof(Stock);
     const updatedStock = result as Stock;
     expect(updatedStock.company.identifier).toBe(company2.identifier);
   });
@@ -95,7 +95,7 @@ describe('Director Update Stock', () => {
 
     const result = await useCase.execute('non-existent-id', 'New Name');
 
-    expect(result).toBeInstanceOf(DirectorUpdateStockError);
+    expect(result).instanceof(DirectorUpdateStockError);
   });
 
   test('Should return error when new symbol already exists', async () => {
@@ -106,7 +106,7 @@ describe('Director Update Stock', () => {
 
     const result = await useCase.execute(stock1.identifier!, undefined, 'MSFT');
 
-    expect(result).toBeInstanceOf(DirectorUpdateStockError);
+    expect(result).instanceof(DirectorUpdateStockError);
   });
 
   test('Should return error when new company not found', async () => {
@@ -116,7 +116,7 @@ describe('Director Update Stock', () => {
 
     const result = await useCase.execute(stock.identifier!, undefined, undefined, undefined, 'non-existent-company-id');
 
-    expect(result).toBeInstanceOf(DirectorUpdateStockError);
+    expect(result).instanceof(DirectorUpdateStockError);
   });
 
   test('Should allow updating to same symbol (no change)', async () => {
@@ -126,7 +126,7 @@ describe('Director Update Stock', () => {
 
     const result = await useCase.execute(stock.identifier!, undefined, 'AAPL');
 
-    expect(result).toBeInstanceOf(Stock);
+    expect(result).instanceof(Stock);
     const updatedStock = result as Stock;
     expect(updatedStock.symbol).toBe('AAPL');
   });
@@ -139,7 +139,7 @@ describe('Director Update Stock', () => {
 
     const result = await useCase.execute(stock.identifier!, 'New Name', 'NEWSMBL', false, company2.identifier);
 
-    expect(result).toBeInstanceOf(Stock);
+    expect(result).instanceof(Stock);
     const updatedStock = result as Stock;
     expect(updatedStock.name).toBe('New Name');
     expect(updatedStock.symbol).toBe('NEWSMBL');

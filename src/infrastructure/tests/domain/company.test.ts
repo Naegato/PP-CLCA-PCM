@@ -6,7 +6,7 @@ describe('Company entity', () => {
     const companyName = 'Test Company';
     const company = Company.create(companyName);
 
-    expect(company).toBeInstanceOf(Company);
+    expect(company).instanceof(Company);
     expect(company.name).toBe(companyName);
     expect(company.identifier).toBeDefined();
   });

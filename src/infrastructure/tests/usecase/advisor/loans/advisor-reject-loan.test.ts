@@ -91,8 +91,8 @@ describe('Advisor Reject Loan', () => {
 
     const result = await useCase.execute(loanRequest.identifier);
 
-    expect(result).not.toBeInstanceOf(NotAdvisor);
-    expect(result).toBeInstanceOf(LoanRequest);
+    expect(result).not.instanceof(NotAdvisor);
+    expect(result).instanceof(LoanRequest);
 
     const rejectedLoan = result as LoanRequest;
     expect(rejectedLoan.approved).toBe(false);
@@ -108,7 +108,7 @@ describe('Advisor Reject Loan', () => {
 
     const result = await useCase.execute(loanRequest.identifier);
 
-    expect(result).toBeInstanceOf(NotAdvisor);
+    expect(result).instanceof(NotAdvisor);
   });
 
   test('Should return null when loan request not found', async () => {

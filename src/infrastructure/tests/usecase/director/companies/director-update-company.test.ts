@@ -23,8 +23,8 @@ describe('Director Update Company', () => {
 
     const result = await useCase.execute(company.identifier, 'New Name');
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Company);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Company);
 
     const updatedCompany = result as Company;
     expect(updatedCompany.identifier).toBe(company.identifier);
@@ -39,7 +39,7 @@ describe('Director Update Company', () => {
 
     const result = await useCase.execute('non-existent-id', 'New Name');
 
-    expect(result).toBeInstanceOf(DirectorUpdateCompanyError);
+    expect(result).instanceof(DirectorUpdateCompanyError);
   });
 
   test('Should return error when new name already exists for different company', async () => {
@@ -53,7 +53,7 @@ describe('Director Update Company', () => {
 
     const result = await useCase.execute(company1.identifier, 'Company B');
 
-    expect(result).toBeInstanceOf(DirectorUpdateCompanyError);
+    expect(result).instanceof(DirectorUpdateCompanyError);
   });
 
   test('Should allow updating to same name (no change)', async () => {
@@ -64,8 +64,8 @@ describe('Director Update Company', () => {
 
     const result = await useCase.execute(company.identifier, 'Same Name');
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Company);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Company);
 
     const updatedCompany = result as Company;
     expect(updatedCompany.name).toBe('Same Name');

@@ -117,8 +117,8 @@ describe('Client Register Stock Order', () => {
 
     const result = await useCase.execute(account, stock.identifier!, OrderSide.BUY, 100, 5);
 
-    expect(result).not.toBeInstanceOf(ClientRegisterStockOrderError);
-    expect(result).toBeInstanceOf(StockOrder);
+    expect(result).not.instanceof(ClientRegisterStockOrderError);
+    expect(result).instanceof(StockOrder);
 
     const order = result as StockOrder;
     expect(order.side).toBe(OrderSide.BUY);
@@ -136,7 +136,7 @@ describe('Client Register Stock Order', () => {
 
     const result = await useCase.execute(account, 'non-existent-stock', OrderSide.BUY, 100, 5);
 
-    expect(result).toBeInstanceOf(ClientRegisterStockOrderError);
+    expect(result).instanceof(ClientRegisterStockOrderError);
     expect((result as ClientRegisterStockOrderError).message).toContain('not found');
   });
 
@@ -151,7 +151,7 @@ describe('Client Register Stock Order', () => {
 
     const result = await useCase.execute(account, stock.identifier!, OrderSide.BUY, 100, 0);
 
-    expect(result).toBeInstanceOf(ClientRegisterStockOrderError);
+    expect(result).instanceof(ClientRegisterStockOrderError);
     expect((result as ClientRegisterStockOrderError).message).toContain('positive');
   });
 
@@ -166,7 +166,7 @@ describe('Client Register Stock Order', () => {
 
     const result = await useCase.execute(account, stock.identifier!, OrderSide.BUY, -10, 5);
 
-    expect(result).toBeInstanceOf(ClientRegisterStockOrderError);
+    expect(result).instanceof(ClientRegisterStockOrderError);
     expect((result as ClientRegisterStockOrderError).message).toContain('positive');
   });
 
@@ -182,7 +182,7 @@ describe('Client Register Stock Order', () => {
 
     const result = await useCase.execute(account, stock.identifier!, OrderSide.BUY, 100, 5);
 
-    expect(result).toBeInstanceOf(ClientRegisterStockOrderError);
+    expect(result).instanceof(ClientRegisterStockOrderError);
     expect((result as ClientRegisterStockOrderError).message).toContain('Insufficient balance');
   });
 
@@ -197,7 +197,7 @@ describe('Client Register Stock Order', () => {
 
     const result = await useCase.execute(account, stock.identifier!, OrderSide.SELL, 100, 5);
 
-    expect(result).toBeInstanceOf(ClientRegisterStockOrderError);
+    expect(result).instanceof(ClientRegisterStockOrderError);
     expect((result as ClientRegisterStockOrderError).message).toContain('portfolio');
   });
 
@@ -212,7 +212,7 @@ describe('Client Register Stock Order', () => {
 
     const result = await useCase.execute(account, stock.identifier!, OrderSide.BUY, 50, 10);
 
-    expect(result).toBeInstanceOf(StockOrder);
+    expect(result).instanceof(StockOrder);
 
     const savedOrders = await stockOrderRepository.findAllByOwnerId(user.identifier!);
     expect(savedOrders).toHaveLength(1);
@@ -232,7 +232,7 @@ describe('Client Register Stock Order', () => {
 
     const result = await useCase.execute(account, stock.identifier!, OrderSide.BUY, 100, 5);
 
-    expect(result).toBeInstanceOf(ClientRegisterStockOrderError);
+    expect(result).instanceof(ClientRegisterStockOrderError);
     expect((result as ClientRegisterStockOrderError).message).toContain('Insufficient balance');
   });
 
@@ -248,7 +248,7 @@ describe('Client Register Stock Order', () => {
 
     const result = await useCase.execute(account, stock.identifier!, OrderSide.BUY, 100, 5);
 
-    expect(result).not.toBeInstanceOf(ClientRegisterStockOrderError);
-    expect(result).toBeInstanceOf(StockOrder);
+    expect(result).not.instanceof(ClientRegisterStockOrderError);
+    expect(result).instanceof(StockOrder);
   });
 });

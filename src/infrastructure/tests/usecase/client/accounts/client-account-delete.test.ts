@@ -91,7 +91,7 @@ describe('Client Delete Account', () => {
     // Try to delete the only account
     const result = await useCase.execute(account);
 
-    expect(result).toBeInstanceOf(AccountDeleteError);
+    expect(result).instanceof(AccountDeleteError);
     expect((result as AccountDeleteError).message).toBe('User must have at least one account');
   });
 
@@ -126,7 +126,7 @@ describe('Client Delete Account', () => {
     // Try to delete account with positive balance
     const result = await useCase.execute(account1WithBalance);
 
-    expect(result).toBeInstanceOf(AccountDeleteError);
+    expect(result).instanceof(AccountDeleteError);
     expect((result as AccountDeleteError).message).toBe('Account balance must be zero to delete the account');
   });
 
@@ -161,7 +161,7 @@ describe('Client Delete Account', () => {
     // Try to delete account with negative balance
     const result = await useCase.execute(account1WithBalance);
 
-    expect(result).toBeInstanceOf(AccountDeleteError);
+    expect(result).instanceof(AccountDeleteError);
     expect((result as AccountDeleteError).message).toBe('Account balance must be zero to delete the account');
   });
 

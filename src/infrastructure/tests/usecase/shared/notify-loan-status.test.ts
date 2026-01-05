@@ -52,7 +52,7 @@ describe('Notify Loan Status', () => {
 
     const result = await useCase.execute(loanRequest, 'approuvée');
 
-    expect(result).toBeInstanceOf(Notification);
+    expect(result).instanceof(Notification);
     expect(result.recipient.identifier).toBe(client.identifier);
     expect(result.type).toBe(NotificationType.LOAN_STATUS);
     expect(result.message).toContain('approuvée');

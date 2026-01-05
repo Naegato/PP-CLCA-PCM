@@ -57,8 +57,8 @@ describe('Client Request Loan', () => {
 
     const result = await useCase.execute(client, 10000);
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(LoanRequest);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(LoanRequest);
 
     const loanRequest = result as LoanRequest;
     expect(loanRequest.amount).toBe(10000);
@@ -74,7 +74,7 @@ describe('Client Request Loan', () => {
 
     const result = await useCase.execute(client, 50000);
 
-    expect(result).toBeInstanceOf(LoanRequest);
+    expect(result).instanceof(LoanRequest);
 
     const allRequests = await loanRequestRepository.all();
     expect(allRequests).toHaveLength(1);
@@ -88,7 +88,7 @@ describe('Client Request Loan', () => {
 
     const result = await useCase.execute(client, 0);
 
-    expect(result).toBeInstanceOf(LoanRequestAmountError);
+    expect(result).instanceof(LoanRequestAmountError);
   });
 
   test('Should return LoanRequestAmountError when amount is negative', async () => {
@@ -98,7 +98,7 @@ describe('Client Request Loan', () => {
 
     const result = await useCase.execute(client, -5000);
 
-    expect(result).toBeInstanceOf(LoanRequestAmountError);
+    expect(result).instanceof(LoanRequestAmountError);
   });
 
   test('Should create loan request with small amount', async () => {
@@ -108,7 +108,7 @@ describe('Client Request Loan', () => {
 
     const result = await useCase.execute(client, 1);
 
-    expect(result).toBeInstanceOf(LoanRequest);
+    expect(result).instanceof(LoanRequest);
     const loanRequest = result as LoanRequest;
     expect(loanRequest.amount).toBe(1);
   });
@@ -120,7 +120,7 @@ describe('Client Request Loan', () => {
 
     const result = await useCase.execute(client, 100000000); // 1 million euros in cents
 
-    expect(result).toBeInstanceOf(LoanRequest);
+    expect(result).instanceof(LoanRequest);
     const loanRequest = result as LoanRequest;
     expect(loanRequest.amount).toBe(100000000);
   });

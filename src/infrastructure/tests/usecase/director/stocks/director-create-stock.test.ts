@@ -31,8 +31,8 @@ describe('Director Create Stock', () => {
 
     const result = await useCase.execute('AAPL', 'Apple Inc', company.identifier);
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Stock);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Stock);
 
     const stock = result as Stock;
     expect(stock.symbol).toBe('AAPL');
@@ -53,7 +53,7 @@ describe('Director Create Stock', () => {
 
     const result = await useCase.execute('AAPL', 'Another Apple', company.identifier);
 
-    expect(result).toBeInstanceOf(DirectorCreateStockError);
+    expect(result).instanceof(DirectorCreateStockError);
   });
 
   test('Should return error when company not found', async () => {
@@ -61,7 +61,7 @@ describe('Director Create Stock', () => {
 
     const result = await useCase.execute('AAPL', 'Apple Inc', 'non-existent-company-id');
 
-    expect(result).toBeInstanceOf(DirectorCreateStockError);
+    expect(result).instanceof(DirectorCreateStockError);
   });
 
   test('Should uppercase symbol automatically', async () => {
@@ -70,7 +70,7 @@ describe('Director Create Stock', () => {
 
     const result = await useCase.execute('aapl', 'Apple Inc', company.identifier);
 
-    expect(result).toBeInstanceOf(Stock);
+    expect(result).instanceof(Stock);
     const stock = result as Stock;
     expect(stock.symbol).toBe('AAPL');
   });
@@ -82,8 +82,8 @@ describe('Director Create Stock', () => {
     const result1 = await useCase.execute('AAPL', 'Apple Inc', company.identifier);
     const result2 = await useCase.execute('MSFT', 'Microsoft', company.identifier);
 
-    expect(result1).toBeInstanceOf(Stock);
-    expect(result2).toBeInstanceOf(Stock);
+    expect(result1).instanceof(Stock);
+    expect(result2).instanceof(Stock);
     expect(stockRepository.stocks).toHaveLength(2);
   });
 });

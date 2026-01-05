@@ -57,7 +57,7 @@ describe('Client Get Notifications', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(Array);
+    expect(result).instanceof(Array);
     expect(result).toHaveLength(0);
   });
 
@@ -73,7 +73,7 @@ describe('Client Get Notifications', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(Array);
+    expect(result).instanceof(Array);
     expect(result).toHaveLength(2);
   });
 
@@ -83,7 +83,7 @@ describe('Client Get Notifications', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(NotClient);
+    expect(result).instanceof(NotClient);
   });
 
   test('Should only return notifications for current client', async () => {
@@ -106,7 +106,7 @@ describe('Client Get Notifications', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(Array);
+    expect(result).instanceof(Array);
     expect(result).toHaveLength(1);
   });
 });

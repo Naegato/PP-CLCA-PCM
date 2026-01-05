@@ -55,8 +55,8 @@ describe('Director Manage Create', () => {
 
     const result = await useCase.execute('John', 'Doe', 'john@test.com', 'Password123!');
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(User);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(User);
 
     const createdUser = result as User;
     expect(createdUser.firstname).toBe('John');
@@ -73,7 +73,7 @@ describe('Director Manage Create', () => {
 
     const result = await useCase.execute('John', 'Doe', 'john@test.com', 'Password123!');
 
-    expect(result).toBeInstanceOf(NotDirector);
+    expect(result).instanceof(NotDirector);
   });
 
   test('Should return error for invalid email', async () => {
@@ -82,7 +82,7 @@ describe('Director Manage Create', () => {
 
     const result = await useCase.execute('John', 'Doe', 'invalid-email', 'Password123!');
 
-    expect(result).toBeInstanceOf(Error);
+    expect(result).instanceof(Error);
   });
 
   test('Should return error for weak password', async () => {
@@ -91,6 +91,6 @@ describe('Director Manage Create', () => {
 
     const result = await useCase.execute('John', 'Doe', 'john@test.com', 'weak');
 
-    expect(result).toBeInstanceOf(Error);
+    expect(result).instanceof(Error);
   });
 });

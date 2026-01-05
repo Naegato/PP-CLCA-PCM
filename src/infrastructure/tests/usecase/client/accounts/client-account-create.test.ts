@@ -48,8 +48,8 @@ describe('Client Create Account', () => {
 
     const result = await useCase.execute(user, 'Mon premier compte');
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Account);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Account);
 
     const account = result as Account;
     expect(account.name).toBe('Mon premier compte');
@@ -67,7 +67,7 @@ describe('Client Create Account', () => {
 
     const result = await useCase.execute(user, 'Compte Vacances');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     const account = result as Account;
     expect(account.name).toBe('Compte Vacances');
   });
@@ -80,7 +80,7 @@ describe('Client Create Account', () => {
 
     const result = await useCase.execute(user, 'Test');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     const account = result as Account;
 
     // French IBAN is 27 characters: FR + 2 check digits + 23 BBAN
@@ -97,8 +97,8 @@ describe('Client Create Account', () => {
     const result1 = await useCase.execute(user, 'Compte 1');
     const result2 = await useCase.execute(user, 'Compte 2');
 
-    expect(result1).toBeInstanceOf(Account);
-    expect(result2).toBeInstanceOf(Account);
+    expect(result1).instanceof(Account);
+    expect(result2).instanceof(Account);
 
     const account1 = result1 as Account;
     const account2 = result2 as Account;
@@ -115,7 +115,7 @@ describe('Client Create Account', () => {
 
     const result = await useCase.execute(user, 'Test');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     const account = result as Account;
 
     const savedAccount = await accountRepository.findById(account.identifier!);
@@ -153,7 +153,7 @@ describe('Client Create Account', () => {
     // Try to create a 3rd account (should fail, limit is 2)
     const result = await useCase.execute(userWithAccounts, 'Compte 3');
 
-    expect(result).toBeInstanceOf(AccountCreateError);
+    expect(result).instanceof(AccountCreateError);
   });
 
   test('Should allow creating accounts when no limit set', async () => {
@@ -181,8 +181,8 @@ describe('Client Create Account', () => {
     // Should be able to create more accounts when no limit
     const result = await useCase.execute(userWithAccounts, 'Nouveau compte');
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Account);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Account);
   });
 
   test('Should allow creating account of different type when one type limit reached', async () => {
@@ -227,7 +227,7 @@ describe('Client Create Account', () => {
     // Try to create another DEFAULT account (should fail - limit is 1)
     const result = await useCase.execute(userWithAccounts, 'Another default');
 
-    expect(result).toBeInstanceOf(AccountCreateError);
+    expect(result).instanceof(AccountCreateError);
   });
 
   test('Should create account with zero balance', async () => {
@@ -238,7 +238,7 @@ describe('Client Create Account', () => {
 
     const result = await useCase.execute(user, 'New Account');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     const account = result as Account;
     expect(account.balance).toBe(0);
     expect(account.emittedTransactions).toEqual([]);

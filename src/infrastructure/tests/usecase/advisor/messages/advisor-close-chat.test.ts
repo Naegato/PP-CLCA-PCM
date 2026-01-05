@@ -88,7 +88,7 @@ describe('Advisor Close Chat', () => {
 
     const result = await useCase.execute('discussion-1');
 
-    expect(result).toBeInstanceOf(Discussion);
+    expect(result).instanceof(Discussion);
     expect((result as Discussion).status).toBe(DiscussionStatus.CLOSED);
   });
 
@@ -98,7 +98,7 @@ describe('Advisor Close Chat', () => {
 
     const result = await useCase.execute('discussion-1');
 
-    expect(result).toBeInstanceOf(NotAdvisor);
+    expect(result).instanceof(NotAdvisor);
   });
 
   test('Should return DiscussionNotFoundError when discussion not found', async () => {
@@ -107,7 +107,7 @@ describe('Advisor Close Chat', () => {
 
     const result = await useCase.execute('non-existent-id');
 
-    expect(result).toBeInstanceOf(DiscussionNotFoundError);
+    expect(result).instanceof(DiscussionNotFoundError);
   });
 
   test('Should update discussion in repository', async () => {

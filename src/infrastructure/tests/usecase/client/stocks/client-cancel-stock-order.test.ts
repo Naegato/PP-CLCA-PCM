@@ -72,7 +72,7 @@ describe('Client Cancel Stock Order', () => {
 
     const result = await useCase.execute('non-existent-order', user);
 
-    expect(result).toBeInstanceOf(ClientCancelStockOrderError);
+    expect(result).instanceof(ClientCancelStockOrderError);
     expect((result as ClientCancelStockOrderError).message).toContain('not found');
   });
 
@@ -89,7 +89,7 @@ describe('Client Cancel Stock Order', () => {
 
     const result = await useCase.execute(order.identifier!, otherUser);
 
-    expect(result).toBeInstanceOf(ClientCancelStockOrderError);
+    expect(result).instanceof(ClientCancelStockOrderError);
     expect((result as ClientCancelStockOrderError).message).toContain('not the owner');
   });
 
@@ -107,7 +107,7 @@ describe('Client Cancel Stock Order', () => {
 
     const result = await useCase.execute(executedOrder.identifier!, user);
 
-    expect(result).toBeInstanceOf(ClientCancelStockOrderError);
+    expect(result).instanceof(ClientCancelStockOrderError);
     expect((result as ClientCancelStockOrderError).message).toContain('already executed');
   });
 
@@ -132,7 +132,7 @@ describe('Client Cancel Stock Order', () => {
 
     const result = await useCase.execute(order.identifier!, userWithoutId);
 
-    expect(result).toBeInstanceOf(ClientCancelStockOrderError);
+    expect(result).instanceof(ClientCancelStockOrderError);
   });
 
   test('Should keep other orders when cancelling one', async () => {

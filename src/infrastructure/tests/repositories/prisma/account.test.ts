@@ -126,8 +126,8 @@ describe.skipIf(!isPostgres)('Prisma Account Repository', async () => {
 
     const result = await repository.delete(account);
 
-    expect(result).toBeInstanceOf(Account);
-    expect(result).not.toBeInstanceOf(AccountDeleteError);
+    expect(result).instanceof(Account);
+    expect(result).not.instanceof(AccountDeleteError);
 
     const found = await repository.findById(account.identifier!);
     expect(found).toBeNull();
@@ -143,7 +143,7 @@ describe.skipIf(!isPostgres)('Prisma Account Repository', async () => {
     const fakeAccount = Account.create(user, accountType, iban, 'Fake');
     const result = await repository.delete(fakeAccount);
 
-    expect(result).toBeInstanceOf(AccountDeleteError);
+    expect(result).instanceof(AccountDeleteError);
   });
 
   test('update - should update account', async () => {
@@ -159,8 +159,8 @@ describe.skipIf(!isPostgres)('Prisma Account Repository', async () => {
     const updated = account.update({ name: 'Updated' });
     const result = await repository.update(updated);
 
-    expect(result).toBeInstanceOf(Account);
-    expect(result).not.toBeInstanceOf(AccountUpdateError);
+    expect(result).instanceof(Account);
+    expect(result).not.instanceof(AccountUpdateError);
     if (result instanceof Account) {
       expect(result.name).toBe('Updated');
     }
@@ -176,7 +176,7 @@ describe.skipIf(!isPostgres)('Prisma Account Repository', async () => {
     const fakeAccount = Account.create(user, accountType, iban, 'Fake');
     const result = await repository.update(fakeAccount);
 
-    expect(result).toBeInstanceOf(AccountUpdateError);
+    expect(result).instanceof(AccountUpdateError);
   });
 
   test('generateAccountNumber - should generate sequential account numbers', async () => {

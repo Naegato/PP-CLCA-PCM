@@ -83,8 +83,8 @@ describe('Advisor Reply Message', () => {
 
     const result = await useCase.execute(message, 'Reply from advisor');
 
-    expect(result).not.toBeInstanceOf(NotAdvisor);
-    expect(result).toBeInstanceOf(Message);
+    expect(result).not.instanceof(NotAdvisor);
+    expect(result).instanceof(Message);
 
     const replyMessage = result as Message;
     expect(replyMessage.content).toBe('Reply from advisor');
@@ -102,7 +102,7 @@ describe('Advisor Reply Message', () => {
 
     const result = await useCase.execute(message, 'Reply');
 
-    expect(result).toBeInstanceOf(NotAdvisor);
+    expect(result).instanceof(NotAdvisor);
   });
 
   test('Should assign advisor to discussion if no advisor assigned', async () => {
@@ -142,7 +142,7 @@ describe('Advisor Reply Message', () => {
 
     const result = await useCase.execute(message, 'Reply');
 
-    expect(result).toBeInstanceOf(Message);
+    expect(result).instanceof(Message);
     const replyMessage = result as Message;
     expect(replyMessage.discussion.identifier).toBe(discussion.identifier);
   });

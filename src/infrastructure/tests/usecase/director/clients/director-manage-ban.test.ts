@@ -63,7 +63,7 @@ describe('Director Manage Ban', () => {
 
     const result = await useCase.execute('client-id', 'Violation of terms');
 
-    expect(result).toBeInstanceOf(Ban);
+    expect(result).instanceof(Ban);
 
     const ban = result as Ban;
     expect(ban.user.identifier).toBe('client-id');
@@ -84,7 +84,7 @@ describe('Director Manage Ban', () => {
     const endDate = new Date('2025-12-31');
     const result = await useCase.execute('client-id', 'Temporary ban', endDate);
 
-    expect(result).toBeInstanceOf(Ban);
+    expect(result).instanceof(Ban);
 
     const ban = result as Ban;
     expect(ban.end).toEqual(endDate);
@@ -96,7 +96,7 @@ describe('Director Manage Ban', () => {
 
     const result = await useCase.execute('client-id', 'Violation of terms');
 
-    expect(result).toBeInstanceOf(NotDirector);
+    expect(result).instanceof(NotDirector);
   });
 
   test('Should return UserNotFoundByIdError when user not found', async () => {
@@ -105,6 +105,6 @@ describe('Director Manage Ban', () => {
 
     const result = await useCase.execute('non-existent-id', 'Violation of terms');
 
-    expect(result).toBeInstanceOf(UserNotFoundByIdError);
+    expect(result).instanceof(UserNotFoundByIdError);
   });
 });

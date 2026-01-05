@@ -50,15 +50,15 @@ describe('Client Reset Password', () => {
     await userRepository.save(user);
 
     const resetToken = await tokenService.generateResetToken('user-123');
-    expect(resetToken).not.toBeInstanceOf(Error);
+    expect(resetToken).not.instanceof(Error);
 
     const result = await useCase.execute({
       token: resetToken as string,
       newPassword,
     });
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(ResetPasswordResponse);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(ResetPasswordResponse);
     const assertedResult = result as ResetPasswordResponse;
     expect(assertedResult.success).toBe(true);
 
@@ -66,13 +66,13 @@ describe('Client Reset Password', () => {
       email: 'jdoe@yopmail.com',
       password: plainPassword,
     });
-    expect(loginWithOldPassword).toBeInstanceOf(Error);
+    expect(loginWithOldPassword).instanceof(Error);
 
     const loginWithNewPassword = await loginUseCase.execute({
       email: 'jdoe@yopmail.com',
       password: newPassword,
     });
-    expect(loginWithNewPassword).toBeInstanceOf(LoginResponse);
+    expect(loginWithNewPassword).instanceof(LoginResponse);
   });
 
   test('Should fail with an invalid token', async () => {
@@ -96,21 +96,21 @@ describe('Client Reset Password', () => {
       newPassword: 'NewPas*/-sword456@',
     });
 
-    expect(result).toBeInstanceOf(InvalidResetTokenError);
+    expect(result).instanceof(InvalidResetTokenError);
   });
 
   test('Should fail if user no longer exists', async () => {
     const { useCase, tokenService } = getData();
 
     const resetToken = await tokenService.generateResetToken('non-existent-user');
-    expect(resetToken).not.toBeInstanceOf(Error);
+    expect(resetToken).not.instanceof(Error);
 
     const result = await useCase.execute({
       token: resetToken as string,
       newPassword: 'NewPas*/-sword456@',
     });
 
-    expect(result).toBeInstanceOf(UserNotFoundByIdError);
+    expect(result).instanceof(UserNotFoundByIdError);
   });
 
   test('Should fail if user is not a client', async () => {
@@ -130,14 +130,14 @@ describe('Client Reset Password', () => {
     await userRepository.save(advisor);
 
     const resetToken = await tokenService.generateResetToken('advisor-123');
-    expect(resetToken).not.toBeInstanceOf(Error);
+    expect(resetToken).not.instanceof(Error);
 
     const result = await useCase.execute({
       token: resetToken as string,
       newPassword: 'NewPas*/-sword456@',
     });
 
-    expect(result).toBeInstanceOf(UserNotFoundByIdError);
+    expect(result).instanceof(UserNotFoundByIdError);
   });
 
   test('Should fail if new password is invalid', async () => {
@@ -157,13 +157,13 @@ describe('Client Reset Password', () => {
     await userRepository.save(user);
 
     const resetToken = await tokenService.generateResetToken('user-123');
-    expect(resetToken).not.toBeInstanceOf(Error);
+    expect(resetToken).not.instanceof(Error);
 
     const result = await useCase.execute({
       token: resetToken as string,
       newPassword: 'short',
     });
 
-    expect(result).toBeInstanceOf(PasswordLengthError);
+    expect(result).instanceof(PasswordLengthError);
   });
 });

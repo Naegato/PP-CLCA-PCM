@@ -20,8 +20,8 @@ describe('Director Change Saving Rate', () => {
 
     const result = await useCase.execute('SAVING' as AccountTypeName, 2.5);
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(AccountType);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(AccountType);
 
     const accountType = result as AccountType;
     expect(accountType.name).toBe('SAVING');
@@ -38,8 +38,8 @@ describe('Director Change Saving Rate', () => {
 
     const result = await useCase.execute('SAVING' as AccountTypeName, 3.5);
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(AccountType);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(AccountType);
 
     const updatedType = result as AccountType;
     expect(updatedType.name).toBe('SAVING');
@@ -54,8 +54,8 @@ describe('Director Change Saving Rate', () => {
     const result1 = await useCase.execute('SAVING' as AccountTypeName, 2.0);
     const result2 = await useCase.execute('DEFAULT' as AccountTypeName, 0.5);
 
-    expect(result1).toBeInstanceOf(AccountType);
-    expect(result2).toBeInstanceOf(AccountType);
+    expect(result1).instanceof(AccountType);
+    expect(result2).instanceof(AccountType);
 
     expect((result1 as AccountType).name).toBe('SAVING');
     expect((result2 as AccountType).name).toBe('DEFAULT');
@@ -71,7 +71,7 @@ describe('Director Change Saving Rate', () => {
 
     const result = await useCase.execute('SAVING' as AccountTypeName, 0);
 
-    expect(result).toBeInstanceOf(AccountType);
+    expect(result).instanceof(AccountType);
     const updatedType = result as AccountType;
     expect(updatedType.rate).toBe(0);
   });
@@ -81,7 +81,7 @@ describe('Director Change Saving Rate', () => {
 
     const result = await useCase.execute('SAVING' as AccountTypeName, 2.75);
 
-    expect(result).toBeInstanceOf(AccountType);
+    expect(result).instanceof(AccountType);
     const accountType = result as AccountType;
     expect(accountType.rate).toBe(2.75);
   });
@@ -94,7 +94,7 @@ describe('Director Change Saving Rate', () => {
 
     const result = await useCase.execute('SAVING' as AccountTypeName, 3.0);
 
-    expect(result).toBeInstanceOf(AccountType);
+    expect(result).instanceof(AccountType);
     const updatedType = result as AccountType;
     expect(updatedType.identifier).toBe(existingType.identifier);
   });

@@ -56,7 +56,7 @@ describe('Client Update Name Account', () => {
 
     const result = await useCase.execute(account, 'Nouveau nom');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     expect(result.name).toBe('Nouveau nom');
   });
 

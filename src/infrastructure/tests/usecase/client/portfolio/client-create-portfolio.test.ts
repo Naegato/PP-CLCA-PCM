@@ -91,7 +91,7 @@ describe('Client Create Portfolio', () => {
     const result = await useCase.execute(account.identifier!);
 
     expect(result).not.toBeNull();
-    expect(result).toBeInstanceOf(Portfolio);
+    expect(result).instanceof(Portfolio);
     expect(result?.account.identifier).toBe(account.identifier);
   });
 

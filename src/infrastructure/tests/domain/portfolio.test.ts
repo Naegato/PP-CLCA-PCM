@@ -29,7 +29,7 @@ describe('Portfolio Entity', () => {
   test('should create a portfolio successfully', () => {
     const portfolio = Portfolio.create(account);
 
-    expect(portfolio).toBeInstanceOf(Portfolio);
+    expect(portfolio).instanceof(Portfolio);
     expect(portfolio.identifier).toBeDefined();
     expect(portfolio.account).toBe(account);
     expect(portfolio.getOwnedQuantity(stockA.identifier!)).toBe(0);
@@ -43,7 +43,7 @@ describe('Portfolio Entity', () => {
     }
     const updatedPortfolio = updatedPortfolioResult;
 
-    expect(updatedPortfolio).toBeInstanceOf(Portfolio);
+    expect(updatedPortfolio).instanceof(Portfolio);
     expect(updatedPortfolio.getOwnedQuantity(stockA.identifier!)).toBe(10);
   });
 
@@ -61,7 +61,7 @@ describe('Portfolio Entity', () => {
     }
     const updatedPortfolio = updatedPortfolioResult;
 
-    expect(updatedPortfolio).toBeInstanceOf(Portfolio);
+    expect(updatedPortfolio).instanceof(Portfolio);
     expect(updatedPortfolio.getOwnedQuantity(stockA.identifier!)).toBe(15);
   });
 
@@ -79,7 +79,7 @@ describe('Portfolio Entity', () => {
     }
     const updatedPortfolio = updatedPortfolioResult;
 
-    expect(updatedPortfolio).toBeInstanceOf(Portfolio);
+    expect(updatedPortfolio).instanceof(Portfolio);
     expect(updatedPortfolio.getOwnedQuantity(stockA.identifier!)).toBe(5);
   });
 
@@ -97,28 +97,28 @@ describe('Portfolio Entity', () => {
     }
     const updatedPortfolio = updatedPortfolioResult;
 
-    expect(updatedPortfolio).toBeInstanceOf(Portfolio);
+    expect(updatedPortfolio).instanceof(Portfolio);
     expect(updatedPortfolio.getOwnedQuantity(stockA.identifier!)).toBe(0);
   });
 
   test('should return PortfolioError when adding stock with non-positive quantity', () => {
     const portfolio = Portfolio.create(account);
     const result = portfolio.addStock(stockA, 0);
-    expect(result).toBeInstanceOf(PortfolioError);
+    expect(result).instanceof(PortfolioError);
     expect((result as PortfolioError).message).toBe('Quantity must be positive.');
   });
 
   test('should return PortfolioError when removing stock with non-positive quantity', () => {
     const portfolio = Portfolio.create(account);
     const result = portfolio.removeStock(stockA, 0);
-    expect(result).toBeInstanceOf(PortfolioError);
+    expect(result).instanceof(PortfolioError);
     expect((result as PortfolioError).message).toBe('Quantity must be positive.');
   });
 
   test('should return PortfolioError when removing stock not in portfolio', () => {
     const portfolio = Portfolio.create(account);
     const result = portfolio.removeStock(stockB, 5);
-    expect(result).toBeInstanceOf(PortfolioError);
+    expect(result).instanceof(PortfolioError);
     expect((result as PortfolioError).message).toContain('not found in portfolio');
   });
 
@@ -132,7 +132,7 @@ describe('Portfolio Entity', () => {
 
     const result = portfolioWithStock.removeStock(stockA, 10);
 
-    expect(result).toBeInstanceOf(PortfolioError);
+    expect(result).instanceof(PortfolioError);
     expect((result as PortfolioError).message).toBe('Cannot remove more stock than owned');
   });
 });

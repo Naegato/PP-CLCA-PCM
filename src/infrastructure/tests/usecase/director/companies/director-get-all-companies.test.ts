@@ -19,7 +19,7 @@ describe('Director Get All Companies', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(Array);
+    expect(result).instanceof(Array);
     expect(result).toHaveLength(0);
   });
 
@@ -36,7 +36,7 @@ describe('Director Get All Companies', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(Array);
+    expect(result).instanceof(Array);
     expect(result).toHaveLength(3);
 
     const names = result.map((c) => c.name);

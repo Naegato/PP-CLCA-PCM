@@ -31,7 +31,7 @@ describe('Director Get All Clients', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(Array);
+    expect(result).instanceof(Array);
     expect(result).toHaveLength(0);
   });
 
@@ -48,7 +48,7 @@ describe('Director Get All Clients', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(Array);
+    expect(result).instanceof(Array);
     expect(result).toHaveLength(3);
 
     const emails = result.map((u) => u.email.value);

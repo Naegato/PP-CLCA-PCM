@@ -11,12 +11,12 @@ describe('Stock Entity', () => {
   test('should create a stock successfully', () => {
     const stock = Stock.create('AAPL', 'Apple Inc.', appleCompany);
 
-    expect(stock).toBeInstanceOf(Stock);
+    expect(stock).instanceof(Stock);
     expect(stock.identifier).toBeDefined();
     expect(stock.symbol).toBe('AAPL');
     expect(stock.name).toBe('Apple Inc.');
     expect(stock.isListed).toBe(true);
-    expect(stock.createdAt).toBeInstanceOf(Date);
+    expect(stock.createdAt).instanceof(Date);
     expect(stock.company).toBe(appleCompany);
   });
 

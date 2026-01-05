@@ -95,8 +95,8 @@ describe('Client Repay Loan', () => {
 
     expect(Array.isArray(result)).toBe(true);
     expect(result).toHaveLength(2);
-    expect(result[0]).toBeInstanceOf(Transaction);
-    expect(result[1]).toBeInstanceOf(Transaction);
+    expect(result[0]).instanceof(Transaction);
+    expect(result[1]).instanceof(Transaction);
 
     const allTransactions = await transactionRepository.all();
     expect(allTransactions).toHaveLength(2);
@@ -112,7 +112,7 @@ describe('Client Repay Loan', () => {
 
     const result = await useCase.execute(account, loan, 1000);
 
-    expect(result[0]).toBeInstanceOf(Transaction);
+    expect(result[0]).instanceof(Transaction);
     const accountTransaction = result[0] as Transaction;
     expect(accountTransaction.amount).toBe(1000);
   });
@@ -127,7 +127,7 @@ describe('Client Repay Loan', () => {
 
     const result = await useCase.execute(account, loan, 1000);
 
-    expect(result[1]).toBeInstanceOf(Transaction);
+    expect(result[1]).instanceof(Transaction);
     const loanTransaction = result[1] as Transaction;
     expect(loanTransaction.amount).toBe(1000);
   });

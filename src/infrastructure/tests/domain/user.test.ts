@@ -37,9 +37,9 @@ describe('User entity', () => {
       'short',
     );
 
-    expect(client).toBeInstanceOf(PasswordLengthError);
-    expect(advisor).toBeInstanceOf(PasswordLengthError);
-    expect(director).toBeInstanceOf(PasswordLengthError);
+    expect(client).instanceof(PasswordLengthError);
+    expect(advisor).instanceof(PasswordLengthError);
+    expect(director).instanceof(PasswordLengthError);
   });
 
   test('Password need a special character', async () => {
@@ -50,9 +50,9 @@ describe('User entity', () => {
       'Password123',
     );
 
-    expect(client).toBeInstanceOf(PasswordSpecialError);
-    expect(advisor).toBeInstanceOf(PasswordSpecialError);
-    expect(director).toBeInstanceOf(PasswordSpecialError);
+    expect(client).instanceof(PasswordSpecialError);
+    expect(advisor).instanceof(PasswordSpecialError);
+    expect(director).instanceof(PasswordSpecialError);
   });
 
   test('Password need an uppercase character', async () => {
@@ -63,9 +63,9 @@ describe('User entity', () => {
       'password123@',
     );
 
-    expect(client).toBeInstanceOf(PasswordUppercaseError);
-    expect(advisor).toBeInstanceOf(PasswordUppercaseError);
-    expect(director).toBeInstanceOf(PasswordUppercaseError);
+    expect(client).instanceof(PasswordUppercaseError);
+    expect(advisor).instanceof(PasswordUppercaseError);
+    expect(director).instanceof(PasswordUppercaseError);
   });
 
   test('Password need a lowercase character', async () => {
@@ -76,9 +76,9 @@ describe('User entity', () => {
       'PASSWORD123@',
     );
 
-    expect(client).toBeInstanceOf(PasswordLowercaseError);
-    expect(advisor).toBeInstanceOf(PasswordLowercaseError);
-    expect(director).toBeInstanceOf(PasswordLowercaseError);
+    expect(client).instanceof(PasswordLowercaseError);
+    expect(advisor).instanceof(PasswordLowercaseError);
+    expect(director).instanceof(PasswordLowercaseError);
   });
 
   test('Password need a digit', async () => {
@@ -89,9 +89,9 @@ describe('User entity', () => {
       'Password@',
     );
 
-    expect(client).toBeInstanceOf(PasswordDigitError);
-    expect(advisor).toBeInstanceOf(PasswordDigitError);
-    expect(director).toBeInstanceOf(PasswordDigitError);
+    expect(client).instanceof(PasswordDigitError);
+    expect(advisor).instanceof(PasswordDigitError);
+    expect(director).instanceof(PasswordDigitError);
   });
 
   test('Email should be valid', async () => {
@@ -102,8 +102,8 @@ describe('User entity', () => {
       'Password123@',
     );
 
-    expect(client).toBeInstanceOf(InvalidEmailFormatError);
-    expect(advisor).toBeInstanceOf(InvalidEmailFormatError);
-    expect(director).toBeInstanceOf(InvalidEmailFormatError);
+    expect(client).instanceof(InvalidEmailFormatError);
+    expect(advisor).instanceof(InvalidEmailFormatError);
+    expect(director).instanceof(InvalidEmailFormatError);
   });
 });

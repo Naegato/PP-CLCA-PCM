@@ -75,7 +75,7 @@ describe('Client Logout', () => {
 
     const result = await useCase.execute();
 
-    expect(result).toBeInstanceOf(NotClient);
+    expect(result).instanceof(NotClient);
     expect(logoutService.loggedOutUserIds).toHaveLength(0);
   });
 

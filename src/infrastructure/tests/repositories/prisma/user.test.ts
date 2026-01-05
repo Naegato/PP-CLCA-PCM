@@ -36,7 +36,7 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
     const user = createTestUser('unique1@example.com');
     const saved = await repository.save(user);
 
-    expect(saved).toBeInstanceOf(User);
+    expect(saved).instanceof(User);
     expect(saved.email.value).toBe('unique1@example.com');
   });
 
@@ -47,7 +47,7 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
     const user2 = createTestUser('duplicate@example.com');
     const result = await repository.save(user2);
 
-    expect(result).toBeInstanceOf(EmailAlreadyExistError);
+    expect(result).instanceof(EmailAlreadyExistError);
   });
 
   test('all - should return all users', async () => {
@@ -57,7 +57,7 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
     const users = await repository.all();
 
     expect(users.length).toBeGreaterThanOrEqual(2);
-    expect(users[0]).toBeInstanceOf(User);
+    expect(users[0]).instanceof(User);
   });
 
   test('find - should find user by identifier', async () => {
@@ -90,8 +90,8 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
 
     const found = await repository.findByEmail('findemail@example.com');
 
-    expect(found).toBeInstanceOf(User);
-    expect(found).not.toBeInstanceOf(UserNotFoundByEmailError);
+    expect(found).instanceof(User);
+    expect(found).not.instanceof(UserNotFoundByEmailError);
     if (found instanceof User) {
       expect(found.email.value).toBe('findemail@example.com');
     }
@@ -100,7 +100,7 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
   test('findByEmail - should return UserNotFoundByEmailError for non-existent email', async () => {
     const found = await repository.findByEmail('nonexistent@example.com');
 
-    expect(found).toBeInstanceOf(UserNotFoundByEmailError);
+    expect(found).instanceof(UserNotFoundByEmailError);
   });
 
   test('findById - should find user by id', async () => {
@@ -109,8 +109,8 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
 
     const found = await repository.findById(user.identifier!);
 
-    expect(found).toBeInstanceOf(User);
-    expect(found).not.toBeInstanceOf(UserNotFoundByIdError);
+    expect(found).instanceof(User);
+    expect(found).not.instanceof(UserNotFoundByIdError);
     if (found instanceof User) {
       expect(found.identifier).toBe(user.identifier);
     }
@@ -119,7 +119,7 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
   test('findById - should return UserNotFoundByIdError for non-existent id', async () => {
     const found = await repository.findById('non-existent-id');
 
-    expect(found).toBeInstanceOf(UserNotFoundByIdError);
+    expect(found).instanceof(UserNotFoundByIdError);
   });
 
   test('update - should update user', async () => {
@@ -129,8 +129,8 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
     const updatedUser = user.update({ firstname: 'Updated' });
     const result = await repository.update(updatedUser);
 
-    expect(result).toBeInstanceOf(User);
-    expect(result).not.toBeInstanceOf(UserUpdateError);
+    expect(result).instanceof(User);
+    expect(result).not.instanceof(UserUpdateError);
     if (result instanceof User) {
       expect(result.firstname).toBe('Updated');
     }
@@ -147,7 +147,7 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
 
     const result = await repository.update(fakeUser);
 
-    expect(result).toBeInstanceOf(UserUpdateError);
+    expect(result).instanceof(UserUpdateError);
   });
 
   test('delete - should delete user', async () => {
@@ -157,7 +157,7 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
     await repository.delete(user.identifier!);
 
     const found = await repository.findById(user.identifier!);
-    expect(found).toBeInstanceOf(UserNotFoundByIdError);
+    expect(found).instanceof(UserNotFoundByIdError);
   });
 
   test('save - should preserve client props', async () => {
@@ -165,7 +165,7 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
     await repository.save(user);
 
     const found = await repository.findByEmail('clientprops@example.com');
-    expect(found).toBeInstanceOf(User);
+    expect(found).instanceof(User);
     if (found instanceof User) {
       expect(found.clientProps).toBeDefined();
     }
@@ -183,7 +183,7 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
     await repository.save(user);
 
     const found = await repository.findByEmail('advisor@example.com');
-    expect(found).toBeInstanceOf(User);
+    expect(found).instanceof(User);
     if (found instanceof User) {
       expect(found.advisorProps).toBeDefined();
     }

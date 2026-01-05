@@ -49,8 +49,8 @@ describe('Client Saving Account Create', () => {
 
     const result = await useCase.execute(user, 'Mon épargne');
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Account);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Account);
 
     const account = result as Account;
     expect(account.name).toBe('Mon épargne');
@@ -66,7 +66,7 @@ describe('Client Saving Account Create', () => {
 
     const result = await useCase.execute(user, 'Épargne Vacances');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     const account = result as Account;
     expect(account.name).toBe('Épargne Vacances');
   });
@@ -79,7 +79,7 @@ describe('Client Saving Account Create', () => {
 
     const result = await useCase.execute(user, 'High Interest Savings');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     const account = result as Account;
     expect(account.type.rate).toBe(3.5);
   });
@@ -92,7 +92,7 @@ describe('Client Saving Account Create', () => {
 
     const result = await useCase.execute(user, 'Savings');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     const account = result as Account;
 
     // French IBAN is 27 characters
@@ -108,7 +108,7 @@ describe('Client Saving Account Create', () => {
 
     const result = await useCase.execute(user, 'Savings');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     const account = result as Account;
 
     const savedAccount = await accountRepository.findById(account.identifier!);
@@ -146,7 +146,7 @@ describe('Client Saving Account Create', () => {
     // Try to create a 3rd savings account (should fail, limit is 2)
     const result = await useCase.execute(userWithAccounts, 'Épargne 3');
 
-    expect(result).toBeInstanceOf(AccountCreateError);
+    expect(result).instanceof(AccountCreateError);
   });
 
   test('Should allow creating savings account when no limit set', async () => {
@@ -172,8 +172,8 @@ describe('Client Saving Account Create', () => {
 
     const result = await useCase.execute(userWithAccounts, 'Another savings');
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Account);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Account);
   });
 
   test('Should calculate daily interest for savings account with balance', async () => {
@@ -184,7 +184,7 @@ describe('Client Saving Account Create', () => {
 
     const result = await useCase.execute(user, 'Interest Test');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     let account = result as Account;
 
     // Add a deposit to test interest calculation
@@ -206,7 +206,7 @@ describe('Client Saving Account Create', () => {
 
     const result = await useCase.execute(user, 'Empty Savings');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     const account = result as Account;
 
     // No balance = no interest
@@ -221,7 +221,7 @@ describe('Client Saving Account Create', () => {
 
     const result = await useCase.execute(user, 'New Savings');
 
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     const account = result as Account;
     expect(account.balance).toBe(0);
     expect(account.emittedTransactions).toEqual([]);

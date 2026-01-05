@@ -52,7 +52,7 @@ describe.skipIf(!isRedis)('Redis Account repository adapter', () => {
     expect(deletedAccount).instanceof(Account);
 
 	const deletedAccountAgain = await repository.delete(savedType);
-	expect(deletedAccountAgain).toBeInstanceOf(AccountDeleteError);
+	expect(deletedAccountAgain).instanceof(AccountDeleteError);
   });
 
   test('update', async () => {

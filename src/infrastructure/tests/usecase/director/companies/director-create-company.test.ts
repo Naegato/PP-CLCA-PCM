@@ -20,8 +20,8 @@ describe('Director Create Company', () => {
 
     const result = await useCase.execute('Acme Corporation');
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Company);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Company);
 
     const company = result as Company;
     expect(company.name).toBe('Acme Corporation');
@@ -39,7 +39,7 @@ describe('Director Create Company', () => {
 
     const result = await useCase.execute('Acme Corporation');
 
-    expect(result).toBeInstanceOf(DirectorCreateCompanyError);
+    expect(result).instanceof(DirectorCreateCompanyError);
   });
 
   test('Should create multiple companies with different names', async () => {
@@ -48,8 +48,8 @@ describe('Director Create Company', () => {
     const result1 = await useCase.execute('Company A');
     const result2 = await useCase.execute('Company B');
 
-    expect(result1).toBeInstanceOf(Company);
-    expect(result2).toBeInstanceOf(Company);
+    expect(result1).instanceof(Company);
+    expect(result2).instanceof(Company);
     expect(companyRepository.companies).toHaveLength(2);
   });
 });

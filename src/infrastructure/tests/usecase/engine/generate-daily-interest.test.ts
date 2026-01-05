@@ -69,7 +69,7 @@ describe('Generate Daily Interest', () => {
 
     const result = await useCase.execute();
 
-    expect(result).not.toBeInstanceOf(GenerateDailyInterestError);
+    expect(result).not.instanceof(GenerateDailyInterestError);
     expect(result).toHaveProperty('totalAccountsProcessed');
     expect((result as { totalAccountsProcessed: number }).totalAccountsProcessed).toBe(2);
   });
@@ -79,7 +79,7 @@ describe('Generate Daily Interest', () => {
 
     const result = await useCase.execute();
 
-    expect(result).not.toBeInstanceOf(GenerateDailyInterestError);
+    expect(result).not.instanceof(GenerateDailyInterestError);
     expect((result as { totalAccountsProcessed: number }).totalAccountsProcessed).toBe(0);
   });
 
@@ -94,7 +94,7 @@ describe('Generate Daily Interest', () => {
 
     const result = await useCase.execute();
 
-    expect(result).not.toBeInstanceOf(GenerateDailyInterestError);
+    expect(result).not.instanceof(GenerateDailyInterestError);
     expect((result as { totalAccountsProcessed: number }).totalAccountsProcessed).toBe(1);
   });
 
@@ -132,7 +132,7 @@ describe('Generate Daily Interest', () => {
 
     const result = await useCase.execute();
 
-    expect(result).not.toBeInstanceOf(GenerateDailyInterestError);
+    expect(result).not.instanceof(GenerateDailyInterestError);
     expect((result as { totalAccountsProcessed: number }).totalAccountsProcessed).toBe(2);
   });
 });

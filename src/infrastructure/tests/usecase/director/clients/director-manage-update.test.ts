@@ -59,8 +59,8 @@ describe('Director Manage Update', () => {
 
     const result = await useCase.execute('client-id', { firstname: 'Jane', lastname: 'Smith' });
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(User);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(User);
 
     const updatedUser = result as User;
     expect(updatedUser.firstname).toBe('Jane');
@@ -73,7 +73,7 @@ describe('Director Manage Update', () => {
 
     const result = await useCase.execute('client-id', { firstname: 'Jane' });
 
-    expect(result).toBeInstanceOf(NotDirector);
+    expect(result).instanceof(NotDirector);
   });
 
   test('Should return UserNotFoundByIdError when user not found', async () => {
@@ -82,6 +82,6 @@ describe('Director Manage Update', () => {
 
     const result = await useCase.execute('non-existent-id', { firstname: 'Jane' });
 
-    expect(result).toBeInstanceOf(UserNotFoundByIdError);
+    expect(result).instanceof(UserNotFoundByIdError);
   });
 });

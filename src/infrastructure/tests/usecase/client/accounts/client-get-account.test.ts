@@ -59,7 +59,7 @@ describe('Client Get Account', () => {
     const result = await useCase.execute(account.identifier!);
 
     expect(result).not.toBeNull();
-    expect(result).toBeInstanceOf(Account);
+    expect(result).instanceof(Account);
     expect(result?.identifier).toBe(account.identifier);
     expect(result?.name).toBe('Mon compte');
   });

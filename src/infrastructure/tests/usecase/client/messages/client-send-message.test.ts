@@ -98,9 +98,9 @@ describe('Client Send Message', () => {
 
     const result = await useCase.execute(null, 'Hello, I need help');
 
-    expect(result).not.toBeInstanceOf(NotClient);
-    expect(result).not.toBeInstanceOf(DiscussionNotFoundError);
-    expect(result).toBeInstanceOf(Message);
+    expect(result).not.instanceof(NotClient);
+    expect(result).not.instanceof(DiscussionNotFoundError);
+    expect(result).instanceof(Message);
 
     const message = result as Message;
     expect(message.content).toBe('Hello, I need help');
@@ -118,7 +118,7 @@ describe('Client Send Message', () => {
 
     const result = await useCase.execute('existing-disc-id', 'Follow up message');
 
-    expect(result).toBeInstanceOf(Message);
+    expect(result).instanceof(Message);
     const message = result as Message;
     expect(message.content).toBe('Follow up message');
     expect(messageRepository.messages).toHaveLength(1);
@@ -131,7 +131,7 @@ describe('Client Send Message', () => {
 
     const result = await useCase.execute(null, 'Hello');
 
-    expect(result).toBeInstanceOf(NotClient);
+    expect(result).instanceof(NotClient);
     expect(messageRepository.messages).toHaveLength(0);
   });
 
@@ -141,7 +141,7 @@ describe('Client Send Message', () => {
 
     const result = await useCase.execute('non-existent-id', 'Hello');
 
-    expect(result).toBeInstanceOf(DiscussionNotFoundError);
+    expect(result).instanceof(DiscussionNotFoundError);
     expect(messageRepository.messages).toHaveLength(0);
   });
 
@@ -155,7 +155,7 @@ describe('Client Send Message', () => {
 
     expect(messageRepository.messages).toHaveLength(1);
     const savedMessage = messageRepository.messages[0];
-    expect(savedMessage.sendAt).toBeInstanceOf(Date);
+    expect(savedMessage.sendAt).instanceof(Date);
     expect(savedMessage.sendAt!.getTime()).toBeGreaterThanOrEqual(before.getTime());
     expect(savedMessage.sendAt!.getTime()).toBeLessThanOrEqual(after.getTime());
   });
@@ -169,7 +169,7 @@ describe('Client Send Message', () => {
 
     const result = await useCase.execute('disc-123', 'Message in discussion');
 
-    expect(result).toBeInstanceOf(Message);
+    expect(result).instanceof(Message);
     const message = result as Message;
     expect(message.discussion.identifier).toBe('disc-123');
   });

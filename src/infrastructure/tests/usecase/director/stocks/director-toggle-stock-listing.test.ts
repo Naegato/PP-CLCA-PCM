@@ -42,8 +42,8 @@ describe('Director Toggle Stock Listing', () => {
 
     const result = await useCase.execute(stock.identifier!);
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Stock);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Stock);
 
     const toggledStock = result as Stock;
     expect(toggledStock.isListed).toBe(false);
@@ -61,7 +61,7 @@ describe('Director Toggle Stock Listing', () => {
 
     const result = await useCase.execute(stock.identifier!);
 
-    expect(result).toBeInstanceOf(Stock);
+    expect(result).instanceof(Stock);
     const toggledStock = result as Stock;
     expect(toggledStock.isListed).toBe(true);
   });
@@ -71,7 +71,7 @@ describe('Director Toggle Stock Listing', () => {
 
     const result = await useCase.execute('non-existent-id');
 
-    expect(result).toBeInstanceOf(DirectorToggleStockListingError);
+    expect(result).instanceof(DirectorToggleStockListingError);
   });
 
   test('Should toggle stock multiple times', async () => {
@@ -96,7 +96,7 @@ describe('Director Toggle Stock Listing', () => {
 
     const result = await useCase.execute(stock.identifier!);
 
-    expect(result).toBeInstanceOf(Stock);
+    expect(result).instanceof(Stock);
     const toggledStock = result as Stock;
     expect(toggledStock.identifier).toBe(stock.identifier);
     expect(toggledStock.symbol).toBe(stock.symbol);

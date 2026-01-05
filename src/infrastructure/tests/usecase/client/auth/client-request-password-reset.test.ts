@@ -45,8 +45,8 @@ describe('Client Request Password Reset', () => {
       email: 'jdoe@yopmail.com',
     });
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(RequestPasswordResetResponse);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(RequestPasswordResetResponse);
     const assertedResult = result as RequestPasswordResetResponse;
     expect(assertedResult).toHaveProperty('token');
     expect(assertedResult.token).toBeTypeOf('string');
@@ -72,7 +72,7 @@ describe('Client Request Password Reset', () => {
       email: 'unknown@yopmail.com',
     });
 
-    expect(result).toBeInstanceOf(UserNotFoundByEmailError);
+    expect(result).instanceof(UserNotFoundByEmailError);
   });
 
   test('Should fail if user is not a client', async () => {
@@ -95,6 +95,6 @@ describe('Client Request Password Reset', () => {
       email: 'advisor@yopmail.com',
     });
 
-    expect(result).toBeInstanceOf(UserNotFoundByEmailError);
+    expect(result).instanceof(UserNotFoundByEmailError);
   });
 });

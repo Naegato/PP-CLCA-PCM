@@ -173,7 +173,7 @@ describe('Client Get Stock With Price', () => {
     expect(result.symbol).toBe('TECH');
     expect(result.name).toBe('Technology Stock');
     expect(result.isListed).toBe(true);
-    expect(result.createdAt).toBeInstanceOf(Date);
+    expect(result.createdAt).instanceof(Date);
     expect(typeof result.price).toBe('number');
   });
 });

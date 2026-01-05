@@ -27,7 +27,7 @@ describe('StockOrder Entity', () => {
   test('should create an order successfully', () => {
     const order = StockOrder.create(stock, account, OrderSide.BUY, 150.00, 10);
 
-    expect(order).toBeInstanceOf(StockOrder);
+    expect(order).instanceof(StockOrder);
     expect(order.identifier).toBeDefined();
     expect(order.stock).toEqual(stock);
     expect(order.account).toEqual(account);
@@ -35,7 +35,7 @@ describe('StockOrder Entity', () => {
     expect(order.price).toBe(150.00);
     expect(order.quantity).toBe(10);
     expect(order.remainingQuantity).toBe(10);
-    expect(order.createdAt).toBeInstanceOf(Date);
+    expect(order.createdAt).instanceof(Date);
     expect(order.executed).toBe(false);
   });
 

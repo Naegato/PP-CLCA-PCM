@@ -54,7 +54,7 @@ describe('Client Get Stock Orders', () => {
 
     const result = await useCase.execute(user);
 
-    expect(result).not.toBeInstanceOf(ClientGetStockOrdersError);
+    expect(result).not.instanceof(ClientGetStockOrdersError);
     expect(result).toEqual([]);
   });
 
@@ -73,7 +73,7 @@ describe('Client Get Stock Orders', () => {
 
     const result = await useCase.execute(user);
 
-    expect(result).not.toBeInstanceOf(ClientGetStockOrdersError);
+    expect(result).not.instanceof(ClientGetStockOrdersError);
     expect(result).toHaveLength(2);
   });
 
@@ -96,7 +96,7 @@ describe('Client Get Stock Orders', () => {
 
     const result = await useCase.execute(user1);
 
-    expect(result).not.toBeInstanceOf(ClientGetStockOrdersError);
+    expect(result).not.instanceof(ClientGetStockOrdersError);
     expect(result).toHaveLength(2);
     expect((result as StockOrder[]).every(o => o.account.owner.identifier === 'user-1')).toBe(true);
   });
@@ -115,7 +115,7 @@ describe('Client Get Stock Orders', () => {
 
     const result = await useCase.execute(userWithoutId);
 
-    expect(result).toBeInstanceOf(ClientGetStockOrdersError);
+    expect(result).instanceof(ClientGetStockOrdersError);
   });
 
   test('Should return orders with correct properties', async () => {

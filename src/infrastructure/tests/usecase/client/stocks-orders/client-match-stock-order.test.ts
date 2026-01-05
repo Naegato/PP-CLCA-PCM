@@ -113,7 +113,7 @@ describe('Client Match Stock Order', () => {
 
     const result = await useCase.execute(buyOrder);
 
-    expect(result).toBeInstanceOf(MatchStockOrderError);
+    expect(result).instanceof(MatchStockOrderError);
   });
 
   test('Should return 0 when sell order exists but no buy orders', async () => {
@@ -164,7 +164,7 @@ describe('Client Match Stock Order', () => {
 
     const result = await useCase.execute(buyOrder);
 
-    expect(result).toBeInstanceOf(MatchStockOrderError);
+    expect(result).instanceof(MatchStockOrderError);
   });
 
   test('Should find opposite sell orders when executing buy order', async () => {
@@ -190,6 +190,6 @@ describe('Client Match Stock Order', () => {
     const result = await useCase.execute(buyOrder);
 
     // Should return error due to insufficient funds
-    expect(result).toBeInstanceOf(MatchStockOrderError);
+    expect(result).instanceof(MatchStockOrderError);
   });
 });

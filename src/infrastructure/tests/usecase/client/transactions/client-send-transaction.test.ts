@@ -77,7 +77,7 @@ describe('Client Send Transaction', () => {
 
     const result = await useCase.execute(senderAccount, receiverAccount, 500);
 
-    expect(result).not.toBeInstanceOf(TransactionError);
+    expect(result).not.instanceof(TransactionError);
     expect(typeof result).toBe('number');
     expect(result).toBe(500); // 1000 - 500 = 500
   });
@@ -95,7 +95,7 @@ describe('Client Send Transaction', () => {
 
     const result = await useCase.execute(senderAccount, receiverAccount, 500);
 
-    expect(result).toBeInstanceOf(TransactionError);
+    expect(result).instanceof(TransactionError);
     expect((result as TransactionError).message).toBe('Insufficient funds');
   });
 
@@ -109,7 +109,7 @@ describe('Client Send Transaction', () => {
 
     const result = await useCase.execute(account, account, 100);
 
-    expect(result).toBeInstanceOf(TransactionError);
+    expect(result).instanceof(TransactionError);
     expect((result as TransactionError).message).toBe('Cannot send transaction to the same account');
   });
 

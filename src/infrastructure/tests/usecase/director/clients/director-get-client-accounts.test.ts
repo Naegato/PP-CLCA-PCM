@@ -60,8 +60,8 @@ describe('Director Get Client Accounts', () => {
 
     const result = await useCase.execute(clientWithAccounts);
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Array);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Array);
 
     const accounts = result as Account[];
     expect(accounts).toHaveLength(2);
@@ -79,8 +79,8 @@ describe('Director Get Client Accounts', () => {
 
     const result = await useCase.execute(client);
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Array);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Array);
     expect(result).toHaveLength(0);
   });
 
@@ -91,7 +91,7 @@ describe('Director Get Client Accounts', () => {
 
     const result = await useCase.execute(nonExistentClient);
 
-    expect(result).toBeInstanceOf(Error);
+    expect(result).instanceof(Error);
   });
 
   test('Should return error when user is not a client', async () => {
@@ -102,7 +102,7 @@ describe('Director Get Client Accounts', () => {
 
     const result = await useCase.execute(director);
 
-    expect(result).toBeInstanceOf(Error);
+    expect(result).instanceof(Error);
   });
 
   test('Should return single account when client has one account', async () => {
@@ -116,7 +116,7 @@ describe('Director Get Client Accounts', () => {
 
     const result = await useCase.execute(clientWithAccount);
 
-    expect(result).toBeInstanceOf(Array);
+    expect(result).instanceof(Array);
     const accounts = result as Account[];
     expect(accounts).toHaveLength(1);
     expect(accounts[0].name).toBe('Solo Account');

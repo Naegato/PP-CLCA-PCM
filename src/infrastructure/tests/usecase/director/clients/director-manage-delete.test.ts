@@ -70,7 +70,7 @@ describe('Director Manage Delete', () => {
 
     const result = await useCase.execute('client-id');
 
-    expect(result).toBeInstanceOf(NotDirector);
+    expect(result).instanceof(NotDirector);
   });
 
   test('Should return UserNotFoundByIdError when user not found', async () => {
@@ -79,6 +79,6 @@ describe('Director Manage Delete', () => {
 
     const result = await useCase.execute('non-existent-id');
 
-    expect(result).toBeInstanceOf(UserNotFoundByIdError);
+    expect(result).instanceof(UserNotFoundByIdError);
   });
 });

@@ -23,8 +23,8 @@ describe('Director Get Company', () => {
 
     const result = await useCase.execute(company.identifier);
 
-    expect(result).not.toBeInstanceOf(Error);
-    expect(result).toBeInstanceOf(Company);
+    expect(result).not.instanceof(Error);
+    expect(result).instanceof(Company);
 
     const foundCompany = result as Company;
     expect(foundCompany.identifier).toBe(company.identifier);
@@ -36,7 +36,7 @@ describe('Director Get Company', () => {
 
     const result = await useCase.execute('non-existent-id');
 
-    expect(result).toBeInstanceOf(DirectorGetCompanyError);
+    expect(result).instanceof(DirectorGetCompanyError);
   });
 
   test('Should return correct company when multiple exist', async () => {
@@ -52,7 +52,7 @@ describe('Director Get Company', () => {
 
     const result = await useCase.execute(company2.identifier);
 
-    expect(result).toBeInstanceOf(Company);
+    expect(result).instanceof(Company);
     const foundCompany = result as Company;
     expect(foundCompany.name).toBe('Company B');
   });

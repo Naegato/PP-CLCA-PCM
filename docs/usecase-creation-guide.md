@@ -280,8 +280,8 @@ test('Should do something successfully', async () => {
   });
 
   // 3. Vérifier le succès
-  expect(result).not.toBeInstanceOf(Error);
-  expect(result).toBeInstanceOf(ExpectedResponse);
+  expect(result).not.instanceof(Error);
+  expect(result).(ExpectedResponse);
 
   // 4. Vérifier les propriétés
   const response = result as ExpectedResponse;
@@ -298,7 +298,7 @@ test('Should fail when email does not exist', async () => {
     email: 'unknown@example.com',
   });
 
-  expect(result).toBeInstanceOf(UserNotFoundByEmailError);
+  expect(result).(UserNotFoundByEmailError);
 });
 
 test('Should fail when user is not a client', async () => {
@@ -316,7 +316,7 @@ test('Should fail when user is not a client', async () => {
     email: 'advisor@example.com',
   });
 
-  expect(result).toBeInstanceOf(ExpectedError);
+  expect(result).instanceof(ExpectedError);
 });
 ```
 
