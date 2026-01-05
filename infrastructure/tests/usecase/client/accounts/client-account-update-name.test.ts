@@ -77,6 +77,10 @@ describe('Client Update Name Account', () => {
 
     const result = await useCase.execute(account, 'Updated');
 
+    if (result instanceof Error) {
+      throw result;
+    }
+
     expect(result.identifier).toBe(account.identifier);
     expect(result.owner.identifier).toBe(user.identifier);
     expect(result.type.name).toBe('SAVINGS');

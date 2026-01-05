@@ -5,6 +5,7 @@ import { User } from '@pp-clca-pcm/domain/entities/user';
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
 import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
+import { Company } from '@pp-clca-pcm/domain/entities/company';
 
 describe('StockOrder Entity', () => {
   const userResult = User.create('John', 'Doe', 'john.doe@example.com', 'Password123!');
@@ -20,7 +21,8 @@ describe('StockOrder Entity', () => {
   if (ibanOrError instanceof Error) throw ibanOrError;
   const iban = ibanOrError;
   const account = Account.create(user, accountType, iban);
-  const stock = Stock.create('AAPL', 'Apple Inc.');
+  const company = Company.create('Apple Inc.');
+  const stock = Stock.create('AAPL', 'Apple Stock', company);
 
   test('should create an order successfully', () => {
     const order = StockOrder.create(stock, account, OrderSide.BUY, 150.00, 10);
@@ -59,7 +61,8 @@ describe('StockOrder Entity', () => {
 
   test('should update order properties correctly', () => {
     const initialOrder = StockOrder.create(stock, account, OrderSide.BUY, 150.00, 10);
-    const newStock = Stock.create('GOOG', 'Google Inc.');
+    const company = Company.create('Google Inc.');
+    const newStock = Stock.create('GOOG', 'Google Stock', company);
     const updatedOrder = initialOrder.update({
       stock: newStock,
       side: OrderSide.SELL,
