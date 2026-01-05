@@ -56,22 +56,19 @@ export class Portfolio {
       return new PortfolioError(`Cannot remove ${quantity} of stock ${stockId}: not found in portfolio.`);
     }
 
-    try {
-      const newItem = currentItem.remove(quantity);
-      const newItems = new Map(this.items);
+    const newItem = currentItem.remove(quantity);
+    const newItems = new Map(this.items);
 
-      if (newItem.quantity === 0) {
-        newItems.delete(stockId);
-      } else {
-        newItems.set(stockId, newItem);
-      }
-
-      return new Portfolio(this.identifier, this.account, newItems);
-    } catch (error) {
-      if (error instanceof PortfolioError) {
-        return error;
-      }
-      throw error;
+    if (newItem instanceof Error) {
+      return newItem;
     }
+
+    if (newItem.quantity === 0) {
+      newItems.delete(stockId);
+    } else {
+      newItems.set(stockId, newItem);
+    }
+
+    return new Portfolio(this.identifier, this.account, newItems);
   }
 }

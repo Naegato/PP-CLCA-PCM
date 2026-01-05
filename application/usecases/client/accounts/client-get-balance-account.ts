@@ -4,11 +4,11 @@ import { ClientGetBalanceAccountError } from '@pp-clca-pcm/application/errors/cl
 export class ClientGetBalanceAccount {
   public constructor(private readonly accountRepository: AccountRepository) {}
 
-  public async execute(accountId: string): Promise<number> {
+  public async execute(accountId: string): Promise<number | ClientGetBalanceAccountError> {
     const account = await this.accountRepository.findById(accountId);
 
     if (!account) {
-      throw new ClientGetBalanceAccountError('Account not found');
+      return new ClientGetBalanceAccountError('Account not found');
     }
 
     return account.balance;

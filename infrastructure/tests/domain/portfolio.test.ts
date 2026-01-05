@@ -6,6 +6,7 @@ import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
 import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
+import { Company } from '@pp-clca-pcm/domain/entities/company';
 
 describe('Portfolio Entity', () => {
   const user = User.fromPrimitives({
@@ -15,13 +16,15 @@ describe('Portfolio Entity', () => {
     email: 'john.doe@example.com',
     password: 'Password123!',
   });
-  const accountType = new AccountType('test-type-id', 'Courant', 0, 1, 'description');
+  const accountType = AccountType.create('test-type-id', 2, 'Standard Account');
   const ibanOrError = Iban.create('FR7630001007941234567890185');
   if (ibanOrError instanceof Error) throw ibanOrError;
   const iban = ibanOrError;
   const account = Account.create(user, accountType, iban);
-  const stockA = Stock.create('AAPL', 'Apple Inc.');
-  const stockB = Stock.create('GOOG', 'Google Inc.');
+  const companyA = Company.create('Apple');
+  const companyB = Company.create('Google');
+  const stockA = Stock.create('AAPL', 'Apple Stock', companyA);
+  const stockB = Stock.create('GOOG', 'Google Stock', companyB);
 
   test('should create a portfolio successfully', () => {
     const portfolio = Portfolio.create(account);

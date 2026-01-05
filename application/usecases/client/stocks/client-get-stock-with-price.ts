@@ -18,16 +18,16 @@ export class ClientGetStockWithPrice {
     private readonly marketService: MarketService,
   ) {}
 
-  public async execute(stockId: string): Promise<StockWithPrice> {
+  public async execute(stockId: string): Promise<StockWithPrice | ClientGetStockWithPriceError> {
     const stock = await this.stockRepository.findById(stockId);
 
     if (!stock) {
-      throw new ClientGetStockWithPriceError('Stock not found.');
+      return new ClientGetStockWithPriceError('Stock not found.');
     }
 
     let price: number;
     if (stock.identifier === null) {
-      throw new ClientGetStockWithPriceError('Stock lacks identifier.');
+      return new ClientGetStockWithPriceError('Stock lacks identifier.');
     } else {
       price = await this.marketService.computePrice(stock.identifier);
     }

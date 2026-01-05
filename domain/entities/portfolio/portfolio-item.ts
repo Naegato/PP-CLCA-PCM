@@ -17,9 +17,9 @@ export class PortfolioItem {
     return new PortfolioItem(this.identifier, this.stock, this.quantity + quantity);
   }
 
-  public remove(quantity: number): PortfolioItem {
+  public remove(quantity: number): PortfolioItem | PortfolioError {
     if (this.quantity < quantity) {
-      throw new PortfolioError('Cannot remove more stock than owned');
+      return new PortfolioError('Cannot remove more stock than owned');
     }
     return new PortfolioItem(this.identifier, this.stock, this.quantity - quantity);
   }
