@@ -8,7 +8,7 @@ importers:
 
   .: {}
 
-  application:
+  src/application:
     dependencies:
       '@pp-clca-pcm/domain':
         specifier: workspace:*
@@ -24,7 +24,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  domain:
+  src/domain:
     dependencies:
       '@types/node':
         specifier: ^24.7.0
@@ -34,7 +34,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  infrastructure/adapters:
+  src/infrastructure/adapters:
     dependencies:
       '@pp-clca-pcm/application':
         specifier: workspace:*
@@ -92,7 +92,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  infrastructure/tests:
+  src/infrastructure/tests:
     dependencies:
       '@pp-clca-pcm/adapters':
         specifier: workspace:*

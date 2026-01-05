@@ -4,7 +4,7 @@ import { config } from "dotenv";
 export default defineConfig({
   test: {
     env: {
-      ...config({ path: '../../.env' }).parsed,
+      ...config({ path: '../../../.env' }).parsed,
     },
   },
 })

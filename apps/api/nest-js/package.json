@@ -25,9 +25,9 @@
     "@nestjs/platform-express": "^11.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "@pp-clca-pcm/domain": "file:../../../../domain",
-    "@pp-clca-pcm/application": "file:../../../../application",
-    "@pp-clca-pcm/adapters": "file:../../../../infrastructure/adapters"
+    "@pp-clca-pcm/domain": "file:../../../src/domain",
+    "@pp-clca-pcm/application": "file:../../../src/application",
+    "@pp-clca-pcm/adapters": "file:../../../src/infrastructure/adapters"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

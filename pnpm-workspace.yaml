@@ -1,5 +1,5 @@
 packages:
-  - 'domain'
-  - 'application'
-  - 'infrastructure/adapters'
-  - 'infrastructure/tests'
+  - 'src/domain'
+  - 'src/application'
+  - 'src/infrastructure/adapters'
+  - 'src/infrastructure/tests'
