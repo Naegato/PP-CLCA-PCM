@@ -3,6 +3,7 @@ import path from "path";
 import express from 'express';
 
 import { Security } from '@pp-clca-pcm/application/services/security';
+import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
 
 import { AccountRepository } from "@pp-clca-pcm/application/repositories/account";
 import { RedisAccountRepository } from '@pp-clca-pcm/adapters/repositories/redis/account/account';
@@ -41,10 +42,11 @@ import { AdvisorReplyMessage } from '@pp-clca-pcm/application/usecases/advisor/m
 
 import { AdvisorTransferChat } from '@pp-clca-pcm/application/usecases/advisor/messages/advisor-transfer-chat';
 
+import { ClientCreateAccount } from '@pp-clca-pcm/application/usecases/client/accounts/client-create-account';
+
 import { Argon2PasswordService } from "@pp-clca-pcm/adapters/services/argon2-password";
 import { JwtTokenService } from "@pp-clca-pcm/adapters/services/jwt-token";
-
-dotenv.config({
+ dotenv.config({
   path: path.resolve(__dirname, "../../../../../.env"),
 });
 
@@ -139,6 +141,16 @@ const advisorTransferChat = new AdvisorTransferChat(
   discussionRepository,
 );
 
+// Client
+
+const clientCreateAccount = new ClientCreateAccount(
+  AccountType.create(
+	'temp',
+	22,
+  ),
+  accountRepository,
+);
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -208,6 +220,13 @@ app.post("/adviosr/discussion/:id/transfer", async (req, res) => {
   const { id } = req.params;
 
   // const content = await advisorTransferMessage.execute(id, req.body.advisor);
+  const content = "todo voir avec les autres";
+
+  res.send(content);
+})
+
+app.post("/client/accounts", async (req, res) => {
+  // const content = await clientCreateAccount.execute(user, req.body.name);
   const content = "todo voir avec les autres";
 
   res.send(content);

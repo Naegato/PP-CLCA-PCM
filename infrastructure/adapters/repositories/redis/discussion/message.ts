@@ -25,6 +25,20 @@ export class RedisMessageRepository extends RedisBaseRepository<Message> impleme
 		return realMessage;
 	}
 
+	public async get(id: string): Promise<Message | null> {
+		const key = this.key(id);
+
+		const data = await this.db.get(key);
+
+		if (!data) {
+			return null;
+		}
+
+		const parsedData = JSON.parse(data);
+
+		return this.instanticate(parsedData);
+	}
+
 	protected instanticate(entity: Message): Message {
 		return new Message(
 			entity.identifier,

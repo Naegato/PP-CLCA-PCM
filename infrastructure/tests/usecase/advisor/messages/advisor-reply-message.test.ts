@@ -16,6 +16,11 @@ class InMemoryMessageRepository implements MessageRepository {
     this.messages.push(message);
     return message;
   }
+
+  async get(id: string): Promise<Message | null> {
+	const message = this.messages.find((msg) => msg.identifier === id);
+	return message || null;
+  }
 }
 
 class MockSecurity implements Security {
@@ -80,8 +85,9 @@ describe('Advisor Reply Message', () => {
 
     const discussion = createTestDiscussion(advisor, client);
     const message = createTestMessage(discussion, client);
+	messageRepository.save(message); // Pre-save the original message
 
-    const result = await useCase.execute(message, 'Reply from advisor');
+    const result = await useCase.execute(message.identifier, 'Reply from advisor');
 
     expect(result).not.toBeInstanceOf(NotAdvisor);
     expect(result).toBeInstanceOf(Message);
@@ -89,18 +95,19 @@ describe('Advisor Reply Message', () => {
     const replyMessage = result as Message;
     expect(replyMessage.content).toBe('Reply from advisor');
     expect(replyMessage.sender?.identifier).toBe(advisor.identifier);
-    expect(messageRepository.messages).toHaveLength(1);
+    expect(messageRepository.messages).toHaveLength(2);
   });
 
   test('Should return NotAdvisor error when user is not an advisor', async () => {
     const client = createTestClient();
     const advisor = createTestAdvisor();
-    const { useCase } = getData(client);
+    const { useCase, messageRepository } = getData(client);
 
     const discussion = createTestDiscussion(advisor, client);
     const message = createTestMessage(discussion, client);
+	messageRepository.save(message); // Pre-save the original message
 
-    const result = await useCase.execute(message, 'Reply');
+    const result = await useCase.execute(message.identifier, 'Reply');
 
     expect(result).toBeInstanceOf(NotAdvisor);
   });
@@ -108,12 +115,14 @@ describe('Advisor Reply Message', () => {
   test('Should assign advisor to discussion if no advisor assigned', async () => {
     const advisor = createTestAdvisor();
     const client = createTestClient();
-    const { useCase } = getData(advisor);
+    const { useCase, messageRepository } = getData(advisor);
 
     const discussion = createTestDiscussion(null, client);
     const message = createTestMessage(discussion, client);
+	messageRepository.save(message);
 
-    await useCase.execute(message, 'First reply');
+
+    await useCase.execute(message.identifier, 'First reply');
 
     expect(discussion.advisor?.identifier).toBe(advisor.identifier);
   });
@@ -125,22 +134,24 @@ describe('Advisor Reply Message', () => {
 
     const discussion = createTestDiscussion(advisor, client);
     const message = createTestMessage(discussion, client);
+	messageRepository.save(message);
 
-    await useCase.execute(message, 'Reply message');
+    await useCase.execute(message.identifier, 'Reply message');
 
-    expect(messageRepository.messages).toHaveLength(1);
-    expect(messageRepository.messages[0].content).toBe('Reply message');
+    expect(messageRepository.messages).toHaveLength(2);
+    expect(messageRepository.messages[1].content).toBe('Reply message');
   });
 
   test('Should preserve discussion reference in reply', async () => {
     const advisor = createTestAdvisor();
     const client = createTestClient();
-    const { useCase } = getData(advisor);
+    const { useCase, messageRepository } = getData(advisor);
 
     const discussion = createTestDiscussion(advisor, client);
     const message = createTestMessage(discussion, client);
+	messageRepository.save(message);
 
-    const result = await useCase.execute(message, 'Reply');
+    const result = await useCase.execute(message.identifier, 'Reply');
 
     expect(result).toBeInstanceOf(Message);
     const replyMessage = result as Message;
