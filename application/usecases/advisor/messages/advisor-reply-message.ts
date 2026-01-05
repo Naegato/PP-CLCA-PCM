@@ -10,7 +10,8 @@ export class AdvisorReplyMessage {
 	) {
 	}
 
-	public async execute(message: Message, text: string) {
+	public async execute(messageId: string, text: string) {
+		const message = await this.messageRepository.get(messageId);
 		const advisor = this.security.getCurrentUser();
 
 		if (!advisor.isAdvisor()) {
