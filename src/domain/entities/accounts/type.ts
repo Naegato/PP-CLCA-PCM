@@ -41,4 +41,20 @@ export class AccountType {
       props.description ?? this.description,
     );
   }
+
+  public static fromPrimitives(primitives: {
+    identifier: string | null,
+    name: AccountTypeName,
+    rate: number,
+    limitByClient?: number | null,
+    description?: string | null,
+  }): AccountType {
+    return new AccountType(
+      primitives.identifier,
+      primitives.name,
+      primitives.rate,
+      primitives.limitByClient ?? null,
+      primitives.description ?? null,
+    );
+  }
 }

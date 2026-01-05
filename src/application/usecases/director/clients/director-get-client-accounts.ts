@@ -2,7 +2,7 @@ import { User } from "@pp-clca-pcm/domain/entities/user";
 import { UserRepository } from "../../../repositories/user.js";
 import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
 
-export class DirectorGetClientAccount {
+export class DirectorGetClientAccounts {
 	public constructor(
 		private readonly userRepository: UserRepository,
 	) {}
