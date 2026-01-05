@@ -75,7 +75,9 @@ describe('Client Get Stock With Price', () => {
   test('Should throw ClientGetStockWithPriceError when stock not found', async () => {
     const { useCase } = getData();
 
-    await expect(useCase.execute('non-existent-id')).rejects.toThrow(ClientGetStockWithPriceError);
+    const data = await useCase.execute('non-existent-id');
+
+    expect(data).instanceof(ClientGetStockWithPriceError);
   });
 
   test('Should return price of 0 when no orders exist', async () => {
