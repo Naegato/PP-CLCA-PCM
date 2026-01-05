@@ -7,6 +7,7 @@ import { MatchStockOrderError } from '../../../errors/match-stock-order';
 import { PortfolioRepository } from '../../../repositories/portfolio';
 import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
 import { PortfolioError } from '@pp-clca-pcm/domain/errors/portfolio';
+import { InvalidIbanError } from '@pp-clca-pcm/domain/errors/invalid-iban-format';
 
 //purpose of this function is to match an order to buy or sell a stock to other existing orders on the same stock, and if possible procede with the stocks' trade
 export class ClientMatchStockOrder {
@@ -16,7 +17,7 @@ export class ClientMatchStockOrder {
     private readonly portfolioRepository: PortfolioRepository,
   ) {}
 
-  public async execute(order: StockOrder): Promise<number | MatchStockOrderError> {
+  public async execute(order: StockOrder) {
     if (!order.stock.identifier) {
       return new MatchStockOrderError('Order stock has no identifier.');
     }
@@ -42,7 +43,7 @@ export class ClientMatchStockOrder {
     currentOrder: StockOrder,
     oppositeOrders: StockOrder[],
     matchedQuantityAccumulator: number = 0,
-  ): Promise<number | MatchStockOrderError> {
+  ): Promise<number | MatchStockOrderError | InvalidIbanError> {
 
     if (oppositeOrders.length === 0 || currentOrder.executed) {
       return matchedQuantityAccumulator;
@@ -112,6 +113,14 @@ export class ClientMatchStockOrder {
 
     const sellerPortfolio = await this.portfolioRepository.findByAccountId(sellerAccount.identifier) ?? Portfolio.create(sellerAccount);
     const buyerPortfolio = await this.portfolioRepository.findByAccountId(buyerAccount.identifier) ?? Portfolio.create(buyerAccount);
+
+    if (sellerPortfolio instanceof Error) {
+      return sellerPortfolio;
+    }
+
+    if (buyerPortfolio instanceof Error) {
+      return buyerPortfolio;
+    }
 
     const updatedSellerPortfolio = sellerPortfolio.removeStock(sellerOrder.stock, tradeQuantity);
     if (updatedSellerPortfolio instanceof PortfolioError) {

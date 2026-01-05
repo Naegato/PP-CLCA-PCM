@@ -1,8 +1,9 @@
-.PHONY: up up-nextjs up-nestjs db clear install prisma-generate prisma-migrate up-db tests help
+.PHONY: up up-nextjs up-nestjs db clear install build prisma-generate prisma-migrate up-db tests help
 
 help:
 	@echo "Available targets:"
 	@echo "  make install         - Install all dependencies with pnpm"
+	@echo "  make build           - Build all packages (domain, application, adapters)"
 	@echo "  make db              - Start Docker containers (PostgreSQL, MariaDB, Redis)"
 	@echo "  make prisma-generate - Generate Prisma client"
 	@echo "  make prisma-migrate  - Run Prisma migrations"
@@ -24,12 +25,15 @@ help:
 install:
 	pnpm install
 
+build: install prisma-generate
+	pnpm build
+
 db: .env
 	docker compose up -d
 	@echo "Waiting for databases to be ready..."
 	@sleep 3
 
-prisma-generate:
+prisma-generate: install
 	pnpm --filter @pp-clca-pcm/adapters p:g
 
 prisma-migrate: db
@@ -37,7 +41,7 @@ prisma-migrate: db
 
 up-db: db prisma-generate prisma-migrate
 
-tests: up-db
+tests: up-db build
 	pnpm test
 
 up: tests
@@ -46,8 +50,8 @@ up: tests
 	pnpm --filter @pp-clca-pcm/front-nextjs dev & \
 	wait
 
-up-nestjs: install
-	pnpm --filter @pp-clca-pcm/api-nestjs start:dev
+up-nestjs:
+	cd infrastructure/apps/api/nest-js && npm install && npm run start:dev
 
 up-nextjs: install
 	pnpm --filter @pp-clca-pcm/front-nextjs dev
@@ -55,8 +59,11 @@ up-nextjs: install
 clear:
 	rm -rf node_modules
 	rm -rf domain/node_modules
+	rm -rf domain/dist
 	rm -rf application/node_modules
+	rm -rf application/dist
 	rm -rf infrastructure/adapters/node_modules
+	rm -rf infrastructure/adapters/dist
 	rm -rf infrastructure/tests/node_modules
 	rm -rf infrastructure/apps/api/nest-js/node_modules
 	rm -rf infrastructure/apps/front/next-js/node_modules

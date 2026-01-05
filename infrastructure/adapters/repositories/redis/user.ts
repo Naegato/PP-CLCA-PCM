@@ -45,7 +45,7 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 		return user;
 	}
 
-	private async fetchFromKey(keyToSearch: string): Promise<User[]> {
+	protected async fetchFromKey(keyToSearch: string): Promise<User[]> {
 		const result: User[] = [];
 
 		for await (const key of this.db.scanIterator({ MATCH: keyToSearch })) {
@@ -73,17 +73,51 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 	}
 
 
-	private key(entity: User): string {
+	async findByEmail(email: string): Promise<User | import('@pp-clca-pcm/application/errors/user-not-found-by-email').UserNotFoundByEmailError> {
+		const key = `${this.prefix}${email}`;
+		const user = await this.fetchFromKey(key).then(results => results.length ? results[0] : null);
+
+		if (!user) {
+			const { UserNotFoundByEmailError } = await import('@pp-clca-pcm/application/errors/user-not-found-by-email');
+			return new UserNotFoundByEmailError(email);
+		}
+
+		return user;
+	}
+
+	async findById(id: string): Promise<User | import('@pp-clca-pcm/application/errors/user-not-found-by-id').UserNotFoundByIdError> {
+		const allUsers = await this.all();
+		const user = allUsers.find(u => u.identifier === id);
+
+		if (!user) {
+			const { UserNotFoundByIdError } = await import('@pp-clca-pcm/application/errors/user-not-found-by-id');
+			return new UserNotFoundByIdError();
+		}
+
+		return user;
+	}
+
+	async delete(userId: string): Promise<void> {
+		const user = await this.findById(userId);
+		if (user instanceof Error) {
+			return;
+		}
+
+		const key = this.key(user);
+		await this.db.del(key);
+	}
+
+	protected override key(entity: User): string {
 		return `${this.prefix}${entity.email.value}`;
 	}
 
-	override instanticate(entity: User): User {
+	protected instanticate(entity: User): User {
 		return User.fromPrimitives({
-			identifier: entity.identifier,
+			identifier: entity.identifier!,
 			firstname: entity.firstname,
 			lastname: entity.lastname,
-			email: entity.email,
-			password: entity.password,
+			email: typeof entity.email === 'string' ? entity.email : entity.email.value,
+			password: typeof entity.password === 'string' ? entity.password : entity.password.value,
 			clientProps: entity.clientProps,
 			advisorProps: entity.advisorProps,
 			directorProps: entity.directorProps,

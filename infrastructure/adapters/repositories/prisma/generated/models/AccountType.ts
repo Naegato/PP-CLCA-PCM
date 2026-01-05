@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums.js"
-import type * as Prisma from "../internal/prismaNamespace.js"
+import type * as $Enums from "../enums"
+import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model AccountType
@@ -220,6 +220,7 @@ export type AccountTypeWhereInput = {
   rate?: Prisma.FloatFilter<"AccountType"> | number
   limitByClient?: Prisma.IntNullableFilter<"AccountType"> | number | null
   description?: Prisma.StringNullableFilter<"AccountType"> | string | null
+  accounts?: Prisma.AccountListRelationFilter
 }
 
 export type AccountTypeOrderByWithRelationInput = {
@@ -228,6 +229,7 @@ export type AccountTypeOrderByWithRelationInput = {
   rate?: Prisma.SortOrder
   limitByClient?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  accounts?: Prisma.AccountOrderByRelationAggregateInput
 }
 
 export type AccountTypeWhereUniqueInput = Prisma.AtLeast<{
@@ -239,6 +241,7 @@ export type AccountTypeWhereUniqueInput = Prisma.AtLeast<{
   rate?: Prisma.FloatFilter<"AccountType"> | number
   limitByClient?: Prisma.IntNullableFilter<"AccountType"> | number | null
   description?: Prisma.StringNullableFilter<"AccountType"> | string | null
+  accounts?: Prisma.AccountListRelationFilter
 }, "identifier" | "name">
 
 export type AccountTypeOrderByWithAggregationInput = {
@@ -271,6 +274,7 @@ export type AccountTypeCreateInput = {
   rate: number
   limitByClient?: number | null
   description?: string | null
+  accounts?: Prisma.AccountCreateNestedManyWithoutTypeInput
 }
 
 export type AccountTypeUncheckedCreateInput = {
@@ -279,6 +283,7 @@ export type AccountTypeUncheckedCreateInput = {
   rate: number
   limitByClient?: number | null
   description?: string | null
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutTypeInput
 }
 
 export type AccountTypeUpdateInput = {
@@ -287,6 +292,7 @@ export type AccountTypeUpdateInput = {
   rate?: Prisma.FloatFieldUpdateOperationsInput | number
   limitByClient?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUpdateManyWithoutTypeNestedInput
 }
 
 export type AccountTypeUncheckedUpdateInput = {
@@ -295,6 +301,7 @@ export type AccountTypeUncheckedUpdateInput = {
   rate?: Prisma.FloatFieldUpdateOperationsInput | number
   limitByClient?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutTypeNestedInput
 }
 
 export type AccountTypeCreateManyInput = {
@@ -355,8 +362,9 @@ export type AccountTypeSumOrderByAggregateInput = {
   limitByClient?: Prisma.SortOrder
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type AccountTypeScalarRelationFilter = {
+  is?: Prisma.AccountTypeWhereInput
+  isNot?: Prisma.AccountTypeWhereInput
 }
 
 export type FloatFieldUpdateOperationsInput = {
@@ -375,10 +383,97 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type AccountTypeCreateNestedOneWithoutAccountsInput = {
+  create?: Prisma.XOR<Prisma.AccountTypeCreateWithoutAccountsInput, Prisma.AccountTypeUncheckedCreateWithoutAccountsInput>
+  connectOrCreate?: Prisma.AccountTypeCreateOrConnectWithoutAccountsInput
+  connect?: Prisma.AccountTypeWhereUniqueInput
 }
 
+export type AccountTypeUpdateOneRequiredWithoutAccountsNestedInput = {
+  create?: Prisma.XOR<Prisma.AccountTypeCreateWithoutAccountsInput, Prisma.AccountTypeUncheckedCreateWithoutAccountsInput>
+  connectOrCreate?: Prisma.AccountTypeCreateOrConnectWithoutAccountsInput
+  upsert?: Prisma.AccountTypeUpsertWithoutAccountsInput
+  connect?: Prisma.AccountTypeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AccountTypeUpdateToOneWithWhereWithoutAccountsInput, Prisma.AccountTypeUpdateWithoutAccountsInput>, Prisma.AccountTypeUncheckedUpdateWithoutAccountsInput>
+}
+
+export type AccountTypeCreateWithoutAccountsInput = {
+  identifier?: string
+  name: string
+  rate: number
+  limitByClient?: number | null
+  description?: string | null
+}
+
+export type AccountTypeUncheckedCreateWithoutAccountsInput = {
+  identifier?: string
+  name: string
+  rate: number
+  limitByClient?: number | null
+  description?: string | null
+}
+
+export type AccountTypeCreateOrConnectWithoutAccountsInput = {
+  where: Prisma.AccountTypeWhereUniqueInput
+  create: Prisma.XOR<Prisma.AccountTypeCreateWithoutAccountsInput, Prisma.AccountTypeUncheckedCreateWithoutAccountsInput>
+}
+
+export type AccountTypeUpsertWithoutAccountsInput = {
+  update: Prisma.XOR<Prisma.AccountTypeUpdateWithoutAccountsInput, Prisma.AccountTypeUncheckedUpdateWithoutAccountsInput>
+  create: Prisma.XOR<Prisma.AccountTypeCreateWithoutAccountsInput, Prisma.AccountTypeUncheckedCreateWithoutAccountsInput>
+  where?: Prisma.AccountTypeWhereInput
+}
+
+export type AccountTypeUpdateToOneWithWhereWithoutAccountsInput = {
+  where?: Prisma.AccountTypeWhereInput
+  data: Prisma.XOR<Prisma.AccountTypeUpdateWithoutAccountsInput, Prisma.AccountTypeUncheckedUpdateWithoutAccountsInput>
+}
+
+export type AccountTypeUpdateWithoutAccountsInput = {
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  rate?: Prisma.FloatFieldUpdateOperationsInput | number
+  limitByClient?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type AccountTypeUncheckedUpdateWithoutAccountsInput = {
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  rate?: Prisma.FloatFieldUpdateOperationsInput | number
+  limitByClient?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+
+/**
+ * Count Type AccountTypeCountOutputType
+ */
+
+export type AccountTypeCountOutputType = {
+  accounts: number
+}
+
+export type AccountTypeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  accounts?: boolean | AccountTypeCountOutputTypeCountAccountsArgs
+}
+
+/**
+ * AccountTypeCountOutputType without action
+ */
+export type AccountTypeCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AccountTypeCountOutputType
+   */
+  select?: Prisma.AccountTypeCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AccountTypeCountOutputType without action
+ */
+export type AccountTypeCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AccountWhereInput
+}
 
 
 export type AccountTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -387,6 +482,8 @@ export type AccountTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   rate?: boolean
   limitByClient?: boolean
   description?: boolean
+  accounts?: boolean | Prisma.AccountType$accountsArgs<ExtArgs>
+  _count?: boolean | Prisma.AccountTypeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["accountType"]>
 
 export type AccountTypeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -414,10 +511,18 @@ export type AccountTypeSelectScalar = {
 }
 
 export type AccountTypeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"identifier" | "name" | "rate" | "limitByClient" | "description", ExtArgs["result"]["accountType"]>
+export type AccountTypeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  accounts?: boolean | Prisma.AccountType$accountsArgs<ExtArgs>
+  _count?: boolean | Prisma.AccountTypeCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type AccountTypeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type AccountTypeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $AccountTypePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AccountType"
-  objects: {}
+  objects: {
+    accounts: Prisma.$AccountPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     identifier: string
     name: string
@@ -818,6 +923,7 @@ readonly fields: AccountTypeFieldRefs;
  */
 export interface Prisma__AccountTypeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  accounts<T extends Prisma.AccountType$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AccountType$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -869,6 +975,10 @@ export type AccountTypeFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.AccountTypeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountTypeInclude<ExtArgs> | null
+  /**
    * Filter, which AccountType to fetch.
    */
   where: Prisma.AccountTypeWhereUniqueInput
@@ -887,6 +997,10 @@ export type AccountTypeFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exten
    */
   omit?: Prisma.AccountTypeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountTypeInclude<ExtArgs> | null
+  /**
    * Filter, which AccountType to fetch.
    */
   where: Prisma.AccountTypeWhereUniqueInput
@@ -904,6 +1018,10 @@ export type AccountTypeFindFirstArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the AccountType
    */
   omit?: Prisma.AccountTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountTypeInclude<ExtArgs> | null
   /**
    * Filter, which AccountType to fetch.
    */
@@ -953,6 +1071,10 @@ export type AccountTypeFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extens
    */
   omit?: Prisma.AccountTypeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountTypeInclude<ExtArgs> | null
+  /**
    * Filter, which AccountType to fetch.
    */
   where?: Prisma.AccountTypeWhereInput
@@ -1001,6 +1123,10 @@ export type AccountTypeFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.AccountTypeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountTypeInclude<ExtArgs> | null
+  /**
    * Filter, which AccountTypes to fetch.
    */
   where?: Prisma.AccountTypeWhereInput
@@ -1043,6 +1169,10 @@ export type AccountTypeCreateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the AccountType
    */
   omit?: Prisma.AccountTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountTypeInclude<ExtArgs> | null
   /**
    * The data needed to create a AccountType.
    */
@@ -1091,6 +1221,10 @@ export type AccountTypeUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the AccountType
    */
   omit?: Prisma.AccountTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountTypeInclude<ExtArgs> | null
   /**
    * The data needed to update a AccountType.
    */
@@ -1158,6 +1292,10 @@ export type AccountTypeUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.AccountTypeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountTypeInclude<ExtArgs> | null
+  /**
    * The filter to search for the AccountType to update in case it exists.
    */
   where: Prisma.AccountTypeWhereUniqueInput
@@ -1184,6 +1322,10 @@ export type AccountTypeDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.AccountTypeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountTypeInclude<ExtArgs> | null
+  /**
    * Filter which AccountType to delete.
    */
   where: Prisma.AccountTypeWhereUniqueInput
@@ -1204,6 +1346,30 @@ export type AccountTypeDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
 }
 
 /**
+ * AccountType.accounts
+ */
+export type AccountType$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Account
+   */
+  select?: Prisma.AccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Account
+   */
+  omit?: Prisma.AccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountInclude<ExtArgs> | null
+  where?: Prisma.AccountWhereInput
+  orderBy?: Prisma.AccountOrderByWithRelationInput | Prisma.AccountOrderByWithRelationInput[]
+  cursor?: Prisma.AccountWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AccountScalarFieldEnum | Prisma.AccountScalarFieldEnum[]
+}
+
+/**
  * AccountType without action
  */
 export type AccountTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1215,4 +1381,8 @@ export type AccountTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the AccountType
    */
   omit?: Prisma.AccountTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountTypeInclude<ExtArgs> | null
 }

@@ -1,6 +1,7 @@
 import { RedisClientType } from 'redis';
 import { LoanRequest } from '@pp-clca-pcm/domain/entities/loan-request';
 import { LoanRequestRepository } from '@pp-clca-pcm/application/repositories/request-loan';
+import { User } from '@pp-clca-pcm/domain/entities/user';
 import { RedisBaseRepository } from './base';
 
 export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest> implements LoanRequestRepository {
@@ -18,8 +19,8 @@ export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest>
 		return loan;
 	}
 
-	async getAllByAdvisor(advisorId: string): Promise<LoanRequest[]> {
-		return this.fetchFromKey(`${this.prefix}${advisorId}:*`);
+	async getAllByAdvisor(advisor: User): Promise<LoanRequest[]> {
+		return this.fetchFromKey(`${this.prefix}${advisor.identifier}:*`);
 	}
 
 	async get(id: string): Promise<LoanRequest | null> {

@@ -1,9 +1,28 @@
 {
   "private": true,
   "version": "0.1.0",
-  "type": "module",
   "name": "@pp-clca-pcm/adapters",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/*.js",
+      "require": "./dist/*.js",
+      "types": "./dist/*.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "prisma"
+  ],
   "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist",
     "p:g": "prisma generate",
     "p:m": "prisma migrate dev",
     "p:m:r": "prisma migrate reset",

@@ -16,4 +16,10 @@ export class RedisAdvisorRepository extends RedisBaseRepository<User> implements
 
 		return advisor;
 	}
+
+	protected instanticate(entity: User): User {
+		// Since User has a private constructor, we would need User.createFromRaw()
+		// For now, return the entity as-is (this is a simplified implementation)
+		return entity as User;
+	}
 }

@@ -13,7 +13,7 @@ export class ClientDeleteAccount {
   public async execute(account: Account): Promise<null | AccountDeleteError> {
     const userAccounts = await this.accountRepository.findByOwner(account.owner);
 
-    if (userAccounts.length <= 1) {
+    if (!userAccounts || userAccounts.length <= 1) {
       return new AccountDeleteError('User must have at least one account');
     }
 

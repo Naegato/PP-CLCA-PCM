@@ -71,4 +71,12 @@ export class Portfolio {
 
     return new Portfolio(this.identifier, this.account, newItems);
   }
+
+  public static createFromRaw(
+    identifier: string,
+    account: Account,
+    items: Map<string, PortfolioItem>
+  ) {
+    return new Portfolio(randomUUID(), account, items);
+  }
 }

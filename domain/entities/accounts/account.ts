@@ -27,6 +27,19 @@ export class Account {
     return new Account(randomUUID(), owner, type, [], [], iban, name ?? randomUUID(), portfolio);
   }
 
+  public static createFromRaw(
+    identifier: string,
+    owner: User,
+    type: AccountType,
+    emittedTransactions: Transaction[],
+    receivedTransactions: Transaction[],
+    iban: Iban,
+    name?: string,
+    portfolio?: Portfolio,
+  ): Account {
+    return new Account(identifier, owner, type, emittedTransactions, receivedTransactions, iban, name, portfolio);
+  }
+
   public update(props: Partial<Omit<Account, 'identifier' | 'owner' | 'iban' | 'portfolio'>>): Account {
     return new Account(
       this.identifier,

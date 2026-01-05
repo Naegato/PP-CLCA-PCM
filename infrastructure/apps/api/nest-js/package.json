@@ -1,5 +1,5 @@
 {
-  "name": "@pp-clca-pcm/api-nestjs",
+  "name": "nest-js",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -25,9 +25,9 @@
     "@nestjs/platform-express": "^11.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "@pp-clca-pcm/application": "workspace:*",
-    "@pp-clca-pcm/domain": "workspace:*",
-    "@pp-clca-pcm/adapters": "workspace:*"
+    "@pp-clca-pcm/domain": "file:../../../../domain",
+    "@pp-clca-pcm/application": "file:../../../../application",
+    "@pp-clca-pcm/adapters": "file:../../../../infrastructure/adapters"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

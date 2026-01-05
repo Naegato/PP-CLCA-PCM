@@ -8,18 +8,30 @@ public constructor(
 	) {
 	}
 
-	save(discussion: Discussion): Promise<Discussion> {
-		this.connection.sql(
+	async save(discussion: Discussion): Promise<Discussion> {
+		await this.connection.sql(
 			'INSERT INTO discussion value (?, ?, ?)',
-			[discussion.content, discussion.advisor.id, discussion.user.id]
+			[discussion.content, discussion.advisor?.identifier, discussion.user?.identifier]
 		);
 
-		return Promise.resolve(discussion);
+		return discussion;
 	}
 
-	get(id: string): Promise<Discussion | null> {
-		const [ res ] = this.connection.sql('SELECT * FROM discussion where id = ?', [id]);
+	async get(id: string): Promise<Discussion | null> {
+		const res = await this.connection.sql('SELECT * FROM discussion where id = ?', [id]);
 
-		return Promise.resolve(new Discussion(...res))
+		if (!res || res.length === 0) {
+			return null;
+		}
+
+		const row = res[0] as any;
+		// This is a simplified implementation - proper implementation would need to hydrate User objects
+		return new Discussion(
+			row.id,
+			null, // content/messages would need to be fetched separately
+			null, // advisor would need to be fetched from user repository
+			null, // user would need to be fetched from user repository
+			row.status
+		);
 	}
 }

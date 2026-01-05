@@ -12,7 +12,7 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "./prismaNamespace.js"
+import type * as Prisma from "./prismaNamespace"
 
 
 const config: runtime.GetPrismaClientConfig = {
@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../repositories/prisma/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel AccountType {\n  identifier    String  @id @default(uuid())\n  name          String  @unique\n  rate          Float\n  limitByClient Int?\n  description   String?\n\n  @@map(\"account_types\")\n}\n",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../repositories/prisma/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  identifier    String  @id @default(uuid())\n  firstname     String\n  lastname      String\n  email         String  @unique\n  password      String\n  clientProps   String?\n  advisorProps  String?\n  directorProps String?\n\n  accounts      Account[]\n  bansReceived  Ban[]          @relation(\"BannedUser\")\n  bansAuthored  Ban[]          @relation(\"BanAuthor\")\n  notifications Notification[]\n\n  @@map(\"users\")\n}\n\nmodel AccountType {\n  identifier    String  @id @default(uuid())\n  name          String  @unique\n  rate          Float\n  limitByClient Int?\n  description   String?\n\n  accounts Account[]\n\n  @@map(\"account_types\")\n}\n\nmodel Account {\n  identifier String   @id @default(uuid())\n  ownerId    String\n  typeId     String\n  iban       String   @unique\n  name       String\n  createdAt  DateTime @default(now())\n\n  owner                User          @relation(fields: [ownerId], references: [identifier])\n  type                 AccountType   @relation(fields: [typeId], references: [identifier])\n  emittedTransactions  Transaction[] @relation(\"EmittedTransactions\")\n  receivedTransactions Transaction[] @relation(\"ReceivedTransactions\")\n  portfolios           Portfolio[]\n  stockOrders          StockOrder[]\n\n  @@map(\"accounts\")\n}\n\nmodel Ban {\n  identifier String    @id @default(uuid())\n  userId     String\n  authorId   String\n  start      DateTime\n  end        DateTime?\n  reason     String\n\n  user   User @relation(\"BannedUser\", fields: [userId], references: [identifier])\n  author User @relation(\"BanAuthor\", fields: [authorId], references: [identifier])\n\n  @@map(\"bans\")\n}\n\nmodel Company {\n  identifier String @id @default(uuid())\n  name       String @unique\n\n  stocks Stock[]\n\n  @@map(\"companies\")\n}\n\nmodel Stock {\n  identifier String   @id @default(uuid())\n  symbol     String   @unique\n  name       String\n  isListed   Boolean\n  createdAt  DateTime @default(now())\n  companyId  String\n\n  company        Company         @relation(fields: [companyId], references: [identifier])\n  portfolioItems PortfolioItem[]\n  stockOrders    StockOrder[]\n\n  @@map(\"stocks\")\n}\n\nmodel Portfolio {\n  identifier String @id @default(uuid())\n  accountId  String @unique\n\n  account Account         @relation(fields: [accountId], references: [identifier])\n  items   PortfolioItem[]\n\n  @@map(\"portfolios\")\n}\n\nmodel PortfolioItem {\n  identifier  String @id @default(uuid())\n  portfolioId String\n  stockId     String\n  quantity    Int\n\n  portfolio Portfolio @relation(fields: [portfolioId], references: [identifier], onDelete: Cascade)\n  stock     Stock     @relation(fields: [stockId], references: [identifier])\n\n  @@unique([portfolioId, stockId])\n  @@map(\"portfolio_items\")\n}\n\nmodel StockOrder {\n  identifier        String   @id @default(uuid())\n  stockId           String\n  accountId         String\n  side              String\n  price             Float\n  quantity          Int\n  remainingQuantity Int\n  createdAt         DateTime @default(now())\n\n  stock   Stock   @relation(fields: [stockId], references: [identifier])\n  account Account @relation(fields: [accountId], references: [identifier])\n\n  @@map(\"stock_orders\")\n}\n\nmodel Notification {\n  identifier  String   @id @default(uuid())\n  recipientId String\n  message     String\n  type        String\n  isRead      Boolean  @default(false)\n  createdAt   DateTime @default(now())\n\n  recipient User @relation(fields: [recipientId], references: [identifier])\n\n  @@map(\"notifications\")\n}\n\nmodel Transaction {\n  identifier String   @id @default(uuid())\n  emitterId  String\n  receiverId String\n  amount     Float\n  createdAt  DateTime @default(now())\n\n  emitter  Account @relation(\"EmittedTransactions\", fields: [emitterId], references: [identifier])\n  receiver Account @relation(\"ReceivedTransactions\", fields: [receiverId], references: [identifier])\n\n  @@map(\"transactions\")\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"AccountType\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"limitByClient\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"account_types\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"firstname\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastname\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"clientProps\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"advisorProps\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"directorProps\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accounts\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"AccountToUser\"},{\"name\":\"bansReceived\",\"kind\":\"object\",\"type\":\"Ban\",\"relationName\":\"BannedUser\"},{\"name\":\"bansAuthored\",\"kind\":\"object\",\"type\":\"Ban\",\"relationName\":\"BanAuthor\"},{\"name\":\"notifications\",\"kind\":\"object\",\"type\":\"Notification\",\"relationName\":\"NotificationToUser\"}],\"dbName\":\"users\"},\"AccountType\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"rate\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"limitByClient\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accounts\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"AccountToAccountType\"}],\"dbName\":\"account_types\"},\"Account\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"ownerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"typeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"iban\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"owner\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AccountToUser\"},{\"name\":\"type\",\"kind\":\"object\",\"type\":\"AccountType\",\"relationName\":\"AccountToAccountType\"},{\"name\":\"emittedTransactions\",\"kind\":\"object\",\"type\":\"Transaction\",\"relationName\":\"EmittedTransactions\"},{\"name\":\"receivedTransactions\",\"kind\":\"object\",\"type\":\"Transaction\",\"relationName\":\"ReceivedTransactions\"},{\"name\":\"portfolios\",\"kind\":\"object\",\"type\":\"Portfolio\",\"relationName\":\"AccountToPortfolio\"},{\"name\":\"stockOrders\",\"kind\":\"object\",\"type\":\"StockOrder\",\"relationName\":\"AccountToStockOrder\"}],\"dbName\":\"accounts\"},\"Ban\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"authorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"start\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"end\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reason\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"BannedUser\"},{\"name\":\"author\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"BanAuthor\"}],\"dbName\":\"bans\"},\"Company\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stocks\",\"kind\":\"object\",\"type\":\"Stock\",\"relationName\":\"CompanyToStock\"}],\"dbName\":\"companies\"},\"Stock\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"symbol\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isListed\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"companyId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"company\",\"kind\":\"object\",\"type\":\"Company\",\"relationName\":\"CompanyToStock\"},{\"name\":\"portfolioItems\",\"kind\":\"object\",\"type\":\"PortfolioItem\",\"relationName\":\"PortfolioItemToStock\"},{\"name\":\"stockOrders\",\"kind\":\"object\",\"type\":\"StockOrder\",\"relationName\":\"StockToStockOrder\"}],\"dbName\":\"stocks\"},\"Portfolio\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accountId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"account\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"AccountToPortfolio\"},{\"name\":\"items\",\"kind\":\"object\",\"type\":\"PortfolioItem\",\"relationName\":\"PortfolioToPortfolioItem\"}],\"dbName\":\"portfolios\"},\"PortfolioItem\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"portfolioId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stockId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"portfolio\",\"kind\":\"object\",\"type\":\"Portfolio\",\"relationName\":\"PortfolioToPortfolioItem\"},{\"name\":\"stock\",\"kind\":\"object\",\"type\":\"Stock\",\"relationName\":\"PortfolioItemToStock\"}],\"dbName\":\"portfolio_items\"},\"StockOrder\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"stockId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accountId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"side\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"remainingQuantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"stock\",\"kind\":\"object\",\"type\":\"Stock\",\"relationName\":\"StockToStockOrder\"},{\"name\":\"account\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"AccountToStockOrder\"}],\"dbName\":\"stock_orders\"},\"Notification\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"recipientId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"message\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"type\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isRead\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"recipient\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"NotificationToUser\"}],\"dbName\":\"notifications\"},\"Transaction\":{\"fields\":[{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"emitterId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"receiverId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"amount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"emitter\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"EmittedTransactions\"},{\"name\":\"receiver\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"ReceivedTransactions\"}],\"dbName\":\"transactions\"}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -37,10 +37,10 @@ async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Modul
 }
 
 config.compilerWasm = {
-  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_bg.postgresql.mjs"),
+  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_bg.postgresql.js"),
 
   getQueryCompilerWasmModule: async () => {
-    const { wasm } = await import("@prisma/client/runtime/query_compiler_bg.postgresql.wasm-base64.mjs")
+    const { wasm } = await import("@prisma/client/runtime/query_compiler_bg.postgresql.wasm-base64.js")
     return await decodeBase64AsWasm(wasm)
   }
 }
@@ -58,8 +58,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more AccountTypes
-   * const accountTypes = await prisma.accountType.findMany()
+   * // Fetch zero or more Users
+   * const users = await prisma.user.findMany()
    * ```
    * 
    * Read more in our [docs](https://pris.ly/d/client).
@@ -80,8 +80,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more AccountTypes
- * const accountTypes = await prisma.accountType.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -175,6 +175,16 @@ export interface PrismaClient<
   }>>
 
       /**
+   * `prisma.user`: Exposes CRUD operations for the **User** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Users
+    * const users = await prisma.user.findMany()
+    * ```
+    */
+  get user(): Prisma.UserDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
    * `prisma.accountType`: Exposes CRUD operations for the **AccountType** model.
     * Example usage:
     * ```ts
@@ -183,6 +193,96 @@ export interface PrismaClient<
     * ```
     */
   get accountType(): Prisma.AccountTypeDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.account`: Exposes CRUD operations for the **Account** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Accounts
+    * const accounts = await prisma.account.findMany()
+    * ```
+    */
+  get account(): Prisma.AccountDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.ban`: Exposes CRUD operations for the **Ban** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Bans
+    * const bans = await prisma.ban.findMany()
+    * ```
+    */
+  get ban(): Prisma.BanDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.company`: Exposes CRUD operations for the **Company** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Companies
+    * const companies = await prisma.company.findMany()
+    * ```
+    */
+  get company(): Prisma.CompanyDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.stock`: Exposes CRUD operations for the **Stock** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Stocks
+    * const stocks = await prisma.stock.findMany()
+    * ```
+    */
+  get stock(): Prisma.StockDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.portfolio`: Exposes CRUD operations for the **Portfolio** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Portfolios
+    * const portfolios = await prisma.portfolio.findMany()
+    * ```
+    */
+  get portfolio(): Prisma.PortfolioDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.portfolioItem`: Exposes CRUD operations for the **PortfolioItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PortfolioItems
+    * const portfolioItems = await prisma.portfolioItem.findMany()
+    * ```
+    */
+  get portfolioItem(): Prisma.PortfolioItemDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.stockOrder`: Exposes CRUD operations for the **StockOrder** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StockOrders
+    * const stockOrders = await prisma.stockOrder.findMany()
+    * ```
+    */
+  get stockOrder(): Prisma.StockOrderDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.notification`: Exposes CRUD operations for the **Notification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Notifications
+    * const notifications = await prisma.notification.findMany()
+    * ```
+    */
+  get notification(): Prisma.NotificationDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.transaction`: Exposes CRUD operations for the **Transaction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Transactions
+    * const transactions = await prisma.transaction.findMany()
+    * ```
+    */
+  get transaction(): Prisma.TransactionDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {
