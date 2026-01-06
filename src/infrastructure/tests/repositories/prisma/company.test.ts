@@ -1,7 +1,7 @@
 import { PrismaCompanyRepository } from '@pp-clca-pcm/adapters/repositories/prisma/company';
 import { prisma } from '@pp-clca-pcm/adapters/repositories/prisma/client';
 import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { beforeAll, describe, expect, test } from 'vitest';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;
 const isPostgres = databaseProvider === 'postgresql';
@@ -9,8 +9,22 @@ const isPostgres = databaseProvider === 'postgresql';
 describe.skipIf(!isPostgres)('Prisma Company Repository', async () => {
   const repository = new PrismaCompanyRepository(prisma);
 
-  beforeAll(() => {
-    return prisma.$transaction([
+  beforeAll(async () => {
+    await prisma.$transaction([
+      prisma.portfolioItem.deleteMany(),
+      prisma.portfolio.deleteMany(),
+      prisma.stockOrder.deleteMany(),
+      prisma.stock.deleteMany(),
+      prisma.company.deleteMany(),
+    ]);
+  });
+
+  afterAll(async () => {
+    await prisma.$transaction([
+      prisma.portfolioItem.deleteMany(),
+      prisma.portfolio.deleteMany(),
+      prisma.stockOrder.deleteMany(),
+      prisma.stock.deleteMany(),
       prisma.company.deleteMany(),
     ]);
   });

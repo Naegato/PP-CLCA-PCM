@@ -4,7 +4,7 @@ import { Ban } from '@pp-clca-pcm/domain/entities/ban';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
 import { DirectorProps } from '@pp-clca-pcm/domain/value-objects/user/director';
-import { beforeAll, describe, expect, test } from 'vitest';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;
 const isPostgres = databaseProvider === 'postgresql';
@@ -15,6 +15,15 @@ describe.skipIf(!isPostgres)('Prisma Ban Repository', async () => {
   beforeAll(async () => {
     await prisma.$transaction([
       prisma.ban.deleteMany(),
+      prisma.notification.deleteMany(),
+      prisma.user.deleteMany(),
+    ]);
+  });
+
+  afterAll(async () => {
+    await prisma.$transaction([
+      prisma.ban.deleteMany(),
+      prisma.notification.deleteMany(),
       prisma.user.deleteMany(),
     ]);
   });

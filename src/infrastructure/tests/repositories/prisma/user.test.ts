@@ -7,7 +7,7 @@ import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-al
 import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-not-found-by-email';
 import { UserNotFoundByIdError } from '@pp-clca-pcm/application/errors/user-not-found-by-id';
 import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
-import { beforeAll, describe, expect, test } from 'vitest';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;
 const isPostgres = databaseProvider === 'postgresql';
@@ -15,8 +15,28 @@ const isPostgres = databaseProvider === 'postgresql';
 describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
   const repository = new PrismaUserRepository(prisma);
 
-  beforeAll(() => {
-    return prisma.$transaction([
+  beforeAll(async () => {
+    await prisma.$transaction([
+      prisma.transaction.deleteMany(),
+      prisma.portfolioItem.deleteMany(),
+      prisma.portfolio.deleteMany(),
+      prisma.stockOrder.deleteMany(),
+      prisma.account.deleteMany(),
+      prisma.ban.deleteMany(),
+      prisma.notification.deleteMany(),
+      prisma.user.deleteMany(),
+    ]);
+  });
+
+  afterAll(async () => {
+    await prisma.$transaction([
+      prisma.transaction.deleteMany(),
+      prisma.portfolioItem.deleteMany(),
+      prisma.portfolio.deleteMany(),
+      prisma.stockOrder.deleteMany(),
+      prisma.account.deleteMany(),
+      prisma.ban.deleteMany(),
+      prisma.notification.deleteMany(),
       prisma.user.deleteMany(),
     ]);
   });

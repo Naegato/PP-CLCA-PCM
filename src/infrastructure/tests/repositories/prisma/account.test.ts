@@ -8,7 +8,7 @@ import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
 import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
 import { AccountDeleteError } from '@pp-clca-pcm/application/errors/account-delete';
 import { AccountUpdateError } from '@pp-clca-pcm/application/errors/account-update';
-import { beforeAll, describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;
 const isPostgres = databaseProvider === 'postgresql';
@@ -16,10 +16,16 @@ const isPostgres = databaseProvider === 'postgresql';
 describe.skipIf(!isPostgres)('Prisma Account Repository', async () => {
   const repository = new PrismaAccountRepository(prisma);
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     await prisma.$transaction([
+      prisma.transaction.deleteMany(),
+      prisma.portfolioItem.deleteMany(),
+      prisma.portfolio.deleteMany(),
+      prisma.stockOrder.deleteMany(),
       prisma.account.deleteMany(),
       prisma.accountType.deleteMany(),
+      prisma.ban.deleteMany(),
+      prisma.notification.deleteMany(),
       prisma.user.deleteMany(),
     ]);
   });
@@ -50,16 +56,21 @@ describe.skipIf(!isPostgres)('Prisma Account Repository', async () => {
 
   const createTestAccountType = async () => {
     const accountType = AccountType.create(AccountTypeNameEnum.DEFAULT, 0);
-    await prisma.accountType.create({
+    const created = await prisma.accountType.create({
       data: {
-        identifier: accountType.identifier!,
         name: accountType.name,
         rate: accountType.rate,
         limitByClient: accountType.limitByClient,
         description: accountType.description,
       },
     });
-    return accountType;
+    return AccountType.createFromRaw(
+      created.identifier,
+      created.name,
+      created.rate,
+      created.limitByClient,
+      created.description
+    );
   };
 
   test('save - should save a new account', async () => {

@@ -34,6 +34,15 @@ export class Password {
     return new Password(hasPassword);
   }
 
+  /**
+   * Create a Password instance bypassing validation.
+   * For test fixtures and persistence hydration only.
+   * @internal
+   */
+  public static createUnsafe(value: string): Password {
+    return new Password(value);
+  }
+
   public toJSON(): string {
 	return this.value;
   }

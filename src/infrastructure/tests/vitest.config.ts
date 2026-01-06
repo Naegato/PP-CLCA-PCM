@@ -6,5 +6,12 @@ export default defineConfig({
     env: {
       ...config({ path: '../../../.env' }).parsed,
     },
+    fileParallelism: false,
+    pool: 'forks',
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
+    },
   },
 })

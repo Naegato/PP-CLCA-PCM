@@ -4,7 +4,7 @@ import { Notification } from '@pp-clca-pcm/domain/entities/notification';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
 import { NotificationType } from '@pp-clca-pcm/domain/value-objects/notification-type';
-import { beforeAll, describe, expect, test } from 'vitest';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;
 const isPostgres = databaseProvider === 'postgresql';
@@ -15,6 +15,15 @@ describe.skipIf(!isPostgres)('Prisma Notification Repository', async () => {
   beforeAll(async () => {
     await prisma.$transaction([
       prisma.notification.deleteMany(),
+      prisma.ban.deleteMany(),
+      prisma.user.deleteMany(),
+    ]);
+  });
+
+  afterAll(async () => {
+    await prisma.$transaction([
+      prisma.notification.deleteMany(),
+      prisma.ban.deleteMany(),
       prisma.user.deleteMany(),
     ]);
   });
