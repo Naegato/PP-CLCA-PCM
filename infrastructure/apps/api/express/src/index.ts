@@ -123,7 +123,7 @@ const port = 3000
 
 const databaseProvider = process.env.DB_PROVIDER;
 
-let dbConnection: any = null;
+let redisClient: any = null;
 
 let accountRepository: AccountRepository|null = null;
 let accountTypeRepository: AccountTypeRepository|null = null;
@@ -140,19 +140,19 @@ let userRepository: any = null;
 if (databaseProvider === "postgresql") {
 } else if (databaseProvider === "redis") {
   connectRedis();
-  dbConnection = getRedisClient();
+  redisClient = getRedisClient();
 
-  accountRepository = new RedisAccountRepository(dbConnection);
-  accountTypeRepository = new RedisAccountTypeRepository(dbConnection);
+  accountRepository = new RedisAccountRepository(redisClient);
+  accountTypeRepository = new RedisAccountTypeRepository(redisClient);
 
-  discussionRepository = new RedisDiscussionRepository(dbConnection);
-  messageRepository = new RedisMessageRepository(dbConnection);
+  discussionRepository = new RedisDiscussionRepository(redisClient);
+  messageRepository = new RedisMessageRepository(redisClient);
 
-  advisorRepository = new RedisAdvisorRepository(dbConnection);
-  loanRepository = new RedisLoanRepository(dbConnection);
-  loanRequestRepository = new RedisLoanRequestRepository(dbConnection);
-  transactionRepository = new RedisTransactionRepository(dbConnection);
-  userRepository = new RedisUserRepository(dbConnection);
+  advisorRepository = new RedisAdvisorRepository(redisClient);
+  loanRepository = new RedisLoanRepository(redisClient);
+  loanRequestRepository = new RedisLoanRequestRepository(redisClient);
+  transactionRepository = new RedisTransactionRepository(redisClient);
+  userRepository = new RedisUserRepository(redisClient);
 }
 
 // Init service
@@ -164,8 +164,17 @@ const security = new class implements Security {
   }
 }
 
-// Init use cases
+// TEMP STUBS
+const logoutService = { logout: async (userId: string) => { /* noop */ } } as any;
+const portfolioRepositoryStub = { save: async (p: any) => p, findByAccountId: async (id: string) => null } as any;
+const stockRepositoryStub = {} as any;
+const stockOrderRepositoryStub = { findAllByOwnerId: async (id: string) => [], save: async (o: any) => o, findAllByStockId: async (s: string) => [] } as any;
+const notifierStub = { notiferUser: async (user: any, message: any) => {} } as any;
+const notificationRepositoryStub = { save: async (n: any) => n } as any;
+const companyRepositoryStub = {} as any;
+const banRepositoryStub = {} as any;
 
+// Init use cases
 const advisorLogin = new AdvisorLogin(
   userRepository,
   passwordService,
@@ -218,73 +227,93 @@ const clientCreateAccount = new ClientCreateAccount(
 );
 
 // Additional client use case instances (use available repos where possible, fallback to `any`)
-const clientDeleteAccount = new ClientDeleteAccount(accountRepository as any, userRepository as any);
-const clientGetAccount = new ClientGetAccount(accountRepository as any);
-const clientGetBalanceAccount = new ClientGetBalanceAccount(accountRepository as any);
-const clientSavingAccountCreate = new ClientSavingAccountCreate(AccountType.create('savings', 5) as any, accountRepository as any);
-const clientUpdateNameAccount = new ClientUpdateNameAccount(accountRepository as any);
-
-const clientLogin = new ClientLogin(userRepository as any, passwordService, tokenService);
-const clientLogout = new ClientLogout(/*logoutService*/ null as any, security);
-const clientRegistration = new ClientRegistration(userRepository as any, accountRepository as any, accountTypeRepository as any);
-const clientRequestPasswordReset = new ClientRequestPasswordReset(userRepository as any, tokenService);
-const clientResetPassword = new ClientResetPassword(userRepository as any, tokenService, passwordService);
-
-const clientGetLoans = new ClientGetLoans(loanRepository as any);
-const clientRepayLoan = new ClientRepayLoan(transactionRepository as any);
-const clientRequestLoan = new ClientRequestLoan(loanRequestRepository as any);
+const clientDeleteAccount = new ClientDeleteAccount(accountRepository, userRepository);
+const clientGetAccount = new ClientGetAccount(accountRepository);
+const clientGetBalanceAccount = new ClientGetBalanceAccount(accountRepository);
+const clientSavingAccountCreate = new ClientSavingAccountCreate(AccountType.create('savings', 5), accountRepository);
+const clientUpdateNameAccount = new ClientUpdateNameAccount(accountRepository);
+const clientLogin = new ClientLogin(userRepository, passwordService, tokenService);
+const clientLogout = new ClientLogout(logoutService, security);
+const clientRegistration = new ClientRegistration(userRepository, accountRepository, accountTypeRepository);
+const clientRequestPasswordReset = new ClientRequestPasswordReset(userRepository, tokenService);
+const clientResetPassword = new ClientResetPassword(userRepository, tokenService, passwordService);
+const clientGetLoans = new ClientGetLoans(loanRepository);
+const clientRepayLoan = new ClientRepayLoan(transactionRepository);
+const clientRequestLoan = new ClientRequestLoan(loanRequestRepository);
 const clientSimulateLoan = new ClientSimulateLoan();
 
-const clientSendMessage = new ClientSendMessage(messageRepository as any, discussionRepository as any, security);
+const clientSendMessage = new ClientSendMessage(messageRepository, discussionRepository, security);
 
-const clientGetNotifications = new ClientGetNotifications(userRepository as any, null as any);
+const clientGetNotifications = new ClientGetNotifications(notificationRepositoryStub, security);
 
-const clientCreatePortfolio = new ClientCreatePortfolio(null as any, accountRepository as any);
-const clientGetPortfolio = new ClientGetPortfolio(null as any, accountRepository as any);
+const clientCreatePortfolio = new ClientCreatePortfolio(portfolioRepositoryStub, accountRepository);
+const clientGetPortfolio = new ClientGetPortfolio(portfolioRepositoryStub, accountRepository);
 
-const clientGetAvailableStocks = new ClientGetAvailableStocks(null as any);
-const clientGetStockWithPrice = new ClientGetStockWithPrice(null as any, null as any);
+const clientGetAvailableStocks = new ClientGetAvailableStocks(stockRepositoryStub);
+const clientGetStockWithPrice = new ClientGetStockWithPrice(stockRepositoryStub, null as any);
+const clientCancelStockOrder = new ClientCancelStockOrder(stockOrderRepositoryStub, security);
+const clientGetStockOrders = new ClientGetStockOrders(stockOrderRepositoryStub);
+const clientMatchStockOrder = new ClientMatchStockOrder(stockOrderRepositoryStub, stockRepositoryStub, portfolioRepositoryStub);
+const clientRegisterStockOrder = new ClientRegisterStockOrder(stockOrderRepositoryStub, stockRepositoryStub, clientMatchStockOrder);
 
-const clientCancelStockOrder = new ClientCancelStockOrder(null as any, security);
-const clientGetStockOrders = new ClientGetStockOrders(null as any);
-const clientMatchStockOrder = new ClientMatchStockOrder(null as any, null as any, null as any);
-const clientRegisterStockOrder = new ClientRegisterStockOrder(null as any, null as any, clientMatchStockOrder as any);
-
-const clientSendTransaction = new ClientSendTransaction(transactionRepository as any);
+const clientSendTransaction = new ClientSendTransaction(transactionRepository);
 
 // Director usecases
-const directorLogin = new DirectorLogin(userRepository as any, passwordService, tokenService);
-const directorRegistration = new DirectorRegistration(userRepository as any);
+const directorLogin = new DirectorLogin(userRepository, passwordService, tokenService);
+const directorRegistration = new DirectorRegistration(userRepository);
 
-const directorGetAllClients = new DirectorGetAllClients(userRepository as any);
-const directorGetClientAccounts = new DirectorGetClientAccounts(accountRepository as any);
-const directorManageBan = new DirectorManageBan(userRepository as any, /*banRepo*/ null as any, security as any);
-const directorManageCreate = new DirectorManageCreate(userRepository as any, security as any);
-const directorManageDelete = new DirectorManageDelete(userRepository as any, security as any);
-const directorManageUpdate = new DirectorManageUpdate(userRepository as any, security as any);
+const directorGetAllClients = new DirectorGetAllClients(userRepository);
+const directorGetClientAccounts = new DirectorGetClientAccounts(accountRepository);
+const directorManageBan = new DirectorManageBan(userRepository, banRepositoryStub, security);
+const directorManageCreate = new DirectorManageCreate(userRepository, security);
+const directorManageDelete = new DirectorManageDelete(userRepository, security);
+const directorManageUpdate = new DirectorManageUpdate(userRepository, security);
 
-const directorCreateCompany = new DirectorCreateCompany(/*companyRepo*/ null as any);
-const directorDeleteCompany = new DirectorDeleteCompany(/*companyRepo*/ null as any, /*stockRepo*/ null as any);
-const directorGetAllCompanies = new DirectorGetAllCompanies(/*companyRepo*/ null as any);
-const directorGetCompany = new DirectorGetCompany(/*companyRepo*/ null as any);
-const directorUpdateCompany = new DirectorUpdateCompany(/*companyRepo*/ null as any);
+const directorCreateCompany = new DirectorCreateCompany(companyRepositoryStub);
+const directorDeleteCompany = new DirectorDeleteCompany(companyRepositoryStub, stockRepositoryStub);
+const directorGetAllCompanies = new DirectorGetAllCompanies(companyRepositoryStub);
+const directorGetCompany = new DirectorGetCompany(companyRepositoryStub);
+const directorUpdateCompany = new DirectorUpdateCompany(companyRepositoryStub);
 
-const directorChangeSavingRate = new DirectorChangeSavingRate(/*accountTypeRepo*/ accountTypeRepository as any);
+const directorChangeSavingRate = new DirectorChangeSavingRate(accountTypeRepository);
 
-const directorCreateStock = new DirectorCreateStock(/*companyRepo*/ null as any, /*stockRepo*/ null as any);
-const directorDeleteStock = new DirectorDeleteStock(/*stockRepo*/ null as any, /*portfolioRepo*/ null as any, /*stockOrderRepo*/ null as any);
-const directorToggleStockListing = new DirectorToggleStockListing(/*stockRepo*/ null as any);
-const directorUpdateStock = new DirectorUpdateStock(/*companyRepo*/ null as any, /*stockRepo*/ null as any);
+const directorCreateStock = new DirectorCreateStock(stockRepositoryStub, companyRepositoryStub);
+const directorDeleteStock = new DirectorDeleteStock(stockRepositoryStub, portfolioRepositoryStub, stockOrderRepositoryStub);
+const directorToggleStockListing = new DirectorToggleStockListing(stockRepositoryStub);
+const directorUpdateStock = new DirectorUpdateStock(stockRepositoryStub, companyRepositoryStub);
 
 // Engine
-const generateDailyInterest = new GenerateDailyInterest(/*repos*/ null as any);
-const notifyLoanToPay = new NotifyLoanToPay(loanRepository as any, /*notifier*/ null as any);
+const generateDailyInterest = new GenerateDailyInterest(accountRepository);
+const notifyLoanToPay = new NotifyLoanToPay(loanRepository, notifierStub);
 
 // Shared notifications
-const notifyClientSavingRateChange = new NotifyClientSavingRateChange(/*notificationRepo*/ null as any, /*notifier*/ null as any, userRepository as any);
-const notifyLoanStatus = new NotifyLoanStatus(/*notificationRepo*/ null as any, /*notifier*/ null as any);
+const notifyClientSavingRateChange = new NotifyClientSavingRateChange(notificationRepositoryStub, notifierStub, userRepository);
+const notifyLoanStatus = new NotifyLoanStatus(notificationRepositoryStub, notifierStub);
 
 app.use(express.json());
+
+app.use((req, res, next) => {
+  const originalJson = (res as any).json.bind(res);
+  (res as any).json = (body: any) => {
+    try {
+      if (body instanceof Error) {
+        return res.status(400).send({ error: body.constructor.name, message: body.message });
+      }
+
+      if (Array.isArray(body) && body.some((b) => b instanceof Error)) {
+        const errors = body
+          .filter((b) => b instanceof Error)
+          .map((e: Error) => ({ error: e.constructor.name, message: e.message }));
+        return res.status(400).send({ errors });
+      }
+
+      return originalJson(body);
+    } catch (e) {
+      return originalJson(body);
+    }
+  };
+  next();
+});
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -390,7 +419,7 @@ app.post("/client/password/reset", async (req, res) => {
 
 // ============ CLIENT LOAN ROUTES ============
 app.get("/client/loans", async (req, res) => {
-  const result = await clientGetLoans.execute(req.body.clientId);
+  const result = await clientGetLoans.execute(security.getCurrentUser());
   res.json(result);
 });
 
@@ -400,7 +429,7 @@ app.post("/client/loans/:id/repay", async (req, res) => {
 });
 
 app.post("/client/loans/request", async (req, res) => {
-  const result = await clientRequestLoan.execute(req.body.clientId, req.body.amount);
+  const result = await clientRequestLoan.execute(security.getCurrentUser(), req.body.amount);
   res.json(result);
 });
 

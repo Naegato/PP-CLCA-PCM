@@ -1,16 +1,22 @@
-import { RedisClientType } from 'redis';
 import { LoanRequest } from '@pp-clca-pcm/domain/entities/loan-request';
 import { LoanRequestRepository } from '@pp-clca-pcm/application/repositories/request-loan';
+import { RedisBaseRepository } from './base';
+import { RedisClientType } from "redis";
 import { User } from '@pp-clca-pcm/domain/entities/user';
-import { RedisBaseRepository } from './base.js';
 
 export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest> implements LoanRequestRepository {
 	readonly prefix = 'loan-request:';
 
+	public constructor(
+		redisClient: RedisClientType,
+	) {
+		super(redisClient);
+	}
+
 	async save(loan: LoanRequest): Promise<LoanRequest> {
 		const key = this.key(loan);
 
-		await this.db.set(
+		await this.redisClient.set(
 			key,
 			JSON.stringify(loan),
 			{ NX: true }
@@ -20,7 +26,8 @@ export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest>
 	}
 
 	async getAllByAdvisor(advisor: User): Promise<LoanRequest[]> {
-		return this.fetchFromKey(`${this.prefix}${advisor.identifier}:*`);
+		const advisorId = advisor.identifier ? advisor.identifier : 'null';
+		return this.fetchFromKey(`${this.prefix}${advisorId}:*`);
 	}
 
 	async get(id: string): Promise<LoanRequest | null> {

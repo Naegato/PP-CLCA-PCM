@@ -1,10 +1,17 @@
 import { DiscussionRepository } from "@pp-clca-pcm/application/repositories/discussion/discussion";
 import { Discussion } from "@pp-clca-pcm/domain/entities/discussion/discussion";
 import { randomUUID } from "crypto";
-import { RedisBaseRepository } from "../base.js";
+import { RedisBaseRepository } from "../base";
+import { RedisClientType } from "redis";
 
 export class RedisDiscussionRepository extends RedisBaseRepository<Discussion> implements DiscussionRepository{
 	readonly prefix = 'discussion:';
+
+	public constructor(
+		redisClient: RedisClientType,
+	) {
+		super(redisClient);
+	}
 
 	async save(discussion: Discussion): Promise<Discussion> {
 		const realDiscussion = new Discussion(
@@ -14,7 +21,7 @@ export class RedisDiscussionRepository extends RedisBaseRepository<Discussion> i
 			discussion.user,
 		);
 
-		const result = await this.db.set(
+		const result = await this.redisClient.set(
 			this.key(realDiscussion),
 			JSON.stringify(realDiscussion),
 			{ NX: true }
@@ -26,7 +33,7 @@ export class RedisDiscussionRepository extends RedisBaseRepository<Discussion> i
 	async get(id: string): Promise<Discussion | null> {
 		const key = this.key(id);
 
-		const data = await this.db.get(key);
+		const data = await this.redisClient.get(key);
 
 		if (!data) {
 			return null;

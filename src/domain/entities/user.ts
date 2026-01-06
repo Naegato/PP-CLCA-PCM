@@ -164,21 +164,21 @@ export class User {
 		identifier: string,
 		firstname: string,
 		lastname: string,
-		email: string,
-		password: string,
+		email: Email,
+		password: Password,
 		clientProps?: ClientProps,
 		advisorProps?: AdvisorProps,
 		directorProps?: DirectorProps,
 	}): User {
 		return new User(
-			primitives.identifier,
-			primitives.firstname,
-			primitives.lastname,
-			Email.createUnsafe(primitives.email),
-			Password.createUnsafe(primitives.password),
-			primitives.clientProps,
-			primitives.advisorProps,
-			primitives.directorProps,
-		);
+      primitives.identifier,
+      primitives.firstname,
+      primitives.lastname,
+      Email.createUnsafe(primitives.email),
+      Password.createUnsafe(primitives.password),
+      primitives.clientProps,
+      primitives.advisorProps,
+      primitives.directorProps
+    );
 	}
 }
