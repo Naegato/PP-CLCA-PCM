@@ -13,6 +13,7 @@ import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters/repositories/me
 
 // Import the usecase from client-create-portfolio.ts (which exports ClientGetPortfolio that creates portfolios)
 import { ClientCreatePortfolio } from '@pp-clca-pcm/application/usecases/client/portfolio/client-create-portfolio';
+import { ClientCreatePortfolioError } from '@pp-clca-pcm/application/errors/client-create-portfolio';
 
 // Simple InMemory implementation for testing
 class InMemoryPortfolioRepository implements PortfolioRepository {
@@ -100,7 +101,7 @@ describe('Client Create Portfolio', () => {
 
     const result = await useCase.execute('non-existent-account');
 
-    expect(result).toBeNull();
+    expect(result).instanceof(ClientCreatePortfolioError);
   });
 
   test('Should save created portfolio to repository', async () => {

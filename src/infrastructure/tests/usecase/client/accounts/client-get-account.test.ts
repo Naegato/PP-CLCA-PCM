@@ -9,6 +9,8 @@ import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
 import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
 import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/account';
 import { ClientGetAccount } from '@pp-clca-pcm/application/usecases/client/accounts/client-get-account';
+import { ClientGetPortfolioError } from '@pp-clca-pcm/application/errors/client-get-portfolio';
+import { ClientGetAccountError } from '@pp-clca-pcm/application/errors/client-get-account';
 
 describe('Client Get Account', () => {
   const getData = () => {
@@ -69,7 +71,7 @@ describe('Client Get Account', () => {
 
     const result = await useCase.execute('non-existent-id');
 
-    expect(result).toBeNull();
+    expect(result).instanceof(ClientGetAccountError);
   });
 
   test('Should return correct account when multiple accounts exist', async () => {
