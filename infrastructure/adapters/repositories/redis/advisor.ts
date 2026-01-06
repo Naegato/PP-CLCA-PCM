@@ -1,14 +1,21 @@
 import { AdvisorRepository } from "@pp-clca-pcm/application/repositories/advisor";
 import { User } from "@pp-clca-pcm/domain/entities/user";
 import { RedisBaseRepository } from "./base";
+import { RedisClientType } from "redis";
 
 export class RedisAdvisorRepository extends RedisBaseRepository<User> implements AdvisorRepository {
 	readonly prefix = 'advisor:';
 
+	public constructor(
+		redisClient: RedisClientType,
+	) {
+		super(redisClient);
+	}
+
 	async save(advisor: User): Promise<User> {
 		const key = this.key(advisor);
 
-		const result = await this.db.set(
+		const result = await this.redisClient.set(
 			key,
 			JSON.stringify(advisor),
 			{ NX: true }

@@ -1,11 +1,17 @@
 import { MessageRepository } from "@pp-clca-pcm/application/repositories/discussion/message";
 import { Message } from "@pp-clca-pcm/domain/entities/discussion/message";
 import { randomUUID } from "crypto";
-import { RedisClientType } from "redis";
 import { RedisBaseRepository } from "../base";
+import { RedisClientType } from "redis";
 
 export class RedisMessageRepository extends RedisBaseRepository<Message> implements MessageRepository {
 	readonly prefix = 'message:';
+
+	public constructor(
+		redisClient: RedisClientType,
+	) {
+		super(redisClient);
+	}
 
 	public async save(message: Message): Promise<Message> {
 		const realMessage = new Message(
@@ -16,7 +22,7 @@ export class RedisMessageRepository extends RedisBaseRepository<Message> impleme
 			message.discussion,
 		)
 
-		const result = await this.db.set(
+		const result = await this.redisClient.set(
 			this.key(realMessage),
 			JSON.stringify(realMessage),
 			{ NX: true }
@@ -28,7 +34,7 @@ export class RedisMessageRepository extends RedisBaseRepository<Message> impleme
 	public async get(id: string): Promise<Message | null> {
 		const key = this.key(id);
 
-		const data = await this.db.get(key);
+		const data = await this.redisClient.get(key);
 
 		if (!data) {
 			return null;

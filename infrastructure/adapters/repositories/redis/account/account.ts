@@ -3,9 +3,16 @@ import { AccountRepository } from "@pp-clca-pcm/application/repositories/account
 import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
 import { User } from "@pp-clca-pcm/domain/entities/user";
 import { RedisBaseRepository } from "../base";
+import { RedisClientType } from "redis";
 
 export class RedisAccountRepository extends RedisBaseRepository<Account> implements AccountRepository {
 	readonly prefix = 'account:';
+
+	public constructor(
+		redisClient: RedisClientType,
+	) {
+		super(redisClient);
+	}
 
 	public async save(account: Account): Promise<Account> {
 		// Use domain factory to create persisted account (generates identifier)
@@ -19,7 +26,7 @@ export class RedisAccountRepository extends RedisBaseRepository<Account> impleme
 
 		const key = this.key(realAccount);
 
-		await this.db.set(
+		await this.redisClient.set(
 			key,
 			JSON.stringify(realAccount),
 			{ NX: true }
@@ -31,7 +38,7 @@ export class RedisAccountRepository extends RedisBaseRepository<Account> impleme
 	public async delete(account: Account): Promise<Account | AccountDeleteError> {
 		const key = this.key(account);
 
-		const deleted = await this.db.del(key);
+		const deleted = await this.redisClient.del(key);
 
 		if (deleted === 0) {
 			return new AccountDeleteError(account.identifier!);
@@ -43,7 +50,7 @@ export class RedisAccountRepository extends RedisBaseRepository<Account> impleme
 	public async update(account: Account): Promise<Account> {
 		const key = this.key(account);
 
-		await this.db.set(
+		await this.redisClient.set(
 			key,
 			JSON.stringify(account),
 		);
@@ -57,9 +64,9 @@ export class RedisAccountRepository extends RedisBaseRepository<Account> impleme
 
 	public async all(): Promise<Account[]> {
 		const result: Account[] = [];
-		for await (const key of this.db.scanIterator({ MATCH: `${this.prefix}*` })) {
+		for await (const key of this.redisClient.scanIterator({ MATCH: `${this.prefix}*` })) {
 			await Promise.all(key.map(async k => {
-				const value = await this.db.get(k);
+				const value = await this.redisClient.get(k);
 				if (!value) return;
 				const data = JSON.parse(value);
 				result.push(this.instanticate(data));
@@ -76,7 +83,7 @@ export class RedisAccountRepository extends RedisBaseRepository<Account> impleme
 
 	public async findById(id: string): Promise<Account | null> {
 		const key = this.key(id);
-		const data = await this.db.get(key);
+		const data = await this.redisClient.get(key);
 		if (!data) return null;
 		const parsed = JSON.parse(data);
 		return this.instanticate(parsed);

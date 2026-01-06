@@ -5,7 +5,7 @@ export abstract class RedisBaseRepository<T> {
 	abstract readonly prefix: string;
 
 	public constructor(
-		protected readonly db: RedisClientType,
+		protected readonly redisClient: RedisClientType,
 	) { }
 
 
@@ -22,9 +22,9 @@ export abstract class RedisBaseRepository<T> {
 	protected async fetchFromKey(keyToSearch: string): Promise<T[]> {
 		const result: T[] = [];
 
-		for await (const key of this.db.scanIterator({ MATCH: keyToSearch })) {
+		for await (const key of this.redisClient.scanIterator({ MATCH: keyToSearch })) {
 			await Promise.all(key.map(async k => {
-				const value = await this.db.get(k);
+				const value = await this.redisClient.get(k);
 				if (!value) return;
 
 				const data = JSON.parse(value);
