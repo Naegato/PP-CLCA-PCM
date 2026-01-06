@@ -1,0 +1,53 @@
+{
+  "private": true,
+  "version": "0.1.0",
+  "name": "@pp-clca-pcm/adapters",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/*.js",
+      "require": "./dist/*.js",
+      "types": "./dist/*.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "prisma"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist",
+    "p:g": "prisma generate",
+    "p:m": "prisma migrate dev",
+    "p:m:r": "prisma migrate reset",
+    "dev": "pnpm dlx tsx watch main.ts"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.1.0",
+    "@prisma/client": "^7.1.0",
+    "argon2": "^0.44.0",
+    "cron": "^4.4.0",
+    "dotenv": "^17.2.3",
+    "jsonwebtoken": "^9.0.3",
+    "mariadb": "^3.4.5",
+    "pg": "^8.16.3",
+    "redis": "^5.10.0",
+    "@pp-clca-pcm/application": "workspace:*",
+    "@pp-clca-pcm/domain": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.7.0",
+    "@types/pg": "^8.16.0",
+    "@types/cron": "^2.0.1",
+    "prisma": "^7.1.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

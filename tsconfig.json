@@ -3,10 +3,10 @@
     "target": "ES6",
     "baseUrl": ".",
     "paths": {
-      "@pp-clca-pcm/application/*": ["application/*"],
-      "@pp-clca-pcm/domain/*": ["domain/*"],
-      "@pp-clca-pcm/adapters/*": ["infrastructure/adapters/*"],
-      "@pp-clca-pcm/tests/*": ["infrastructure/tests/*"],
+      "@pp-clca-pcm/application/*": ["src/application/*"],
+      "@pp-clca-pcm/domain/*": ["src/domain/*"],
+      "@pp-clca-pcm/adapters/*": ["src/infrastructure/adapters/*"],
+      "@pp-clca-pcm/tests/*": ["src/infrastructure/tests/*"],
     }
   }
 }

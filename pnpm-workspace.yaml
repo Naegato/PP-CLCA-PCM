@@ -1,7 +1,5 @@
 packages:
-  - "domain"
-  - "application"
-  - "infrastructure/adapters"
-  - "infrastructure/tests"
-  - "infrastructure/apps/api/nest-js"
-  - "infrastructure/apps/front/next-js"
+  - 'src/domain'
+  - 'src/application'
+  - 'src/infrastructure/adapters'
+  - 'src/infrastructure/tests'

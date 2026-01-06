@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../repositories/prisma/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  identifier    String   @id @default(uuid())
+  firstname     String
+  lastname      String
+  email         String   @unique
+  password      String
+  clientProps   String?
+  advisorProps  String?
+  directorProps String?
+
+  accounts          Account[]
+  bansReceived      Ban[]            @relation("BannedUser")
+  bansAuthored      Ban[]            @relation("BanAuthor")
+  notifications     Notification[]
+
+  @@map("users")
+}
+
+model AccountType {
+  identifier    String  @id @default(uuid())
+  name          String  @unique
+  rate          Float
+  limitByClient Int?
+  description   String?
+
+  accounts Account[]
+
+  @@map("account_types")
+}
+
+model Account {
+  identifier String   @id @default(uuid())
+  ownerId    String
+  typeId     String
+  iban       String   @unique
+  name       String
+  createdAt  DateTime @default(now())
+
+  owner                 User         @relation(fields: [ownerId], references: [identifier])
+  type                  AccountType  @relation(fields: [typeId], references: [identifier])
+  emittedTransactions   Transaction[] @relation("EmittedTransactions")
+  receivedTransactions  Transaction[] @relation("ReceivedTransactions")
+  portfolios            Portfolio[]
+  stockOrders           StockOrder[]
+
+  @@map("accounts")
+}
+
+model Ban {
+  identifier String   @id @default(uuid())
+  userId     String
+  authorId   String
+  start      DateTime
+  end        DateTime?
+  reason     String
+
+  user   User @relation("BannedUser", fields: [userId], references: [identifier])
+  author User @relation("BanAuthor", fields: [authorId], references: [identifier])
+
+  @@map("bans")
+}
+
+model Company {
+  identifier String @id @default(uuid())
+  name       String @unique
+
+  stocks Stock[]
+
+  @@map("companies")
+}
+
+model Stock {
+  identifier String   @id @default(uuid())
+  symbol     String   @unique
+  name       String
+  isListed   Boolean
+  createdAt  DateTime @default(now())
+  companyId  String
+
+  company        Company         @relation(fields: [companyId], references: [identifier])
+  portfolioItems PortfolioItem[]
+  stockOrders    StockOrder[]
+
+  @@map("stocks")
+}
+
+model Portfolio {
+  identifier String @id @default(uuid())
+  accountId  String @unique
+
+  account Account         @relation(fields: [accountId], references: [identifier])
+  items   PortfolioItem[]
+
+  @@map("portfolios")
+}
+
+model PortfolioItem {
+  identifier  String @id @default(uuid())
+  portfolioId String
+  stockId     String
+  quantity    Int
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [identifier], onDelete: Cascade)
+  stock     Stock     @relation(fields: [stockId], references: [identifier])
+
+  @@unique([portfolioId, stockId])
+  @@map("portfolio_items")
+}
+
+model StockOrder {
+  identifier        String   @id @default(uuid())
+  stockId           String
+  accountId         String
+  side              String
+  price             Float
+  quantity          Int
+  remainingQuantity Int
+  createdAt         DateTime @default(now())
+
+  stock   Stock   @relation(fields: [stockId], references: [identifier])
+  account Account @relation(fields: [accountId], references: [identifier])
+
+  @@map("stock_orders")
+}
+
+model Notification {
+  identifier  String   @id @default(uuid())
+  recipientId String
+  message     String
+  type        String
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  recipient User @relation(fields: [recipientId], references: [identifier])
+
+  @@map("notifications")
+}
+
+model Transaction {
+  identifier String   @id @default(uuid())
+  emitterId  String
+  receiverId String
+  amount     Float
+  createdAt  DateTime @default(now())
+
+  emitter  Account @relation("EmittedTransactions", fields: [emitterId], references: [identifier])
+  receiver Account @relation("ReceivedTransactions", fields: [receiverId], references: [identifier])
+
+  @@map("transactions")
+}
