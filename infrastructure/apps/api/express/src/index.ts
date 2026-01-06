@@ -218,35 +218,35 @@ const clientCreateAccount = new ClientCreateAccount(
 );
 
 // Additional client use case instances (use available repos where possible, fallback to `any`)
-const clientDeleteAccount = new ClientDeleteAccount(accountRepository as any);
+const clientDeleteAccount = new ClientDeleteAccount(accountRepository as any, userRepository as any);
 const clientGetAccount = new ClientGetAccount(accountRepository as any);
 const clientGetBalanceAccount = new ClientGetBalanceAccount(accountRepository as any);
-const clientSavingAccountCreate = new ClientSavingAccountCreate(accountRepository as any);
+const clientSavingAccountCreate = new ClientSavingAccountCreate(AccountType.create('savings', 5) as any, accountRepository as any);
 const clientUpdateNameAccount = new ClientUpdateNameAccount(accountRepository as any);
 
 const clientLogin = new ClientLogin(userRepository as any, passwordService, tokenService);
-const clientLogout = new ClientLogout();
-const clientRegistration = new ClientRegistration(userRepository as any, passwordService);
-const clientRequestPasswordReset = new ClientRequestPasswordReset(userRepository as any);
-const clientResetPassword = new ClientResetPassword(userRepository as any, passwordService);
+const clientLogout = new ClientLogout(/*logoutService*/ null as any, security);
+const clientRegistration = new ClientRegistration(userRepository as any, accountRepository as any, accountTypeRepository as any);
+const clientRequestPasswordReset = new ClientRequestPasswordReset(userRepository as any, tokenService);
+const clientResetPassword = new ClientResetPassword(userRepository as any, tokenService, passwordService);
 
 const clientGetLoans = new ClientGetLoans(loanRepository as any);
-const clientRepayLoan = new ClientRepayLoan(loanRepository as any, transactionRepository as any);
+const clientRepayLoan = new ClientRepayLoan(transactionRepository as any);
 const clientRequestLoan = new ClientRequestLoan(loanRequestRepository as any);
 const clientSimulateLoan = new ClientSimulateLoan();
 
-const clientSendMessage = new ClientSendMessage(discussionRepository as any, messageRepository as any);
+const clientSendMessage = new ClientSendMessage(messageRepository as any, discussionRepository as any, security);
 
 const clientGetNotifications = new ClientGetNotifications(userRepository as any, null as any);
 
-const clientCreatePortfolio = new ClientCreatePortfolio(null as any);
-const clientGetPortfolio = new ClientGetPortfolio(null as any);
+const clientCreatePortfolio = new ClientCreatePortfolio(null as any, accountRepository as any);
+const clientGetPortfolio = new ClientGetPortfolio(null as any, accountRepository as any);
 
 const clientGetAvailableStocks = new ClientGetAvailableStocks(null as any);
 const clientGetStockWithPrice = new ClientGetStockWithPrice(null as any, null as any);
 
-const clientCancelStockOrder = new ClientCancelStockOrder(null as any, null as any);
-const clientGetStockOrders = new ClientGetStockOrders(null as any, null as any);
+const clientCancelStockOrder = new ClientCancelStockOrder(null as any, security);
+const clientGetStockOrders = new ClientGetStockOrders(null as any);
 const clientMatchStockOrder = new ClientMatchStockOrder(null as any, null as any, null as any);
 const clientRegisterStockOrder = new ClientRegisterStockOrder(null as any, null as any, clientMatchStockOrder as any);
 
@@ -263,7 +263,7 @@ const directorManageCreate = new DirectorManageCreate(userRepository as any, sec
 const directorManageDelete = new DirectorManageDelete(userRepository as any, security as any);
 const directorManageUpdate = new DirectorManageUpdate(userRepository as any, security as any);
 
-const directorCreateCompany = new DirectorCreateCompany(/*companyRepo*/ null as any, /*stockRepo*/ null as any);
+const directorCreateCompany = new DirectorCreateCompany(/*companyRepo*/ null as any);
 const directorDeleteCompany = new DirectorDeleteCompany(/*companyRepo*/ null as any, /*stockRepo*/ null as any);
 const directorGetAllCompanies = new DirectorGetAllCompanies(/*companyRepo*/ null as any);
 const directorGetCompany = new DirectorGetCompany(/*companyRepo*/ null as any);
@@ -272,17 +272,17 @@ const directorUpdateCompany = new DirectorUpdateCompany(/*companyRepo*/ null as 
 const directorChangeSavingRate = new DirectorChangeSavingRate(/*accountTypeRepo*/ accountTypeRepository as any);
 
 const directorCreateStock = new DirectorCreateStock(/*companyRepo*/ null as any, /*stockRepo*/ null as any);
-const directorDeleteStock = new DirectorDeleteStock(/*stockRepo*/ null as any, /*portfolioRepo*/ null as any);
+const directorDeleteStock = new DirectorDeleteStock(/*stockRepo*/ null as any, /*portfolioRepo*/ null as any, /*stockOrderRepo*/ null as any);
 const directorToggleStockListing = new DirectorToggleStockListing(/*stockRepo*/ null as any);
 const directorUpdateStock = new DirectorUpdateStock(/*companyRepo*/ null as any, /*stockRepo*/ null as any);
 
 // Engine
 const generateDailyInterest = new GenerateDailyInterest(/*repos*/ null as any);
-const notifyLoanToPay = new NotifyLoanToPay(/*notifier*/ null as any);
+const notifyLoanToPay = new NotifyLoanToPay(loanRepository as any, /*notifier*/ null as any);
 
 // Shared notifications
-const notifyClientSavingRateChange = new NotifyClientSavingRateChange(/*notifier*/ null as any);
-const notifyLoanStatus = new NotifyLoanStatus(/*notifier*/ null as any);
+const notifyClientSavingRateChange = new NotifyClientSavingRateChange(/*notificationRepo*/ null as any, /*notifier*/ null as any, userRepository as any);
+const notifyLoanStatus = new NotifyLoanStatus(/*notificationRepo*/ null as any, /*notifier*/ null as any);
 
 app.use(express.json());
 
@@ -338,7 +338,7 @@ app.post("/client/accounts", async (req, res) => {
 });
 
 app.delete("/client/accounts/:id", async (req, res) => {
-  const result = await clientDeleteAccount.execute(req.params.id);
+  const result = await clientDeleteAccount.execute(req.body.account);
   res.json(result);
 });
 
@@ -379,12 +379,12 @@ app.post("/client/register", async (req, res) => {
 });
 
 app.post("/client/password/request-reset", async (req, res) => {
-  const result = await clientRequestPasswordReset.execute(req.body.email);
+  const result = await clientRequestPasswordReset.execute(req.body);
   res.json(result);
 });
 
 app.post("/client/password/reset", async (req, res) => {
-  const result = await clientResetPassword.execute(req.body.token, req.body.newPassword);
+  const result = await clientResetPassword.execute(req.body);
   res.json(result);
 });
 
@@ -395,7 +395,7 @@ app.get("/client/loans", async (req, res) => {
 });
 
 app.post("/client/loans/:id/repay", async (req, res) => {
-  const result = await clientRepayLoan.execute(req.params.id, req.body.amount);
+  const result = await clientRepayLoan.execute(req.body.account, req.body.loan, req.body.amount);
   res.json(result);
 });
 
@@ -405,7 +405,7 @@ app.post("/client/loans/request", async (req, res) => {
 });
 
 app.post("/client/loans/simulate", async (req, res) => {
-  const result = await clientSimulateLoan.execute(req.body.amount, req.body.duration);
+  const result = await clientSimulateLoan.execute(req.body.principal, req.body.interestRate, req.body.durationMonths);
   res.json(result);
 });
 
@@ -417,7 +417,7 @@ app.post("/client/messages", async (req, res) => {
 
 // ============ CLIENT NOTIFICATION ROUTES ============
 app.get("/client/notifications", async (req, res) => {
-  const result = await clientGetNotifications.execute(req.body.userId);
+  const result = await clientGetNotifications.execute();
   res.json(result);
 });
 
@@ -450,7 +450,7 @@ app.delete("/client/stock-orders/:id", async (req, res) => {
 });
 
 app.get("/client/stock-orders", async (req, res) => {
-  const result = await clientGetStockOrders.execute(req.body.accountId);
+  const result = await clientGetStockOrders.execute(security.getCurrentUser());
   res.json(result);
 });
 
@@ -466,7 +466,7 @@ app.post("/client/stock-orders", async (req, res) => {
 
 // ============ CLIENT TRANSACTION ROUTES ============
 app.post("/client/transactions", async (req, res) => {
-  const result = await clientSendTransaction.execute(req.body.fromAccountId, req.body.toAccountId, req.body.amount, req.body.description);
+  const result = await clientSendTransaction.execute(req.body.fromAccountId, req.body.toAccountId, req.body.amount);
   res.json(result);
 });
 
@@ -514,7 +514,7 @@ app.put("/director/clients/:id", async (req, res) => {
 
 // ============ DIRECTOR COMPANY ROUTES ============
 app.post("/director/companies", async (req, res) => {
-  const result = await directorCreateCompany.execute(req.body.name, req.body.description);
+  const result = await directorCreateCompany.execute(req.body.name);
   res.json(result);
 });
 
@@ -578,12 +578,12 @@ app.post("/engine/loans/notify-to-pay", async (req, res) => {
 
 // ============ SHARED NOTIFICATION ROUTES ============
 app.post("/notifications/savings-rate-change", async (req, res) => {
-  const result = await notifyClientSavingRateChange.execute(req.body.clientIds, req.body.newRate);
+  const result = await notifyClientSavingRateChange.execute(req.body.newRate);
   res.json(result);
 });
 
 app.post("/notifications/loan-status", async (req, res) => {
-  const result = await notifyLoanStatus.execute(req.body.loanId, req.body.status);
+  const result = await notifyLoanStatus.execute(req.body.loan, req.body.status);
   res.json(result);
 });
 

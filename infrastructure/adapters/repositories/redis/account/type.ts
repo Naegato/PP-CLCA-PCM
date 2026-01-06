@@ -8,6 +8,19 @@ import { RedisBaseRepository } from '../base';
 export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType> implements AccountTypeRepository {
 	readonly prefix = 'account_type:';
 
+	async all(): Promise<AccountType[]> {
+		const result: AccountType[] = [];
+		for await (const key of this.db.scanIterator({ MATCH: `${this.prefix}*` })) {
+			await Promise.all(key.map(async k => {
+				const value = await this.db.get(k);
+				if (!value) return;
+				const data = JSON.parse(value);
+				result.push(this.instanticate(data));
+			}))
+		}
+		return result;
+	}
+
 	async save(
 		accountType: AccountType
 	): Promise<AccountType | AccountTypeAlreadyExistError> {

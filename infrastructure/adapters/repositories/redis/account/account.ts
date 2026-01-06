@@ -55,6 +55,19 @@ export class RedisAccountRepository extends RedisBaseRepository<Account> impleme
 		return `todo-i-guess`;
 	}
 
+	public async all(): Promise<Account[]> {
+		const result: Account[] = [];
+		for await (const key of this.db.scanIterator({ MATCH: `${this.prefix}*` })) {
+			await Promise.all(key.map(async k => {
+				const value = await this.db.get(k);
+				if (!value) return;
+				const data = JSON.parse(value);
+				result.push(this.instanticate(data));
+			}))
+		}
+		return result;
+	}
+
 	public async findByOwner(owner: User): Promise<Account[] | null> {
 		const allAccounts = await this.all();
 		const filtered = allAccounts.filter(a => a.owner?.identifier === owner.identifier);
