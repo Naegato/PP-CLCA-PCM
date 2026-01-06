@@ -50,7 +50,7 @@ up: tests
 	pnpm --filter @pp-clca-pcm/front-nextjs dev & \
 	wait
 
-up-nestjs:
+up-nestjs: up-db build
 	cd apps/api/nest-js && npm install && npm run start:dev
 
 up-nextjs: install
