@@ -23,13 +23,11 @@ export abstract class RedisBaseRepository<T> {
 		const result: T[] = [];
 
 		for await (const key of this.redisClient.scanIterator({ MATCH: keyToSearch })) {
-			await Promise.all(key.map(async k => {
-				const value = await this.redisClient.get(k);
-				if (!value) return;
+			const value = await this.redisClient.get(key.toString());
+			if (!value) continue;
 
-				const data = JSON.parse(value);
-				result.push(this.instanticate(data));
-			}))
+			const data = JSON.parse(value);
+			result.push(this.instanticate(data));
 		}
 
 		return result;

@@ -33,7 +33,7 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{ \"email\": \"advisor@test.com\", \"password\": \"password\" }"
+              "raw": "{ \"email\": \"advisor@test.com\", \"password\": \"Password1&\" }"
             },
             "url": "{{baseUrl}}/advisor/login"
           }
@@ -45,7 +45,7 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{ \"firstname\": \"John\", \"lastname\": \"Doe\", \"email\": \"advisor@test.com\", \"password\": \"password\" }"
+              "raw": "{ \"firstname\": \"John\", \"lastname\": \"Doe\", \"email\": \"advisor@test.com\", \"password\": \"Password1&\" }"
             },
             "url": "{{baseUrl}}/advisor/register"
           }
@@ -114,7 +114,7 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{ \"email\": \"client@test.com\", \"password\": \"password\" }"
+              "raw": "{ \"email\": \"client@test.com\", \"password\": \"Password1&\" }"
             },
             "url": "{{baseUrl}}/client/login"
           }
@@ -133,7 +133,7 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{ \"firstname\": \"Jane\", \"lastname\": \"Doe\", \"email\": \"client@test.com\", \"password\": \"password\" }"
+              "raw": "{ \"firstname\": \"Jane\", \"lastname\": \"Doe\", \"email\": \"client@test.com\", \"password\": \"Password1&\" }"
             },
             "url": "{{baseUrl}}/client/register"
           }
@@ -278,7 +278,7 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{ \"email\": \"director@test.com\", \"password\": \"password\" }"
+              "raw": "{ \"email\": \"director@test.com\", \"password\": \"Password1&\" }"
             },
             "url": "{{baseUrl}}/director/login"
           },
@@ -301,7 +301,7 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{ \"firstname\": \"Dir\", \"lastname\": \"Boss\", \"email\": \"director@test.com\", \"password\": \"password\" }"
+              "raw": "{ \"firstname\": \"Dir\", \"lastname\": \"Boss\", \"email\": \"director@test.com\", \"password\": \"Password1&\" }"
             },
             "url": "{{baseUrl}}/director/register"
           }
@@ -328,7 +328,7 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{ \"firstname\": \"Jane\", \"lastname\": \"Doe\", \"email\": \"jane@test.com\", \"password\": \"password\" }"
+              "raw": "{ \"firstname\": \"Jane\", \"lastname\": \"Doe\", \"email\": \"jane@test.com\", \"password\": \"Password1&\" }"
             },
             "url": "{{baseUrl}}/director/clients"
           }

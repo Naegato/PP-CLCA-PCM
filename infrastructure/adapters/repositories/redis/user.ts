@@ -19,18 +19,15 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 	}
 
 	async save(user: User): Promise<User | EmailAlreadyExistError> {
-		const key = this.key(user);
+		const idKey = this.idKey(user.identifier!);
+		const emailKey = this.emailKey(user.email.value);
 
-		const exists = await this.redisClient.exists(key);
-		if (exists) {
-			return new EmailAlreadyExistError();
-		}
+		const existingId = await this.redisClient.get(emailKey);
+		if (existingId) return new EmailAlreadyExistError();
 
-		await this.redisClient.set(
-			key,
-			JSON.stringify(user),
-			{ NX: true }
-		);
+		await this.redisClient.set(idKey, JSON.stringify(user));
+
+		await this.redisClient.set(emailKey, user.identifier!);
 
 		return user;
 	}
@@ -40,43 +37,36 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 	}
 
 	async findByEmail(email: string): Promise<User | UserNotFoundByEmailError> {
-		const key = `${this.prefix}${email}`;
-		const results = await this.fetchFromKey(key);
+		const userId = await this.redisClient.get(this.emailKey(email));
+		if (!userId) return new UserNotFoundByEmailError();
 
-		if (!results.length) {
-			return new UserNotFoundByEmailError();
-		}
-
-		return results[0];
+		return this.findById(userId) as Promise<User>;
 	}
 
 	async update(user: User): Promise<User | UserUpdateError> {
-		const key = this.key(user);
+		const idKey = this.idKey(user.identifier!);
+		const existingData = await this.redisClient.get(idKey);
+		if (!existingData) return new UserUpdateError();
 
-		const exists = await this.redisClient.exists(key);
-		if (!exists) {
-			return new UserUpdateError();
+		const oldUser = JSON.parse(existingData);
+		if (oldUser.email !== user.email.value) {
+			await this.redisClient.del(this.emailKey(oldUser.email));
+			await this.redisClient.set(this.emailKey(user.email.value), user.identifier!);
 		}
 
-		await this.redisClient.set(
-			key,
-			JSON.stringify(user),
-		);
-
+		await this.redisClient.set(idKey, JSON.stringify(user));
 		return user;
 	}
 
-	protected override key(entity: User | string): string {
-		if (typeof entity === 'string') return `${this.prefix}${entity}`;
-		return `${this.prefix}${(entity.email as any)?.value ?? entity.email}`;
-	}
+	protected idKey(id: string) { return `${this.prefix}id:${id}`; }
+	protected emailKey(email: string) { return `${this.prefix}email:${email}`; }
 
 	override instanticate(entity: User): User {
 		const email = Email.from((entity.email as any).value ?? entity.email);
 		const password = Password.from((entity.password as any).value ?? entity.password);
 
 		return User.fromPrimitives({
-			identifier: entity.identifier ?? '',
+			identifier: entity.identifier!,
 			firstname: entity.firstname,
 			lastname: entity.lastname,
 			email: email,
@@ -88,7 +78,7 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 	}
 
 	public async findById(id: string): Promise<User | UserNotFoundByIdError> {
-		const key = this.key(id);
+		const key = this.idKey(id);
 		const data = await this.redisClient.get(key);
 		if (!data) return new UserNotFoundByIdError();
 		const parsed = JSON.parse(data);
@@ -96,7 +86,12 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 	}
 
 	public async delete(userId: string): Promise<void> {
-		const key = this.key(userId);
-		await this.redisClient.del(key);
+		const idKey = this.idKey(userId);
+		const data = await this.redisClient.get(idKey);
+		if (!data) return;
+
+		const parsed = JSON.parse(data);
+		await this.redisClient.del(idKey);
+		await this.redisClient.del(this.emailKey(parsed.email));
 	}
 }

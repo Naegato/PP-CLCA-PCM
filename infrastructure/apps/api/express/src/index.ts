@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import path from "path";
 import express from 'express';
 
-import { Security } from '@pp-clca-pcm/application/services/security';
+import { User } from '@pp-clca-pcm/domain/entities/user';
 import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
 
 import { AccountRepository } from "@pp-clca-pcm/application/repositories/account";
@@ -112,7 +112,9 @@ import { NotifyLoanStatus } from '@pp-clca-pcm/application/usecases/shared/notif
 
 import { Argon2PasswordService } from "@pp-clca-pcm/adapters/services/argon2-password";
 import { JwtTokenService } from "@pp-clca-pcm/adapters/services/jwt-token";
- dotenv.config({
+import { JwtSecurityService } from "@pp-clca-pcm/adapters/services/jwt-security";
+
+dotenv.config({
   path: path.resolve(__dirname, "../../../../../.env"),
 });
 
@@ -158,11 +160,59 @@ if (databaseProvider === "postgresql") {
 // Init service
 const passwordService = new Argon2PasswordService();
 const tokenService = new JwtTokenService();
-const security = new class implements Security {
-  getCurrentUser() {
-      return 'todo';
+const security = new JwtSecurityService(tokenService, userRepository);
+
+// Middleware for authentication
+app.use(async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  (req as any).user = null;
+
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+    if (token) {
+      try {
+        const isAuthenticated = await security.authenticate(token);
+        if (isAuthenticated) {
+          (req as any).user = security.getCurrentUser();
+        }
+      } catch (error) {
+        console.error("Authentication error:", error);
+      }
+    }
   }
-}
+  next();
+});
+
+type UserRole = 'client' | 'advisor' | 'director';
+
+const requireRole = (requiredRole: UserRole) => {
+  return (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (!(req as any).user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const user = (req as any).user as User; // Cast to User type
+
+    let hasRole = false;
+    switch (requiredRole) {
+      case 'client':
+        hasRole = user.isClient();
+        break;
+      case 'advisor':
+        hasRole = user.isAdvisor();
+        break;
+      case 'director':
+        hasRole = user.isDirector();
+        break;
+    }
+
+    if (!hasRole) {
+      return res.status(403).json({ message: "Forbidden: Insufficient role" });
+    }
+
+    next();
+  };
+};
 
 // TEMP STUBS
 const logoutService = { logout: async (userId: string) => { /* noop */ } } as any;
@@ -183,6 +233,7 @@ const advisorLogin = new AdvisorLogin(
 
 const advisorRegistration = new AdvisorRegistration(
   userRepository as any,
+  passwordService,
 );
 
 const advisorGetPendingLoans = new AdvisorGetPendingLoans(
@@ -234,7 +285,7 @@ const clientSavingAccountCreate = new ClientSavingAccountCreate(AccountType.crea
 const clientUpdateNameAccount = new ClientUpdateNameAccount(accountRepository);
 const clientLogin = new ClientLogin(userRepository, passwordService, tokenService);
 const clientLogout = new ClientLogout(logoutService, security);
-const clientRegistration = new ClientRegistration(userRepository, accountRepository, accountTypeRepository);
+const clientRegistration = new ClientRegistration(userRepository, accountRepository, accountTypeRepository, passwordService);
 const clientRequestPasswordReset = new ClientRequestPasswordReset(userRepository, tokenService);
 const clientResetPassword = new ClientResetPassword(userRepository, tokenService, passwordService);
 const clientGetLoans = new ClientGetLoans(loanRepository);
@@ -260,7 +311,7 @@ const clientSendTransaction = new ClientSendTransaction(transactionRepository);
 
 // Director usecases
 const directorLogin = new DirectorLogin(userRepository, passwordService, tokenService);
-const directorRegistration = new DirectorRegistration(userRepository);
+const directorRegistration = new DirectorRegistration(userRepository, passwordService);
 
 const directorGetAllClients = new DirectorGetAllClients(userRepository);
 const directorGetClientAccounts = new DirectorGetClientAccounts(accountRepository);
@@ -330,63 +381,63 @@ app.post("/advisor/register", async (req, res) => {
   res.json(result);
 });
 
-app.get("/advisor/loans/pending", async (req, res) => {
+app.get("/advisor/loans/pending", requireRole('advisor'), async (req, res) => {
   const result = await advisorGetPendingLoans.execute();
   res.json(result);
 });
 
-app.post("/advisor/loans/:id/grant", async (req, res) => {
+app.post("/advisor/loans/:id/grant", requireRole('advisor'), async (req, res) => {
   const result = await advisorGrantLoan.execute(req.params.id);
   res.json(result);
 });
 
-app.post("/advisor/loans/:id/reject", async (req, res) => {
+app.post("/advisor/loans/:id/reject", requireRole('advisor'), async (req, res) => {
   const result = await advisorRejectLoan.execute(req.params.id);
   res.json(result);
 });
 
-app.post("/advisor/discussions/:id/close", async (req, res) => {
+app.post("/advisor/discussions/:id/close", requireRole('advisor'), async (req, res) => {
   const result = await advisorCloseChat.execute(req.params.id);
   res.json(result);
 });
 
-app.post("/advisor/messages/:id/reply", async (req, res) => {
+app.post("/advisor/messages/:id/reply", requireRole('advisor'), async (req, res) => {
   const result = await advisorReplyMessage.execute(req.params.id, req.body.text);
   res.json(result);
 });
 
-app.post("/advisor/discussions/:id/transfer", async (req, res) => {
+app.post("/advisor/discussions/:id/transfer", requireRole('advisor'), async (req, res) => {
   const result = await advisorTransferChat.execute(req.params.id, req.body.advisorId);
   res.json(result);
 });
 
 // ============ CLIENT ACCOUNT ROUTES ============
-app.post("/client/accounts", async (req, res) => {
+app.post("/client/accounts", requireRole('client'), async (req, res) => {
   const result = await clientCreateAccount.execute(req.body.user, req.body.name);
   res.json(result);
 });
 
-app.delete("/client/accounts/:id", async (req, res) => {
+app.delete("/client/accounts/:id", requireRole('client'), async (req, res) => {
   const result = await clientDeleteAccount.execute(req.body.account);
   res.json(result);
 });
 
-app.get("/client/accounts/:id", async (req, res) => {
+app.get("/client/accounts/:id", requireRole('client'), async (req, res) => {
   const result = await clientGetAccount.execute(req.params.id);
   res.json(result);
 });
 
-app.get("/client/accounts/:id/balance", async (req, res) => {
+app.get("/client/accounts/:id/balance", requireRole('client'), async (req, res) => {
   const result = await clientGetBalanceAccount.execute(req.params.id);
   res.json(result);
 });
 
-app.post("/client/accounts/savings", async (req, res) => {
+app.post("/client/accounts/savings", requireRole('client'), async (req, res) => {
   const result = await clientSavingAccountCreate.execute(req.body.user, req.body.name);
   res.json(result);
 });
 
-app.put("/client/accounts/:id/name", async (req, res) => {
+app.put("/client/accounts/:id/name", requireRole('client'), async (req, res) => {
   const result = await clientUpdateNameAccount.execute(req.params.id, req.body.name);
   res.json(result);
 });
@@ -418,83 +469,83 @@ app.post("/client/password/reset", async (req, res) => {
 });
 
 // ============ CLIENT LOAN ROUTES ============
-app.get("/client/loans", async (req, res) => {
+app.get("/client/loans", requireRole('client'), async (req, res) => {
   const result = await clientGetLoans.execute(security.getCurrentUser());
   res.json(result);
 });
 
-app.post("/client/loans/:id/repay", async (req, res) => {
+app.post("/client/loans/:id/repay", requireRole('client'), async (req, res) => {
   const result = await clientRepayLoan.execute(req.body.account, req.body.loan, req.body.amount);
   res.json(result);
 });
 
-app.post("/client/loans/request", async (req, res) => {
+app.post("/client/loans/request", requireRole('client'), async (req, res) => {
   const result = await clientRequestLoan.execute(security.getCurrentUser(), req.body.amount);
   res.json(result);
 });
 
-app.post("/client/loans/simulate", async (req, res) => {
+app.post("/client/loans/simulate", requireRole('client'), async (req, res) => {
   const result = await clientSimulateLoan.execute(req.body.principal, req.body.interestRate, req.body.durationMonths);
   res.json(result);
 });
 
 // ============ CLIENT MESSAGE ROUTES ============
-app.post("/client/messages", async (req, res) => {
+app.post("/client/messages", requireRole('client'), async (req, res) => {
   const result = await clientSendMessage.execute(req.body.discussionId, req.body.text);
   res.json(result);
 });
 
 // ============ CLIENT NOTIFICATION ROUTES ============
-app.get("/client/notifications", async (req, res) => {
+app.get("/client/notifications", requireRole('client'), async (req, res) => {
   const result = await clientGetNotifications.execute();
   res.json(result);
 });
 
 // ============ CLIENT PORTFOLIO ROUTES ============
-app.post("/client/portfolios", async (req, res) => {
+app.post("/client/portfolios", requireRole('client'), async (req, res) => {
   const result = await clientCreatePortfolio.execute(req.body.accountId);
   res.json(result);
 });
 
-app.get("/client/portfolios/:id", async (req, res) => {
+app.get("/client/portfolios/:id", requireRole('client'), async (req, res) => {
   const result = await clientGetPortfolio.execute(req.params.id);
   res.json(result);
 });
 
 // ============ CLIENT STOCK ROUTES ============
-app.get("/client/stocks/available", async (req, res) => {
+app.get("/client/stocks/available", requireRole('client'), async (req, res) => {
   const result = await clientGetAvailableStocks.execute();
   res.json(result);
 });
 
-app.get("/client/stocks/:id/price", async (req, res) => {
+app.get("/client/stocks/:id/price", requireRole('client'), async (req, res) => {
   const result = await clientGetStockWithPrice.execute(req.params.id);
   res.json(result);
 });
 
 // ============ CLIENT STOCK ORDER ROUTES ============
-app.delete("/client/stock-orders/:id", async (req, res) => {
+app.delete("/client/stock-orders/:id", requireRole('client'), async (req, res) => {
   const result = await clientCancelStockOrder.execute(req.params.id);
   res.json(result);
 });
 
-app.get("/client/stock-orders", async (req, res) => {
+app.get("/client/stock-orders", requireRole('client'), async (req, res) => {
   const result = await clientGetStockOrders.execute(security.getCurrentUser());
   res.json(result);
 });
 
-app.post("/client/stock-orders/match", async (req, res) => {
+app.post("/client/stock-orders/match", requireRole('client'), async (req, res) => {
   const result = await clientMatchStockOrder.execute(req.body.orderId);
   res.json(result);
 });
 
-app.post("/client/stock-orders", async (req, res) => {
+app.post("/client/stock-orders", requireRole('client'), async (req, res) => {
   const result = await clientRegisterStockOrder.execute(req.body.account, req.body.stockId, req.body.side, req.body.price, req.body.quantity);
   res.json(result);
 });
 
 // ============ CLIENT TRANSACTION ROUTES ============
-app.post("/client/transactions", async (req, res) => {
+app.post("/client/transactions", requireRole('client'), async (req, res) => {
   const result = await clientSendTransaction.execute(req.body.fromAccountId, req.body.toAccountId, req.body.amount);
   res.json(result);
 });
@@ -511,85 +562,85 @@ app.post("/director/register", async (req, res) => {
 });
 
 // ============ DIRECTOR CLIENT ROUTES ============
-app.get("/director/clients", async (req, res) => {
+app.get("/director/clients", requireRole('director'), async (req, res) => {
   const result = await directorGetAllClients.execute();
   res.json(result);
 });
 
-app.get("/director/clients/:id/accounts", async (req, res) => {
+app.get("/director/clients/:id/accounts", requireRole('director'), async (req, res) => {
   const result = await directorGetClientAccounts.execute(req.params.id);
   res.json(result);
 });
 
-app.post("/director/clients/:id/ban", async (req, res) => {
+app.post("/director/clients/:id/ban", requireRole('director'), async (req, res) => {
   const result = await directorManageBan.execute(req.params.id, req.body.reason, req.body.endDate);
   res.json(result);
 });
 
-app.post("/director/clients", async (req, res) => {
+app.post("/director/clients", requireRole('director'), async (req, res) => {
   const result = await directorManageCreate.execute(req.body.firstname, req.body.lastname, req.body.email, req.body.password);
   res.json(result);
 });
 
-app.delete("/director/clients/:id", async (req, res) => {
+app.delete("/director/clients/:id", requireRole('director'), async (req, res) => {
   const result = await directorManageDelete.execute(req.params.id);
   res.json(result);
 });
 
-app.put("/director/clients/:id", async (req, res) => {
+app.put("/director/clients/:id", requireRole('director'), async (req, res) => {
   const result = await directorManageUpdate.execute(req.params.id, req.body);
   res.json(result);
 });
 
 // ============ DIRECTOR COMPANY ROUTES ============
-app.post("/director/companies", async (req, res) => {
+app.post("/director/companies", requireRole('director'), async (req, res) => {
   const result = await directorCreateCompany.execute(req.body.name);
   res.json(result);
 });
 
-app.delete("/director/companies/:id", async (req, res) => {
+app.delete("/director/companies/:id", requireRole('director'), async (req, res) => {
   const result = await directorDeleteCompany.execute(req.params.id);
   res.json(result);
 });
 
-app.get("/director/companies", async (req, res) => {
+app.get("/director/companies", requireRole('director'), async (req, res) => {
   const result = await directorGetAllCompanies.execute();
   res.json(result);
 });
 
-app.get("/director/companies/:id", async (req, res) => {
+app.get("/director/companies/:id", requireRole('director'), async (req, res) => {
   const result = await directorGetCompany.execute(req.params.id);
   res.json(result);
 });
 
-app.put("/director/companies/:id", async (req, res) => {
+app.put("/director/companies/:id", requireRole('director'), async (req, res) => {
   const result = await directorUpdateCompany.execute(req.params.id, req.body);
   res.json(result);
 });
 
 // ============ DIRECTOR SAVINGS ROUTES ============
-app.post("/director/savings/rate", async (req, res) => {
+app.post("/director/savings/rate", requireRole('director'), async (req, res) => {
   const result = await directorChangeSavingRate.execute(req.body.accountTypeName, req.body.rate);
   res.json(result);
 });
 
 // ============ DIRECTOR STOCK ROUTES ============
-app.post("/director/stocks", async (req, res) => {
+app.post("/director/stocks", requireRole('director'), async (req, res) => {
   const result = await directorCreateStock.execute(req.body.symbol, req.body.name, req.body.companyId);
   res.json(result);
 });
 
-app.delete("/director/stocks/:id", async (req, res) => {
+app.delete("/director/stocks/:id", requireRole('director'), async (req, res) => {
   const result = await directorDeleteStock.execute(req.params.id);
   res.json(result);
 });
 
-app.put("/director/stocks/:id/listing", async (req, res) => {
+app.put("/director/stocks/:id/listing", requireRole('director'), async (req, res) => {
   const result = await directorToggleStockListing.execute(req.params.id);
   res.json(result);
 });
 
-app.put("/director/stocks/:id", async (req, res) => {
+app.put("/director/stocks/:id", requireRole('director'), async (req, res) => {
   const result = await directorUpdateStock.execute(req.params.id, req.body);
   res.json(result);
 });
@@ -617,5 +668,5 @@ app.post("/notifications/loan-status", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`App listening on port ${port}`)
 })
