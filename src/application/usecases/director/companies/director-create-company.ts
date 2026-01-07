@@ -12,6 +12,6 @@ export class DirectorCreateCompany {
     }
 
     const company = Company.create(name);
-    return this.companyRepository.create(company);
+    return this.companyRepository.save(company);
   }
 }

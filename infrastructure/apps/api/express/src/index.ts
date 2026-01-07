@@ -20,6 +20,9 @@ import { RedisMessageRepository } from '@pp-clca-pcm/adapters/repositories/redis
 import { AdvisorRepository } from "@pp-clca-pcm/application/repositories/advisor";
 import { RedisAdvisorRepository } from '@pp-clca-pcm/adapters/repositories/redis/advisor';
 
+import { CompanyRepository } from '@pp-clca-pcm/application/repositories/company';
+import { RedisCompanyRepository } from '@pp-clca-pcm/adapters/repositories/redis/company';
+
 import { RedisLoanRepository } from '@pp-clca-pcm/adapters/repositories/redis/loan';
 import { RedisLoanRequestRepository } from '@pp-clca-pcm/adapters/repositories/redis/request-loan';
 import { RedisTransactionRepository } from '@pp-clca-pcm/adapters/repositories/redis/transaction';
@@ -138,6 +141,7 @@ let loanRepository: any = null;
 let loanRequestRepository: any = null;
 let transactionRepository: any = null;
 let userRepository: any = null;
+let companyRepository: CompanyRepository|null = null;
 
 if (databaseProvider === "postgresql") {
 } else if (databaseProvider === "redis") {
@@ -155,6 +159,7 @@ if (databaseProvider === "postgresql") {
   loanRequestRepository = new RedisLoanRequestRepository(redisClient);
   transactionRepository = new RedisTransactionRepository(redisClient);
   userRepository = new RedisUserRepository(redisClient);
+  companyRepository = new RedisCompanyRepository(redisClient);
 }
 
 // Init service
@@ -221,7 +226,6 @@ const stockRepositoryStub = {} as any;
 const stockOrderRepositoryStub = { findAllByOwnerId: async (id: string) => [], save: async (o: any) => o, findAllByStockId: async (s: string) => [] } as any;
 const notifierStub = { notiferUser: async (user: any, message: any) => {} } as any;
 const notificationRepositoryStub = { save: async (n: any) => n } as any;
-const companyRepositoryStub = {} as any;
 const banRepositoryStub = {} as any;
 
 // Init use cases
@@ -320,18 +324,18 @@ const directorManageCreate = new DirectorManageCreate(userRepository, security);
 const directorManageDelete = new DirectorManageDelete(userRepository, security);
 const directorManageUpdate = new DirectorManageUpdate(userRepository, security);
 
-const directorCreateCompany = new DirectorCreateCompany(companyRepositoryStub);
-const directorDeleteCompany = new DirectorDeleteCompany(companyRepositoryStub, stockRepositoryStub);
-const directorGetAllCompanies = new DirectorGetAllCompanies(companyRepositoryStub);
-const directorGetCompany = new DirectorGetCompany(companyRepositoryStub);
-const directorUpdateCompany = new DirectorUpdateCompany(companyRepositoryStub);
+const directorCreateCompany = new DirectorCreateCompany(companyRepository);
+const directorDeleteCompany = new DirectorDeleteCompany(companyRepository, stockRepositoryStub);
+const directorGetAllCompanies = new DirectorGetAllCompanies(companyRepository);
+const directorGetCompany = new DirectorGetCompany(companyRepository);
+const directorUpdateCompany = new DirectorUpdateCompany(companyRepository);
 
 const directorChangeSavingRate = new DirectorChangeSavingRate(accountTypeRepository);
 
-const directorCreateStock = new DirectorCreateStock(stockRepositoryStub, companyRepositoryStub);
+const directorCreateStock = new DirectorCreateStock(stockRepositoryStub, companyRepository);
 const directorDeleteStock = new DirectorDeleteStock(stockRepositoryStub, portfolioRepositoryStub, stockOrderRepositoryStub);
 const directorToggleStockListing = new DirectorToggleStockListing(stockRepositoryStub);
-const directorUpdateStock = new DirectorUpdateStock(stockRepositoryStub, companyRepositoryStub);
+const directorUpdateStock = new DirectorUpdateStock(stockRepositoryStub, companyRepository);
 
 // Engine
 const generateDailyInterest = new GenerateDailyInterest(accountRepository);
