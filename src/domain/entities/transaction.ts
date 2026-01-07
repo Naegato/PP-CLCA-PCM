@@ -1,6 +1,6 @@
-import { Account } from './accounts/account';
+import { Account } from './accounts/account.js';
 import { randomUUID } from "node:crypto";
-import { Loan } from './loan';
+import { Loan } from './loan.js';
 
 export class Transaction {
 	private constructor(

@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { Stock } from "./stock";
+import { Stock } from "./stock.js";
 
 export class Company {
   private constructor(

@@ -1,4 +1,4 @@
-import { Account } from '../../entities/accounts/account';
+import { Account } from '../../entities/accounts/account.js';
 
 export class ClientProps {
   public constructor(

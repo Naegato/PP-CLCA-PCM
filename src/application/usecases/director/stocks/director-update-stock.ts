@@ -1,7 +1,7 @@
-import { StockRepository } from '../../../repositories/stock';
+import { StockRepository } from '../../../repositories/stock.js';
 import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { DirectorUpdateStockError } from '../../../errors/director-update-stock';
-import { CompanyRepository } from '../../../repositories/company';
+import { DirectorUpdateStockError } from '../../../errors/director-update-stock.js';
+import { CompanyRepository } from '../../../repositories/company.js';
 import { Company } from '@pp-clca-pcm/domain/entities/company';
 
 export class DirectorUpdateStock {

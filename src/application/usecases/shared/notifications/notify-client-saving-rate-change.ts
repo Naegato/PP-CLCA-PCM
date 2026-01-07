@@ -1,8 +1,8 @@
 import { Notification } from "@pp-clca-pcm/domain/entities/notification";
 import { NotificationType } from "@pp-clca-pcm/domain/value-objects/notification-type";
-import { NotificationRepository } from "../../../repositories/notification";
-import { Notifier } from "../../../services/notifier";
-import { UserRepository } from "../../../repositories/user";
+import { NotificationRepository } from "../../../repositories/notification.js";
+import { Notifier } from "../../../services/notifier.js";
+import { UserRepository } from "../../../repositories/user.js";
 
 export class NotifyClientSavingRateChange {
   public constructor(

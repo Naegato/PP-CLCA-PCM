@@ -1,4 +1,4 @@
-import { UserRepository } from "../../../repositories/user";
+import { UserRepository } from "../../../repositories/user.js";
 
 export class DirectorGetAllClients {
 	public constructor(

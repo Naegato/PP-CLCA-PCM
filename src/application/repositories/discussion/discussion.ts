@@ -1,4 +1,4 @@
-import { Discussion } from "../../../domain/entities/discussion/discussion";
+import { Discussion } from "../../../domain/entities/discussion/discussion.js";
 
 export interface DiscussionRepository {
 	save(discussion: Discussion): Promise<Discussion>;

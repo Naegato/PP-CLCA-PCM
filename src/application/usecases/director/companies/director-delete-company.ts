@@ -1,6 +1,6 @@
-import { CompanyRepository } from '../../../repositories/company';
-import { StockRepository } from '../../../repositories/stock';
-import { DirectorDeleteCompanyError } from '../../../errors/director-delete-company';
+import { CompanyRepository } from '../../../repositories/company.js';
+import { StockRepository } from '../../../repositories/stock.js';
+import { DirectorDeleteCompanyError } from '../../../errors/director-delete-company.js';
 
 export class DirectorDeleteCompany {
   constructor(

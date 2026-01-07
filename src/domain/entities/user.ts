@@ -1,9 +1,9 @@
-import { ClientProps } from '../value-objects/user/client';
-import { AdvisorProps } from '../value-objects/user/advisor';
-import { DirectorProps } from '../value-objects/user/director';
+import { ClientProps } from '../value-objects/user/client.js';
+import { AdvisorProps } from '../value-objects/user/advisor.js';
+import { DirectorProps } from '../value-objects/user/director.js';
 import { randomUUID } from 'node:crypto';
-import { Password } from '../value-objects/password';
-import { Email } from '../value-objects/email';
+import { Password } from '../value-objects/password.js';
+import { Email } from '../value-objects/email.js';
 
 export class User {
 	private constructor(

@@ -4,7 +4,7 @@ import { AccountTypeRepository } from "@pp-clca-pcm/application/repositories/typ
 import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
 import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
 import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application/errors/account-type-does-not-exist';
-import { RedisBaseRepository } from '../base';
+import { RedisBaseRepository } from '../base.js';
 
 export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType> implements AccountTypeRepository {
 	readonly prefix = 'account_type:';

@@ -1,9 +1,9 @@
-import { Transaction } from '../transaction';
-import { AccountType } from './type';
+import { Transaction } from '../transaction.js';
+import { AccountType } from './type.js';
 import { randomUUID } from 'node:crypto';
-import { User } from '../user';
-import { Iban } from '../../value-objects/iban';
-import { Portfolio } from '../portfolio/portfolio';
+import { User } from '../user.js';
+import { Iban } from '../../value-objects/iban.js';
+import { Portfolio } from '../portfolio/portfolio.js';
 
 export class Account {
   private constructor (

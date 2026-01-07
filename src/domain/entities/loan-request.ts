@@ -1,6 +1,6 @@
-import { User } from "./user";
+import { User } from "./user.js";
 import { randomUUID } from "node:crypto";
-import { LoanRequestAmountError } from "../errors/loan-request-amount";
+import { LoanRequestAmountError } from "../errors/loan-request-amount.js";
 
 export class LoanRequest {
   private constructor(

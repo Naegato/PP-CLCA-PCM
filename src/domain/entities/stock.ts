@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { Company } from './company';
+import { Company } from './company.js';
 
 export type StockSymbol = string;
 

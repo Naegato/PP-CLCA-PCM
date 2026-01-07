@@ -1,4 +1,4 @@
-import { InvalidEmailFormatError } from '../errors/invalid-email-format';
+import { InvalidEmailFormatError } from '../errors/invalid-email-format.js';
 
 export class Email {
   private constructor (

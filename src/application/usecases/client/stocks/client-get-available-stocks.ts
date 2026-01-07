@@ -1,6 +1,6 @@
-import { StockRepository } from '../../../repositories/stock';
+import { StockRepository } from '../../../repositories/stock.js';
 import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { MarketService } from '../../../services/market';
+import { MarketService } from '../../../services/market.js';
 
 export class ClientGetAvailableStocks {
   constructor(

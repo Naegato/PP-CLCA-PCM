@@ -1,6 +1,7 @@
 {
   "private": true,
   "version": "0.1.0",
+  "type": "module",
   "name": "@pp-clca-pcm/adapters",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -23,7 +24,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rm -rf dist",
-    "p:g": "prisma generate",
+    "p:g": "prisma generate && bash ./scripts/fix-prisma-imports.sh",
     "p:m": "prisma migrate dev",
     "p:m:r": "prisma migrate reset",
     "dev": "pnpm dlx tsx watch main.ts"

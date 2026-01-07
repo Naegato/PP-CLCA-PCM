@@ -1,8 +1,8 @@
-import { PortfolioItem } from './portfolio-item';
-import { Stock } from '../stock';
-import { PortfolioError } from '../../errors/portfolio';
+import { PortfolioItem } from './portfolio-item.js';
+import { Stock } from '../stock.js';
+import { PortfolioError } from '../../errors/portfolio.js';
 import { randomUUID } from 'node:crypto';
-import { Account } from '../accounts/account';
+import { Account } from '../accounts/account.js';
 
 export class Portfolio {
   private readonly items: Map<string, PortfolioItem>;

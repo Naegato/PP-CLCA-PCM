@@ -1,6 +1,6 @@
-import { InvalidIbanError } from "../errors/invalid-iban-format";
-import { mod97 } from "../utils/iban";
-import { FRENCH_IBAN_ATTRIBUTES } from "../constants/iban-fr";
+import { InvalidIbanError } from "../errors/invalid-iban-format.js";
+import { mod97 } from "../utils/iban.js";
+import { FRENCH_IBAN_ATTRIBUTES } from "../constants/iban-fr.js";
 
 export class Iban {
   private constructor(

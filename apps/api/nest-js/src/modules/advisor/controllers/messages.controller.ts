@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, UseGuards, UseInterceptors, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, Param, UseGuards, UseInterceptors, HttpCode, Inject } from '@nestjs/common';
 
 // Use cases
 import { AdvisorReplyMessage } from '@pp-clca-pcm/application';
@@ -19,6 +19,7 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 import type { MessageRepository } from '@pp-clca-pcm/application';
 import type { DiscussionRepository } from '@pp-clca-pcm/application';
 import type { UserRepository } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 
 /**
  * AdvisorMessagesController
@@ -37,8 +38,8 @@ export class AdvisorMessagesController {
     private readonly replyMessage: AdvisorReplyMessage,
     private readonly closeChat: AdvisorCloseChat,
     private readonly transferChat: AdvisorTransferChat,
-    private readonly discussionRepository: DiscussionRepository,
-    private readonly userRepository: UserRepository,
+    @Inject(REPOSITORY_TOKENS.DISCUSSION) private readonly discussionRepository: DiscussionRepository,
+    @Inject(REPOSITORY_TOKENS.USER) private readonly userRepository: UserRepository,
   ) {}
 
   /**

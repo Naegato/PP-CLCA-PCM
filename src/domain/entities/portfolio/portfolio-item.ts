@@ -1,5 +1,5 @@
-import { Stock } from '../stock';
-import { PortfolioError } from '../../errors/portfolio';
+import { Stock } from '../stock.js';
+import { PortfolioError } from '../../errors/portfolio.js';
 import { randomUUID } from 'node:crypto';
 
 export class PortfolioItem {

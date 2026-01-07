@@ -1,8 +1,8 @@
-import { Discussion } from "../../../../domain/entities/discussion/discussion";
-import { User } from "../../../../domain/entities/user";
-import { NotAdvisor } from "../../../errors/not-advisor";
-import { DiscussionRepository } from "../../../repositories/discussion/discussion";
-import { Security } from "../../../services/security";
+import { Discussion } from "../../../../domain/entities/discussion/discussion.js";
+import { User } from "../../../../domain/entities/user.js";
+import { NotAdvisor } from "../../../errors/not-advisor.js";
+import { DiscussionRepository } from "../../../repositories/discussion/discussion.js";
+import { Security } from "../../../services/security.js";
 
 export class AdvisorTransferChat {
 	public constructor(
