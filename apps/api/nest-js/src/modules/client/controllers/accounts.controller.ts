@@ -9,6 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
   HttpCode,
+  Inject,
 } from '@nestjs/common';
 
 // Use cases
@@ -33,6 +34,10 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 // Domain entities
 import { User } from '@pp-clca-pcm/domain';
 
+// Repositories & Services
+import type { AccountRepository, AccountTypeRepository, UserRepository } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
+
 /**
  * ClientAccountsController
  *
@@ -49,12 +54,12 @@ import { User } from '@pp-clca-pcm/domain';
 @UseInterceptors(ErrorInterceptor)
 export class ClientAccountsController {
   constructor(
-    private readonly createAccount: ClientCreateAccount,
-    private readonly createSavingsAccount: ClientSavingAccountCreate,
-    private readonly getAccount: ClientGetAccount,
-    private readonly getBalance: ClientGetBalanceAccount,
-    private readonly updateAccountName: ClientUpdateNameAccount,
-    private readonly deleteAccount: ClientDeleteAccount,
+    @Inject(REPOSITORY_TOKENS.ACCOUNT)
+    private readonly accountRepository: AccountRepository,
+    @Inject(REPOSITORY_TOKENS.ACCOUNT_TYPE)
+    private readonly accountTypeRepository: AccountTypeRepository,
+    @Inject(REPOSITORY_TOKENS.USER)
+    private readonly userRepository: UserRepository,
   ) {}
 
   /**
@@ -64,7 +69,15 @@ export class ClientAccountsController {
   @Post()
   @HttpCode(201)
   async create(@CurrentUser() user: User, @Body() dto: CreateAccountDto) {
-    return await this.createAccount.execute(user, dto.name);
+    // Récupérer le type de compte "normal"
+    const accountTypes = await this.accountTypeRepository.all();
+    const accountType = accountTypes.find((at) => at.identifier === 'normal');
+    if (!accountType) {
+      return new Error('Account type "normal" not found');
+    }
+
+    const useCase = new ClientCreateAccount(accountType, this.accountRepository);
+    return await useCase.execute(user, dto.name);
   }
 
   /**
@@ -74,7 +87,15 @@ export class ClientAccountsController {
   @Post('savings')
   @HttpCode(201)
   async createSavings(@CurrentUser() user: User, @Body() dto: CreateAccountDto) {
-    return await this.createSavingsAccount.execute(user, dto.name);
+    // Récupérer le type de compte "savings"
+    const accountTypes = await this.accountTypeRepository.all();
+    const accountType = accountTypes.find((at) => at.identifier === 'savings');
+    if (!accountType) {
+      return new Error('Account type "savings" not found');
+    }
+
+    const useCase = new ClientSavingAccountCreate(accountType, this.accountRepository);
+    return await useCase.execute(user, dto.name);
   }
 
   /**
@@ -83,7 +104,8 @@ export class ClientAccountsController {
    */
   @Get(':id')
   async getById(@Param('id') id: string) {
-    return await this.getAccount.execute(id);
+    const useCase = new ClientGetAccount(this.accountRepository);
+    return await useCase.execute(id);
   }
 
   /**
@@ -92,7 +114,8 @@ export class ClientAccountsController {
    */
   @Get(':id/balance')
   async getBalanceById(@Param('id') id: string) {
-    const balance = await this.getBalance.execute(id);
+    const useCase = new ClientGetBalanceAccount(this.accountRepository);
+    const balance = await useCase.execute(id);
     return { balance };
   }
 
@@ -103,13 +126,15 @@ export class ClientAccountsController {
   @Patch(':id')
   async update(@Param('id') id: string, @Body() dto: UpdateAccountDto) {
     // D'abord récupérer le compte
-    const account = await this.getAccount.execute(id);
+    const getAccountUseCase = new ClientGetAccount(this.accountRepository);
+    const account = await getAccountUseCase.execute(id);
     if (account instanceof Error) {
       return account;
     }
 
     // Puis mettre à jour le nom
-    return await this.updateAccountName.execute(account, dto.name);
+    const updateUseCase = new ClientUpdateNameAccount(this.accountRepository);
+    return await updateUseCase.execute(account, dto.name);
   }
 
   /**
@@ -120,12 +145,14 @@ export class ClientAccountsController {
   @HttpCode(204)
   async delete(@Param('id') id: string) {
     // D'abord récupérer le compte
-    const account = await this.getAccount.execute(id);
+    const getAccountUseCase = new ClientGetAccount(this.accountRepository);
+    const account = await getAccountUseCase.execute(id);
     if (account instanceof Error) {
       return account;
     }
 
     // Puis supprimer
-    return await this.deleteAccount.execute(account);
+    const deleteUseCase = new ClientDeleteAccount(this.accountRepository, this.userRepository);
+    return await deleteUseCase.execute(account);
   }
 }

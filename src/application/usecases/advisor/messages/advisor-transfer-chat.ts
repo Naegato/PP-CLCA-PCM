@@ -12,7 +12,7 @@ export class AdvisorTransferChat {
 	}
 
 	public async execute(discussion: Discussion, newAdvisor: User) {
-		const advisor = this.security.getCurrentUser();
+		const advisor = await this.security.getCurrentUser();
 
 		if (!advisor.isAdvisor() || advisor !== discussion.advisor) {
 			return new NotAdvisor();

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseGuards, UseInterceptors, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, UseInterceptors, HttpCode, Inject } from '@nestjs/common';
 
 // Use cases
 import { ClientCreatePortfolio } from '@pp-clca-pcm/application';
@@ -13,6 +13,10 @@ import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
 
+// Repositories & Services
+import type { PortfolioRepository, AccountRepository } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
+
 /**
  * ClientPortfolioController
  *
@@ -26,8 +30,10 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 @UseInterceptors(ErrorInterceptor)
 export class ClientPortfolioController {
   constructor(
-    private readonly createPortfolio: ClientCreatePortfolio,
-    private readonly getPortfolio: ClientGetPortfolio,
+    @Inject(REPOSITORY_TOKENS.PORTFOLIO)
+    private readonly portfolioRepository: PortfolioRepository,
+    @Inject(REPOSITORY_TOKENS.ACCOUNT)
+    private readonly accountRepository: AccountRepository,
   ) {}
 
   /**
@@ -37,7 +43,8 @@ export class ClientPortfolioController {
   @Post()
   @HttpCode(201)
   async create(@Body() dto: CreatePortfolioDto) {
-    return await this.createPortfolio.execute(dto.accountId);
+    const useCase = new ClientCreatePortfolio(this.portfolioRepository, this.accountRepository);
+    return await useCase.execute(dto.accountId);
   }
 
   /**
@@ -46,6 +53,7 @@ export class ClientPortfolioController {
    */
   @Get(':accountId')
   async get(@Param('accountId') accountId: string) {
-    return await this.getPortfolio.execute(accountId);
+    const useCase = new ClientGetPortfolio(this.portfolioRepository, this.accountRepository);
+    return await useCase.execute(accountId);
   }
 }

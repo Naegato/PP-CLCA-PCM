@@ -16,7 +16,8 @@ import { createClient, RedisClientType } from 'redis';
     {
       provide: 'PRISMA_CLIENT',
       useFactory: async (configService: ConfigService) => {
-        const dbProvider = configService.get<string>('DB_PROVIDER', 'prisma');
+        const dbProviderConfig = configService.get<string>('DB_PROVIDER', 'postgresql');
+        const dbProvider = dbProviderConfig === 'redis' ? 'redis' : 'prisma';
 
         // Si on n'utilise pas Prisma comme provider principal, pas besoin de connexion
         if (dbProvider !== 'prisma') {
@@ -54,7 +55,8 @@ import { createClient, RedisClientType } from 'redis';
       useFactory: async (
         configService: ConfigService,
       ): Promise<RedisClientType | null> => {
-        const dbProvider = configService.get<string>('DB_PROVIDER', 'prisma');
+        const dbProviderConfig = configService.get<string>('DB_PROVIDER', 'postgresql');
+        const dbProvider = dbProviderConfig === 'redis' ? 'redis' : 'prisma';
         const redisUrl = configService.get<string>(
           'REDIS_URL',
           'redis://localhost:6379',

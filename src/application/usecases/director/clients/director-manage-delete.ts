@@ -10,7 +10,7 @@ export class DirectorManageDelete {
   ) {}
 
   public async execute(userId: string): Promise<void | NotDirector | UserNotFoundByIdError> {
-    const director = this.security.getCurrentUser();
+    const director = await this.security.getCurrentUser();
 
     if (!director.isDirector()) {
       return new NotDirector();

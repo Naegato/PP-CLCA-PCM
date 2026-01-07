@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, UseGuards, UseInterceptors, Inject } from '@nestjs/common';
 
 // Use cases
 import { ClientGetNotifications } from '@pp-clca-pcm/application';
@@ -8,6 +8,10 @@ import { AuthGuard } from '../../../common/guards/auth.guard';
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
+
+// Repositories & Services
+import type { NotificationRepository, Security } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 
 /**
  * ClientNotificationsController
@@ -20,7 +24,12 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 @Roles('client')
 @UseInterceptors(ErrorInterceptor)
 export class ClientNotificationsController {
-  constructor(private readonly getNotifications: ClientGetNotifications) {}
+  constructor(
+    @Inject(REPOSITORY_TOKENS.NOTIFICATION)
+    private readonly notificationRepository: NotificationRepository,
+    @Inject('Security')
+    private readonly security: Security,
+  ) {}
 
   /**
    * GET /client/notifications
@@ -28,6 +37,7 @@ export class ClientNotificationsController {
    */
   @Get()
   async getAll() {
-    return await this.getNotifications.execute();
+    const useCase = new ClientGetNotifications(this.notificationRepository, this.security);
+    return await useCase.execute();
   }
 }

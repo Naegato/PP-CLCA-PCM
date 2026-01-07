@@ -12,7 +12,7 @@ export class AdvisorGrantLoan {
   ) {}
 
   public async execute(loanRequestId: string) {
-    const advisor = this.security.getCurrentUser();
+    const advisor = await this.security.getCurrentUser();
 
     if (!advisor.isAdvisor()) {
       return new NotAdvisor();

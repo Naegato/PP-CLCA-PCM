@@ -7,6 +7,7 @@ help:
 	@echo "  make db              - Start Docker containers (PostgreSQL, MariaDB, Redis)"
 	@echo "  make prisma-generate - Generate Prisma client"
 	@echo "  make prisma-migrate  - Run Prisma migrations"
+	@echo "  make prisma-reset    - Reset Prisma databases (drops all data)"
 	@echo "  make up-db           - Start DB + generate + migrate"
 	@echo "  make tests           - Run tests (requires up-db)"
 	@echo "  make up              - Start all apps (requires tests to pass)"
@@ -36,6 +37,9 @@ db: .env
 prisma-generate: install
 	pnpm --filter @pp-clca-pcm/adapters p:g
 
+prisma-reset: db
+	pnpm --filter @pp-clca-pcm/adapters p:m:r
+
 prisma-migrate: db
 	pnpm --filter @pp-clca-pcm/adapters p:m
 
@@ -53,8 +57,8 @@ up: tests
 up-nestjs: up-db build
 	cd apps/api/nest-js && npm install && npm run start:dev
 
-up-nextjs: install
-	pnpm --filter @pp-clca-pcm/front-nextjs dev
+up-nextjs:
+	cd apps/front/next-js && npm install && npm run dev
 
 clear:
 	rm -rf node_modules

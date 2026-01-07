@@ -160,7 +160,8 @@ Fournit les clients de base de données (Prisma et Redis).
     {
       provide: 'PRISMA_CLIENT',
       useFactory: async (configService: ConfigService) => {
-        const dbProvider = configService.get<string>('DB_PROVIDER', 'prisma');
+        const dbProviderConfig = configService.get<string>('DB_PROVIDER', 'postgresql');
+        const dbProvider = dbProviderConfig === 'redis' ? 'redis' : 'prisma';
 
         if (dbProvider !== 'prisma') {
           return null;

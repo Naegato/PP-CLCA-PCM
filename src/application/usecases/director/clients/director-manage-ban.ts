@@ -17,7 +17,7 @@ export class DirectorManageBan {
     reason: string,
     endDate?: Date,
   ): Promise<Ban | NotDirector | UserNotFoundByIdError> {
-    const director = this.security.getCurrentUser();
+    const director = await this.security.getCurrentUser();
 
     if (!director.isDirector()) {
       return new NotDirector();

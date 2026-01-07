@@ -8,6 +8,7 @@ import {
   UseGuards,
   UseInterceptors,
   HttpCode,
+  Inject,
 } from '@nestjs/common';
 
 // Use cases
@@ -31,6 +32,15 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 import { User } from '@pp-clca-pcm/domain';
 import { OrderSide } from '@pp-clca-pcm/domain';
 
+// Repositories & Services
+import type {
+  StockOrderRepository,
+  StockRepository,
+  AccountRepository,
+  PortfolioRepository,
+} from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
+
 /**
  * ClientStockOrdersController
  *
@@ -46,11 +56,14 @@ import { OrderSide } from '@pp-clca-pcm/domain';
 @UseInterceptors(ErrorInterceptor)
 export class ClientStockOrdersController {
   constructor(
-    private readonly getStockOrders: ClientGetStockOrders,
-    private readonly registerStockOrder: ClientRegisterStockOrder,
-    private readonly cancelStockOrder: ClientCancelStockOrder,
-    private readonly matchStockOrder: ClientMatchStockOrder,
-    private readonly getAccount: ClientGetAccount,
+    @Inject(REPOSITORY_TOKENS.STOCK_ORDER)
+    private readonly stockOrderRepository: StockOrderRepository,
+    @Inject(REPOSITORY_TOKENS.STOCK)
+    private readonly stockRepository: StockRepository,
+    @Inject(REPOSITORY_TOKENS.ACCOUNT)
+    private readonly accountRepository: AccountRepository,
+    @Inject(REPOSITORY_TOKENS.PORTFOLIO)
+    private readonly portfolioRepository: PortfolioRepository,
   ) {}
 
   /**
@@ -59,7 +72,8 @@ export class ClientStockOrdersController {
    */
   @Get()
   async getAll(@CurrentUser() user: User) {
-    return await this.getStockOrders.execute(user);
+    const useCase = new ClientGetStockOrders(this.stockOrderRepository);
+    return await useCase.execute(user);
   }
 
   /**
@@ -70,7 +84,8 @@ export class ClientStockOrdersController {
   @HttpCode(201)
   async register(@Body() dto: RegisterStockOrderDto) {
     // Récupérer le compte
-    const account = await this.getAccount.execute(dto.accountId);
+    const getAccountUseCase = new ClientGetAccount(this.accountRepository);
+    const account = await getAccountUseCase.execute(dto.accountId);
     if (account instanceof Error) {
       return account;
     }
@@ -78,8 +93,20 @@ export class ClientStockOrdersController {
     // Convertir le side string en OrderSide enum
     const side = dto.side === 'BUY' ? OrderSide.BUY : OrderSide.SELL;
 
+    // Créer le usecase de match pour le passer au register
+    const matchUseCase = new ClientMatchStockOrder(
+      this.stockOrderRepository,
+      this.accountRepository,
+      this.portfolioRepository,
+    );
+
     // Enregistrer l'ordre (et matcher automatiquement)
-    return await this.registerStockOrder.execute(
+    const registerUseCase = new ClientRegisterStockOrder(
+      this.stockOrderRepository,
+      this.stockRepository,
+      matchUseCase,
+    );
+    return await registerUseCase.execute(
       account,
       dto.stockId,
       side,
@@ -96,7 +123,8 @@ export class ClientStockOrdersController {
   @HttpCode(200)
   async match(@Param('id') id: string, @CurrentUser() user: User) {
     // Récupérer tous les ordres du client et trouver le bon
-    const orders = await this.getStockOrders.execute(user);
+    const getOrdersUseCase = new ClientGetStockOrders(this.stockOrderRepository);
+    const orders = await getOrdersUseCase.execute(user);
     if (orders instanceof Error) {
       return orders;
     }
@@ -107,7 +135,12 @@ export class ClientStockOrdersController {
     }
 
     // Matcher l'ordre
-    return await this.matchStockOrder.execute(order);
+    const matchUseCase = new ClientMatchStockOrder(
+      this.stockOrderRepository,
+      this.accountRepository,
+      this.portfolioRepository,
+    );
+    return await matchUseCase.execute(order);
   }
 
   /**
@@ -117,6 +150,7 @@ export class ClientStockOrdersController {
   @Delete(':id')
   @HttpCode(204)
   async cancel(@Param('id') id: string, @CurrentUser() user: User) {
-    return await this.cancelStockOrder.execute(id, user);
+    const useCase = new ClientCancelStockOrder(this.stockOrderRepository);
+    return await useCase.execute(id, user);
   }
 }

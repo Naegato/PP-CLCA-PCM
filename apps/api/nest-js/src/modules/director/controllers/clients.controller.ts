@@ -8,7 +8,7 @@ import {
   Param,
   UseGuards,
   UseInterceptors,
-  HttpCode,
+  HttpCode, Inject,
 } from '@nestjs/common';
 
 // Use cases
@@ -18,6 +18,7 @@ import { DirectorManageCreate } from '@pp-clca-pcm/application';
 import { DirectorManageUpdate } from '@pp-clca-pcm/application';
 import { DirectorManageDelete } from '@pp-clca-pcm/application';
 import { DirectorManageBan } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from 'src/config/repositories.module';
 
 // DTOs
 import { CreateClientDto } from '../dto/clients/create-client.dto';
@@ -31,8 +32,8 @@ import { Roles } from '../../../common/decorators/roles.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
 
 // Repositories
-import type { UserRepository } from '@pp-clca-pcm/application';
-import { User } from '@pp-clca-pcm/domain';
+import type { Security, UserRepository, BanRepository } from '@pp-clca-pcm/application';
+import { Email, User } from '@pp-clca-pcm/domain';
 
 /**
  * DirectorClientsController
@@ -51,13 +52,19 @@ import { User } from '@pp-clca-pcm/domain';
 @UseInterceptors(ErrorInterceptor)
 export class DirectorClientsController {
   constructor(
-    private readonly getAllClients: DirectorGetAllClients,
-    private readonly getClientAccount: DirectorGetClientAccount,
-    private readonly createClient: DirectorManageCreate,
-    private readonly updateClient: DirectorManageUpdate,
-    private readonly deleteClient: DirectorManageDelete,
-    private readonly banClient: DirectorManageBan,
+    // private readonly getAllClients: DirectorGetAllClients,
+    // private readonly getClientAccount: DirectorGetClientAccount,
+    // private readonly createClient: DirectorManageCreate,
+    // private readonly updateClient: DirectorManageUpdate,
+    // private readonly deleteClient: DirectorManageDelete,
+    // private readonly banClient: DirectorManageBan,
+    // private readonly userRepository: UserRepository,
+    @Inject('Security')
+    private readonly security: Security,
+    @Inject(REPOSITORY_TOKENS.USER)
     private readonly userRepository: UserRepository,
+    @Inject(REPOSITORY_TOKENS.BAN)
+    private readonly banRepository: BanRepository,
   ) {}
 
   /**
@@ -66,7 +73,8 @@ export class DirectorClientsController {
    */
   @Get()
   async getAll() {
-    return await this.getAllClients.execute();
+    const useCase = new DirectorGetAllClients(this.userRepository);
+    return await useCase.execute();
   }
 
   /**
@@ -80,7 +88,9 @@ export class DirectorClientsController {
       return user;
     }
 
-    return await this.getClientAccount.execute(user);
+    const useCase = new DirectorGetClientAccount(this.userRepository);
+
+    return await useCase.execute(user);
   }
 
   /**
@@ -90,7 +100,8 @@ export class DirectorClientsController {
   @Post()
   @HttpCode(201)
   async create(@Body() dto: CreateClientDto) {
-    return await this.createClient.execute(
+    const useCase = new DirectorManageCreate(this.userRepository, this.security);
+    return await useCase.execute(
       dto.firstname,
       dto.lastname,
       dto.email,
@@ -104,10 +115,21 @@ export class DirectorClientsController {
    */
   @Patch(':id')
   async update(@Param('id') userId: string, @Body() dto: UpdateClientDto) {
-    return await this.updateClient.execute(
+    const useCase = new DirectorManageUpdate(this.userRepository, this.security);
+
+    const email = dto.email ? Email.create(dto.email) : undefined;
+
+    if (email instanceof Error) {
+      throw email;
+    }
+
+    return await useCase.execute(
       userId,
-      // TODO: ADD PROPS FROM CLIENT ...
-      dto as Parameters<typeof User.prototype.update>[0],
+      {
+        firstname: dto.firstname,
+        lastname: dto.lastname,
+        email: email,
+      },
     );
   }
 
@@ -118,7 +140,8 @@ export class DirectorClientsController {
   @Delete(':id')
   @HttpCode(204)
   async delete(@Param('id') userId: string) {
-    return await this.deleteClient.execute(userId);
+    const useCase = new DirectorManageDelete(this.userRepository, this.security);
+    return await useCase.execute(userId);
   }
 
   /**
@@ -129,6 +152,8 @@ export class DirectorClientsController {
   @HttpCode(200)
   async ban(@Param('id') userId: string, @Body() dto: BanClientDto) {
     const endDate = dto.endDate ? new Date(dto.endDate) : undefined;
-    return await this.banClient.execute(userId, dto.reason, endDate);
+
+    const useCase = new DirectorManageBan(this.userRepository, this.banRepository, this.security);
+    return await useCase.execute(userId, dto.reason, endDate);
   }
 }

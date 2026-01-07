@@ -10,7 +10,7 @@ import { Security } from '@pp-clca-pcm/application/services/security';
 class MockSecurity implements Security {
   constructor(private currentUser: User) {}
 
-  getCurrentUser(): User {
+  async getCurrentUser() {
     return this.currentUser;
   }
 }

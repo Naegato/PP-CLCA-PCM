@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards, UseInterceptors, Inject } from '@nestjs/common';
 
 // Use cases
 import { ClientGetAvailableStocks } from '@pp-clca-pcm/application';
@@ -9,6 +9,10 @@ import { AuthGuard } from '../../../common/guards/auth.guard';
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
+
+// Repositories & Services
+import type { StockRepository, MarketService } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 
 /**
  * ClientStocksController
@@ -23,8 +27,10 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 @UseInterceptors(ErrorInterceptor)
 export class ClientStocksController {
   constructor(
-    private readonly getAvailableStocks: ClientGetAvailableStocks,
-    private readonly getStockWithPrice: ClientGetStockWithPrice,
+    @Inject(REPOSITORY_TOKENS.STOCK)
+    private readonly stockRepository: StockRepository,
+    @Inject('MarketService')
+    private readonly marketService: MarketService,
   ) {}
 
   /**
@@ -33,7 +39,8 @@ export class ClientStocksController {
    */
   @Get()
   async getAll() {
-    return await this.getAvailableStocks.execute();
+    const useCase = new ClientGetAvailableStocks(this.stockRepository);
+    return await useCase.execute();
   }
 
   /**
@@ -42,6 +49,7 @@ export class ClientStocksController {
    */
   @Get(':id')
   async getById(@Param('id') id: string) {
-    return await this.getStockWithPrice.execute(id);
+    const useCase = new ClientGetStockWithPrice(this.stockRepository, this.marketService);
+    return await useCase.execute(id);
   }
 }

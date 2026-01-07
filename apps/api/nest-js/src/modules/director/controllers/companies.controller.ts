@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, UseInterceptors, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, UseInterceptors, HttpCode, Inject } from '@nestjs/common';
 
 // Use cases
 import { DirectorCreateCompany } from '@pp-clca-pcm/application';
@@ -17,6 +17,10 @@ import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
 
+// Repositories & Services
+import type { CompanyRepository, StockRepository } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
+
 /**
  * DirectorCompaniesController
  *
@@ -33,11 +37,10 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 @UseInterceptors(ErrorInterceptor)
 export class DirectorCompaniesController {
   constructor(
-    private readonly createCompany: DirectorCreateCompany,
-    private readonly deleteCompany: DirectorDeleteCompany,
-    private readonly getAllCompanies: DirectorGetAllCompanies,
-    private readonly getCompany: DirectorGetCompany,
-    private readonly updateCompany: DirectorUpdateCompany,
+    @Inject(REPOSITORY_TOKENS.COMPANY)
+    private readonly companyRepository: CompanyRepository,
+    @Inject(REPOSITORY_TOKENS.STOCK)
+    private readonly stockRepository: StockRepository,
   ) {}
 
   /**
@@ -46,7 +49,8 @@ export class DirectorCompaniesController {
    */
   @Get()
   async getAll() {
-    return await this.getAllCompanies.execute();
+    const useCase = new DirectorGetAllCompanies(this.companyRepository);
+    return await useCase.execute();
   }
 
   /**
@@ -55,7 +59,8 @@ export class DirectorCompaniesController {
    */
   @Get(':id')
   async get(@Param('id') id: string) {
-    return await this.getCompany.execute(id);
+    const useCase = new DirectorGetCompany(this.companyRepository);
+    return await useCase.execute(id);
   }
 
   /**
@@ -65,7 +70,8 @@ export class DirectorCompaniesController {
   @Post()
   @HttpCode(201)
   async create(@Body() dto: CreateCompanyDto) {
-    return await this.createCompany.execute(dto.name);
+    const useCase = new DirectorCreateCompany(this.companyRepository);
+    return await useCase.execute(dto.name);
   }
 
   /**
@@ -74,7 +80,8 @@ export class DirectorCompaniesController {
    */
   @Patch(':id')
   async update(@Param('id') id: string, @Body() dto: UpdateCompanyDto) {
-    return await this.updateCompany.execute(id, dto.name);
+    const useCase = new DirectorUpdateCompany(this.companyRepository);
+    return await useCase.execute(id, dto.name);
   }
 
   /**
@@ -84,6 +91,7 @@ export class DirectorCompaniesController {
   @Delete(':id')
   @HttpCode(204)
   async delete(@Param('id') id: string) {
-    return await this.deleteCompany.execute(id);
+    const useCase = new DirectorDeleteCompany(this.companyRepository, this.stockRepository);
+    return await useCase.execute(id);
   }
 }

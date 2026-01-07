@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseGuards, UseInterceptors, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, UseInterceptors, HttpCode, Inject } from '@nestjs/common';
 
 // Use cases
 import { ClientGetLoans } from '@pp-clca-pcm/application';
@@ -22,6 +22,15 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 // Domain entities
 import { User } from '@pp-clca-pcm/domain';
 
+// Repositories & Services
+import type {
+  LoanRepository,
+  LoanRequestRepository,
+  TransactionRepository,
+  AccountRepository,
+} from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
+
 /**
  * ClientLoansController
  *
@@ -37,11 +46,14 @@ import { User } from '@pp-clca-pcm/domain';
 @UseInterceptors(ErrorInterceptor)
 export class ClientLoansController {
   constructor(
-    private readonly getLoans: ClientGetLoans,
-    private readonly requestLoan: ClientRequestLoan,
-    private readonly simulateLoan: ClientSimulateLoan,
-    private readonly repayLoan: ClientRepayLoan,
-    private readonly getAccount: ClientGetAccount,
+    @Inject(REPOSITORY_TOKENS.LOAN)
+    private readonly loanRepository: LoanRepository,
+    @Inject(REPOSITORY_TOKENS.LOAN_REQUEST)
+    private readonly loanRequestRepository: LoanRequestRepository,
+    @Inject(REPOSITORY_TOKENS.TRANSACTION)
+    private readonly transactionRepository: TransactionRepository,
+    @Inject(REPOSITORY_TOKENS.ACCOUNT)
+    private readonly accountRepository: AccountRepository,
   ) {}
 
   /**
@@ -50,7 +62,8 @@ export class ClientLoansController {
    */
   @Get()
   async getAll(@CurrentUser() user: User) {
-    return await this.getLoans.execute(user);
+    const useCase = new ClientGetLoans(this.loanRepository);
+    return await useCase.execute(user);
   }
 
   /**
@@ -60,7 +73,8 @@ export class ClientLoansController {
   @Post('request')
   @HttpCode(201)
   async request(@CurrentUser() user: User, @Body() dto: RequestLoanDto) {
-    return await this.requestLoan.execute(user, dto.amount);
+    const useCase = new ClientRequestLoan(this.loanRequestRepository);
+    return await useCase.execute(user, dto.amount);
   }
 
   /**
@@ -70,7 +84,8 @@ export class ClientLoansController {
   @Post('simulate')
   @HttpCode(200)
   async simulate(@Body() dto: SimulateLoanDto) {
-    return await this.simulateLoan.execute(
+    const useCase = new ClientSimulateLoan();
+    return await useCase.execute(
       dto.principal,
       dto.interestRate,
       dto.durationMonths,
@@ -85,13 +100,15 @@ export class ClientLoansController {
   @HttpCode(200)
   async repay(@CurrentUser() user: User, @Body() dto: RepayLoanDto) {
     // Récupérer le compte
-    const account = await this.getAccount.execute(dto.accountId);
+    const getAccountUseCase = new ClientGetAccount(this.accountRepository);
+    const account = await getAccountUseCase.execute(dto.accountId);
     if (account instanceof Error) {
       return account;
     }
 
     // Récupérer tous les prêts du client et trouver le bon
-    const loans = await this.getLoans.execute(user);
+    const getLoansUseCase = new ClientGetLoans(this.loanRepository);
+    const loans = await getLoansUseCase.execute(user);
     if (loans instanceof Error) {
       return loans;
     }
@@ -102,6 +119,7 @@ export class ClientLoansController {
     }
 
     // Effectuer le remboursement
-    return await this.repayLoan.execute(account, loan, dto.amount);
+    const repayUseCase = new ClientRepayLoan(this.transactionRepository);
+    return await repayUseCase.execute(account, loan, dto.amount);
   }
 }

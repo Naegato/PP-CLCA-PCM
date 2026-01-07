@@ -15,7 +15,7 @@ export class DirectorManageCreate {
     email: string,
     password: string,
   ): Promise<User | NotDirector | Error> {
-    const director = this.security.getCurrentUser();
+    const director = await this.security.getCurrentUser();
 
     if (!director.isDirector()) {
       return new NotDirector();

@@ -13,7 +13,7 @@ export class AdvisorCloseChat {
   public async execute(
     discussionId: string,
   ): Promise<Discussion | NotAdvisor | DiscussionNotFoundError> {
-    const advisor = this.security.getCurrentUser();
+    const advisor = await this.security.getCurrentUser();
 
     if (!advisor.isAdvisor()) {
       return new NotAdvisor();

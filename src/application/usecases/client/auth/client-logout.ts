@@ -9,7 +9,7 @@ export class ClientLogout {
   ) {}
 
   public async execute(): Promise<void | NotClient> {
-    const user = this.security.getCurrentUser();
+    const user = await this.security.getCurrentUser();
 
     if (!user.isClient()) {
       return new NotClient();

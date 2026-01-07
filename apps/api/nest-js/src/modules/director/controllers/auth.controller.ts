@@ -1,11 +1,19 @@
-import { Controller, Post, Body, HttpCode, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, UseInterceptors, Inject } from '@nestjs/common';
+
+// Use cases
 import { DirectorLogin } from '@pp-clca-pcm/application';
 import { DirectorRegistration } from '@pp-clca-pcm/application';
 
+// DTOs
 import { LoginDto } from '../dto/auth/login.dto';
 import { RegisterDto } from '../dto/auth/register.dto';
 
+// Interceptors
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
+
+// Repositories & Services
+import type { UserRepository, PasswordService, TokenService } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 
 /**
  * DirectorAuthController
@@ -18,8 +26,12 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 @UseInterceptors(ErrorInterceptor)
 export class DirectorAuthController {
   constructor(
-    private readonly directorLogin: DirectorLogin,
-    private readonly directorRegistration: DirectorRegistration,
+    @Inject(REPOSITORY_TOKENS.USER)
+    private readonly userRepository: UserRepository,
+    @Inject('PasswordService')
+    private readonly passwordService: PasswordService,
+    @Inject('TokenService')
+    private readonly tokenService: TokenService,
   ) {}
 
   /**
@@ -29,7 +41,8 @@ export class DirectorAuthController {
   @Post('login')
   @HttpCode(200)
   async login(@Body() dto: LoginDto) {
-    return await this.directorLogin.execute({
+    const useCase = new DirectorLogin(this.userRepository, this.passwordService, this.tokenService);
+    return await useCase.execute({
       email: dto.email,
       password: dto.password,
     });
@@ -42,7 +55,8 @@ export class DirectorAuthController {
   @Post('register')
   @HttpCode(201)
   async register(@Body() dto: RegisterDto) {
-    return await this.directorRegistration.execute(
+    const useCase = new DirectorRegistration(this.userRepository);
+    return await useCase.execute(
       dto.firstname,
       dto.lastname,
       dto.email,

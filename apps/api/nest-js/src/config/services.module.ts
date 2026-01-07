@@ -55,7 +55,7 @@ class NestJsSecurityService implements Security {
     @Inject(REQUEST) private readonly request: { user?: User },
   ) {}
 
-  getCurrentUser(): User {
+  async getCurrentUser() {
     if (!this.request.user) {
       throw new Error('[Security] No authenticated user in request context');
     }

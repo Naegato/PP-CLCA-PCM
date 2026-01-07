@@ -1,11 +1,19 @@
-import { Controller, Post, Body, HttpCode, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, UseInterceptors, Inject } from '@nestjs/common';
+
+// Use cases
 import { AdvisorLogin } from '@pp-clca-pcm/application';
 import { AdvisorRegistration } from '@pp-clca-pcm/application';
 
+// DTOs
 import { LoginDto } from '../dto/auth/login.dto';
 import { RegisterDto } from '../dto/auth/register.dto';
 
+// Interceptors
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
+
+// Repositories & Services
+import type { UserRepository, PasswordService, TokenService } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 
 /**
  * AdvisorAuthController
@@ -18,8 +26,12 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 @UseInterceptors(ErrorInterceptor)
 export class AdvisorAuthController {
   constructor(
-    private readonly advisorLogin: AdvisorLogin,
-    private readonly advisorRegistration: AdvisorRegistration,
+    @Inject(REPOSITORY_TOKENS.USER)
+    private readonly userRepository: UserRepository,
+    @Inject('PasswordService')
+    private readonly passwordService: PasswordService,
+    @Inject('TokenService')
+    private readonly tokenService: TokenService,
   ) {}
 
   /**
@@ -29,7 +41,8 @@ export class AdvisorAuthController {
   @Post('login')
   @HttpCode(200)
   async login(@Body() dto: LoginDto) {
-    return await this.advisorLogin.execute({
+    const useCase = new AdvisorLogin(this.userRepository, this.passwordService, this.tokenService);
+    return await useCase.execute({
       email: dto.email,
       password: dto.password,
     });
@@ -42,7 +55,8 @@ export class AdvisorAuthController {
   @Post('register')
   @HttpCode(201)
   async register(@Body() dto: RegisterDto) {
-    return await this.advisorRegistration.execute(
+    const useCase = new AdvisorRegistration(this.userRepository);
+    return await useCase.execute(
       dto.firstname,
       dto.lastname,
       dto.email,

@@ -1,21 +1,39 @@
-import { Controller, Post, Body, HttpCode, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, UseGuards, UseInterceptors, Inject } from '@nestjs/common';
+
+// Use cases
 import { ClientLogin } from '@pp-clca-pcm/application';
 import { ClientRegistration } from '@pp-clca-pcm/application';
 import { ClientLogout } from '@pp-clca-pcm/application';
 import { ClientRequestPasswordReset } from '@pp-clca-pcm/application';
 import { ClientResetPassword } from '@pp-clca-pcm/application';
 
+// DTOs
 import { LoginDto } from '../dto/auth/login.dto';
 import { RegisterDto } from '../dto/auth/register.dto';
 import { RequestPasswordResetDto } from '../dto/auth/request-password-reset.dto';
 import { ResetPasswordDto } from '../dto/auth/reset-password.dto';
 
+// Guards, Decorators, Interceptors
 import { AuthGuard } from '../../../common/guards/auth.guard';
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
+
+// Domain entities
 import { User } from '@pp-clca-pcm/domain';
+
+// Repositories & Services
+import type {
+  UserRepository,
+  AccountRepository,
+  AccountTypeRepository,
+  PasswordService,
+  TokenService,
+  LogoutService,
+  Security,
+} from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 
 /**
  * ClientAuthController
@@ -30,11 +48,20 @@ import { User } from '@pp-clca-pcm/domain';
 @UseInterceptors(ErrorInterceptor)
 export class ClientAuthController {
   constructor(
-    private readonly clientLogin: ClientLogin,
-    private readonly clientRegistration: ClientRegistration,
-    private readonly clientLogout: ClientLogout,
-    private readonly clientRequestPasswordReset: ClientRequestPasswordReset,
-    private readonly clientResetPassword: ClientResetPassword,
+    @Inject(REPOSITORY_TOKENS.USER)
+    private readonly userRepository: UserRepository,
+    @Inject(REPOSITORY_TOKENS.ACCOUNT)
+    private readonly accountRepository: AccountRepository,
+    @Inject(REPOSITORY_TOKENS.ACCOUNT_TYPE)
+    private readonly accountTypeRepository: AccountTypeRepository,
+    @Inject('PasswordService')
+    private readonly passwordService: PasswordService,
+    @Inject('TokenService')
+    private readonly tokenService: TokenService,
+    @Inject('LogoutService')
+    private readonly logoutService: LogoutService,
+    @Inject('Security')
+    private readonly security: Security,
   ) {}
 
   /**
@@ -44,7 +71,8 @@ export class ClientAuthController {
   @Post('login')
   @HttpCode(200)
   async login(@Body() dto: LoginDto) {
-    return await this.clientLogin.execute({
+    const useCase = new ClientLogin(this.userRepository, this.passwordService, this.tokenService);
+    return await useCase.execute({
       email: dto.email,
       password: dto.password,
     });
@@ -57,7 +85,8 @@ export class ClientAuthController {
   @Post('register')
   @HttpCode(201)
   async register(@Body() dto: RegisterDto) {
-    return await this.clientRegistration.execute(
+    const useCase = new ClientRegistration(this.userRepository, this.accountRepository, this.accountTypeRepository);
+    return await useCase.execute(
       dto.firstname,
       dto.lastname,
       dto.email,
@@ -74,7 +103,8 @@ export class ClientAuthController {
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('client')
   async logout(@CurrentUser() user: User) {
-    return await this.clientLogout.execute();
+    const useCase = new ClientLogout(this.logoutService, this.security);
+    return await useCase.execute();
   }
 
   /**
@@ -84,7 +114,8 @@ export class ClientAuthController {
   @Post('password-reset/request')
   @HttpCode(200)
   async requestPasswordReset(@Body() dto: RequestPasswordResetDto) {
-    return await this.clientRequestPasswordReset.execute({
+    const useCase = new ClientRequestPasswordReset(this.userRepository, this.tokenService);
+    return await useCase.execute({
       email: dto.email,
     });
   }
@@ -96,7 +127,8 @@ export class ClientAuthController {
   @Post('password-reset/confirm')
   @HttpCode(200)
   async resetPassword(@Body() dto: ResetPasswordDto) {
-    return await this.clientResetPassword.execute({
+    const useCase = new ClientResetPassword(this.userRepository, this.tokenService, this.passwordService);
+    return await useCase.execute({
       token: dto.token,
       newPassword: dto.newPassword,
     });

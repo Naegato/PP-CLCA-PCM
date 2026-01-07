@@ -1,4 +1,4 @@
-import { Controller, Patch, Body, UseGuards, UseInterceptors, HttpCode } from '@nestjs/common';
+import { Controller, Patch, Body, UseGuards, UseInterceptors, HttpCode, Inject } from '@nestjs/common';
 
 // Use cases
 import { DirectorChangeSavingRate } from '@pp-clca-pcm/application';
@@ -12,6 +12,10 @@ import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
 
+// Repositories & Services
+import type { AccountTypeRepository } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
+
 /**
  * DirectorSavingsController
  *
@@ -22,7 +26,10 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 @Roles('director')
 @UseInterceptors(ErrorInterceptor)
 export class DirectorSavingsController {
-  constructor(private readonly changeSavingRate: DirectorChangeSavingRate) {}
+  constructor(
+    @Inject(REPOSITORY_TOKENS.ACCOUNT_TYPE)
+    private readonly accountTypeRepository: AccountTypeRepository,
+  ) {}
 
   /**
    * PATCH /director/savings/rate
@@ -31,6 +38,7 @@ export class DirectorSavingsController {
   @Patch('rate')
   @HttpCode(200)
   async changeRate(@Body() dto: ChangeSavingRateDto) {
-    return await this.changeSavingRate.execute(dto.name, dto.rate);
+    const useCase = new DirectorChangeSavingRate(this.accountTypeRepository);
+    return await useCase.execute(dto.name, dto.rate);
   }
 }

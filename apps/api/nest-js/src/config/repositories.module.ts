@@ -2,23 +2,6 @@ import { Module, Global, Provider } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DatabaseModule } from './database.module';
 
-// Repository interfaces
-import { UserRepository } from '@pp-clca-pcm/application';
-import { AccountRepository } from '@pp-clca-pcm/application';
-import { AccountTypeRepository } from '@pp-clca-pcm/application';
-import { LoanRepository } from '@pp-clca-pcm/application';
-import { LoanRequestRepository } from '@pp-clca-pcm/application';
-import { TransactionRepository } from '@pp-clca-pcm/application';
-import { StockRepository } from '@pp-clca-pcm/application';
-import { StockOrderRepository } from '@pp-clca-pcm/application';
-import { PortfolioRepository } from '@pp-clca-pcm/application';
-import { CompanyRepository } from '@pp-clca-pcm/application';
-import { BanRepository } from '@pp-clca-pcm/application';
-import { NotificationRepository } from '@pp-clca-pcm/application';
-import { DiscussionRepository } from '@pp-clca-pcm/application';
-import { MessageRepository } from '@pp-clca-pcm/application';
-import { AdvisorRepository } from '@pp-clca-pcm/application';
-
 // Prisma implementations
 import { PrismaUserRepository } from '@pp-clca-pcm/adapters';
 import { PrismaAccountRepository } from '@pp-clca-pcm/adapters';
@@ -111,7 +94,8 @@ function createRepositoryProvider(token: string): Provider {
   return {
     provide: token,
     useFactory: (configService: ConfigService, prismaClient, redisClient) => {
-      const dbProvider = configService.get<string>('DB_PROVIDER', 'prisma');
+      const dbProviderConfig = configService.get<string>('DB_PROVIDER', 'postgresql');
+      const dbProvider = dbProviderConfig === 'redis' ? 'redis' : 'prisma';
 
       // Essayer le provider principal
       const primaryMapping = REPOSITORY_MAPPING[dbProvider];

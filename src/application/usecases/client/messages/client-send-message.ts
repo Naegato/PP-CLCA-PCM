@@ -17,7 +17,7 @@ export class ClientSendMessage {
     discussionId: string | null,
     text: string,
   ): Promise<Message | NotClient | DiscussionNotFoundError> {
-    const client = this.security.getCurrentUser();
+    const client = await this.security.getCurrentUser();
 
     if (!client.isClient()) {
       return new NotClient();

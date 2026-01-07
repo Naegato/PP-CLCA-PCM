@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, UseGuards, UseInterceptors, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Param, UseGuards, UseInterceptors, HttpCode, Inject } from '@nestjs/common';
 
 // Use cases
 import { AdvisorGetPendingLoans } from '@pp-clca-pcm/application';
@@ -10,6 +10,10 @@ import { AuthGuard } from '../../../common/guards/auth.guard';
 import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
+
+// Repositories & Services
+import type { LoanRequestRepository, LoanRepository, Security } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 
 /**
  * AdvisorLoansController
@@ -25,9 +29,12 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 @UseInterceptors(ErrorInterceptor)
 export class AdvisorLoansController {
   constructor(
-    private readonly getPendingLoans: AdvisorGetPendingLoans,
-    private readonly grantLoan: AdvisorGrantLoan,
-    private readonly rejectLoan: AdvisorRejectLoan,
+    @Inject(REPOSITORY_TOKENS.LOAN_REQUEST)
+    private readonly loanRequestRepository: LoanRequestRepository,
+    @Inject(REPOSITORY_TOKENS.LOAN)
+    private readonly loanRepository: LoanRepository,
+    @Inject('Security')
+    private readonly security: Security,
   ) {}
 
   /**
@@ -36,7 +43,8 @@ export class AdvisorLoansController {
    */
   @Get('pending')
   async getPending() {
-    return await this.getPendingLoans.execute();
+    const useCase = new AdvisorGetPendingLoans(this.loanRequestRepository, this.security);
+    return await useCase.execute();
   }
 
   /**
@@ -46,7 +54,8 @@ export class AdvisorLoansController {
   @Post(':id/grant')
   @HttpCode(200)
   async grant(@Param('id') id: string) {
-    return await this.grantLoan.execute(id);
+    const useCase = new AdvisorGrantLoan(this.loanRequestRepository, this.loanRepository, this.security);
+    return await useCase.execute(id);
   }
 
   /**
@@ -56,6 +65,7 @@ export class AdvisorLoansController {
   @Post(':id/reject')
   @HttpCode(200)
   async reject(@Param('id') id: string) {
-    return await this.rejectLoan.execute(id);
+    const useCase = new AdvisorRejectLoan(this.loanRequestRepository, this.security);
+    return await useCase.execute(id);
   }
 }

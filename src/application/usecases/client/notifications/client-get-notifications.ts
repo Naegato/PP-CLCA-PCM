@@ -10,7 +10,7 @@ export class ClientGetNotifications {
   ) {}
 
   public async execute(): Promise<Notification[] | NotClient> {
-    const client = this.security.getCurrentUser();
+    const client = await this.security.getCurrentUser();
 
     if (!client.isClient()) {
       return new NotClient();

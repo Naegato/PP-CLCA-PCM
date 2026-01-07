@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, UseInterceptors, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, UseInterceptors, HttpCode, Inject } from '@nestjs/common';
 
 // Use cases
 import { ClientSendMessage } from '@pp-clca-pcm/application';
@@ -12,6 +12,10 @@ import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
 
+// Repositories & Services
+import type { MessageRepository, DiscussionRepository, Security } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
+
 /**
  * ClientMessagesController
  *
@@ -23,7 +27,14 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 @Roles('client')
 @UseInterceptors(ErrorInterceptor)
 export class ClientMessagesController {
-  constructor(private readonly sendMessage: ClientSendMessage) {}
+  constructor(
+    @Inject(REPOSITORY_TOKENS.MESSAGE)
+    private readonly messageRepository: MessageRepository,
+    @Inject(REPOSITORY_TOKENS.DISCUSSION)
+    private readonly discussionRepository: DiscussionRepository,
+    @Inject('Security')
+    private readonly security: Security,
+  ) {}
 
   /**
    * POST /client/messages
@@ -34,6 +45,7 @@ export class ClientMessagesController {
   @Post()
   @HttpCode(201)
   async send(@Body() dto: SendMessageDto) {
-    return await this.sendMessage.execute(dto.discussionId || null, dto.text);
+    const useCase = new ClientSendMessage(this.messageRepository, this.discussionRepository, this.security);
+    return await useCase.execute(dto.discussionId || null, dto.text);
   }
 }

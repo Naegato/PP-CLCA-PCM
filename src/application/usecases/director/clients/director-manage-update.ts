@@ -14,7 +14,7 @@ export class DirectorManageUpdate {
     userId: string,
     props: Parameters<typeof User.prototype.update>[0],
   ): Promise<User | NotDirector | UserNotFoundByIdError | Error> {
-    const director = this.security.getCurrentUser();
+    const director = await this.security.getCurrentUser();
 
     if (!director.isDirector()) {
       return new NotDirector();

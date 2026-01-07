@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, UseInterceptors, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, UseInterceptors, HttpCode, Inject } from '@nestjs/common';
 
 // Use cases
 import { ClientSendTransaction } from '@pp-clca-pcm/application';
@@ -13,6 +13,10 @@ import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
 
+// Repositories & Services
+import type { AccountRepository } from '@pp-clca-pcm/application';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
+
 /**
  * ClientTransactionsController
  *
@@ -25,8 +29,8 @@ import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor
 @UseInterceptors(ErrorInterceptor)
 export class ClientTransactionsController {
   constructor(
-    private readonly sendTransaction: ClientSendTransaction,
-    private readonly getAccount: ClientGetAccount,
+    @Inject(REPOSITORY_TOKENS.ACCOUNT)
+    private readonly accountRepository: AccountRepository,
   ) {}
 
   /**
@@ -37,18 +41,21 @@ export class ClientTransactionsController {
   @HttpCode(200)
   async send(@Body() dto: SendTransactionDto) {
     // Récupérer les deux comptes
-    const senderAccount = await this.getAccount.execute(dto.senderAccountId);
+    const getAccountUseCase = new ClientGetAccount(this.accountRepository);
+
+    const senderAccount = await getAccountUseCase.execute(dto.senderAccountId);
     if (senderAccount instanceof Error) {
       return senderAccount;
     }
 
-    const receiverAccount = await this.getAccount.execute(dto.receiverAccountId);
+    const receiverAccount = await getAccountUseCase.execute(dto.receiverAccountId);
     if (receiverAccount instanceof Error) {
       return receiverAccount;
     }
 
     // Effectuer la transaction
-    const newBalance = await this.sendTransaction.execute(
+    const sendTransactionUseCase = new ClientSendTransaction(this.accountRepository);
+    const newBalance = await sendTransactionUseCase.execute(
       senderAccount,
       receiverAccount,
       dto.amount,

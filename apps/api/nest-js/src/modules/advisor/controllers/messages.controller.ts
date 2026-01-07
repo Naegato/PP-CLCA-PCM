@@ -15,10 +15,8 @@ import { RolesGuard } from '../../../common/guards/roles.guard';
 import { Roles } from '../../../common/decorators/roles.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
 
-// Repositories
-import type { MessageRepository } from '@pp-clca-pcm/application';
-import type { DiscussionRepository } from '@pp-clca-pcm/application';
-import type { UserRepository } from '@pp-clca-pcm/application';
+// Repositories & Services
+import type { MessageRepository, DiscussionRepository, UserRepository, Security } from '@pp-clca-pcm/application';
 import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 
 /**
@@ -35,11 +33,14 @@ import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 @UseInterceptors(ErrorInterceptor)
 export class AdvisorMessagesController {
   constructor(
-    private readonly replyMessage: AdvisorReplyMessage,
-    private readonly closeChat: AdvisorCloseChat,
-    private readonly transferChat: AdvisorTransferChat,
-    @Inject(REPOSITORY_TOKENS.DISCUSSION) private readonly discussionRepository: DiscussionRepository,
-    @Inject(REPOSITORY_TOKENS.USER) private readonly userRepository: UserRepository,
+    @Inject(REPOSITORY_TOKENS.MESSAGE)
+    private readonly messageRepository: MessageRepository,
+    @Inject(REPOSITORY_TOKENS.DISCUSSION)
+    private readonly discussionRepository: DiscussionRepository,
+    @Inject(REPOSITORY_TOKENS.USER)
+    private readonly userRepository: UserRepository,
+    @Inject('Security')
+    private readonly security: Security,
   ) {}
 
   /**
@@ -64,7 +65,8 @@ export class AdvisorMessagesController {
     const lastMessage = discussion.messages[discussion.messages.length - 1];
 
     // Répondre au message
-    return await this.replyMessage.execute(lastMessage, dto.text);
+    const useCase = new AdvisorReplyMessage(this.messageRepository, this.security);
+    return await useCase.execute(lastMessage, dto.text);
   }
 
   /**
@@ -74,7 +76,8 @@ export class AdvisorMessagesController {
   @Post('discussions/:id/close')
   @HttpCode(200)
   async close(@Param('id') discussionId: string) {
-    return await this.closeChat.execute(discussionId);
+    const useCase = new AdvisorCloseChat(this.discussionRepository, this.security);
+    return await useCase.execute(discussionId);
   }
 
   /**
@@ -97,6 +100,7 @@ export class AdvisorMessagesController {
     }
 
     // Transférer la discussion
-    return await this.transferChat.execute(discussion, newAdvisor);
+    const useCase = new AdvisorTransferChat(this.security, this.discussionRepository);
+    return await useCase.execute(discussion, newAdvisor);
   }
 }
