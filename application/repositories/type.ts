@@ -7,4 +7,5 @@ export interface AccountTypeRepository {
   getOrSave(name: AccountTypeName, accountType: AccountType): Promise<AccountType>;
   save(accountType: AccountType): Promise<AccountType | AccountTypeAlreadyExistError>;
   update(accountType: AccountType): Promise<AccountType | AccountTypeDoesNotExistError>;
+  findByName(name: AccountTypeName): Promise<AccountType | null>;
 }

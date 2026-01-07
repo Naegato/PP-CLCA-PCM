@@ -76,15 +76,30 @@ export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType>
 
 	async all(): Promise<AccountType[]> {
 		const result: AccountType[] = [];
-		for await (const key of this.redisClient.scanIterator({ MATCH: `${this.prefix}*` })) {
-			await Promise.all(key.map(async k => {
-				const value = await this.redisClient.get(k);
-				if (!value) return;
-				const data = JSON.parse(value);
-				result.push(this.instanticate(data));
-			}));
+		for await (const keysBatch of this.redisClient.scanIterator({ MATCH: `${this.prefix}*` })) {
+            for (const key of keysBatch) {
+                const value = await this.redisClient.get(key);
+                if (!value) continue;
+                const data = JSON.parse(value);
+                result.push(this.instanticate(data));
+            }
 		}
 		return result;
+	}
+
+	async findByName(name: AccountTypeName): Promise<AccountType | null> {
+		for await (const keysBatch of this.redisClient.scanIterator({ MATCH: `${this.prefix}*` })) {
+            for (const key of keysBatch) {
+                const value = await this.redisClient.get(key);
+                if (value) {
+                    const accountType = this.instanticate(JSON.parse(value));
+                    if (accountType.name === name) {
+                        return accountType;
+                    }
+                }
+            }
+		}
+		return null;
 	}
 
 	protected instanticate(entity: AccountType): AccountType {

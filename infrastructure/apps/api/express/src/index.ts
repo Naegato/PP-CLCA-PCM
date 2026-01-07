@@ -79,6 +79,7 @@ import { CompanyRepository } from "@pp-clca-pcm/application/repositories/company
 import { RedisCompanyRepository } from '@pp-clca-pcm/adapters/repositories/redis/company';
 import { StockRepository } from "@pp-clca-pcm/application/repositories/stock";
 import { RedisStockRepository } from '@pp-clca-pcm/adapters/repositories/redis/stock';
+import { MarketService } from '@pp-clca-pcm/application/services/market';
 
 import { ClientGetAvailableStocks } from '@pp-clca-pcm/application/usecases/client/stocks/client-get-available-stocks';
 import { ClientGetStockWithPrice } from '@pp-clca-pcm/application/usecases/client/stocks/client-get-stock-with-price';
@@ -117,6 +118,7 @@ import { DirectorUpdateStock } from '@pp-clca-pcm/application/usecases/director/
 // Engine
 import { GenerateDailyInterest } from '@pp-clca-pcm/application/usecases/engine/generate-daily-interest';
 import { NotifyLoanToPay } from '@pp-clca-pcm/application/usecases/engine/notify-loan-to-pay';
+import { InitializeAccountTypes } from '@pp-clca-pcm/application/usecases/engine/initialize-account-types';
 
 // Shared notifications
 import { NotifyClientSavingRateChange } from '@pp-clca-pcm/application/usecases/shared/notifications/notify-client-saving-rate-change';
@@ -129,7 +131,9 @@ import { JwtSecurityService } from "@pp-clca-pcm/adapters/services/jwt-security"
 import { StockOrderRepository } from "@pp-clca-pcm/application/repositories/stockOrder";
 import { RedisStockOrderRepository } from '@pp-clca-pcm/adapters/repositories/redis/stockOrder';
 import { Notifier } from "@pp-clca-pcm/application/services/notifier";
+import { NotifierService } from "@pp-clca-pcm/application/services/notifier-service";
 import { NotificationRepository } from "@pp-clca-pcm/application/repositories/notification";
+import { RedisNotificationRepository } from '@pp-clca-pcm/adapters/repositories/redis/notification';
 import { BanRepository } from "@pp-clca-pcm/application/repositories/ban";
 import { RedisBanRepository } from '@pp-clca-pcm/adapters/repositories/redis/ban';
 
@@ -162,6 +166,9 @@ let stockRepository: StockRepository|null = null;
 let companyRepository: CompanyRepository|null = null;
 let banRepository: BanRepository|null = null;
 let stockOrderRepository: StockOrderRepository|null = null;
+let notificationRepository: NotificationRepository|null = null;
+let notifier: Notifier|null = null;
+let marketService: MarketService|null = null;
 
 if (databaseProvider === "postgresql") {
 } else if (databaseProvider === "redis") {
@@ -184,6 +191,9 @@ if (databaseProvider === "postgresql") {
   companyRepository = new RedisCompanyRepository(redisClient);
   banRepository = new RedisBanRepository(redisClient);
   stockOrderRepository = new RedisStockOrderRepository(redisClient);
+  notificationRepository = new RedisNotificationRepository(redisClient);
+  notifier = new NotifierService(notificationRepository as NotificationRepository, userRepository as UserRepository);
+  marketService = new MarketService(stockOrderRepository as StockOrderRepository);
 }
 
 // Init service
@@ -241,18 +251,6 @@ const requireRole = (requiredRole: UserRole) => {
 
     next();
   };
-};
-
-
-const notifierStub: Notifier = {
-  notifierAllUsers: async (message) => {},
-  notiferUser: async (user, message) => {},
-};
-const notificationRepositoryStub: NotificationRepository = {
-  save: async (notification) => notification,
-  findByRecipient: async (recipient) => [],
-  findUnreadByRecipient: async (recipient) => [],
-  markAsRead: async (notificationId) => null,
 };
 
 // Init use cases
@@ -324,14 +322,13 @@ const clientSimulateLoan = new ClientSimulateLoan();
 
 const clientSendMessage = new ClientSendMessage(messageRepository, discussionRepository, security);
 
-const clientGetNotifications = new ClientGetNotifications(notificationRepositoryStub, security);
+const clientGetNotifications = new ClientGetNotifications(notificationRepository as NotificationRepository, security);
 
 const clientCreatePortfolio = new ClientCreatePortfolio(portfolioRepository, accountRepository);
 const clientGetPortfolio = new ClientGetPortfolio(portfolioRepository, accountRepository);
 
 const clientGetAvailableStocks = new ClientGetAvailableStocks(stockRepository);
-//TODO marketservice
-const clientGetStockWithPrice = new ClientGetStockWithPrice(stockRepository, null as any);
+const clientGetStockWithPrice = new ClientGetStockWithPrice(stockRepository, marketService as MarketService);
 const clientCancelStockOrder = new ClientCancelStockOrder(stockOrderRepository, security);
 const clientGetStockOrders = new ClientGetStockOrders(stockOrderRepository);
 const clientMatchStockOrder = new ClientMatchStockOrder(stockOrderRepository, stockRepository, portfolioRepository);
@@ -365,11 +362,12 @@ const directorUpdateStock = new DirectorUpdateStock(stockRepository, companyRepo
 
 // Engine
 const generateDailyInterest = new GenerateDailyInterest(accountRepository);
-const notifyLoanToPay = new NotifyLoanToPay(loanRepository, notifierStub);
+const notifyLoanToPay = new NotifyLoanToPay(loanRepository, notifier as Notifier);
+const initializeAccountTypes = new InitializeAccountTypes(accountTypeRepository as AccountTypeRepository);
 
 // Shared notifications
-const notifyClientSavingRateChange = new NotifyClientSavingRateChange(notificationRepositoryStub, notifierStub, userRepository);
-const notifyLoanStatus = new NotifyLoanStatus(notificationRepositoryStub, notifierStub);
+const notifyClientSavingRateChange = new NotifyClientSavingRateChange(notificationRepository as NotificationRepository, notifier as Notifier, userRepository);
+const notifyLoanStatus = new NotifyLoanStatus(notificationRepository as NotificationRepository, notifier as Notifier);
 
 app.use(express.json());
 
@@ -679,6 +677,11 @@ app.post("/engine/interest/daily", async (req, res) => {
 app.post("/engine/loans/notify-to-pay", async (req, res) => {
   const result = await notifyLoanToPay.execute();
   res.json(result);
+});
+
+app.post("/engine/init-account-types", async (req, res) => {
+  await initializeAccountTypes.execute();
+  res.json({ message: "Account types initialized successfully" });
 });
 
 // ============ SHARED NOTIFICATION ROUTES ============
