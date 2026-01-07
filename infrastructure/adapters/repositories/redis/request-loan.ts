@@ -25,6 +25,10 @@ export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest>
 		return loan;
 	}
 
+	async all(): Promise<LoanRequest[]> {
+		return super.all();
+	}
+
 	async getAllByAdvisor(advisor: User): Promise<LoanRequest[]> {
 		const advisorId = advisor.identifier ? advisor.identifier : 'null';
 		return this.fetchFromKey(`${this.prefix}${advisorId}:*`);

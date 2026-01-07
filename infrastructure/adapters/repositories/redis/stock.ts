@@ -2,15 +2,17 @@ import { StockRepository } from '@pp-clca-pcm/application/repositories/stock';
 import { Stock } from '@pp-clca-pcm/domain/entities/stock';
 import { RedisClientType } from 'redis';
 import { Company } from '@pp-clca-pcm/domain/entities/company';
+import { RedisBaseRepository } from './base';
 
-export class RedisStockRepository implements StockRepository {
-  private readonly STOCK_KEY = 'stock';
+export class RedisStockRepository extends RedisBaseRepository<Stock> implements StockRepository {
+  readonly prefix = 'stock:';
 
-  constructor(private readonly redisClient: RedisClientType) {}
+  constructor(redisClient: RedisClientType) {
+    super(redisClient);
+  }
 
   async all(): Promise<Stock[]> {
-    const stockData = await this.redisClient.hGetAll(this.STOCK_KEY);
-    return Object.values(stockData).map(data => this.mapToStock(JSON.parse(data)));
+    return super.all();
   }
 
   async getListedStocks(): Promise<Stock[]> {
@@ -19,8 +21,7 @@ export class RedisStockRepository implements StockRepository {
   }
 
   async findById(id: string): Promise<Stock | null> {
-    const stockData = await this.redisClient.hGet(this.STOCK_KEY, id);
-    return stockData ? this.mapToStock(JSON.parse(stockData)) : null;
+    return this.fetchFromKey(this.key(id)).then(results => results.length ? results[0] : null);
   }
 
   async findBySymbol(symbol: string): Promise<Stock | null> {
@@ -37,39 +38,27 @@ export class RedisStockRepository implements StockRepository {
     if (!stock.identifier) {
       throw new Error('Stock identifier is required to save.');
     }
-
-    const stockData = {
-      identifier: stock.identifier,
-      symbol: stock.symbol,
-      name: stock.name,
-      isListed: stock.isListed,
-      createdAt: stock.createdAt.toISOString(),
-      company: {
-        identifier: stock.company.identifier,
-        name: stock.company.name,
-      },
-    };
-
-    await this.redisClient.hSet(this.STOCK_KEY, stock.identifier, JSON.stringify(stockData));
+    const key = this.key(stock);
+    await this.redisClient.set(key, JSON.stringify(stock));
     return stock;
   }
 
   async delete(stockId: string): Promise<void> {
-    await this.redisClient.hDel(this.STOCK_KEY, stockId);
+    await this.redisClient.del(this.key(stockId));
   }
 
-  private mapToStock(data: any): Stock {
+  protected instanticate(entity: any): Stock {
     const company = Company.fromPrimitives({
-      identifier: data.company.identifier,
-      name: data.company.name,
+      identifier: entity.company.identifier,
+      name: entity.company.name,
     });
 
     return Stock.fromPrimitives({
-      identifier: data.identifier,
-      symbol: data.symbol,
-      name: data.name,
-      isListed: data.isListed,
-      createdAt: new Date(data.createdAt),
+      identifier: entity.identifier,
+      symbol: entity.symbol,
+      name: entity.name,
+      isListed: entity.isListed,
+      createdAt: new Date(entity.createdAt),
       company: company,
     });
   }

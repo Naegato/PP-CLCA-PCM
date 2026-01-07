@@ -24,6 +24,10 @@ export class RedisTransactionRepository extends RedisBaseRepository<Transaction>
 		return entity;
 	}
 
+	async all(): Promise<Transaction[]> {
+		return super.all();
+	}
+
 	async delete(transaction: Transaction): Promise<Transaction> {
 		const key = this.key(transaction);
 

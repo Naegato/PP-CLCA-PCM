@@ -18,6 +18,10 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 		super(redisClient);
 	}
 
+	async all(): Promise<User[]> {
+		return super.all();
+	}
+
 	async save(user: User): Promise<User | EmailAlreadyExistError> {
 		const idKey = this.idKey(user.identifier!);
 		const emailKey = this.emailKey(user.email.value);

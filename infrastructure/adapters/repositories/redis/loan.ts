@@ -25,6 +25,10 @@ export class RedisLoanRepository extends RedisBaseRepository<Loan> implements Lo
 		return loan;
 	}
 
+	async all(): Promise<Loan[]> {
+		return super.all();
+	}
+
 	async allByClient(client: User): Promise<Loan[]> {
 		return this.fetchFromKey(`${this.prefix}${client.identifier}:*`);
 	}

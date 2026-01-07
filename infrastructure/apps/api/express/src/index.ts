@@ -20,6 +20,11 @@ import { RedisMessageRepository } from '@pp-clca-pcm/adapters/repositories/redis
 import { AdvisorRepository } from "@pp-clca-pcm/application/repositories/advisor";
 import { RedisAdvisorRepository } from '@pp-clca-pcm/adapters/repositories/redis/advisor';
 
+import { LoanRepository } from "@pp-clca-pcm/application/repositories/loan";
+import { LoanRequestRepository } from "@pp-clca-pcm/application/repositories/request-loan";
+import { TransactionRepository } from "@pp-clca-pcm/application/repositories/transaction";
+import { UserRepository } from "@pp-clca-pcm/application/repositories/user";
+
 import { RedisLoanRepository } from '@pp-clca-pcm/adapters/repositories/redis/loan';
 import { RedisLoanRequestRepository } from '@pp-clca-pcm/adapters/repositories/redis/request-loan';
 import { RedisTransactionRepository } from '@pp-clca-pcm/adapters/repositories/redis/transaction';
@@ -121,6 +126,13 @@ import { Argon2PasswordService } from "@pp-clca-pcm/adapters/services/argon2-pas
 import { JwtTokenService } from "@pp-clca-pcm/adapters/services/jwt-token";
 import { JwtSecurityService } from "@pp-clca-pcm/adapters/services/jwt-security";
 
+import { StockOrderRepository } from "@pp-clca-pcm/application/repositories/stockOrder";
+import { RedisStockOrderRepository } from '@pp-clca-pcm/adapters/repositories/redis/stockOrder';
+import { Notifier } from "@pp-clca-pcm/application/services/notifier";
+import { NotificationRepository } from "@pp-clca-pcm/application/repositories/notification";
+import { BanRepository } from "@pp-clca-pcm/application/repositories/ban";
+import { RedisBanRepository } from '@pp-clca-pcm/adapters/repositories/redis/ban';
+
 dotenv.config({
   path: path.resolve(__dirname, "../../../../../.env"),
 });
@@ -141,13 +153,15 @@ let discussionRepository: DiscussionRepository|null = null;
 let messageRepository: MessageRepository|null = null;
 
 let advisorRepository: AdvisorRepository|null = null;
-let loanRepository: any = null;
-let loanRequestRepository: any = null;
-let transactionRepository: any = null;
-let userRepository: any = null;
+let loanRepository: LoanRepository|null = null;
+let loanRequestRepository: LoanRequestRepository|null = null;
+let transactionRepository: TransactionRepository|null = null;
+let userRepository: UserRepository|null = null;
 let portfolioRepository: PortfolioRepository|null = null;
 let stockRepository: StockRepository|null = null;
 let companyRepository: CompanyRepository|null = null;
+let banRepository: BanRepository|null = null;
+let stockOrderRepository: StockOrderRepository|null = null;
 
 if (databaseProvider === "postgresql") {
 } else if (databaseProvider === "redis") {
@@ -168,12 +182,14 @@ if (databaseProvider === "postgresql") {
   portfolioRepository = new RedisPortfolioRepository(redisClient);
   stockRepository = new RedisStockRepository(redisClient);
   companyRepository = new RedisCompanyRepository(redisClient);
+  banRepository = new RedisBanRepository(redisClient);
+  stockOrderRepository = new RedisStockOrderRepository(redisClient);
 }
 
 // Init service
 const passwordService = new Argon2PasswordService();
 const tokenService = new JwtTokenService();
-const security = new JwtSecurityService(tokenService, userRepository);
+const security = new JwtSecurityService(tokenService, userRepository as UserRepository);
 
 // Middleware for authentication
 app.use(async (req, res, next) => {
@@ -227,24 +243,7 @@ const requireRole = (requiredRole: UserRole) => {
   };
 };
 
-import { StockOrderRepository } from "@pp-clca-pcm/application/repositories/stockOrder";
-import { Notifier } from "@pp-clca-pcm/application/services/notifier";
-import { NotificationRepository } from "@pp-clca-pcm/application/repositories/notification";
-import { BanRepository } from "@pp-clca-pcm/application/repositories/ban";
 
-// TEMP STUBS
-const stockOrderRepositoryStub: StockOrderRepository = {
-  save: async (order) => order,
-  allByStock: async (stockId) => [],
-  findOpenBuyOrders: async (stockId, price) => [],
-  findOpenSellOrders: async (stockId, price) => [],
-  getCommittedSellQuantity: async (accountId, stockId) => 0,
-  findById: async (orderId) => null,
-  findAllByOwnerId: async (ownerId) => [],
-  delete: async (orderId) => {},
-  findAllByStockId: async (stockId) => [],
-  deleteMany: async (orderIds) => {},
-};
 const notifierStub: Notifier = {
   notifierAllUsers: async (message) => {},
   notiferUser: async (user, message) => {},
@@ -255,12 +254,6 @@ const notificationRepositoryStub: NotificationRepository = {
   findUnreadByRecipient: async (recipient) => [],
   markAsRead: async (notificationId) => null,
 };
-const banRepositoryStub: BanRepository = {
-  save: async (ban) => ban,
-  findByUser: async (user) => [],
-  findActiveByUser: async (user) => null,
-  findAll: async () => [],
-};
 
 // Init use cases
 const advisorLogin = new AdvisorLogin(
@@ -270,7 +263,7 @@ const advisorLogin = new AdvisorLogin(
 );
 
 const advisorRegistration = new AdvisorRegistration(
-  userRepository as any,
+  userRepository,
   passwordService,
 );
 
@@ -315,7 +308,6 @@ const clientCreateAccount = new ClientCreateAccount(
   accountRepository,
 );
 
-// Additional client use case instances (use available repos where possible, fallback to `any`)
 const clientDeleteAccount = new ClientDeleteAccount(accountRepository, userRepository);
 const clientGetAccount = new ClientGetAccount(accountRepository);
 const clientGetBalanceAccount = new ClientGetBalanceAccount(accountRepository);
@@ -338,11 +330,12 @@ const clientCreatePortfolio = new ClientCreatePortfolio(portfolioRepository, acc
 const clientGetPortfolio = new ClientGetPortfolio(portfolioRepository, accountRepository);
 
 const clientGetAvailableStocks = new ClientGetAvailableStocks(stockRepository);
+//TODO marketservice
 const clientGetStockWithPrice = new ClientGetStockWithPrice(stockRepository, null as any);
-const clientCancelStockOrder = new ClientCancelStockOrder(stockOrderRepositoryStub, security);
-const clientGetStockOrders = new ClientGetStockOrders(stockOrderRepositoryStub);
-const clientMatchStockOrder = new ClientMatchStockOrder(stockOrderRepositoryStub, stockRepository, portfolioRepository);
-const clientRegisterStockOrder = new ClientRegisterStockOrder(stockOrderRepositoryStub, stockRepository, clientMatchStockOrder);
+const clientCancelStockOrder = new ClientCancelStockOrder(stockOrderRepository, security);
+const clientGetStockOrders = new ClientGetStockOrders(stockOrderRepository);
+const clientMatchStockOrder = new ClientMatchStockOrder(stockOrderRepository, stockRepository, portfolioRepository);
+const clientRegisterStockOrder = new ClientRegisterStockOrder(stockOrderRepository, stockRepository, clientMatchStockOrder);
 
 const clientSendTransaction = new ClientSendTransaction(transactionRepository);
 
@@ -352,7 +345,7 @@ const directorRegistration = new DirectorRegistration(userRepository, passwordSe
 
 const directorGetAllClients = new DirectorGetAllClients(userRepository);
 const directorGetClientAccounts = new DirectorGetClientAccounts(accountRepository);
-const directorManageBan = new DirectorManageBan(userRepository, banRepositoryStub, security);
+const directorManageBan = new DirectorManageBan(userRepository as UserRepository, banRepository as BanRepository, security);
 const directorManageCreate = new DirectorManageCreate(userRepository, security);
 const directorManageDelete = new DirectorManageDelete(userRepository, security);
 const directorManageUpdate = new DirectorManageUpdate(userRepository, security);
@@ -366,7 +359,7 @@ const directorUpdateCompany = new DirectorUpdateCompany(companyRepository);
 const directorChangeSavingRate = new DirectorChangeSavingRate(accountTypeRepository);
 
 const directorCreateStock = new DirectorCreateStock(stockRepository, companyRepository);
-const directorDeleteStock = new DirectorDeleteStock(stockRepository, portfolioRepository as any, stockOrderRepositoryStub);
+const directorDeleteStock = new DirectorDeleteStock(stockRepository, portfolioRepository, stockOrderRepository);
 const directorToggleStockListing = new DirectorToggleStockListing(stockRepository);
 const directorUpdateStock = new DirectorUpdateStock(stockRepository, companyRepository);
 
