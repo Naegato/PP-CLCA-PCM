@@ -74,4 +74,26 @@ export class Portfolio {
       throw error;
     }
   }
+
+  public static fromPrimitives(primitives: {
+    identifier: string,
+    account: Account,
+    items: { stock: Stock, quantity: number }[],
+  }): Portfolio {
+    const itemsMap = new Map<string, PortfolioItem>();
+    for (const item of primitives.items) {
+      if (!item.stock.identifier) {
+        throw new PortfolioError("Stock identifier is required.");
+      }
+      if (item.quantity <= 0) {
+        throw new PortfolioError("Quantity must be positive.");
+      }
+      itemsMap.set(item.stock.identifier, PortfolioItem.create(item.stock, item.quantity));
+    }
+    return new Portfolio(
+      primitives.identifier,
+      primitives.account,
+      itemsMap
+    );
+  }
 }
