@@ -164,6 +164,13 @@
           }
         },
         {
+          "name": "List All Accounts",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/client/accounts"
+          }
+        },
+        {
           "name": "Delete Account",
           "request": {
             "method": "DELETE",

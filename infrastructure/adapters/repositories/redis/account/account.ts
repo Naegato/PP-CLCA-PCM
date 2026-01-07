@@ -59,7 +59,8 @@ export class RedisAccountRepository extends RedisBaseRepository<Account> impleme
 	}
 
 	public async generateAccountNumber(): Promise<string> {
-		return `todo-i-guess`;
+		const counter = await this.redisClient.incr('account_number_counter');
+		return counter.toString().padStart(11, '0');
 	}
 
 	public async all(): Promise<Account[]> {

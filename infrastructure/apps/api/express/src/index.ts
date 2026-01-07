@@ -54,6 +54,7 @@ import { ClientGetAccount } from '@pp-clca-pcm/application/usecases/client/accou
 import { ClientGetBalanceAccount } from '@pp-clca-pcm/application/usecases/client/accounts/client-get-balance-account';
 import { ClientSavingAccountCreate } from '@pp-clca-pcm/application/usecases/client/accounts/client-saving-account-create';
 import { ClientUpdateNameAccount } from '@pp-clca-pcm/application/usecases/client/accounts/client-update-name-account';
+import { ClientGetAccounts } from '@pp-clca-pcm/application/usecases/client/accounts/client-get-accounts';
 
 import { ClientLogin } from '@pp-clca-pcm/application/usecases/client/auth/client-login';
 import { ClientRegistration } from '@pp-clca-pcm/application/usecases/client/auth/client-registration';
@@ -311,6 +312,7 @@ const clientGetAccount = new ClientGetAccount(accountRepository);
 const clientGetBalanceAccount = new ClientGetBalanceAccount(accountRepository);
 const clientSavingAccountCreate = new ClientSavingAccountCreate(AccountType.create('savings', 5), accountRepository);
 const clientUpdateNameAccount = new ClientUpdateNameAccount(accountRepository);
+const clientGetAccounts = new ClientGetAccounts(accountRepository, security);
 const clientLogin = new ClientLogin(userRepository, passwordService, tokenService);
 const clientRegistration = new ClientRegistration(userRepository, accountRepository, accountTypeRepository, passwordService);
 const clientRequestPasswordReset = new ClientRequestPasswordReset(userRepository, tokenService);
@@ -442,6 +444,11 @@ app.post("/advisor/discussions/:id/transfer", requireRole('advisor'), async (req
 // ============ CLIENT ACCOUNT ROUTES ============
 app.post("/client/accounts", requireRole('client'), async (req, res) => {
   const result = await clientCreateAccount.execute(req.body.user, req.body.name);
+  res.json(result);
+});
+
+app.get("/client/accounts", requireRole('client'), async (req, res) => {
+  const result = await clientGetAccounts.execute();
   res.json(result);
 });
 
