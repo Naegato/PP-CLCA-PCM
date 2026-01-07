@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --filter @pp-clca-pcm/domain build && pnpm --filter @pp-clca-pcm/application build && pnpm --filter @pp-clca-pcm/adapters build",
+    "clean": "pnpm --filter @pp-clca-pcm/domain clean && pnpm --filter @pp-clca-pcm/application clean && pnpm --filter @pp-clca-pcm/adapters clean",
+    "test": "pnpm --filter @pp-clca-pcm/tests test"
+  },
+  "packageManager": "pnpm@9.15.4"
+}

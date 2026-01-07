@@ -1,0 +1,17 @@
+{
+  "Navigation": {
+    "home": "Accueil",
+    "login": "Connexion"
+  },
+  "LocaleSwitcher": {
+    "label": "Langue",
+    "en": "Anglais",
+    "fr": "Français"
+  },
+  "LocaleLayout": {
+    "title": "Mon Application Next.js"
+  },
+  "HomePage": {
+    "title": "Bonjour Monde!"
+  }
+}

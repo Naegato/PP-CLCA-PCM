@@ -35,13 +35,13 @@ db: .env
 	@sleep 3
 
 prisma-generate: install
-	pnpm --filter @pp-clca-pcm/adapters p:g
+	pnpm prisma:generate
 
 prisma-reset: db
-	pnpm --filter @pp-clca-pcm/adapters p:m:r
+	pnpm prisma:reset
 
 prisma-migrate: db
-	pnpm --filter @pp-clca-pcm/adapters p:m
+	pnpm prisma:migrate
 
 up-db: db prisma-generate prisma-migrate
 
@@ -50,18 +50,17 @@ tests: up-db build
 
 up: tests
 	@echo "Starting all applications..."
-	@pnpm --filter @pp-clca-pcm/api-nestjs start:dev & \
-	pnpm --filter @pp-clca-pcm/front-nextjs dev & \
-	wait
+	@pnpm dev:api & pnpm dev:front & wait
 
 up-nestjs: up-db build
-	cd apps/api/nest-js && npm install && npm run start:dev
+	pnpm dev:api
 
 up-nextjs:
-	cd apps/front/next-js && npm install && npm run dev
+	pnpm dev:front
 
 clear:
 	rm -rf node_modules
+	rm -rf src/node_modules
 	rm -rf src/domain/node_modules
 	rm -rf src/domain/dist
 	rm -rf src/application/node_modules
@@ -70,5 +69,7 @@ clear:
 	rm -rf src/infrastructure/adapters/dist
 	rm -rf src/infrastructure/tests/node_modules
 	rm -rf apps/api/nest-js/node_modules
+	rm -rf apps/api/nest-js/dist
 	rm -rf apps/front/next-js/node_modules
+	rm -rf apps/front/next-js/.next
 	@echo "All node_modules removed"
