@@ -5,6 +5,6 @@ export class DirectorGetAllCompanies {
   constructor(private readonly companyRepository: CompanyRepository) {}
 
   public async execute(): Promise<Company[]> {
-    return this.companyRepository.findAll();
+    return this.companyRepository.all();
   }
 }

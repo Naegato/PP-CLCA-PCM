@@ -51,7 +51,6 @@ import { ClientSavingAccountCreate } from '@pp-clca-pcm/application/usecases/cli
 import { ClientUpdateNameAccount } from '@pp-clca-pcm/application/usecases/client/accounts/client-update-name-account';
 
 import { ClientLogin } from '@pp-clca-pcm/application/usecases/client/auth/client-login';
-import { ClientLogout } from '@pp-clca-pcm/application/usecases/client/auth/client-logout';
 import { ClientRegistration } from '@pp-clca-pcm/application/usecases/client/auth/client-registration';
 import { ClientRequestPasswordReset } from '@pp-clca-pcm/application/usecases/client/auth/client-request-password-reset';
 import { ClientResetPassword } from '@pp-clca-pcm/application/usecases/client/auth/client-reset-password';
@@ -67,6 +66,14 @@ import { ClientGetNotifications } from '@pp-clca-pcm/application/usecases/client
 
 import { ClientCreatePortfolio } from '@pp-clca-pcm/application/usecases/client/portfolio/client-create-portfolio';
 import { ClientGetPortfolio } from '@pp-clca-pcm/application/usecases/client/portfolio/client-get-portfolio';
+
+import { PortfolioRepository } from "@pp-clca-pcm/application/repositories/portfolio";
+import { RedisPortfolioRepository } from '@pp-clca-pcm/adapters/repositories/redis/portfolio';
+
+import { CompanyRepository } from "@pp-clca-pcm/application/repositories/company";
+import { RedisCompanyRepository } from '@pp-clca-pcm/adapters/repositories/redis/company';
+import { StockRepository } from "@pp-clca-pcm/application/repositories/stock";
+import { RedisStockRepository } from '@pp-clca-pcm/adapters/repositories/redis/stock';
 
 import { ClientGetAvailableStocks } from '@pp-clca-pcm/application/usecases/client/stocks/client-get-available-stocks';
 import { ClientGetStockWithPrice } from '@pp-clca-pcm/application/usecases/client/stocks/client-get-stock-with-price';
@@ -138,6 +145,9 @@ let loanRepository: any = null;
 let loanRequestRepository: any = null;
 let transactionRepository: any = null;
 let userRepository: any = null;
+let portfolioRepository: PortfolioRepository|null = null;
+let stockRepository: StockRepository|null = null;
+let companyRepository: CompanyRepository|null = null;
 
 if (databaseProvider === "postgresql") {
 } else if (databaseProvider === "redis") {
@@ -155,6 +165,9 @@ if (databaseProvider === "postgresql") {
   loanRequestRepository = new RedisLoanRequestRepository(redisClient);
   transactionRepository = new RedisTransactionRepository(redisClient);
   userRepository = new RedisUserRepository(redisClient);
+  portfolioRepository = new RedisPortfolioRepository(redisClient);
+  stockRepository = new RedisStockRepository(redisClient);
+  companyRepository = new RedisCompanyRepository(redisClient);
 }
 
 // Init service
@@ -191,7 +204,7 @@ const requireRole = (requiredRole: UserRole) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const user = (req as any).user as User; // Cast to User type
+    const user = (req as any).user as User;
 
     let hasRole = false;
     switch (requiredRole) {
@@ -214,15 +227,40 @@ const requireRole = (requiredRole: UserRole) => {
   };
 };
 
+import { StockOrderRepository } from "@pp-clca-pcm/application/repositories/stockOrder";
+import { Notifier } from "@pp-clca-pcm/application/services/notifier";
+import { NotificationRepository } from "@pp-clca-pcm/application/repositories/notification";
+import { BanRepository } from "@pp-clca-pcm/application/repositories/ban";
+
 // TEMP STUBS
-const logoutService = { logout: async (userId: string) => { /* noop */ } } as any;
-const portfolioRepositoryStub = { save: async (p: any) => p, findByAccountId: async (id: string) => null } as any;
-const stockRepositoryStub = {} as any;
-const stockOrderRepositoryStub = { findAllByOwnerId: async (id: string) => [], save: async (o: any) => o, findAllByStockId: async (s: string) => [] } as any;
-const notifierStub = { notiferUser: async (user: any, message: any) => {} } as any;
-const notificationRepositoryStub = { save: async (n: any) => n } as any;
-const companyRepositoryStub = {} as any;
-const banRepositoryStub = {} as any;
+const stockOrderRepositoryStub: StockOrderRepository = {
+  save: async (order) => order,
+  allByStock: async (stockId) => [],
+  findOpenBuyOrders: async (stockId, price) => [],
+  findOpenSellOrders: async (stockId, price) => [],
+  getCommittedSellQuantity: async (accountId, stockId) => 0,
+  findById: async (orderId) => null,
+  findAllByOwnerId: async (ownerId) => [],
+  delete: async (orderId) => {},
+  findAllByStockId: async (stockId) => [],
+  deleteMany: async (orderIds) => {},
+};
+const notifierStub: Notifier = {
+  notifierAllUsers: async (message) => {},
+  notiferUser: async (user, message) => {},
+};
+const notificationRepositoryStub: NotificationRepository = {
+  save: async (notification) => notification,
+  findByRecipient: async (recipient) => [],
+  findUnreadByRecipient: async (recipient) => [],
+  markAsRead: async (notificationId) => null,
+};
+const banRepositoryStub: BanRepository = {
+  save: async (ban) => ban,
+  findByUser: async (user) => [],
+  findActiveByUser: async (user) => null,
+  findAll: async () => [],
+};
 
 // Init use cases
 const advisorLogin = new AdvisorLogin(
@@ -284,7 +322,6 @@ const clientGetBalanceAccount = new ClientGetBalanceAccount(accountRepository);
 const clientSavingAccountCreate = new ClientSavingAccountCreate(AccountType.create('savings', 5), accountRepository);
 const clientUpdateNameAccount = new ClientUpdateNameAccount(accountRepository);
 const clientLogin = new ClientLogin(userRepository, passwordService, tokenService);
-const clientLogout = new ClientLogout(logoutService, security);
 const clientRegistration = new ClientRegistration(userRepository, accountRepository, accountTypeRepository, passwordService);
 const clientRequestPasswordReset = new ClientRequestPasswordReset(userRepository, tokenService);
 const clientResetPassword = new ClientResetPassword(userRepository, tokenService, passwordService);
@@ -297,15 +334,15 @@ const clientSendMessage = new ClientSendMessage(messageRepository, discussionRep
 
 const clientGetNotifications = new ClientGetNotifications(notificationRepositoryStub, security);
 
-const clientCreatePortfolio = new ClientCreatePortfolio(portfolioRepositoryStub, accountRepository);
-const clientGetPortfolio = new ClientGetPortfolio(portfolioRepositoryStub, accountRepository);
+const clientCreatePortfolio = new ClientCreatePortfolio(portfolioRepository, accountRepository);
+const clientGetPortfolio = new ClientGetPortfolio(portfolioRepository, accountRepository);
 
-const clientGetAvailableStocks = new ClientGetAvailableStocks(stockRepositoryStub);
-const clientGetStockWithPrice = new ClientGetStockWithPrice(stockRepositoryStub, null as any);
+const clientGetAvailableStocks = new ClientGetAvailableStocks(stockRepository);
+const clientGetStockWithPrice = new ClientGetStockWithPrice(stockRepository, null as any);
 const clientCancelStockOrder = new ClientCancelStockOrder(stockOrderRepositoryStub, security);
 const clientGetStockOrders = new ClientGetStockOrders(stockOrderRepositoryStub);
-const clientMatchStockOrder = new ClientMatchStockOrder(stockOrderRepositoryStub, stockRepositoryStub, portfolioRepositoryStub);
-const clientRegisterStockOrder = new ClientRegisterStockOrder(stockOrderRepositoryStub, stockRepositoryStub, clientMatchStockOrder);
+const clientMatchStockOrder = new ClientMatchStockOrder(stockOrderRepositoryStub, stockRepository, portfolioRepository);
+const clientRegisterStockOrder = new ClientRegisterStockOrder(stockOrderRepositoryStub, stockRepository, clientMatchStockOrder);
 
 const clientSendTransaction = new ClientSendTransaction(transactionRepository);
 
@@ -320,18 +357,18 @@ const directorManageCreate = new DirectorManageCreate(userRepository, security);
 const directorManageDelete = new DirectorManageDelete(userRepository, security);
 const directorManageUpdate = new DirectorManageUpdate(userRepository, security);
 
-const directorCreateCompany = new DirectorCreateCompany(companyRepositoryStub);
-const directorDeleteCompany = new DirectorDeleteCompany(companyRepositoryStub, stockRepositoryStub);
-const directorGetAllCompanies = new DirectorGetAllCompanies(companyRepositoryStub);
-const directorGetCompany = new DirectorGetCompany(companyRepositoryStub);
-const directorUpdateCompany = new DirectorUpdateCompany(companyRepositoryStub);
+const directorCreateCompany = new DirectorCreateCompany(companyRepository);
+const directorDeleteCompany = new DirectorDeleteCompany(companyRepository, stockRepository);
+const directorGetAllCompanies = new DirectorGetAllCompanies(companyRepository);
+const directorGetCompany = new DirectorGetCompany(companyRepository);
+const directorUpdateCompany = new DirectorUpdateCompany(companyRepository);
 
 const directorChangeSavingRate = new DirectorChangeSavingRate(accountTypeRepository);
 
-const directorCreateStock = new DirectorCreateStock(stockRepositoryStub, companyRepositoryStub);
-const directorDeleteStock = new DirectorDeleteStock(stockRepositoryStub, portfolioRepositoryStub, stockOrderRepositoryStub);
-const directorToggleStockListing = new DirectorToggleStockListing(stockRepositoryStub);
-const directorUpdateStock = new DirectorUpdateStock(stockRepositoryStub, companyRepositoryStub);
+const directorCreateStock = new DirectorCreateStock(stockRepository, companyRepository);
+const directorDeleteStock = new DirectorDeleteStock(stockRepository, portfolioRepository as any, stockOrderRepositoryStub);
+const directorToggleStockListing = new DirectorToggleStockListing(stockRepository);
+const directorUpdateStock = new DirectorUpdateStock(stockRepository, companyRepository);
 
 // Engine
 const generateDailyInterest = new GenerateDailyInterest(accountRepository);
@@ -445,11 +482,6 @@ app.put("/client/accounts/:id/name", requireRole('client'), async (req, res) => 
 // ============ CLIENT AUTH ROUTES ============
 app.post("/client/login", async (req, res) => {
   const result = await clientLogin.execute({ email: req.body.email, password: req.body.password });
-  res.json(result);
-});
-
-app.post("/client/logout", async (req, res) => {
-  const result = await clientLogout.execute();
   res.json(result);
 });
 

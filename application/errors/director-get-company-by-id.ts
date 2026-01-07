@@ -1,7 +1,7 @@
 export class DirectorGetCompanyByIdError extends Error {
-  public readonly name = "DirectorGetCompanyByIdError";
+  public readonly name = 'DirectorGetCompanyByIdError';
 
-  public constructor(message?: string) {
+  constructor(message?: string) {
     super(message);
   }
 }

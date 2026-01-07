@@ -120,13 +120,6 @@
           }
         },
         {
-          "name": "Logout",
-          "request": {
-            "method": "POST",
-            "url": "{{baseUrl}}/client/logout"
-          }
-        },
-        {
           "name": "Register",
           "request": {
             "method": "POST",

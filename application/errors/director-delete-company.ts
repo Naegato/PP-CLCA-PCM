@@ -1,7 +1,7 @@
 export class DirectorDeleteCompanyError extends Error {
-  public readonly name = "DirectorDeleteCompanyError";
+  public readonly name = 'DirectorDeleteCompanyError';
 
-  public constructor(message?: string) {
+  constructor(message?: string) {
     super(message);
   }
 }
