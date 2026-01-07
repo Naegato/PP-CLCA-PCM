@@ -47,4 +47,26 @@ export class StockOrder {
   public get executed(): boolean {
     return this.remainingQuantity === 0;
   }
+
+  public static fromPrimitives(primitives: {
+    identifier: string | null,
+    stock: Stock,
+    account: Account,
+    side: OrderSide,
+    price: number,
+    quantity: number,
+    remainingQuantity: number,
+    createdAt: Date,
+  }): StockOrder {
+    return new StockOrder(
+      primitives.identifier,
+      primitives.stock,
+      primitives.account,
+      primitives.side,
+      primitives.price,
+      primitives.quantity,
+      primitives.remainingQuantity,
+      primitives.createdAt,
+    );
+  }
 }

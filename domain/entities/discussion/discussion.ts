@@ -24,4 +24,20 @@ export class Discussion {
   public isClosed(): boolean {
     return this.status === DiscussionStatus.CLOSED;
   }
+
+  public static fromPrimitives(primitives: {
+    identifier: string | null,
+    content: Message[] | null,
+    advisor: User | null,
+    user: User | null,
+    status: DiscussionStatus,
+  }): Discussion {
+    return new Discussion(
+      primitives.identifier,
+      primitives.content,
+      primitives.advisor,
+      primitives.user,
+      primitives.status,
+    );
+  }
 }

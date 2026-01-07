@@ -20,4 +20,14 @@ export class Company {
       props.name ?? this.name,
     );
   }
+
+  public static fromPrimitives(primitives: {
+    identifier: string,
+    name: string,
+  }): Company {
+    return new Company(
+      primitives.identifier,
+      primitives.name,
+    );
+  }
 }

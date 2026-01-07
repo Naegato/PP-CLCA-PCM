@@ -23,4 +23,16 @@ export class PortfolioItem {
     }
     return new PortfolioItem(this.identifier, this.stock, this.quantity - quantity);
   }
+
+  public static fromPrimitives(primitives: {
+    identifier: string | null,
+    stock: Stock,
+    quantity: number,
+  }): PortfolioItem {
+    return new PortfolioItem(
+      primitives.identifier,
+      primitives.stock,
+      primitives.quantity,
+    );
+  }
 }

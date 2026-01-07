@@ -40,4 +40,22 @@ export class Notification {
       this.createdAt,
     );
   }
+
+  public static fromPrimitives(primitives: {
+    identifier: string | null,
+    recipient: User,
+    message: string,
+    type: NotificationType,
+    isRead: boolean,
+    createdAt: Date,
+  }): Notification {
+    return new Notification(
+      primitives.identifier,
+      primitives.recipient,
+      primitives.message,
+      primitives.type,
+      primitives.isRead,
+      primitives.createdAt,
+    );
+  }
 }

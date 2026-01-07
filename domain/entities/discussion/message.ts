@@ -13,4 +13,20 @@ export class Message {
   reply(sender: User, content: string): Message {
 	return new Message(null, content, new Date(), sender, this.discussion);
   }
+
+  public static fromPrimitives(primitives: {
+    identifier: string | null,
+    content: string | null,
+    sendAt: Date | null,
+    sender: User | null,
+    discussion: Discussion,
+  }): Message {
+    return new Message(
+      primitives.identifier,
+      primitives.content,
+      primitives.sendAt,
+      primitives.sender,
+      primitives.discussion,
+    );
+  }
 }

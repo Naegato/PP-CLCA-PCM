@@ -74,4 +74,28 @@ export class Portfolio {
       throw error;
     }
   }
+
+  public static fromPrimitives(primitives: {
+    identifier: string | null,
+    account: Account,
+    items: Array<{ stock: Stock, quantity: number }>,
+  }): Portfolio {
+    const itemsMap = new Map<string, PortfolioItem>();
+    primitives.items.forEach(item => {
+      const portfolioItem = PortfolioItem.fromPrimitives({
+        identifier: item.stock.identifier,
+        stock: item.stock,
+        quantity: item.quantity,
+      });
+      if (item.stock.identifier) {
+        itemsMap.set(item.stock.identifier, portfolioItem);
+      }
+    });
+
+    return new Portfolio(
+      primitives.identifier,
+      primitives.account,
+      itemsMap,
+    );
+  }
 }

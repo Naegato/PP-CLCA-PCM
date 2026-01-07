@@ -43,4 +43,22 @@ export class SimulatedLoan {
       totalInterest,
     );
   }
+
+  public static fromPrimitives(primitives: {
+    principal: number,
+    interestRate: number,
+    durationMonths: number,
+    monthlyPayment: number,
+    totalAmount: number,
+    totalInterest: number,
+  }): SimulatedLoan {
+    return new SimulatedLoan(
+      primitives.principal,
+      primitives.interestRate,
+      primitives.durationMonths,
+      primitives.monthlyPayment,
+      primitives.totalAmount,
+      primitives.totalInterest,
+    );
+  }
 }

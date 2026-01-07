@@ -38,4 +38,22 @@ export class Stock {
       this.company
     );
   }
+
+  public static fromPrimitives(primitives: {
+    identifier: string | null,
+    symbol: StockSymbol,
+    name: string,
+    isListed: boolean,
+    createdAt: Date,
+    company: Company,
+  }): Stock {
+    return new Stock(
+      primitives.identifier,
+      primitives.symbol,
+      primitives.name,
+      primitives.isListed,
+      primitives.createdAt,
+      primitives.company,
+    );
+  }
 }
