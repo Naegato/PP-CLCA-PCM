@@ -1,5 +1,5 @@
 import { CronJob } from 'cron';
-import { GenerateDailyInterest } from '../../../application/usecases/engine/generate-daily-interest';
+import { GenerateDailyInterest } from '../../../application/usecases/engine/generate-daily-interest.js';
 
 export class DailyInterestCron {
   private job: CronJob;

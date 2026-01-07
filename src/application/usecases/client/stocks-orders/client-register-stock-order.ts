@@ -1,10 +1,10 @@
 import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
 import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { StockOrderRepository } from '../../../repositories/stockOrder';
-import { StockRepository } from '../../../repositories/stock';
+import { StockOrderRepository } from '../../../repositories/stockOrder.js';
+import { StockRepository } from '../../../repositories/stock.js';
 import { TRADING_FEE } from '@pp-clca-pcm/domain/constants/bank';
-import { ClientMatchStockOrder } from './client-match-stock-order';
-import { ClientRegisterStockOrderError } from '../../../errors/client-register-stock-order';
+import { ClientMatchStockOrder } from './client-match-stock-order.js';
+import { ClientRegisterStockOrderError } from '../../../errors/client-register-stock-order.js';
 
 export class ClientRegisterStockOrder {
   constructor(

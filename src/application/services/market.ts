@@ -1,4 +1,4 @@
-import { StockOrderRepository } from '../repositories/stockOrder';
+import { StockOrderRepository } from '../repositories/stockOrder.js';
 import { OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
 
 export class MarketService {

@@ -1,7 +1,7 @@
-import { StockRepository } from '../../../repositories/stock';
+import { StockRepository } from '../../../repositories/stock.js';
 import { Stock, StockSymbol } from '@pp-clca-pcm/domain/entities/stock';
-import { MarketService } from '../../../services/market';
-import { ClientGetStockWithPriceError } from '../../../errors/client-get-stock-with-price';
+import { MarketService } from '../../../services/market.js';
+import { ClientGetStockWithPriceError } from '../../../errors/client-get-stock-with-price.js';
 
 export type StockWithPrice = {
   identifier: string | null;

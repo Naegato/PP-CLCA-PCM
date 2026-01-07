@@ -3,7 +3,7 @@ import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
 import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
-import { RedisBaseRepository } from './base';
+import { RedisBaseRepository } from './base.js';
 
 export class RedisUserRepository extends RedisBaseRepository<User> implements UserRepository {
 	readonly prefix = 'user:';

@@ -13,6 +13,7 @@ describe.skipIf(!isPostgres)('Prisma Stock Repository', async () => {
   beforeAll(async () => {
     await prisma.$transaction([
       prisma.stock.deleteMany(),
+      prisma.stockOrder.deleteMany(),
       prisma.company.deleteMany(),
     ]);
   });

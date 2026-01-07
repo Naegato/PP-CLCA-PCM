@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import { Stock } from './stock';
-import { Account } from './accounts/account';
+import { Stock } from './stock.js';
+import { Account } from './accounts/account.js';
 
 export enum OrderSide {
   BUY = 'BUY',

@@ -1,7 +1,7 @@
-import { Message } from "../../../../domain/entities/discussion/message"
-import { NotAdvisor } from "../../../errors/not-advisor";
-import { MessageRepository } from "../../../repositories/discussion/message";
-import { Security } from "../../../services/security";
+import { Message } from "../../../../domain/entities/discussion/message.js"
+import { NotAdvisor } from "../../../errors/not-advisor.js";
+import { MessageRepository } from "../../../repositories/discussion/message.js";
+import { Security } from "../../../services/security.js";
 
 export class AdvisorReplyMessage {
 	public constructor(

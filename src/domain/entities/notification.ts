@@ -1,5 +1,5 @@
-import { User } from "./user";
-import { NotificationType } from "../value-objects/notification-type";
+import { User } from "./user.js";
+import { NotificationType } from "../value-objects/notification-type.js";
 
 export class Notification {
   private constructor(

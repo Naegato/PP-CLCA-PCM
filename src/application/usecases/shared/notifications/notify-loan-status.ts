@@ -2,8 +2,8 @@ import { Notification } from "@pp-clca-pcm/domain/entities/notification";
 import { NotificationType } from "@pp-clca-pcm/domain/value-objects/notification-type";
 import { LoanRequest } from "@pp-clca-pcm/domain/entities/loan-request";
 import { Loan } from "@pp-clca-pcm/domain/entities/loan";
-import { NotificationRepository } from "../../../repositories/notification";
-import { Notifier } from "../../../services/notifier";
+import { NotificationRepository } from "../../../repositories/notification.js";
+import { Notifier } from "../../../services/notifier.js";
 
 export class NotifyLoanStatus {
   public constructor(

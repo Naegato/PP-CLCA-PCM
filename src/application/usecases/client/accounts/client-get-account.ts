@@ -1,5 +1,5 @@
 import { ClientGetAccountError } from "@pp-clca-pcm/application/errors/client-get-account";
-import { AccountRepository } from "../../../repositories/account";
+import { AccountRepository } from "../../../repositories/account.js";
 
 export class ClientGetAccount {
   constructor(

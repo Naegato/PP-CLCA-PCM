@@ -1,5 +1,5 @@
-import { User } from "./user";
-import { Transaction } from "./transaction";
+import { User } from "./user.js";
+import { Transaction } from "./transaction.js";
 import { randomUUID } from "node:crypto";
 
 export class Loan {

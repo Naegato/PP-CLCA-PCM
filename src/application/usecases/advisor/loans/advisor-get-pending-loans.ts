@@ -1,6 +1,6 @@
-import { NotAdvisor } from "../../../errors/not-advisor";
-import { LoanRequestRepository } from "../../../repositories/request-loan";
-import { Security } from "../../../services/security";
+import { NotAdvisor } from "../../../errors/not-advisor.js";
+import { LoanRequestRepository } from "../../../repositories/request-loan.js";
+import { Security } from "../../../services/security.js";
 
 export class AdvisorGetPendingLoans {
   public constructor(

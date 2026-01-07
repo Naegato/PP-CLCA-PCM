@@ -1,10 +1,10 @@
 import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
 import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
 import { TRADING_FEE } from '@pp-clca-pcm/domain/constants/bank';
-import { AccountRepository } from '../../../repositories/account';
-import { StockOrderRepository } from '../../../repositories/stockOrder';
-import { MatchStockOrderError } from '../../../errors/match-stock-order';
-import { PortfolioRepository } from '../../../repositories/portfolio';
+import { AccountRepository } from '../../../repositories/account.js';
+import { StockOrderRepository } from '../../../repositories/stockOrder.js';
+import { MatchStockOrderError } from '../../../errors/match-stock-order.js';
+import { PortfolioRepository } from '../../../repositories/portfolio.js';
 import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
 import { PortfolioError } from '@pp-clca-pcm/domain/errors/portfolio';
 import { InvalidIbanError } from '@pp-clca-pcm/domain/errors/invalid-iban-format';

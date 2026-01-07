@@ -4,7 +4,7 @@ import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
 import { User } from "@pp-clca-pcm/domain/entities/user";
 import { randomUUID } from "crypto";
 import { RedisClientType } from "redis";
-import { RedisBaseRepository } from "../base";
+import { RedisBaseRepository } from "../base.js";
 
 export class RedisAccountRepository extends RedisBaseRepository<Account> implements AccountRepository {
 	readonly prefix = 'account:';

@@ -7,6 +7,7 @@ export * from './cron/DailyInterestCron.js';
 // Services
 export * from './services/argon2-password.js';
 export * from './services/jwt-token.js';
+export * from './services/simple-logout.js'
 
 // Repositories - Memory
 export * from './repositories/memory/account/account.js';
@@ -50,4 +51,5 @@ export * from './repositories/mariadb/database.js';
 export * from './repositories/mariadb/discussion/discussion.js';
 
 // Main
+// TODO: RETIRER LE MAIN
 export * from './main.js';

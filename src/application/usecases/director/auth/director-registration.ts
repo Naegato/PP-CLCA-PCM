@@ -1,4 +1,4 @@
-import { UserRepository } from '../../../repositories/user';
+import { UserRepository } from '../../../repositories/user.js';
 import { User } from '@pp-clca-pcm/domain/entities/user';
 
 export class DirectorRegistration {

@@ -1,5 +1,5 @@
-import { User } from '../entities/user';
-import { AccountType } from '../entities/accounts/type';
+import { User } from '../entities/user.js';
+import { AccountType } from '../entities/accounts/type.js';
 
 export class AccountLimitValidator {
 
