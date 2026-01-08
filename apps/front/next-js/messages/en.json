@@ -48,5 +48,20 @@
         "placeholder": "Enter your password"
       }
     }
+  },
+  "LoginForm": {
+    "title": "Login",
+    "description": "Please enter your credentials to log in.",
+    "success": "Login successful!",
+    "fields": {
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password"
+      }
+    }
   }
 }

@@ -48,5 +48,20 @@
         "placeholder": "Entrez votre mot de passe"
       }
     }
+  },
+  "LoginForm": {
+    "title": "Connexion",
+    "description": "Veuillez entrer vos identifiants pour vous connecter.",
+    "success": "Connexion réussie !",
+    "fields": {
+      "email": {
+        "label": "Email",
+        "placeholder": "Entrez votre email"
+      },
+      "password": {
+        "label": "Mot de passe",
+        "placeholder": "Entrez votre mot de passe"
+      }
+    }
   }
 }
