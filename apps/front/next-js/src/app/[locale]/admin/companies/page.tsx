@@ -1,10 +1,10 @@
-import { ClientList } from '@/components/director/client-list';
+import { CompanyList } from '@/components/director/company-list';
 import { ProtectedRoute } from '@/components/protected-route';
 
-export default function AdminUsersPage() {
+export default function AdminCompaniesPage() {
   return (
     <ProtectedRoute allowedRoles={['director']}>
-      <ClientList />
+      <CompanyList />
     </ProtectedRoute>
   );
 }

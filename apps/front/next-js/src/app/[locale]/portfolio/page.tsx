@@ -1,10 +1,10 @@
-import { MessageList } from '@/components/client/message-list';
+import { PortfolioView } from '@/components/client/portfolio-view';
 import { ProtectedRoute } from '@/components/protected-route';
 
-export default function MessagesPage() {
+export default function PortfolioPage() {
   return (
     <ProtectedRoute allowedRoles={['client']}>
-      <MessageList />
+      <PortfolioView />
     </ProtectedRoute>
   );
 }

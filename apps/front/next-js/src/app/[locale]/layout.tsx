@@ -6,6 +6,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { notFound } from 'next/navigation';
 import Navigation from '@/components/naviagtion';
+import { AuthProvider } from '@/contexts/auth-context';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -49,9 +50,13 @@ export default async function LocaleLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
     <NextIntlClientProvider>
-      <Navigation/>
-      {children}
-      <Toaster />
+      <AuthProvider>
+        <Navigation/>
+        <main className="container mx-auto px-4 py-8">
+          {children}
+        </main>
+        <Toaster />
+      </AuthProvider>
     </NextIntlClientProvider>
     </body>
     </html>

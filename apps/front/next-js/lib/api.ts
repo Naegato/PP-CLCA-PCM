@@ -1,12 +1,25 @@
 export class Api {
   constructor(public readonly apiUrl: string) {}
 
-  fetch(...props: Parameters<typeof fetch>) {
-    const [input, init] = props;
-    const url = input instanceof Request ? input.url : input;
-    const finalUrl = new URL(url, this.apiUrl);
+  private getToken(): string | null {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem('auth_token');
+  }
 
-    return fetch(finalUrl, init);
+  fetch(input: RequestInfo | URL, init?: RequestInit) {
+    const url = input instanceof Request ? input.url : input.toString();
+    const finalUrl = new URL(url, this.apiUrl);
+    const token = this.getToken();
+
+    const headers = new Headers(init?.headers);
+    if (token && !headers.has('Authorization')) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    return fetch(finalUrl, {
+      ...init,
+      headers,
+    });
   }
 }
 

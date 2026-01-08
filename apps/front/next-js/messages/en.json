@@ -2,7 +2,21 @@
   "Navigation": {
     "home": "Home",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "logout": "Logout",
+    "advisorLogin": "Advisor Portal",
+    "adminLogin": "Admin Portal",
+    "account": "Accounts",
+    "loans": "Loans",
+    "stocks": "Stocks",
+    "portfolio": "Portfolio",
+    "orders": "Orders",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "pendingLoans": "Pending Loans",
+    "clients": "Clients",
+    "companies": "Companies",
+    "settings": "Settings"
   },
   "LocaleSwitcher": {
     "label": "Language",
@@ -10,58 +24,351 @@
     "fr": "French"
   },
   "LocaleLayout": {
-    "title": "My Next.js App"
+    "title": "Online Banking"
   },
   "HomePage": {
-    "title": "Hello world!"
+    "title": "Welcome to your online bank",
+    "description": "Manage your accounts, loans and investments with ease.",
+    "features": {
+      "accounts": {
+        "title": "Bank accounts",
+        "description": "Manage your checking and savings accounts.",
+        "cta": "View my accounts"
+      },
+      "loans": {
+        "title": "Loans",
+        "description": "Simulate and apply for loans online.",
+        "cta": "Simulate a loan"
+      },
+      "stocks": {
+        "title": "Stock market",
+        "description": "Invest in stocks and manage your portfolio.",
+        "cta": "View stocks"
+      }
+    }
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist.",
+    "backHome": "Back to home"
+  },
+  "Error": {
+    "title": "An error occurred",
+    "description": "We're sorry, an unexpected error has occurred.",
+    "tryAgain": "Try again"
   },
   "Forms": {
     "submit": "Submit",
     "reset": "Reset",
     "errors": {
       "default": "An error occurred. Please try again.",
-      "PasswordUppercaseError": "The password must contain at least one uppercase letter.",
-      "PasswordDigitError": "The password must contain at least one digit.",
-      "PasswordLengthError": "The password must be at least 8 characters long.",
-      "PasswordLowercaseError": "The password must contain at least one lowercase letter.",
-      "PasswordSpecialError": "The password must contain at least one special character."
+      "PasswordUppercaseError": "Password must contain at least one uppercase letter.",
+      "PasswordDigitError": "Password must contain at least one digit.",
+      "PasswordLengthError": "Password must be at least 8 characters long.",
+      "PasswordLowercaseError": "Password must contain at least one lowercase letter.",
+      "PasswordSpecialError": "Password must contain at least one special character.",
+      "InvalidCredentialsError": "Invalid email or password.",
+      "UserNotFoundError": "User not found.",
+      "EmailAlreadyExistsError": "This email is already in use."
     }
   },
   "RegisterForm": {
     "title": "Create an account",
     "description": "Please fill out the form to create an account.",
     "fields": {
-      "firstname": {
-        "label": "First Name",
-        "placeholder": "Enter your first name"
-      },
-      "lastname": {
-        "label": "Last Name",
-        "placeholder": "Enter your last name"
-      },
-      "email": {
-        "label": "Email",
-        "placeholder": "Enter your email"
-      },
-      "password": {
-        "label": "Password",
-        "placeholder": "Enter your password"
-      }
+      "firstname": { "label": "First Name", "placeholder": "Enter your first name" },
+      "lastname": { "label": "Last Name", "placeholder": "Enter your last name" },
+      "email": { "label": "Email", "placeholder": "Enter your email" },
+      "password": { "label": "Password", "placeholder": "Enter your password" }
     }
   },
   "LoginForm": {
     "title": "Login",
     "description": "Please enter your credentials to log in.",
     "success": "Login successful!",
+    "forgotPassword": "Forgot your password?",
     "fields": {
-      "email": {
-        "label": "Email",
-        "placeholder": "Enter your email"
-      },
-      "password": {
-        "label": "Password",
-        "placeholder": "Enter your password"
-      }
+      "email": { "label": "Email", "placeholder": "Enter your email" },
+      "password": { "label": "Password", "placeholder": "Enter your password" }
+    }
+  },
+  "ForgotPasswordForm": {
+    "title": "Forgot password",
+    "description": "Enter your email to receive a reset link.",
+    "success": "A reset email has been sent.",
+    "fields": {
+      "email": { "label": "Email", "placeholder": "Enter your email" }
+    }
+  },
+  "ResetPasswordForm": {
+    "title": "Reset password",
+    "description": "Choose a new password.",
+    "success": "Your password has been reset successfully.",
+    "noToken": "Invalid or expired reset link.",
+    "fields": {
+      "password": { "label": "New password", "placeholder": "Enter your new password" },
+      "confirmPassword": { "label": "Confirm password", "placeholder": "Confirm your password" }
+    }
+  },
+  "AccountList": {
+    "title": "My accounts",
+    "loading": "Loading...",
+    "noAccounts": "You don't have any accounts yet.",
+    "createAccount": "New account",
+    "createSavings": "Savings account"
+  },
+  "AccountDetail": {
+    "loading": "Loading...",
+    "notFound": "Account not found.",
+    "balance": "Balance",
+    "transactions": "Transactions",
+    "noTransactions": "No transactions.",
+    "rename": "Rename",
+    "transfer": "Transfer",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this account?",
+    "deleteSuccess": "Account deleted successfully."
+  },
+  "AccountRenameForm": {
+    "title": "Rename account",
+    "success": "Account renamed successfully.",
+    "fields": {
+      "name": { "label": "New name", "placeholder": "Enter the new name" }
+    }
+  },
+  "TransactionForm": {
+    "title": "Make a transfer",
+    "success": "Transfer completed successfully.",
+    "fields": {
+      "receiverIban": { "label": "Recipient IBAN", "placeholder": "FR76..." },
+      "amount": { "label": "Amount", "placeholder": "0.00" },
+      "description": { "label": "Description", "placeholder": "Transfer reason" }
+    }
+  },
+  "LoanList": {
+    "title": "My loans",
+    "loading": "Loading...",
+    "noLoans": "You don't have any loans.",
+    "simulate": "Simulate",
+    "request": "Request a loan",
+    "remaining": "Remaining",
+    "rate": "Rate",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "paid": "Paid"
+    }
+  },
+  "LoanRequestForm": {
+    "title": "Loan request",
+    "description": "Enter the desired amount.",
+    "success": "Loan request submitted.",
+    "submit": "Submit request",
+    "fields": {
+      "amount": { "label": "Amount", "placeholder": "10000" }
+    }
+  },
+  "LoanSimulator": {
+    "title": "Loan simulator",
+    "description": "Calculate your monthly payments.",
+    "calculate": "Calculate",
+    "fields": {
+      "principal": { "label": "Loan amount", "placeholder": "10000" },
+      "interestRate": { "label": "Interest rate (%)", "placeholder": "5" },
+      "durationMonths": { "label": "Duration (months)", "placeholder": "60" }
+    },
+    "result": {
+      "title": "Result",
+      "monthlyPayment": "Monthly payment",
+      "totalPayment": "Total repayment",
+      "totalInterest": "Total interest"
+    }
+  },
+  "NotificationList": {
+    "title": "Notifications",
+    "loading": "Loading...",
+    "noNotifications": "No notifications."
+  },
+  "MessageList": {
+    "title": "Messages",
+    "loading": "Loading...",
+    "noDiscussions": "No discussions.",
+    "newMessage": "New message",
+    "discussion": "Discussion",
+    "messages": "messages",
+    "conversation": "Conversation",
+    "advisor": "Advisor",
+    "you": "You",
+    "status": {
+      "open": "Open",
+      "closed": "Closed"
+    }
+  },
+  "MessageForm": {
+    "title": "New message",
+    "success": "Message sent.",
+    "send": "Send",
+    "fields": {
+      "text": { "label": "Message", "placeholder": "Write your message..." }
+    }
+  },
+  "StockList": {
+    "title": "Available stocks",
+    "loading": "Loading...",
+    "noStocks": "No stocks available."
+  },
+  "PortfolioView": {
+    "title": "My portfolio",
+    "loading": "Loading...",
+    "noPortfolio": "You don't have a portfolio yet.",
+    "browseStocks": "Browse stocks",
+    "viewOrders": "View my orders",
+    "totalValue": "Total value",
+    "positions": "Positions",
+    "noPositions": "No positions.",
+    "quantity": "Quantity",
+    "avgPrice": "Avg. price",
+    "currentPrice": "Current price",
+    "profitLoss": "Profit/Loss",
+    "trade": "Trade"
+  },
+  "OrderList": {
+    "title": "My orders",
+    "loading": "Loading...",
+    "noOrders": "No orders.",
+    "confirmCancel": "Cancel this order?",
+    "cancelSuccess": "Order cancelled.",
+    "cancel": "Cancel",
+    "side": "Side",
+    "quantity": "Quantity",
+    "price": "Price",
+    "status": {
+      "pending": "Pending",
+      "executed": "Executed",
+      "cancelled": "Cancelled"
+    },
+    "sides": {
+      "buy": "Buy",
+      "sell": "Sell"
+    }
+  },
+  "OrderForm": {
+    "title": "Place an order",
+    "success": "Order placed successfully.",
+    "buy": "Buy",
+    "sell": "Sell",
+    "placeBuyOrder": "Place buy order",
+    "placeSellOrder": "Place sell order",
+    "fields": {
+      "quantity": { "label": "Quantity", "placeholder": "1" },
+      "price": { "label": "Limit price", "placeholder": "0.00" }
+    }
+  },
+  "AdvisorLoginForm": {
+    "title": "Advisor Portal",
+    "description": "Login to your advisor portal.",
+    "success": "Login successful!",
+    "fields": {
+      "email": { "label": "Email", "placeholder": "Enter your email" },
+      "password": { "label": "Password", "placeholder": "Enter your password" }
+    }
+  },
+  "PendingLoanList": {
+    "title": "Pending loan requests",
+    "loading": "Loading...",
+    "noLoans": "No pending requests.",
+    "approve": "Approve",
+    "reject": "Reject",
+    "grantSuccess": "Loan granted.",
+    "rejectSuccess": "Request rejected."
+  },
+  "AdvisorMessageList": {
+    "title": "Client discussions",
+    "loading": "Loading...",
+    "noDiscussions": "No discussions.",
+    "you": "You",
+    "close": "Close",
+    "send": "Send",
+    "replyPlaceholder": "Your reply...",
+    "replySuccess": "Reply sent.",
+    "closeSuccess": "Discussion closed.",
+    "status": {
+      "open": "Open",
+      "closed": "Closed"
+    }
+  },
+  "DirectorLoginForm": {
+    "title": "Admin Portal",
+    "description": "Login to the admin portal.",
+    "success": "Login successful!",
+    "fields": {
+      "email": { "label": "Email", "placeholder": "Enter your email" },
+      "password": { "label": "Password", "placeholder": "Enter your password" }
+    }
+  },
+  "ClientList": {
+    "title": "Client management",
+    "loading": "Loading...",
+    "noClients": "No clients.",
+    "create": "New client",
+    "view": "View",
+    "delete": "Delete",
+    "banned": "Banned",
+    "createdAt": "Registered on",
+    "confirmDelete": "Delete this client?",
+    "deleteSuccess": "Client deleted."
+  },
+  "CompanyList": {
+    "title": "Company management",
+    "loading": "Loading...",
+    "noCompanies": "No companies.",
+    "create": "New company",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "stocks": "stocks",
+    "confirmDelete": "Delete this company?",
+    "deleteSuccess": "Company deleted."
+  },
+  "CompanyCreateForm": {
+    "title": "New company",
+    "success": "Company created.",
+    "fields": {
+      "name": { "label": "Name", "placeholder": "Company name" }
+    }
+  },
+  "DirectorStockList": {
+    "title": "Stock management",
+    "loading": "Loading...",
+    "noStocks": "No stocks.",
+    "create": "New stock",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "listed": "Listed",
+    "unlisted": "Unlisted",
+    "list": "List",
+    "unlist": "Unlist",
+    "confirmDelete": "Delete this stock?",
+    "deleteSuccess": "Stock deleted.",
+    "toggleSuccess": "Status updated."
+  },
+  "StockCreateForm": {
+    "title": "New stock",
+    "success": "Stock created.",
+    "fields": {
+      "symbol": { "label": "Symbol", "placeholder": "AAPL" },
+      "name": { "label": "Name", "placeholder": "Apple Inc." },
+      "company": { "label": "Company", "placeholder": "Select a company" }
+    }
+  },
+  "SavingsRateForm": {
+    "title": "Savings rate",
+    "description": "Update the interest rate for savings accounts.",
+    "success": "Rate updated.",
+    "fields": {
+      "rate": { "label": "Annual rate", "placeholder": "2.5" }
     }
   }
 }

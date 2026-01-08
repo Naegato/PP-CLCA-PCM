@@ -2,66 +2,373 @@
   "Navigation": {
     "home": "Accueil",
     "login": "Connexion",
-    "register": "Inscription"
+    "register": "Inscription",
+    "logout": "Deconnexion",
+    "advisorLogin": "Espace Conseiller",
+    "adminLogin": "Espace Admin",
+    "account": "Comptes",
+    "loans": "Prets",
+    "stocks": "Actions",
+    "portfolio": "Portefeuille",
+    "orders": "Ordres",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "pendingLoans": "Prets en attente",
+    "clients": "Clients",
+    "companies": "Entreprises",
+    "settings": "Parametres"
   },
   "LocaleSwitcher": {
     "label": "Langue",
     "en": "Anglais",
-    "fr": "Français"
+    "fr": "Francais"
   },
   "LocaleLayout": {
-    "title": "Mon Application Next.js"
+    "title": "Banque en ligne"
   },
   "HomePage": {
-    "title": "Bonjour Monde!"
+    "title": "Bienvenue sur votre banque en ligne",
+    "description": "Gerez vos comptes, vos prets et vos investissements en toute simplicite.",
+    "features": {
+      "accounts": {
+        "title": "Comptes bancaires",
+        "description": "Gerez vos comptes courants et d'epargne.",
+        "cta": "Voir mes comptes"
+      },
+      "loans": {
+        "title": "Prets",
+        "description": "Simulez et demandez un pret en ligne.",
+        "cta": "Simuler un pret"
+      },
+      "stocks": {
+        "title": "Bourse",
+        "description": "Investissez dans des actions et gerez votre portefeuille.",
+        "cta": "Voir les actions"
+      }
+    }
+  },
+  "NotFound": {
+    "title": "Page non trouvee",
+    "description": "La page que vous recherchez n'existe pas.",
+    "backHome": "Retour a l'accueil"
+  },
+  "Error": {
+    "title": "Une erreur est survenue",
+    "description": "Nous sommes desoles, une erreur inattendue s'est produite.",
+    "tryAgain": "Reessayer"
   },
   "Forms": {
     "submit": "Soumettre",
-    "reset": "Réinitialiser",
+    "reset": "Reinitialiser",
     "errors": {
-      "default": "Une erreur est survenue. Veuillez réessayer.",
+      "default": "Une erreur est survenue. Veuillez reessayer.",
       "PasswordUppercaseError": "Le mot de passe doit contenir au moins une lettre majuscule.",
       "PasswordDigitError": "Le mot de passe doit contenir au moins un chiffre.",
-      "PasswordLengthError": "Le mot de passe doit contenir au moins 8 caractères.",
+      "PasswordLengthError": "Le mot de passe doit contenir au moins 8 caracteres.",
       "PasswordLowercaseError": "Le mot de passe doit contenir au moins une lettre minuscule.",
-      "PasswordSpecialError": "Le mot de passe doit contenir au moins un caractère spécial."
+      "PasswordSpecialError": "Le mot de passe doit contenir au moins un caractere special.",
+      "InvalidCredentialsError": "Email ou mot de passe incorrect.",
+      "UserNotFoundError": "Utilisateur non trouve.",
+      "EmailAlreadyExistsError": "Cet email est deja utilise."
     }
   },
   "RegisterForm": {
-    "title": "Créer un compte",
-    "description": "Veuillez remplir le formulaire pour créer un compte.",
+    "title": "Creer un compte",
+    "description": "Veuillez remplir le formulaire pour creer un compte.",
     "fields": {
-      "firstname": {
-        "label": "Prénom",
-        "placeholder": "Entrez votre prénom"
-      },
-      "lastname": {
-        "label": "Nom de famille",
-        "placeholder": "Entrez votre nom de famille"
-      },
-      "email": {
-        "label": "Email",
-        "placeholder": "Entrez votre email"
-      },
-      "password": {
-        "label": "Mot de passe",
-        "placeholder": "Entrez votre mot de passe"
-      }
+      "firstname": { "label": "Prenom", "placeholder": "Entrez votre prenom" },
+      "lastname": { "label": "Nom de famille", "placeholder": "Entrez votre nom de famille" },
+      "email": { "label": "Email", "placeholder": "Entrez votre email" },
+      "password": { "label": "Mot de passe", "placeholder": "Entrez votre mot de passe" }
     }
   },
   "LoginForm": {
     "title": "Connexion",
     "description": "Veuillez entrer vos identifiants pour vous connecter.",
-    "success": "Connexion réussie !",
+    "success": "Connexion reussie !",
+    "forgotPassword": "Mot de passe oublie ?",
     "fields": {
-      "email": {
-        "label": "Email",
-        "placeholder": "Entrez votre email"
-      },
-      "password": {
-        "label": "Mot de passe",
-        "placeholder": "Entrez votre mot de passe"
-      }
+      "email": { "label": "Email", "placeholder": "Entrez votre email" },
+      "password": { "label": "Mot de passe", "placeholder": "Entrez votre mot de passe" }
+    }
+  },
+  "ForgotPasswordForm": {
+    "title": "Mot de passe oublie",
+    "description": "Entrez votre email pour recevoir un lien de reinitialisation.",
+    "success": "Un email de reinitialisation vous a ete envoye.",
+    "fields": {
+      "email": { "label": "Email", "placeholder": "Entrez votre email" }
+    }
+  },
+  "ResetPasswordForm": {
+    "title": "Reinitialiser le mot de passe",
+    "description": "Choisissez un nouveau mot de passe.",
+    "success": "Votre mot de passe a ete reinitialise avec succes.",
+    "noToken": "Lien de reinitialisation invalide ou expire.",
+    "fields": {
+      "password": { "label": "Nouveau mot de passe", "placeholder": "Entrez votre nouveau mot de passe" },
+      "confirmPassword": { "label": "Confirmer le mot de passe", "placeholder": "Confirmez votre mot de passe" }
+    }
+  },
+  "AccountList": {
+    "title": "Mes comptes",
+    "loading": "Chargement...",
+    "noAccounts": "Vous n'avez pas encore de compte.",
+    "createAccount": "Nouveau compte",
+    "createSavings": "Compte epargne"
+  },
+  "AccountDetail": {
+    "loading": "Chargement...",
+    "notFound": "Compte non trouve.",
+    "balance": "Solde",
+    "transactions": "Transactions",
+    "noTransactions": "Aucune transaction.",
+    "rename": "Renommer",
+    "transfer": "Transfert",
+    "delete": "Supprimer",
+    "confirmDelete": "Etes-vous sur de vouloir supprimer ce compte ?",
+    "deleteSuccess": "Compte supprime avec succes."
+  },
+  "AccountRenameForm": {
+    "title": "Renommer le compte",
+    "success": "Compte renomme avec succes.",
+    "fields": {
+      "name": { "label": "Nouveau nom", "placeholder": "Entrez le nouveau nom" }
+    }
+  },
+  "TransactionForm": {
+    "title": "Effectuer un virement",
+    "success": "Virement effectue avec succes.",
+    "fields": {
+      "receiverIban": { "label": "IBAN destinataire", "placeholder": "FR76..." },
+      "amount": { "label": "Montant", "placeholder": "0.00" },
+      "description": { "label": "Description", "placeholder": "Motif du virement" }
+    }
+  },
+  "LoanList": {
+    "title": "Mes prets",
+    "loading": "Chargement...",
+    "noLoans": "Vous n'avez pas de pret.",
+    "simulate": "Simuler",
+    "request": "Demander un pret",
+    "remaining": "Restant",
+    "rate": "Taux",
+    "status": {
+      "pending": "En attente",
+      "approved": "Approuve",
+      "rejected": "Refuse",
+      "paid": "Rembourse"
+    }
+  },
+  "LoanRequestForm": {
+    "title": "Demande de pret",
+    "description": "Indiquez le montant souhaite.",
+    "success": "Demande de pret envoyee.",
+    "submit": "Envoyer la demande",
+    "fields": {
+      "amount": { "label": "Montant", "placeholder": "10000" }
+    }
+  },
+  "LoanSimulator": {
+    "title": "Simulateur de pret",
+    "description": "Calculez vos mensualites.",
+    "calculate": "Calculer",
+    "fields": {
+      "principal": { "label": "Montant emprunte", "placeholder": "10000" },
+      "interestRate": { "label": "Taux d'interet (%)", "placeholder": "5" },
+      "durationMonths": { "label": "Duree (mois)", "placeholder": "60" }
+    },
+    "result": {
+      "title": "Resultat",
+      "monthlyPayment": "Mensualite",
+      "totalPayment": "Total a rembourser",
+      "totalInterest": "Total des interets"
+    }
+  },
+  "NotificationList": {
+    "title": "Notifications",
+    "loading": "Chargement...",
+    "noNotifications": "Aucune notification."
+  },
+  "MessageList": {
+    "title": "Messages",
+    "loading": "Chargement...",
+    "noDiscussions": "Aucune discussion.",
+    "newMessage": "Nouveau message",
+    "discussion": "Discussion",
+    "messages": "messages",
+    "conversation": "Conversation",
+    "advisor": "Conseiller",
+    "you": "Vous",
+    "status": {
+      "open": "Ouvert",
+      "closed": "Ferme"
+    }
+  },
+  "MessageForm": {
+    "title": "Nouveau message",
+    "success": "Message envoye.",
+    "send": "Envoyer",
+    "fields": {
+      "text": { "label": "Message", "placeholder": "Ecrivez votre message..." }
+    }
+  },
+  "StockList": {
+    "title": "Actions disponibles",
+    "loading": "Chargement...",
+    "noStocks": "Aucune action disponible."
+  },
+  "PortfolioView": {
+    "title": "Mon portefeuille",
+    "loading": "Chargement...",
+    "noPortfolio": "Vous n'avez pas encore de portefeuille.",
+    "browseStocks": "Parcourir les actions",
+    "viewOrders": "Voir mes ordres",
+    "totalValue": "Valeur totale",
+    "positions": "Positions",
+    "noPositions": "Aucune position.",
+    "quantity": "Quantite",
+    "avgPrice": "Prix moyen",
+    "currentPrice": "Prix actuel",
+    "profitLoss": "Plus/Moins-value",
+    "trade": "Trader"
+  },
+  "OrderList": {
+    "title": "Mes ordres",
+    "loading": "Chargement...",
+    "noOrders": "Aucun ordre.",
+    "confirmCancel": "Annuler cet ordre ?",
+    "cancelSuccess": "Ordre annule.",
+    "cancel": "Annuler",
+    "side": "Type",
+    "quantity": "Quantite",
+    "price": "Prix",
+    "status": {
+      "pending": "En attente",
+      "executed": "Execute",
+      "cancelled": "Annule"
+    },
+    "sides": {
+      "buy": "Achat",
+      "sell": "Vente"
+    }
+  },
+  "OrderForm": {
+    "title": "Passer un ordre",
+    "success": "Ordre passe avec succes.",
+    "buy": "Acheter",
+    "sell": "Vendre",
+    "placeBuyOrder": "Passer l'ordre d'achat",
+    "placeSellOrder": "Passer l'ordre de vente",
+    "fields": {
+      "quantity": { "label": "Quantite", "placeholder": "1" },
+      "price": { "label": "Prix limite", "placeholder": "0.00" }
+    }
+  },
+  "AdvisorLoginForm": {
+    "title": "Espace Conseiller",
+    "description": "Connectez-vous a votre espace conseiller.",
+    "success": "Connexion reussie !",
+    "fields": {
+      "email": { "label": "Email", "placeholder": "Entrez votre email" },
+      "password": { "label": "Mot de passe", "placeholder": "Entrez votre mot de passe" }
+    }
+  },
+  "PendingLoanList": {
+    "title": "Demandes de pret en attente",
+    "loading": "Chargement...",
+    "noLoans": "Aucune demande en attente.",
+    "approve": "Approuver",
+    "reject": "Rejeter",
+    "grantSuccess": "Pret accorde.",
+    "rejectSuccess": "Demande rejetee."
+  },
+  "AdvisorMessageList": {
+    "title": "Discussions clients",
+    "loading": "Chargement...",
+    "noDiscussions": "Aucune discussion.",
+    "you": "Vous",
+    "close": "Fermer",
+    "send": "Envoyer",
+    "replyPlaceholder": "Votre reponse...",
+    "replySuccess": "Reponse envoyee.",
+    "closeSuccess": "Discussion fermee.",
+    "status": {
+      "open": "Ouvert",
+      "closed": "Ferme"
+    }
+  },
+  "DirectorLoginForm": {
+    "title": "Espace Administration",
+    "description": "Connectez-vous a l'espace administration.",
+    "success": "Connexion reussie !",
+    "fields": {
+      "email": { "label": "Email", "placeholder": "Entrez votre email" },
+      "password": { "label": "Mot de passe", "placeholder": "Entrez votre mot de passe" }
+    }
+  },
+  "ClientList": {
+    "title": "Gestion des clients",
+    "loading": "Chargement...",
+    "noClients": "Aucun client.",
+    "create": "Nouveau client",
+    "view": "Voir",
+    "delete": "Supprimer",
+    "banned": "Banni",
+    "createdAt": "Inscrit le",
+    "confirmDelete": "Supprimer ce client ?",
+    "deleteSuccess": "Client supprime."
+  },
+  "CompanyList": {
+    "title": "Gestion des entreprises",
+    "loading": "Chargement...",
+    "noCompanies": "Aucune entreprise.",
+    "create": "Nouvelle entreprise",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "stocks": "actions",
+    "confirmDelete": "Supprimer cette entreprise ?",
+    "deleteSuccess": "Entreprise supprimee."
+  },
+  "CompanyCreateForm": {
+    "title": "Nouvelle entreprise",
+    "success": "Entreprise creee.",
+    "fields": {
+      "name": { "label": "Nom", "placeholder": "Nom de l'entreprise" }
+    }
+  },
+  "DirectorStockList": {
+    "title": "Gestion des actions",
+    "loading": "Chargement...",
+    "noStocks": "Aucune action.",
+    "create": "Nouvelle action",
+    "cancel": "Annuler",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "listed": "Cotee",
+    "unlisted": "Non cotee",
+    "list": "Coter",
+    "unlist": "Retirer",
+    "confirmDelete": "Supprimer cette action ?",
+    "deleteSuccess": "Action supprimee.",
+    "toggleSuccess": "Statut mis a jour."
+  },
+  "StockCreateForm": {
+    "title": "Nouvelle action",
+    "success": "Action creee.",
+    "fields": {
+      "symbol": { "label": "Symbole", "placeholder": "AAPL" },
+      "name": { "label": "Nom", "placeholder": "Apple Inc." },
+      "company": { "label": "Entreprise", "placeholder": "Selectionnez une entreprise" }
+    }
+  },
+  "SavingsRateForm": {
+    "title": "Taux d'epargne",
+    "description": "Modifier le taux d'interet des comptes epargne.",
+    "success": "Taux mis a jour.",
+    "fields": {
+      "rate": { "label": "Taux annuel", "placeholder": "2.5" }
     }
   }
 }

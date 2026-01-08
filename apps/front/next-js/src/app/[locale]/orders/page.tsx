@@ -1,10 +1,10 @@
-import { MessageList } from '@/components/client/message-list';
+import { OrderList } from '@/components/client/order-list';
 import { ProtectedRoute } from '@/components/protected-route';
 
-export default function MessagesPage() {
+export default function OrdersPage() {
   return (
     <ProtectedRoute allowedRoles={['client']}>
-      <MessageList />
+      <OrderList />
     </ProtectedRoute>
   );
 }

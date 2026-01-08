@@ -1,10 +1,10 @@
-import { ClientList } from '@/components/director/client-list';
+import { DirectorStockList } from '@/components/director/stock-list';
 import { ProtectedRoute } from '@/components/protected-route';
 
-export default function AdminUsersPage() {
+export default function AdminStocksPage() {
   return (
     <ProtectedRoute allowedRoles={['director']}>
-      <ClientList />
+      <DirectorStockList />
     </ProtectedRoute>
   );
 }
