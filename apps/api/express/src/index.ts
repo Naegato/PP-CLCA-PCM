@@ -2,120 +2,120 @@ import dotenv from "dotenv";
 import path from "path";
 import express from 'express';
 
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
+import { User } from '../../../../src/domain/entities/user';
+import { AccountType } from '../../../../src/domain/entities/accounts/type';
 
-import { AccountRepository } from "@pp-clca-pcm/application/repositories/account";
-import { RedisAccountRepository } from '@pp-clca-pcm/adapters/repositories/redis/account/account';
+import { AccountRepository } from "../../../../src/application/repositories/account";
+import { RedisAccountRepository } from '../../../../src/infrastructure/adapters/repositories/redis/account/account';
 
-import { AccountTypeRepository } from "@pp-clca-pcm/application/repositories/type";
-import { RedisAccountTypeRepository } from '@pp-clca-pcm/adapters/repositories/redis/account/type';
+import { AccountTypeRepository } from "../../../../src/application/repositories/type";
+import { RedisAccountTypeRepository } from '../../../../src/infrastructure/adapters/repositories/redis/account/type';
 
-import { DiscussionRepository } from "@pp-clca-pcm/application/repositories/discussion/discussion";
-import { RedisDiscussionRepository } from '@pp-clca-pcm/adapters/repositories/redis/discussion/discussion';
+import { DiscussionRepository } from "../../../../src/application/repositories/discussion/discussion";
+import { RedisDiscussionRepository } from '../../../../src/infrastructure/adapters/repositories/redis/discussion/discussion';
 
-import { MessageRepository } from "@pp-clca-pcm/application/repositories/discussion/message";
-import { RedisMessageRepository } from '@pp-clca-pcm/adapters/repositories/redis/discussion/message';
+import { MessageRepository } from "../../../../src/application/repositories/discussion/message";
+import { RedisMessageRepository } from '../../../../src/infrastructure/adapters/repositories/redis/discussion/message';
 
-import { AdvisorRepository } from "@pp-clca-pcm/application/repositories/advisor";
-import { RedisAdvisorRepository } from '@pp-clca-pcm/adapters/repositories/redis/advisor';
+import { AdvisorRepository } from "../../../../src/application/repositories/advisor";
+import { RedisAdvisorRepository } from '../../../../src/infrastructure/adapters/repositories/redis/advisor';
 
-import { CompanyRepository } from '@pp-clca-pcm/application/repositories/company';
-import { RedisCompanyRepository } from '@pp-clca-pcm/adapters/repositories/redis/company';
+import { CompanyRepository } from '../../../../src/application/repositories/company';
+import { RedisCompanyRepository } from '../../../../src/infrastructure/adapters/repositories/redis/company';
 
-import { RedisLoanRepository } from '@pp-clca-pcm/adapters/repositories/redis/loan';
-import { RedisLoanRequestRepository } from '@pp-clca-pcm/adapters/repositories/redis/request-loan';
-import { RedisTransactionRepository } from '@pp-clca-pcm/adapters/repositories/redis/transaction';
-import { RedisUserRepository } from '@pp-clca-pcm/adapters/repositories/redis/user';
+import { RedisLoanRepository } from '../../../../src/infrastructure/adapters/repositories/redis/loan';
+import { RedisLoanRequestRepository } from '../../../../src/infrastructure/adapters/repositories/redis/request-loan';
+import { RedisTransactionRepository } from '../../../../src/infrastructure/adapters/repositories/redis/transaction';
+import { RedisUserRepository } from '../../../../src/infrastructure/adapters/repositories/redis/user';
 
-import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
+import { connectRedis, getRedisClient } from '../../../../src/infrastructure/adapters/repositories/redis/client';
 
-import { AdvisorLogin } from "@pp-clca-pcm/application/usecases/advisor/auth/advisor-login";
-import { AdvisorRegistration } from "@pp-clca-pcm/application/usecases/advisor/auth/advisor-registration";
+import { AdvisorLogin } from "../../../../src/application/usecases/advisor/auth/advisor-login";
+import { AdvisorRegistration } from "../../../../src/application/usecases/advisor/auth/advisor-registration";
 
-import { AdvisorGetPendingLoans } from "@pp-clca-pcm/application/usecases/advisor/loans/advisor-get-pending-loans";
+import { AdvisorGetPendingLoans } from "../../../../src/application/usecases/advisor/loans/advisor-get-pending-loans";
 
-import { AdvisorGrantLoan } from '@pp-clca-pcm/application/usecases/advisor/loans/advisor-grant-loan';
+import { AdvisorGrantLoan } from '../../../../src/application/usecases/advisor/loans/advisor-grant-loan';
 
-import { AdvisorRejectLoan } from '@pp-clca-pcm/application/usecases/advisor/loans/advisor-reject-loan';
+import { AdvisorRejectLoan } from '../../../../src/application/usecases/advisor/loans/advisor-reject-loan';
 
-import { AdvisorCloseChat } from '@pp-clca-pcm/application/usecases/advisor/messages/advisor-close-chat';
+import { AdvisorCloseChat } from '../../../../src/application/usecases/advisor/messages/advisor-close-chat';
 
-import { AdvisorReplyMessage } from '@pp-clca-pcm/application/usecases/advisor/messages/advisor-reply-message';
+import { AdvisorReplyMessage } from '../../../../src/application/usecases/advisor/messages/advisor-reply-message';
 
-import { AdvisorTransferChat } from '@pp-clca-pcm/application/usecases/advisor/messages/advisor-transfer-chat';
+import { AdvisorTransferChat } from '../../../../src/application/usecases/advisor/messages/advisor-transfer-chat';
 
 // Client usecases
-import { ClientCreateAccount } from '@pp-clca-pcm/application/usecases/client/accounts/client-create-account';
-import { ClientDeleteAccount } from '@pp-clca-pcm/application/usecases/client/accounts/client-delete-account';
-import { ClientGetAccount } from '@pp-clca-pcm/application/usecases/client/accounts/client-get-account';
-import { ClientGetBalanceAccount } from '@pp-clca-pcm/application/usecases/client/accounts/client-get-balance-account';
-import { ClientSavingAccountCreate } from '@pp-clca-pcm/application/usecases/client/accounts/client-saving-account-create';
-import { ClientUpdateNameAccount } from '@pp-clca-pcm/application/usecases/client/accounts/client-update-name-account';
+import { ClientCreateAccount } from '../../../../src/application/usecases/client/accounts/client-create-account';
+import { ClientDeleteAccount } from '../../../../src/application/usecases/client/accounts/client-delete-account';
+import { ClientGetAccount } from '../../../../src/application/usecases/client/accounts/client-get-account';
+import { ClientGetBalanceAccount } from '../../../../src/application/usecases/client/accounts/client-get-balance-account';
+import { ClientSavingAccountCreate } from '../../../../src/application/usecases/client/accounts/client-saving-account-create';
+import { ClientUpdateNameAccount } from '../../../../src/application/usecases/client/accounts/client-update-name-account';
 
-import { ClientLogin } from '@pp-clca-pcm/application/usecases/client/auth/client-login';
-import { ClientLogout } from '@pp-clca-pcm/application/usecases/client/auth/client-logout';
-import { ClientRegistration } from '@pp-clca-pcm/application/usecases/client/auth/client-registration';
-import { ClientRequestPasswordReset } from '@pp-clca-pcm/application/usecases/client/auth/client-request-password-reset';
-import { ClientResetPassword } from '@pp-clca-pcm/application/usecases/client/auth/client-reset-password';
+import { ClientLogin } from '../../../../src/application/usecases/client/auth/client-login';
+import { ClientLogout } from '../../../../src/application/usecases/client/auth/client-logout';
+import { ClientRegistration } from '../../../../src/application/usecases/client/auth/client-registration';
+import { ClientRequestPasswordReset } from '../../../../src/application/usecases/client/auth/client-request-password-reset';
+import { ClientResetPassword } from '../../../../src/application/usecases/client/auth/client-reset-password';
 
-import { ClientGetLoans } from '@pp-clca-pcm/application/usecases/client/loans/client-get-loans';
-import { ClientRepayLoan } from '@pp-clca-pcm/application/usecases/client/loans/client-repay-loan';
-import { ClientRequestLoan } from '@pp-clca-pcm/application/usecases/client/loans/client-request-loan';
-import { ClientSimulateLoan } from '@pp-clca-pcm/application/usecases/client/loans/client-simulate-loan';
+import { ClientGetLoans } from '../../../../src/application/usecases/client/loans/client-get-loans';
+import { ClientRepayLoan } from '../../../../src/application/usecases/client/loans/client-repay-loan';
+import { ClientRequestLoan } from '../../../../src/application/usecases/client/loans/client-request-loan';
+import { ClientSimulateLoan } from '../../../../src/application/usecases/client/loans/client-simulate-loan';
 
-import { ClientSendMessage } from '@pp-clca-pcm/application/usecases/client/messages/client-send-message';
+import { ClientSendMessage } from '../../../../src/application/usecases/client/messages/client-send-message';
 
-import { ClientGetNotifications } from '@pp-clca-pcm/application/usecases/client/notifications/client-get-notifications';
+import { ClientGetNotifications } from '../../../../src/application/usecases/client/notifications/client-get-notifications';
 
-import { ClientCreatePortfolio } from '@pp-clca-pcm/application/usecases/client/portfolio/client-create-portfolio';
-import { ClientGetPortfolio } from '@pp-clca-pcm/application/usecases/client/portfolio/client-get-portfolio';
+import { ClientCreatePortfolio } from '../../../../src/application/usecases/client/portfolio/client-create-portfolio';
+import { ClientGetPortfolio } from '../../../../src/application/usecases/client/portfolio/client-get-portfolio';
 
-import { ClientGetAvailableStocks } from '@pp-clca-pcm/application/usecases/client/stocks/client-get-available-stocks';
-import { ClientGetStockWithPrice } from '@pp-clca-pcm/application/usecases/client/stocks/client-get-stock-with-price';
+import { ClientGetAvailableStocks } from '../../../../src/application/usecases/client/stocks/client-get-available-stocks';
+import { ClientGetStockWithPrice } from '../../../../src/application/usecases/client/stocks/client-get-stock-with-price';
 
-import { ClientCancelStockOrder } from '@pp-clca-pcm/application/usecases/client/stocks-orders/client-cancel-stock-order';
-import { ClientGetStockOrders } from '@pp-clca-pcm/application/usecases/client/stocks-orders/client-get-stock-orders';
-import { ClientMatchStockOrder } from '@pp-clca-pcm/application/usecases/client/stocks-orders/client-match-stock-order';
-import { ClientRegisterStockOrder } from '@pp-clca-pcm/application/usecases/client/stocks-orders/client-register-stock-order';
+import { ClientCancelStockOrder } from '../../../../src/application/usecases/client/stocks-orders/client-cancel-stock-order';
+import { ClientGetStockOrders } from '../../../../src/application/usecases/client/stocks-orders/client-get-stock-orders';
+import { ClientMatchStockOrder } from '../../../../src/application/usecases/client/stocks-orders/client-match-stock-order';
+import { ClientRegisterStockOrder } from '../../../../src/application/usecases/client/stocks-orders/client-register-stock-order';
 
-import { ClientSendTransaction } from '@pp-clca-pcm/application/usecases/client/transactions/client-send-transaction';
+import { ClientSendTransaction } from '../../../../src/application/usecases/client/transactions/client-send-transaction';
 
 // Director usecases
-import { DirectorLogin } from '@pp-clca-pcm/application/usecases/director/auth/director-login';
-import { DirectorRegistration } from '@pp-clca-pcm/application/usecases/director/auth/director-registration';
+import { DirectorLogin } from '../../../../src/application/usecases/director/auth/director-login';
+import { DirectorRegistration } from '../../../../src/application/usecases/director/auth/director-registration';
 
-import { DirectorGetAllClients } from '@pp-clca-pcm/application/usecases/director/clients/director-get-all-clients';
-import { DirectorGetClientAccounts } from '@pp-clca-pcm/application/usecases/director/clients/director-get-client-accounts';
-import { DirectorManageBan } from '@pp-clca-pcm/application/usecases/director/clients/director-manage-ban';
-import { DirectorManageCreate } from '@pp-clca-pcm/application/usecases/director/clients/director-manage-create';
-import { DirectorManageDelete } from '@pp-clca-pcm/application/usecases/director/clients/director-manage-delete';
-import { DirectorManageUpdate } from '@pp-clca-pcm/application/usecases/director/clients/director-manage-update';
+import { DirectorGetAllClients } from '../../../../src/application/usecases/director/clients/director-get-all-clients';
+import { DirectorGetClientAccounts } from '../../../../src/application/usecases/director/clients/director-get-client-accounts';
+import { DirectorManageBan } from '../../../../src/application/usecases/director/clients/director-manage-ban';
+import { DirectorManageCreate } from '../../../../src/application/usecases/director/clients/director-manage-create';
+import { DirectorManageDelete } from '../../../../src/application/usecases/director/clients/director-manage-delete';
+import { DirectorManageUpdate } from '../../../../src/application/usecases/director/clients/director-manage-update';
 
-import { DirectorCreateCompany } from '@pp-clca-pcm/application/usecases/director/companies/director-create-company';
-import { DirectorDeleteCompany } from '@pp-clca-pcm/application/usecases/director/companies/director-delete-company';
-import { DirectorGetAllCompanies } from '@pp-clca-pcm/application/usecases/director/companies/director-get-all-companies';
-import { DirectorGetCompany } from '@pp-clca-pcm/application/usecases/director/companies/director-get-company';
-import { DirectorUpdateCompany } from '@pp-clca-pcm/application/usecases/director/companies/director-update-company';
+import { DirectorCreateCompany } from '../../../../src/application/usecases/director/companies/director-create-company';
+import { DirectorDeleteCompany } from '../../../../src/application/usecases/director/companies/director-delete-company';
+import { DirectorGetAllCompanies } from '../../../../src/application/usecases/director/companies/director-get-all-companies';
+import { DirectorGetCompany } from '../../../../src/application/usecases/director/companies/director-get-company';
+import { DirectorUpdateCompany } from '../../../../src/application/usecases/director/companies/director-update-company';
 
-import { DirectorChangeSavingRate } from '@pp-clca-pcm/application/usecases/director/savings/director-change-saving-rate';
+import { DirectorChangeSavingRate } from '../../../../src/application/usecases/director/savings/director-change-saving-rate';
 
-import { DirectorCreateStock } from '@pp-clca-pcm/application/usecases/director/stocks/director-create-stock';
-import { DirectorDeleteStock } from '@pp-clca-pcm/application/usecases/director/stocks/director-delete-stock';
-import { DirectorToggleStockListing } from '@pp-clca-pcm/application/usecases/director/stocks/director-toggle-stock-listing';
-import { DirectorUpdateStock } from '@pp-clca-pcm/application/usecases/director/stocks/director-update-stock';
+import { DirectorCreateStock } from '../../../../src/application/usecases/director/stocks/director-create-stock';
+import { DirectorDeleteStock } from '../../../../src/application/usecases/director/stocks/director-delete-stock';
+import { DirectorToggleStockListing } from '../../../../src/application/usecases/director/stocks/director-toggle-stock-listing';
+import { DirectorUpdateStock } from '../../../../src/application/usecases/director/stocks/director-update-stock';
 
 // Engine
-import { GenerateDailyInterest } from '@pp-clca-pcm/application/usecases/engine/generate-daily-interest';
-import { NotifyLoanToPay } from '@pp-clca-pcm/application/usecases/engine/notify-loan-to-pay';
+import { GenerateDailyInterest } from '../../../../src/application/usecases/engine/generate-daily-interest';
+import { NotifyLoanToPay } from '../../../../src/application/usecases/engine/notify-loan-to-pay';
 
 // Shared notifications
-import { NotifyClientSavingRateChange } from '@pp-clca-pcm/application/usecases/shared/notifications/notify-client-saving-rate-change';
-import { NotifyLoanStatus } from '@pp-clca-pcm/application/usecases/shared/notifications/notify-loan-status';
+import { NotifyClientSavingRateChange } from '../../../../src/application/usecases/shared/notifications/notify-client-saving-rate-change';
+import { NotifyLoanStatus } from '../../../../src/application/usecases/shared/notifications/notify-loan-status';
 
-import { Argon2PasswordService } from "@pp-clca-pcm/adapters/services/argon2-password";
-import { JwtTokenService } from "@pp-clca-pcm/adapters/services/jwt-token";
-import { JwtSecurityService } from "@pp-clca-pcm/adapters/services/jwt-security";
+import { Argon2PasswordService } from "../../../../src/infrastructure/adapters/services/argon2-password";
+import { JwtTokenService } from "../../../../src/infrastructure/adapters/services/jwt-token";
+import { JwtSecurityService } from "../../../../src/infrastructure/adapters/services/jwt-security";
 
 dotenv.config({
   path: path.resolve(__dirname, "../../../../../.env"),
@@ -257,18 +257,18 @@ const advisorRejectLoan = new AdvisorRejectLoan(
 );
 
 const advisorCloseChat = new AdvisorCloseChat(
-  discussionRepository,
+  discussionRepository!,
   security,
 );
 
 const advisorReplyMessage = new AdvisorReplyMessage(
-  messageRepository,
+  messageRepository!,
   security,
 );
 
 const advisorTransferChat = new AdvisorTransferChat(
   security,
-  discussionRepository,
+  discussionRepository!,
 );
 
 // Client
@@ -278,15 +278,15 @@ const clientCreateAccount = new ClientCreateAccount(
 	'temp',
 	22,
   ),
-  accountRepository,
+  accountRepository!,
 );
 
-// Additional client use case instances (use available repos where possible, fallback to `any`)
-const clientDeleteAccount = new ClientDeleteAccount(accountRepository, userRepository);
-const clientGetAccount = new ClientGetAccount(accountRepository);
+// Additional client use case instances
+const clientDeleteAccount = new ClientDeleteAccount(accountRepository!, userRepository);
+const clientGetAccount = new ClientGetAccount(accountRepository!);
 const clientGetBalanceAccount = new ClientGetBalanceAccount(accountRepository);
-const clientSavingAccountCreate = new ClientSavingAccountCreate(AccountType.create('savings', 5), accountRepository);
-const clientUpdateNameAccount = new ClientUpdateNameAccount(accountRepository);
+const clientSavingAccountCreate = new ClientSavingAccountCreate(AccountType.create('savings', 5), accountRepository!);
+const clientUpdateNameAccount = new ClientUpdateNameAccount(accountRepository!);
 const clientLogin = new ClientLogin(userRepository, passwordService, tokenService);
 const clientLogout = new ClientLogout(logoutService, security);
 const clientRegistration = new ClientRegistration(userRepository, accountRepository, accountTypeRepository, passwordService);
@@ -297,12 +297,12 @@ const clientRepayLoan = new ClientRepayLoan(transactionRepository);
 const clientRequestLoan = new ClientRequestLoan(loanRequestRepository);
 const clientSimulateLoan = new ClientSimulateLoan();
 
-const clientSendMessage = new ClientSendMessage(messageRepository, discussionRepository, security);
+const clientSendMessage = new ClientSendMessage(messageRepository!, discussionRepository!, security);
 
 const clientGetNotifications = new ClientGetNotifications(notificationRepositoryStub, security);
 
-const clientCreatePortfolio = new ClientCreatePortfolio(portfolioRepositoryStub, accountRepository);
-const clientGetPortfolio = new ClientGetPortfolio(portfolioRepositoryStub, accountRepository);
+const clientCreatePortfolio = new ClientCreatePortfolio(portfolioRepositoryStub, accountRepository!);
+const clientGetPortfolio = new ClientGetPortfolio(portfolioRepositoryStub, accountRepository!);
 
 const clientGetAvailableStocks = new ClientGetAvailableStocks(stockRepositoryStub);
 const clientGetStockWithPrice = new ClientGetStockWithPrice(stockRepositoryStub, null as any);
@@ -318,27 +318,27 @@ const directorLogin = new DirectorLogin(userRepository, passwordService, tokenSe
 const directorRegistration = new DirectorRegistration(userRepository, passwordService);
 
 const directorGetAllClients = new DirectorGetAllClients(userRepository);
-const directorGetClientAccounts = new DirectorGetClientAccounts(accountRepository);
+const directorGetClientAccounts = new DirectorGetClientAccounts(userRepository);
 const directorManageBan = new DirectorManageBan(userRepository, banRepositoryStub, security);
 const directorManageCreate = new DirectorManageCreate(userRepository, security);
 const directorManageDelete = new DirectorManageDelete(userRepository, security);
 const directorManageUpdate = new DirectorManageUpdate(userRepository, security);
 
-const directorCreateCompany = new DirectorCreateCompany(companyRepository);
-const directorDeleteCompany = new DirectorDeleteCompany(companyRepository, stockRepositoryStub);
-const directorGetAllCompanies = new DirectorGetAllCompanies(companyRepository);
-const directorGetCompany = new DirectorGetCompany(companyRepository);
-const directorUpdateCompany = new DirectorUpdateCompany(companyRepository);
+const directorCreateCompany = new DirectorCreateCompany(companyRepository!);
+const directorDeleteCompany = new DirectorDeleteCompany(companyRepository!, stockRepositoryStub);
+const directorGetAllCompanies = new DirectorGetAllCompanies(companyRepository!);
+const directorGetCompany = new DirectorGetCompany(companyRepository!);
+const directorUpdateCompany = new DirectorUpdateCompany(companyRepository!);
 
-const directorChangeSavingRate = new DirectorChangeSavingRate(accountTypeRepository);
+const directorChangeSavingRate = new DirectorChangeSavingRate(accountTypeRepository!);
 
-const directorCreateStock = new DirectorCreateStock(stockRepositoryStub, companyRepository);
+const directorCreateStock = new DirectorCreateStock(stockRepositoryStub, companyRepository!);
 const directorDeleteStock = new DirectorDeleteStock(stockRepositoryStub, portfolioRepositoryStub, stockOrderRepositoryStub);
 const directorToggleStockListing = new DirectorToggleStockListing(stockRepositoryStub);
-const directorUpdateStock = new DirectorUpdateStock(stockRepositoryStub, companyRepository);
+const directorUpdateStock = new DirectorUpdateStock(stockRepositoryStub, companyRepository!);
 
 // Engine
-const generateDailyInterest = new GenerateDailyInterest(accountRepository);
+const generateDailyInterest = new GenerateDailyInterest(accountRepository!);
 const notifyLoanToPay = new NotifyLoanToPay(loanRepository, notifierStub);
 
 // Shared notifications

@@ -3,7 +3,6 @@ import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-al
 import { User } from '@pp-clca-pcm/domain/entities/user';
 import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
 import { RedisBaseRepository } from './base.js';
-import { RedisBaseRepository } from './base';
 import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-not-found-by-email';
 
 export class RedisUserRepository extends RedisBaseRepository<User> implements UserRepository {
@@ -12,12 +11,12 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 	async save(user: User): Promise<User | EmailAlreadyExistError> {
 		const key = this.key(user);
 
-		const exists = await this.db.exists(key);
+		const exists = await this.redisClient.exists(key);
 		if (exists) {
 			return new EmailAlreadyExistError();
 		}
 
-		await this.db.set(
+		await this.redisClient.set(
 			key,
 			JSON.stringify(user),
 			{ NX: true }
@@ -44,12 +43,12 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 	async update(user: User): Promise<User | UserUpdateError> {
 		const key = this.key(user);
 
-		const exists = await this.db.exists(key);
+		const exists = await this.redisClient.exists(key);
 		if (!exists) {
 			return new UserUpdateError();
 		}
 
-		await this.db.set(
+		await this.redisClient.set(
 			key,
 			JSON.stringify(user),
 		);
@@ -60,9 +59,9 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 	protected async fetchFromKey(keyToSearch: string): Promise<User[]> {
 		const result: User[] = [];
 
-		for await (const key of this.db.scanIterator({ MATCH: keyToSearch })) {
+		for await (const key of this.redisClient.scanIterator({ MATCH: keyToSearch })) {
 			await Promise.all(key.map(async k => {
-				const value = await this.db.get(k);
+				const value = await this.redisClient.get(k);
 				if (!value) return;
 
 				const data = JSON.parse(value);
@@ -84,19 +83,6 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 		return result;
 	}
 
-
-	async findByEmail(email: string): Promise<User | import('@pp-clca-pcm/application/errors/user-not-found-by-email').UserNotFoundByEmailError> {
-		const key = `${this.prefix}${email}`;
-		const user = await this.fetchFromKey(key).then(results => results.length ? results[0] : null);
-
-		if (!user) {
-			const { UserNotFoundByEmailError } = await import('@pp-clca-pcm/application/errors/user-not-found-by-email');
-			return new UserNotFoundByEmailError(email);
-		}
-
-		return user;
-	}
-
 	async findById(id: string): Promise<User | import('@pp-clca-pcm/application/errors/user-not-found-by-id').UserNotFoundByIdError> {
 		const allUsers = await this.all();
 		const user = allUsers.find(u => u.identifier === id);
@@ -116,11 +102,10 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 		}
 
 		const key = this.key(user);
-		await this.db.del(key);
+		await this.redisClient.del(key);
 	}
 
 	protected override key(entity: User): string {
-	private key(entity: User): string {
 		return `${this.prefix}${entity.email.value}`;
 	}
 
@@ -129,8 +114,8 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 			identifier: entity.identifier!,
 			firstname: entity.firstname,
 			lastname: entity.lastname,
-			email: typeof entity.email === 'string' ? entity.email : entity.email.value,
-			password: typeof entity.password === 'string' ? entity.password : entity.password.value,
+			email:  entity.email.value,
+			password: entity.password.value,
 			clientProps: entity.clientProps,
 			advisorProps: entity.advisorProps,
 			directorProps: entity.directorProps,

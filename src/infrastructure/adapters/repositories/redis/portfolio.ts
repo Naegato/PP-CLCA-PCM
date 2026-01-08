@@ -16,16 +16,12 @@ export class RedisPortfolioRepository extends RedisBaseRepository<Portfolio> imp
     async save (portfolio: Portfolio): Promise<Portfolio> {
         const key = this.key(portfolio);
 
-        await this.redisClient.set(key, JSON.stringify(portfolio));
+        await this.redisClient.set(key, JSON.stringify(portfolio.toPrimitives()));
         return portfolio;
     }
 
-    protected instanticate(entity: Portfolio): Portfolio {
-        return Portfolio.fromPrimitives({
-            identifier: entity.identifier!,
-            account: entity.account,
-            items: entity['items'],
-        });
+    protected instanticate(entity: any): Portfolio {
+        return Portfolio.fromPrimitives(entity);
     }
 
     public async findById(id: string): Promise<Portfolio | null> {

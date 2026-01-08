@@ -101,4 +101,23 @@ export class Portfolio {
       itemsMap
     );
   }
+
+  public toPrimitives(): {
+    identifier: string | null;
+    account: Account;
+    items: { stock: Stock, quantity: number }[];
+  } {
+    const itemsArray: { stock: Stock, quantity: number }[] = [];
+    for (const item of this.items.values()) {
+        itemsArray.push({
+            stock: item.stock,
+            quantity: item.quantity,
+        });
+    }
+    return {
+        identifier: this.identifier,
+        account: this.account,
+        items: itemsArray,
+    };
+  }
 }
