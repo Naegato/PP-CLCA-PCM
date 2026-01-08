@@ -1,7 +1,8 @@
 {
   "Navigation": {
     "home": "Accueil",
-    "login": "Connexion"
+    "login": "Connexion",
+    "register": "Inscription"
   },
   "LocaleSwitcher": {
     "label": "Langue",
@@ -13,5 +14,39 @@
   },
   "HomePage": {
     "title": "Bonjour Monde!"
+  },
+  "Forms": {
+    "submit": "Soumettre",
+    "reset": "Réinitialiser",
+    "errors": {
+      "default": "Une erreur est survenue. Veuillez réessayer.",
+      "PasswordUppercaseError": "Le mot de passe doit contenir au moins une lettre majuscule.",
+      "PasswordDigitError": "Le mot de passe doit contenir au moins un chiffre.",
+      "PasswordLengthError": "Le mot de passe doit contenir au moins 8 caractères.",
+      "PasswordLowercaseError": "Le mot de passe doit contenir au moins une lettre minuscule.",
+      "PasswordSpecialError": "Le mot de passe doit contenir au moins un caractère spécial."
+    }
+  },
+  "RegisterForm": {
+    "title": "Créer un compte",
+    "description": "Veuillez remplir le formulaire pour créer un compte.",
+    "fields": {
+      "firstname": {
+        "label": "Prénom",
+        "placeholder": "Entrez votre prénom"
+      },
+      "lastname": {
+        "label": "Nom de famille",
+        "placeholder": "Entrez votre nom de famille"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Entrez votre email"
+      },
+      "password": {
+        "label": "Mot de passe",
+        "placeholder": "Entrez votre mot de passe"
+      }
+    }
   }
 }

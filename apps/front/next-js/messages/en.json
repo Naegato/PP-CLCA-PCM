@@ -1,7 +1,8 @@
 {
   "Navigation": {
     "home": "Home",
-    "login": "Login"
+    "login": "Login",
+    "register": "Register"
   },
   "LocaleSwitcher": {
     "label": "Language",
@@ -13,5 +14,39 @@
   },
   "HomePage": {
     "title": "Hello world!"
+  },
+  "Forms": {
+    "submit": "Submit",
+    "reset": "Reset",
+    "errors": {
+      "default": "An error occurred. Please try again.",
+      "PasswordUppercaseError": "The password must contain at least one uppercase letter.",
+      "PasswordDigitError": "The password must contain at least one digit.",
+      "PasswordLengthError": "The password must be at least 8 characters long.",
+      "PasswordLowercaseError": "The password must contain at least one lowercase letter.",
+      "PasswordSpecialError": "The password must contain at least one special character."
+    }
+  },
+  "RegisterForm": {
+    "title": "Create an account",
+    "description": "Please fill out the form to create an account.",
+    "fields": {
+      "firstname": {
+        "label": "First Name",
+        "placeholder": "Enter your first name"
+      },
+      "lastname": {
+        "label": "Last Name",
+        "placeholder": "Enter your last name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password"
+      }
+    }
   }
 }

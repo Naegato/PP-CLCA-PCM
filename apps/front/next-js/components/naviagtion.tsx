@@ -11,6 +11,7 @@ export default function Navigation() {
         <div>
           <NavigationLink href="/">{t('home')}</NavigationLink>
           <NavigationLink href="/login">{t('login')}</NavigationLink>
+          <NavigationLink href="/register">{t('register')}</NavigationLink>
         </div>
         <LocaleSwitcher />
       </nav>
