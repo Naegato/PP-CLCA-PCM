@@ -18,7 +18,7 @@ import { DirectorManageCreate } from '@pp-clca-pcm/application';
 import { DirectorManageUpdate } from '@pp-clca-pcm/application';
 import { DirectorManageDelete } from '@pp-clca-pcm/application';
 import { DirectorManageBan } from '@pp-clca-pcm/application';
-import { REPOSITORY_TOKENS } from 'src/config/repositories.module';
+import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 
 // DTOs
 import { CreateClientDto } from '../dto/clients/create-client.dto';

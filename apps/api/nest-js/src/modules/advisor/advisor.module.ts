@@ -58,7 +58,7 @@ import type { Security } from '@pp-clca-pcm/application';
     },
     {
       provide: AdvisorRegistration,
-      useFactory: (userRepository: UserRepository) => new AdvisorRegistration(userRepository),
+      useFactory: (userRepository: UserRepository, passwordService: PasswordService) => new AdvisorRegistration(userRepository, passwordService),
       inject: [REPOSITORY_TOKENS.USER],
     },
 

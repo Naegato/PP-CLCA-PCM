@@ -84,7 +84,7 @@ import type { Security } from '@pp-clca-pcm/application';
     },
     {
       provide: DirectorRegistration,
-      useFactory: (userRepository: UserRepository) => new DirectorRegistration(userRepository),
+      useFactory: (userRepository: UserRepository, passwordService: PasswordService) => new DirectorRegistration(userRepository, passwordService),
       inject: [REPOSITORY_TOKENS.USER],
     },
 

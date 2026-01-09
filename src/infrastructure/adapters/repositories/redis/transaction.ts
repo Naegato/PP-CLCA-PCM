@@ -1,38 +1,37 @@
-import { RedisClientType } from 'redis';
 import { TransactionRepository } from '@pp-clca-pcm/application';
 import { Transaction } from '@pp-clca-pcm/domain';
 import { RedisBaseRepository } from './base.js';
 
 export class RedisTransactionRepository extends RedisBaseRepository<Transaction> implements TransactionRepository {
-	readonly prefix = 'transaction:';
+  readonly prefix = 'transaction:';
 
-	async save(entity: Transaction): Promise<Transaction> {
-		const key = this.key(entity);
+  async save(entity: Transaction): Promise<Transaction> {
+    const key = this.key(entity);
 
-		await this.db.set(
-			key,
-			JSON.stringify(entity),
-			{ NX: true }
-		);
+    await this.db.set(
+      key,
+      JSON.stringify(entity),
+      { NX: true }
+    );
 
-		return entity;
-	}
+    return entity;
+  }
 
-	async delete(transaction: Transaction): Promise<Transaction> {
-		const key = this.key(transaction);
+  async delete(transaction: Transaction): Promise<Transaction> {
+    const key = this.key(transaction);
 
-		const result = await this.db.del(key);
+    const result = await this.db.del(key);
 
-		return transaction;
-	}
+    return transaction;
+  }
 
-	protected instanticate(entity: Transaction): Transaction {
-		return Transaction.fromPrimitives({
-			identifier: entity.identifier!,
-			identified: entity.identified,
-			amount: entity.amount,
-			date: entity.date,
-			description: entity.description,
-		})
-	}
+  protected instanticate(entity: Transaction): Transaction {
+    return Transaction.fromPrimitives({
+      identifier: entity.identifier!,
+      identified: entity.identified,
+      amount: entity.amount,
+      date: entity.date,
+      description: entity.description,
+    });
+  }
 }

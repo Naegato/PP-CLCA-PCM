@@ -55,7 +55,7 @@ export class DirectorAuthController {
   @Post('register')
   @HttpCode(201)
   async register(@Body() dto: RegisterDto) {
-    const useCase = new DirectorRegistration(this.userRepository);
+    const useCase = new DirectorRegistration(this.userRepository, this.passwordService);
     return await useCase.execute(
       dto.firstname,
       dto.lastname,

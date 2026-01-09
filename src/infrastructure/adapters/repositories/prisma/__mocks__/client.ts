@@ -88,3 +88,5 @@ export const Prisma = {
  * Enum placeholder si besoin
  */
 export const $Enums = {};
+
+export default prisma;

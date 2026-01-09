@@ -17,6 +17,8 @@ describe.skipIf(!isPostgres)('Prisma Ban Repository', async () => {
       prisma.ban.deleteMany(),
       prisma.notification.deleteMany(),
       prisma.user.deleteMany(),
+      prisma.account.deleteMany(),
+      prisma.portfolio.deleteMany(),
     ]);
   });
 

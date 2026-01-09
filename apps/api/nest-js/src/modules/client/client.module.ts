@@ -126,7 +126,8 @@ import type { MarketService } from '@pp-clca-pcm/application';
         userRepository: UserRepository,
         accountRepository: AccountRepository,
         accountTypeRepository: AccountTypeRepository,
-      ) => new ClientRegistration(userRepository, accountRepository, accountTypeRepository),
+        passwordService: PasswordService,
+      ) => new ClientRegistration(userRepository, accountRepository, accountTypeRepository, passwordService),
       inject: [
         REPOSITORY_TOKENS.USER,
         REPOSITORY_TOKENS.ACCOUNT,

@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 
 import { User } from '@pp-clca-pcm/domain';
 import { ClientProps } from '@pp-clca-pcm/domain';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { Argon2PasswordService, InMemoryUserRepository } from '@pp-clca-pcm/adapters';
 import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters';
 import { InMemoryAccountTypeRepository } from '@pp-clca-pcm/adapters';
 import { ClientRegistration } from '@pp-clca-pcm/application';
@@ -13,12 +13,14 @@ describe('Client Registration ', () => {
     const inMemoryClientsRepository = new InMemoryUserRepository();
     const inMemoryAccountRepository = new InMemoryAccountRepository(inMemoryClientsRepository);
     const inMemoryAccountTypeRepository = new InMemoryAccountTypeRepository();
+    const passwordService = new Argon2PasswordService();
 
     return {
       useCase: new ClientRegistration(
         inMemoryClientsRepository,
         inMemoryAccountRepository,
-        inMemoryAccountTypeRepository
+        inMemoryAccountTypeRepository,
+        passwordService
       ),
       repositories: {
         inMemoryClientsRepository,

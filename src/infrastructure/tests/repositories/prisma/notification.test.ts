@@ -16,7 +16,9 @@ describe.skipIf(!isPostgres)('Prisma Notification Repository', async () => {
     await prisma.$transaction([
       prisma.notification.deleteMany(),
       prisma.ban.deleteMany(),
+      prisma.account.deleteMany(),
       prisma.user.deleteMany(),
+      prisma.portfolio.deleteMany(),
     ]);
   });
 

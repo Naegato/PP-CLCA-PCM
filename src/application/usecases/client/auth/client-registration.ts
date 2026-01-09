@@ -8,12 +8,14 @@ import { ClientProps } from '@pp-clca-pcm/domain';
 import { Iban } from '@pp-clca-pcm/domain';
 import { InvalidIbanError } from '@pp-clca-pcm/domain';
 import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain';
+import { PasswordService } from '@pp-clca-pcm/application';
 
 export class ClientRegistration {
   public constructor (
     public readonly userRepository: UserRepository,
     public readonly accountRepository: AccountRepository,
     public readonly accountTypeRepository: AccountTypeRepository,
+    public readonly passwordService: PasswordService,
   ) { }
 
   public async execute (
@@ -22,7 +24,8 @@ export class ClientRegistration {
     email: string,
     password: string,
   ) {
-    const client = User.create(firstname, lastname, email, password);
+    const hashedPassword = await this.passwordService.hashPassword(password);
+    const client = User.create(firstname, lastname, email, hashedPassword);
 
     if (client instanceof Error) {
       return client;

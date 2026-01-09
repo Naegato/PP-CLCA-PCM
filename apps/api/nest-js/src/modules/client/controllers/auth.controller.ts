@@ -9,14 +9,14 @@ import {
 } from '@nestjs/common';
 
 // Use cases
-// import { ClientLogin } from '@pp-clca-pcm/application';
+import { ClientLogin } from '@pp-clca-pcm/application';
 import { ClientRegistration } from '@pp-clca-pcm/application';
 // import { ClientLogout } from '@pp-clca-pcm/application';
 // import { ClientRequestPasswordReset } from '@pp-clca-pcm/application';
 // import { ClientResetPassword } from '@pp-clca-pcm/application';
 
 // DTOs
-// import { LoginDto } from '../dto/auth/login.dto';
+import { LoginDto } from '../dto/auth/login.dto';
 import { RegisterDto } from '../dto/auth/register.dto';
 // import { RequestPasswordResetDto } from '../dto/auth/request-password-reset.dto';
 // import { ResetPasswordDto } from '../dto/auth/reset-password.dto';
@@ -37,7 +37,7 @@ import type {
   AccountRepository,
   AccountTypeRepository,
   PasswordService,
-  // TokenService,
+  TokenService,
   // LogoutService,
   // Security,
 } from '@pp-clca-pcm/application';
@@ -64,8 +64,8 @@ export class ClientAuthController {
     private readonly accountTypeRepository: AccountTypeRepository,
     @Inject('PasswordService')
     private readonly passwordService: PasswordService,
-    // @Inject('TokenService')
-    // private readonly tokenService: TokenService,
+    @Inject('TokenService')
+    private readonly tokenService: TokenService,
     // @Inject('LogoutService')
     // private readonly logoutService: LogoutService,
     // @Inject('Security')
@@ -76,23 +76,21 @@ export class ClientAuthController {
    * POST /client/auth/login
    * Login avec email et password
    */
-  // @Post('login')
-  // @HttpCode(200)
-  // async login(@Body() dto: LoginDto) {
-  //   const useCase = new ClientLogin(
-  //     this.userRepository,
-  //     this.passwordService,
-  //     this.tokenService,
-  //   );
-  //
-  //   console.log('useCase', useCase);
-  //
-  //   return await useCase.execute({
-  //     email: dto.email,
-  //     password: dto.password,
-  //   });
-  // }
-  //
+  @Post('login')
+  @HttpCode(200)
+  async login(@Body() dto: LoginDto) {
+    const useCase = new ClientLogin(
+      this.userRepository,
+      this.passwordService,
+      this.tokenService,
+    );
+
+    return await useCase.execute({
+      email: dto.email,
+      password: dto.password,
+    });
+  }
+
   /**
    * POST /client/auth/register
    * Créer un nouveau compte client
@@ -104,9 +102,8 @@ export class ClientAuthController {
       this.userRepository,
       this.accountRepository,
       this.accountTypeRepository,
+      this.passwordService,
     );
-
-    console.log(useCase);
 
     return await useCase.execute(
       dto.firstname,
