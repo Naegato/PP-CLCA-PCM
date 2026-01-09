@@ -1,20 +1,20 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/account';
-import { InMemoryStockRepository } from '@pp-clca-pcm/adapters/repositories/memory/stock/stock';
-import { InMemoryStockOrderRepository } from '@pp-clca-pcm/adapters/repositories/memory/stockOrder/stockOrder';
-import { InMemoryPortfolioRepository } from '@pp-clca-pcm/adapters/repositories/memory/portfolio/portfolio';
-import { ClientMatchStockOrder } from '@pp-clca-pcm/application/usecases/client/stocks-orders/client-match-stock-order';
-import { MatchStockOrderError } from '@pp-clca-pcm/application/errors/match-stock-order';
+import { User } from '@pp-clca-pcm/domain';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Stock } from '@pp-clca-pcm/domain';
+import { Company } from '@pp-clca-pcm/domain';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryStockRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryStockOrderRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryPortfolioRepository } from '@pp-clca-pcm/adapters';
+import { ClientMatchStockOrder } from '@pp-clca-pcm/application';
+import { MatchStockOrderError } from '@pp-clca-pcm/application';
 
 describe('Client Match Stock Order', () => {
   const getData = () => {

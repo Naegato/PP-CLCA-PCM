@@ -1,8 +1,8 @@
-import { RedisLoanRepository } from '@pp-clca-pcm/adapters/repositories/redis/loan';
-import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
+import { RedisLoanRepository } from '@pp-clca-pcm/adapters';
+import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters';
 import { beforeAll, describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Loan } from '@pp-clca-pcm/domain/entities/loan';
+import { User } from '@pp-clca-pcm/domain';
+import { Loan } from '@pp-clca-pcm/domain';
 import { warn } from 'console';
 
 const databaseProvider = process.env.DB_PROVIDER;

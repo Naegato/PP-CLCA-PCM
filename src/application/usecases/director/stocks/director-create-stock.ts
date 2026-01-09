@@ -1,4 +1,4 @@
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
+import { Stock } from '@pp-clca-pcm/domain';
 import { StockRepository } from '../../../repositories/stock.js';
 import { DirectorCreateStockError } from '../../../errors/director-create-stock.js';
 import { CompanyRepository } from '../../../repositories/company.js';

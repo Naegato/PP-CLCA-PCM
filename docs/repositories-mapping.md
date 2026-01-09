@@ -334,8 +334,8 @@ Ces repositories nécessitent une implémentation Redis pour un cache performant
 ### Prisma Repository
 
 ```typescript
-import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
+import { PrismaClient } from '@pp-clca-pcm/adapters';
+import { UserRepository } from '@pp-clca-pcm/application';
 
 export class PrismaUserRepository implements UserRepository {
   constructor(private readonly db: PrismaClient) {}
@@ -378,7 +378,7 @@ export class PrismaUserRepository implements UserRepository {
 
 ```typescript
 import { RedisClientType } from 'redis';
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
+import { UserRepository } from '@pp-clca-pcm/application';
 
 export class RedisUserRepository implements UserRepository {
   private readonly prefix = 'user:';
@@ -421,8 +421,8 @@ Les use cases utilisent les repositories via injection de dépendances:
 
 ```typescript
 import { Inject, Injectable } from '@nestjs/common';
-import { ClientLogin } from '@pp-clca-pcm/application/usecases/client/auth/client-login';
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
+import { ClientLogin } from '@pp-clca-pcm/application';
+import { UserRepository } from '@pp-clca-pcm/application';
 import { REPOSITORY_TOKENS } from '../../config/repositories.module';
 
 @Module({

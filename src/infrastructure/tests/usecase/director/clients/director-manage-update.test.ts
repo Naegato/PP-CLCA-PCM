@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { DirectorProps } from '@pp-clca-pcm/domain/value-objects/user/director';
-import { DirectorManageUpdate } from '@pp-clca-pcm/application/usecases/director/clients/director-manage-update';
-import { NotDirector } from '@pp-clca-pcm/application/errors/not-director';
-import { UserNotFoundByIdError } from '@pp-clca-pcm/application/errors/user-not-found-by-id';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { Security } from '@pp-clca-pcm/application/services/security';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { DirectorProps } from '@pp-clca-pcm/domain';
+import { DirectorManageUpdate } from '@pp-clca-pcm/application';
+import { NotDirector } from '@pp-clca-pcm/application';
+import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { Security } from '@pp-clca-pcm/application';
 
 class MockSecurity implements Security {
   constructor(private currentUser: User) {}

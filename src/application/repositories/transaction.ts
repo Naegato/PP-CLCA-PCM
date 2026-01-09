@@ -1,4 +1,4 @@
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
+import { Transaction } from '@pp-clca-pcm/domain';
 
 export interface TransactionRepository {
   save(transaction: Transaction): Promise<Transaction>

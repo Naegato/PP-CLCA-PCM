@@ -1,6 +1,6 @@
-import { User } from "@pp-clca-pcm/domain/entities/user";
+import { User } from '@pp-clca-pcm/domain';
 import { UserRepository } from "../../../repositories/user.js";
-import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
+import { Account } from '@pp-clca-pcm/domain';
 
 export class DirectorGetClientAccount {
 	public constructor(

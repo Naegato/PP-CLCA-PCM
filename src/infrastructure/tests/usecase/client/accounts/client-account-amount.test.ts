@@ -1,16 +1,16 @@
 import { describe, expect, test } from 'vitest';
 
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/account';
-import { ClientGetBalanceAccount } from '@pp-clca-pcm/application/usecases/client/accounts/client-get-balance-account';
-import { ClientGetBalanceAccountError } from '@pp-clca-pcm/application/errors/client-get-balance-account';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters';
+import { ClientGetBalanceAccount } from '@pp-clca-pcm/application';
+import { ClientGetBalanceAccountError } from '@pp-clca-pcm/application';
 
 describe('Client Get Balance Account', () => {
   const getData = () => {

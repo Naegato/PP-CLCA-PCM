@@ -1,5 +1,5 @@
 import { StockRepository } from '../../../repositories/stock.js';
-import { Stock, StockSymbol } from '@pp-clca-pcm/domain/entities/stock';
+import { Stock, StockSymbol } from '@pp-clca-pcm/domain';
 import { MarketService } from '../../../services/market.js';
 import { ClientGetStockWithPriceError } from '../../../errors/client-get-stock-with-price.js';
 

@@ -1,14 +1,14 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Ban } from '@pp-clca-pcm/domain/entities/ban';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { DirectorProps } from '@pp-clca-pcm/domain/value-objects/user/director';
-import { DirectorManageBan } from '@pp-clca-pcm/application/usecases/director/clients/director-manage-ban';
-import { NotDirector } from '@pp-clca-pcm/application/errors/not-director';
-import { UserNotFoundByIdError } from '@pp-clca-pcm/application/errors/user-not-found-by-id';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { InMemoryBanRepository } from '@pp-clca-pcm/adapters/repositories/memory/ban';
-import { Security } from '@pp-clca-pcm/application/services/security';
+import { User } from '@pp-clca-pcm/domain';
+import { Ban } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { DirectorProps } from '@pp-clca-pcm/domain';
+import { DirectorManageBan } from '@pp-clca-pcm/application';
+import { NotDirector } from '@pp-clca-pcm/application';
+import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryBanRepository } from '@pp-clca-pcm/adapters';
+import { Security } from '@pp-clca-pcm/application';
 
 class MockSecurity implements Security {
   constructor(private currentUser: User) {}

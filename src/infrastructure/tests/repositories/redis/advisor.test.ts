@@ -1,8 +1,8 @@
-import { RedisAdvisorRepository } from '@pp-clca-pcm/adapters/repositories/redis/advisor';
-import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
+import { RedisAdvisorRepository } from '@pp-clca-pcm/adapters';
+import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters';
 import { beforeAll, describe, expect, test } from 'vitest';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { Account } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
 
 const databaseProvider = process.env.DB_PROVIDER;
 const isRedis = databaseProvider === 'redis';

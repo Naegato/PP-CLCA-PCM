@@ -1,9 +1,9 @@
 import { TransactionRepository } from '../../../repositories/transaction.js';
 import { LoanRepository } from '../../../repositories/loan.js';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { Loan } from '@pp-clca-pcm/domain/entities/loan';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
+import { User } from '@pp-clca-pcm/domain';
+import { Account } from '@pp-clca-pcm/domain';
+import { Loan } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
 import { TransactionError } from '../../../errors/transaction.js';
 
 export class ClientRepayLoan {

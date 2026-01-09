@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { InMemoryStockRepository } from '@pp-clca-pcm/adapters/repositories/memory/stock/stock';
-import { DirectorToggleStockListing } from '@pp-clca-pcm/application/usecases/director/stocks/director-toggle-stock-listing';
-import { DirectorToggleStockListingError } from '@pp-clca-pcm/application/errors/director-toggle-stock-listing';
+import { Company } from '@pp-clca-pcm/domain';
+import { Stock } from '@pp-clca-pcm/domain';
+import { InMemoryStockRepository } from '@pp-clca-pcm/adapters';
+import { DirectorToggleStockListing } from '@pp-clca-pcm/application';
+import { DirectorToggleStockListingError } from '@pp-clca-pcm/application';
 
 describe('Director Toggle Stock Listing', () => {
   const getData = () => {

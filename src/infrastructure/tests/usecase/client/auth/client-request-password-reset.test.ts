@@ -1,14 +1,14 @@
-import { RequestPasswordResetResponse } from '@pp-clca-pcm/application/responses/request-password-reset';
+import { RequestPasswordResetResponse } from '@pp-clca-pcm/application';
 import { describe, expect, test } from 'vitest';
 
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientRequestPasswordReset } from '@pp-clca-pcm/application/usecases/client/auth/client-request-password-reset';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { Argon2PasswordService } from '@pp-clca-pcm/adapters/services/argon2-password';
-import { JwtTokenService } from '@pp-clca-pcm/adapters/services/jwt-token';
-import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-not-found-by-email';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientRequestPasswordReset } from '@pp-clca-pcm/application';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { Argon2PasswordService } from '@pp-clca-pcm/adapters';
+import { JwtTokenService } from '@pp-clca-pcm/adapters';
+import { UserNotFoundByEmailError } from '@pp-clca-pcm/application';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
 
 describe('Client Request Password Reset', () => {
   const getData = () => {

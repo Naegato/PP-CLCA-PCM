@@ -1,4 +1,4 @@
-import { Discussion } from "@pp-clca-pcm/domain/entities/discussion/discussion";
+import { Discussion } from '@pp-clca-pcm/domain';
 import { NotAdvisor } from "../../../errors/not-advisor.js";
 import { DiscussionNotFoundError } from "../../../errors/discussion-not-found.js";
 import { DiscussionRepository } from "../../../repositories/discussion/discussion.js";

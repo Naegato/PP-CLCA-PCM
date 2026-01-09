@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { InMemoryCompanyRepository } from '@pp-clca-pcm/adapters/repositories/memory/company';
-import { DirectorGetAllCompanies } from '@pp-clca-pcm/application/usecases/director/companies/director-get-all-companies';
+import { Company } from '@pp-clca-pcm/domain';
+import { InMemoryCompanyRepository } from '@pp-clca-pcm/adapters';
+import { DirectorGetAllCompanies } from '@pp-clca-pcm/application';
 
 describe('Director Get All Companies', () => {
   const getData = () => {

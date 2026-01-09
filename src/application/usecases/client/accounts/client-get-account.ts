@@ -1,4 +1,4 @@
-import { ClientGetAccountError } from "@pp-clca-pcm/application/errors/client-get-account";
+import { ClientGetAccountError } from '@pp-clca-pcm/application';
 import { AccountRepository } from "../../../repositories/account.js";
 
 export class ClientGetAccount {

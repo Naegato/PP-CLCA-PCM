@@ -1,24 +1,26 @@
 import { describe, expect, test } from 'vitest';
 
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/account';
-import { InMemoryAccountTypeRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/type';
-import { ClientRegistration } from '@pp-clca-pcm/application/usecases/client/auth/client-registration';
-import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { Argon2PasswordService, InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryAccountTypeRepository } from '@pp-clca-pcm/adapters';
+import { ClientRegistration } from '@pp-clca-pcm/application';
+import { EmailAlreadyExistError } from '@pp-clca-pcm/application';
 
 describe('Client Registration ', () => {
   const getData = () => {
     const inMemoryClientsRepository = new InMemoryUserRepository();
     const inMemoryAccountRepository = new InMemoryAccountRepository(inMemoryClientsRepository);
     const inMemoryAccountTypeRepository = new InMemoryAccountTypeRepository();
+    const passwordService = new Argon2PasswordService();
 
     return {
       useCase: new ClientRegistration(
         inMemoryClientsRepository,
         inMemoryAccountRepository,
-        inMemoryAccountTypeRepository
+        inMemoryAccountTypeRepository,
+        passwordService
       ),
       repositories: {
         inMemoryClientsRepository,

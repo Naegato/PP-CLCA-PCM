@@ -1,24 +1,24 @@
 import { describe, expect, test } from 'vitest';
 
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { BANK_ATTRIBUTES, TRADING_FEE } from '@pp-clca-pcm/domain/constants/bank';
-import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/account';
-import { InMemoryStockRepository } from '@pp-clca-pcm/adapters/repositories/memory/stock/stock';
-import { InMemoryStockOrderRepository } from '@pp-clca-pcm/adapters/repositories/memory/stockOrder/stockOrder';
-import { InMemoryPortfolioRepository } from '@pp-clca-pcm/adapters/repositories/memory/portfolio/portfolio';
-import { ClientRegisterStockOrder } from '@pp-clca-pcm/application/usecases/client/stocks-orders/client-register-stock-order';
-import { ClientMatchStockOrder } from '@pp-clca-pcm/application/usecases/client/stocks-orders/client-match-stock-order';
-import { ClientRegisterStockOrderError } from '@pp-clca-pcm/application/errors/client-register-stock-order';
+import { Stock } from '@pp-clca-pcm/domain';
+import { Company } from '@pp-clca-pcm/domain';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { BANK_ATTRIBUTES, TRADING_FEE } from '@pp-clca-pcm/domain';
+import { Portfolio } from '@pp-clca-pcm/domain';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryStockRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryStockOrderRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryPortfolioRepository } from '@pp-clca-pcm/adapters';
+import { ClientRegisterStockOrder } from '@pp-clca-pcm/application';
+import { ClientMatchStockOrder } from '@pp-clca-pcm/application';
+import { ClientRegisterStockOrderError } from '@pp-clca-pcm/application';
 
 describe('Client Register Stock Order', () => {
   const getData = () => {

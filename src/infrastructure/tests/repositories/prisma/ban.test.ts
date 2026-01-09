@@ -1,9 +1,9 @@
-import { PrismaBanRepository } from '@pp-clca-pcm/adapters/repositories/prisma/ban';
-import { prisma } from '@pp-clca-pcm/adapters/repositories/prisma/client';
-import { Ban } from '@pp-clca-pcm/domain/entities/ban';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { DirectorProps } from '@pp-clca-pcm/domain/value-objects/user/director';
+import { PrismaBanRepository } from '@pp-clca-pcm/adapters';
+import { prisma } from '@pp-clca-pcm/adapters';
+import { Ban } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { DirectorProps } from '@pp-clca-pcm/domain';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;
@@ -17,6 +17,8 @@ describe.skipIf(!isPostgres)('Prisma Ban Repository', async () => {
       prisma.ban.deleteMany(),
       prisma.notification.deleteMany(),
       prisma.user.deleteMany(),
+      prisma.account.deleteMany(),
+      prisma.portfolio.deleteMany(),
     ]);
   });
 

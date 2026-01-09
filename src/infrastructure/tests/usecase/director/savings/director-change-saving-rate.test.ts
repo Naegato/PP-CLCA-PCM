@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { InMemoryAccountTypeRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/type';
-import { DirectorChangeSavingRate } from '@pp-clca-pcm/application/usecases/director/savings/director-change-saving-rate';
-import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
+import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain';
+import { InMemoryAccountTypeRepository } from '@pp-clca-pcm/adapters';
+import { DirectorChangeSavingRate } from '@pp-clca-pcm/application';
+import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application';
 
 describe('Director Change Saving Rate', () => {
   const getData = () => {

@@ -1,14 +1,14 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/account';
-import { GenerateDailyInterest } from '@pp-clca-pcm/application/usecases/engine/generate-daily-interest';
-import { GenerateDailyInterestError } from '@pp-clca-pcm/application/errors/generate-daily-interest';
+import { User } from '@pp-clca-pcm/domain';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters';
+import { GenerateDailyInterest } from '@pp-clca-pcm/application';
+import { GenerateDailyInterestError } from '@pp-clca-pcm/application';
 
 describe('Generate Daily Interest', () => {
   const getData = () => {

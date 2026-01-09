@@ -1,5 +1,5 @@
 import { StockOrderRepository } from '../../../repositories/stockOrder.js';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { User } from '@pp-clca-pcm/domain';
 import { ClientCancelStockOrderError } from '../../../errors/client-cancel-stock-order.js';
 
 export class ClientCancelStockOrder {

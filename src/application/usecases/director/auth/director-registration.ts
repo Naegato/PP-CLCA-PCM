@@ -1,9 +1,11 @@
+import { PasswordService } from '@pp-clca-pcm/application';
 import { UserRepository } from '../../../repositories/user.js';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { User } from '@pp-clca-pcm/domain';
 
 export class DirectorRegistration {
   public constructor (
     public readonly userRepositories: UserRepository,
+    public readonly passwordService: PasswordService,
   ) { }
 
   public async execute (
@@ -12,7 +14,8 @@ export class DirectorRegistration {
     email: string,
     password: string,
   ) {
-    const director = User.createDirector(firstname, lastname, email, password);
+    const hashedPassword = await this.passwordService.hashPassword(password);
+    const director = User.createDirector(firstname, lastname, email, hashedPassword);
 
     if (director instanceof Error) {
       return director;

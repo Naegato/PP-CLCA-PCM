@@ -1,13 +1,13 @@
-import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
-import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-not-found-by-email';
-import { UserNotFoundByIdError } from '@pp-clca-pcm/application/errors/user-not-found-by-id';
-import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { DirectorProps } from '@pp-clca-pcm/domain/value-objects/user/director';
+import { EmailAlreadyExistError } from '@pp-clca-pcm/application';
+import { UserNotFoundByEmailError } from '@pp-clca-pcm/application';
+import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
+import { UserUpdateError } from '@pp-clca-pcm/application';
+import { UserRepository } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
+import { PrismaClient } from '@pp-clca-pcm/adapters';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { DirectorProps } from '@pp-clca-pcm/domain';
 
 export class PrismaUserRepository implements UserRepository {
   constructor(private readonly db: PrismaClient) {}

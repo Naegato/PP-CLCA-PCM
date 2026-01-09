@@ -1,17 +1,17 @@
 import { describe, expect, test } from 'vitest';
 
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Loan } from '@pp-clca-pcm/domain/entities/loan';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
-import { TransactionRepository } from '@pp-clca-pcm/application/repositories/transaction';
-import { ClientRepayLoan } from '@pp-clca-pcm/application/usecases/client/loans/client-repay-loan';
-import { TransactionError } from '@pp-clca-pcm/application/errors/transaction';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Loan } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain';
+import { TransactionRepository } from '@pp-clca-pcm/application';
+import { ClientRepayLoan } from '@pp-clca-pcm/application';
+import { TransactionError } from '@pp-clca-pcm/application';
 
 class InMemoryTransactionRepository implements TransactionRepository {
   public readonly transactions: Transaction[] = [];

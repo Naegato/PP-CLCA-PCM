@@ -1,8 +1,8 @@
-import { PasswordLengthError } from '@pp-clca-pcm/domain/errors/password-length';
-import { PasswordUppercaseError } from '@pp-clca-pcm/domain/errors/password-uppercase';
-import { PasswordLowercaseError } from '@pp-clca-pcm/domain/errors/password-lowercase';
-import { PasswordSpecialError } from '@pp-clca-pcm/domain/errors/password-special';
-import { PasswordDigitError } from '@pp-clca-pcm/domain/errors/password-digit';
+import { PasswordLengthError } from '@pp-clca-pcm/domain';
+import { PasswordUppercaseError } from '@pp-clca-pcm/domain';
+import { PasswordLowercaseError } from '@pp-clca-pcm/domain';
+import { PasswordSpecialError } from '@pp-clca-pcm/domain';
+import { PasswordDigitError } from '@pp-clca-pcm/domain';
 
 export class Password {
   private constructor (public readonly value: string) { }

@@ -1,6 +1,6 @@
 import { StockOrderRepository } from '../../../repositories/stockOrder.js';
-import { StockOrder } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { StockOrder } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
 import { ClientGetStockOrdersError } from '../../../errors/client-get-stock-orders.js';
 
 export class ClientGetStockOrders {

@@ -1,11 +1,11 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { PasswordLengthError } from '@pp-clca-pcm/domain/errors/password-length';
-import { PasswordSpecialError } from '@pp-clca-pcm/domain/errors/password-special';
-import { PasswordUppercaseError } from '@pp-clca-pcm/domain/errors/password-uppercase';
-import { PasswordLowercaseError } from '@pp-clca-pcm/domain/errors/password-lowercase';
-import { PasswordDigitError } from '@pp-clca-pcm/domain/errors/password-digit';
-import { InvalidEmailFormatError } from '@pp-clca-pcm/domain/errors/invalid-email-format';
+import { User } from '@pp-clca-pcm/domain';
+import { PasswordLengthError } from '@pp-clca-pcm/domain';
+import { PasswordSpecialError } from '@pp-clca-pcm/domain';
+import { PasswordUppercaseError } from '@pp-clca-pcm/domain';
+import { PasswordLowercaseError } from '@pp-clca-pcm/domain';
+import { PasswordDigitError } from '@pp-clca-pcm/domain';
+import { InvalidEmailFormatError } from '@pp-clca-pcm/domain';
 
 describe('User entity', () => {
   const createUsers = (

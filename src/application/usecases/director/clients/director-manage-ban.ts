@@ -1,4 +1,4 @@
-import { Ban } from "@pp-clca-pcm/domain/entities/ban";
+import { Ban } from '@pp-clca-pcm/domain';
 import { NotDirector } from "../../../errors/not-director.js";
 import { UserNotFoundByIdError } from "../../../errors/user-not-found-by-id.js";
 import { UserRepository } from "../../../repositories/user.js";

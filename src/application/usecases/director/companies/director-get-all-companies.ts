@@ -1,4 +1,4 @@
-import { Company } from '@pp-clca-pcm/domain/entities/company';
+import { Company } from '@pp-clca-pcm/domain';
 import { CompanyRepository } from '../../../repositories/company.js';
 
 export class DirectorGetAllCompanies {

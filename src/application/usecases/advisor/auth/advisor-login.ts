@@ -1,9 +1,9 @@
-import { LoginInvalidCredentialsError } from '@pp-clca-pcm/application/errors/login-invalid-credentials';
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
-import { LoginRequest } from '@pp-clca-pcm/application/requests/login';
-import { LoginResponse } from '@pp-clca-pcm/application/responses/login';
-import { PasswordService } from '@pp-clca-pcm/application/services/password';
-import { TokenService } from '@pp-clca-pcm/application/services/token';
+import { LoginInvalidCredentialsError } from '@pp-clca-pcm/application';
+import { UserRepository } from '@pp-clca-pcm/application';
+import { LoginRequest } from '@pp-clca-pcm/application';
+import { LoginResponse } from '@pp-clca-pcm/application';
+import { PasswordService } from '@pp-clca-pcm/application';
+import { TokenService } from '@pp-clca-pcm/application';
 
 export class AdvisorLogin {
   public constructor(

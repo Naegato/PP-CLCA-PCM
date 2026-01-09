@@ -1,7 +1,7 @@
 import { PortfolioRepository } from '../../../repositories/portfolio.js';
-import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
+import { Portfolio } from '@pp-clca-pcm/domain';
 import { AccountRepository } from '../../../repositories/account.js';
-import { ClientCreatePortfolioError } from '@pp-clca-pcm/application/errors/client-create-portfolio';
+import { ClientCreatePortfolioError } from '@pp-clca-pcm/application';
 
 export class ClientCreatePortfolio {
   constructor(

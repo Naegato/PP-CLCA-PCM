@@ -1,5 +1,5 @@
-import { LoanRepository } from '@pp-clca-pcm/application/repositories/loan';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { LoanRepository } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
 
 export class ClientGetLoans {
   public constructor(

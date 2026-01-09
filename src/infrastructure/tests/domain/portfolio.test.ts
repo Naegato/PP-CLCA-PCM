@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest';
-import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { PortfolioError } from '@pp-clca-pcm/domain/errors/portfolio';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
+import { Portfolio } from '@pp-clca-pcm/domain';
+import { Stock } from '@pp-clca-pcm/domain';
+import { PortfolioError } from '@pp-clca-pcm/domain';
+import { Account } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { Company } from '@pp-clca-pcm/domain';
 
 describe('Portfolio Entity', () => {
   const user = User.fromPrimitives({

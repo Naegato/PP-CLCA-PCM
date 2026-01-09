@@ -1,6 +1,6 @@
 import { PortfolioRepository } from '../../../repositories/portfolio.js';
 import { AccountRepository } from '../../../repositories/account.js';
-import { ClientGetPortfolioError } from '@pp-clca-pcm/application/errors/client-get-portfolio';
+import { ClientGetPortfolioError } from '@pp-clca-pcm/application';
 
 export class ClientGetPortfolio {
   constructor(
