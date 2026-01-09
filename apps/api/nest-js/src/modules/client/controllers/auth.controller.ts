@@ -3,7 +3,7 @@ import {
   Post,
   Body,
   HttpCode,
-  // UseGuards,
+  UseGuards,
   UseInterceptors,
   Inject,
 } from '@nestjs/common';
@@ -11,25 +11,25 @@ import {
 // Use cases
 import { ClientLogin } from '@pp-clca-pcm/application';
 import { ClientRegistration } from '@pp-clca-pcm/application';
-// import { ClientLogout } from '@pp-clca-pcm/application';
-// import { ClientRequestPasswordReset } from '@pp-clca-pcm/application';
-// import { ClientResetPassword } from '@pp-clca-pcm/application';
+import { ClientLogout } from '@pp-clca-pcm/application';
+import { ClientRequestPasswordReset } from '@pp-clca-pcm/application';
+import { ClientResetPassword } from '@pp-clca-pcm/application';
 
 // DTOs
 import { LoginDto } from '../dto/auth/login.dto';
 import { RegisterDto } from '../dto/auth/register.dto';
-// import { RequestPasswordResetDto } from '../dto/auth/request-password-reset.dto';
-// import { ResetPasswordDto } from '../dto/auth/reset-password.dto';
+import { RequestPasswordResetDto } from '../dto/auth/request-password-reset.dto';
+import { ResetPasswordDto } from '../dto/auth/reset-password.dto';
 
 // Guards, Decorators, Interceptors
-// import { AuthGuard } from '../../../common/guards/auth.guard';
-// import { RolesGuard } from '../../../common/guards/roles.guard';
-// import { Roles } from '../../../common/decorators/roles.decorator';
-// import { CurrentUser } from '../../../common/decorators/current-user.decorator';
+import { AuthGuard } from '../../../common/guards/auth.guard';
+import { RolesGuard } from '../../../common/guards/roles.guard';
+import { Roles } from '../../../common/decorators/roles.decorator';
+import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
 
 // Domain entities
-// import { User } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
 
 // Repositories & Services
 import type {
@@ -38,8 +38,8 @@ import type {
   AccountTypeRepository,
   PasswordService,
   TokenService,
-  // LogoutService,
-  // Security,
+  LogoutService,
+  Security,
 } from '@pp-clca-pcm/application';
 import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 
@@ -66,10 +66,10 @@ export class ClientAuthController {
     private readonly passwordService: PasswordService,
     @Inject('TokenService')
     private readonly tokenService: TokenService,
-    // @Inject('LogoutService')
-    // private readonly logoutService: LogoutService,
-    // @Inject('Security')
-    // private readonly security: Security,
+    @Inject('LogoutService')
+    private readonly logoutService: LogoutService,
+    @Inject('Security')
+    private readonly security: Security,
   ) {}
 
   /**
@@ -113,50 +113,50 @@ export class ClientAuthController {
     );
   }
 
-  // /**
-  //  * POST /client/auth/logout
-  //  * Déconnexion (nécessite authentification)
-  //  */
-  // @Post('logout')
-  // @HttpCode(200)
-  // @UseGuards(AuthGuard, RolesGuard)
-  // @Roles('client')
-  // async logout(@CurrentUser() user: User) {
-  //   const useCase = new ClientLogout(this.logoutService, this.security);
-  //   return await useCase.execute();
-  // }
-  //
-  // /**
-  //  * POST /client/auth/password-reset/request
-  //  * Demander la réinitialisation du mot de passe
-  //  */
-  // @Post('password-reset/request')
-  // @HttpCode(200)
-  // async requestPasswordReset(@Body() dto: RequestPasswordResetDto) {
-  //   const useCase = new ClientRequestPasswordReset(
-  //     this.userRepository,
-  //     this.tokenService,
-  //   );
-  //   return await useCase.execute({
-  //     email: dto.email,
-  //   });
-  // }
-  //
-  // /**
-  //  * POST /client/auth/password-reset/confirm
-  //  * Confirmer la réinitialisation avec le token
-  //  */
-  // @Post('password-reset/confirm')
-  // @HttpCode(200)
-  // async resetPassword(@Body() dto: ResetPasswordDto) {
-  //   const useCase = new ClientResetPassword(
-  //     this.userRepository,
-  //     this.tokenService,
-  //     this.passwordService,
-  //   );
-  //   return await useCase.execute({
-  //     token: dto.token,
-  //     newPassword: dto.newPassword,
-  //   });
-  // }
+  /**
+   * POST /client/auth/logout
+   * Déconnexion (nécessite authentification)
+   */
+  @Post('logout')
+  @HttpCode(200)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('client')
+  async logout(@CurrentUser() user: User) {
+    const useCase = new ClientLogout(this.logoutService, this.security);
+    return await useCase.execute();
+  }
+
+  /**
+   * POST /client/auth/password-reset/request
+   * Demander la réinitialisation du mot de passe
+   */
+  @Post('password-reset/request')
+  @HttpCode(200)
+  async requestPasswordReset(@Body() dto: RequestPasswordResetDto) {
+    const useCase = new ClientRequestPasswordReset(
+      this.userRepository,
+      this.tokenService,
+    );
+    return await useCase.execute({
+      email: dto.email,
+    });
+  }
+
+  /**
+   * POST /client/auth/password-reset/confirm
+   * Confirmer la réinitialisation avec le token
+   */
+  @Post('password-reset/confirm')
+  @HttpCode(200)
+  async resetPassword(@Body() dto: ResetPasswordDto) {
+    const useCase = new ClientResetPassword(
+      this.userRepository,
+      this.tokenService,
+      this.passwordService,
+    );
+    return await useCase.execute({
+      token: dto.token,
+      newPassword: dto.newPassword,
+    });
+  }
 }
