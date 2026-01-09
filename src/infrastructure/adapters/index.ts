@@ -49,7 +49,3 @@ export * from './repositories/redis/user.js';
 export * from './repositories/mariadb/account/type.js';
 export * from './repositories/mariadb/database.js';
 export * from './repositories/mariadb/discussion/discussion.js';
-
-// Main
-// TODO: RETIRER LE MAIN
-export * from './main.js';

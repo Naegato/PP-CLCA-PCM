@@ -1,4 +1,4 @@
-import { Database } from '@pp-clca-pcm/adapters/repositories/mariadb/database';
+import { Database } from '@pp-clca-pcm/adapters';
 import { describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;

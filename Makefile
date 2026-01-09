@@ -1,4 +1,4 @@
-.PHONY: up up-nextjs up-nestjs db clear install build prisma-generate prisma-migrate up-db tests help
+.PHONY: up up-nextjs up-nestjs db clear install build prisma-generate prisma-migrate up-db tests api-test help
 
 help:
 	@echo "Available targets:"
@@ -10,6 +10,7 @@ help:
 	@echo "  make prisma-reset    - Reset Prisma databases (drops all data)"
 	@echo "  make up-db           - Start DB + generate + migrate"
 	@echo "  make tests           - Run tests (requires up-db)"
+	@echo "  make api-test        - Run API E2E tests (requires up-db)"
 	@echo "  make up              - Start all apps (requires tests to pass)"
 	@echo "  make up-nestjs       - Start NestJS API only"
 	@echo "  make up-nextjs       - Start Next.js frontend only"
@@ -47,6 +48,9 @@ up-db: db prisma-generate prisma-migrate
 
 tests: up-db build
 	pnpm test
+
+api-test: up-db build
+	cd apps/api/nest-js && pnpm test:e2e
 
 up: tests
 	@echo "Starting all applications..."

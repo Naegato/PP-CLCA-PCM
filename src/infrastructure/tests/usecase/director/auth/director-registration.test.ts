@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { DirectorRegistration } from '@pp-clca-pcm/application/usecases/director/auth/director-registration';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { DirectorProps } from '@pp-clca-pcm/domain/value-objects/user/director';
-import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { DirectorRegistration } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
+import { DirectorProps } from '@pp-clca-pcm/domain';
+import { EmailAlreadyExistError } from '@pp-clca-pcm/application';
 
 describe('Advisor Registration ', () => {
   const getData = () => {

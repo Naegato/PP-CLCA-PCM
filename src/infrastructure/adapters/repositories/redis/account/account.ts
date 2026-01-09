@@ -1,7 +1,7 @@
-import { AccountDeleteError } from "@pp-clca-pcm/application/errors/account-delete";
-import { AccountRepository } from "@pp-clca-pcm/application/repositories/account";
-import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
-import { User } from "@pp-clca-pcm/domain/entities/user";
+import { AccountDeleteError } from '@pp-clca-pcm/application';
+import { AccountRepository } from '@pp-clca-pcm/application';
+import { Account } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
 import { randomUUID } from "crypto";
 import { RedisClientType } from "redis";
 import { RedisBaseRepository } from "../base.js";

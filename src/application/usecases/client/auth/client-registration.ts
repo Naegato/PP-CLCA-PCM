@@ -1,13 +1,13 @@
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
-import { AccountRepository } from '@pp-clca-pcm/application/repositories/account';
-import { AccountTypeRepository } from '@pp-clca-pcm/application/repositories/type';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { InvalidIbanError } from '@pp-clca-pcm/domain/errors/invalid-iban-format';
-import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { UserRepository } from '@pp-clca-pcm/application';
+import { AccountRepository } from '@pp-clca-pcm/application';
+import { AccountTypeRepository } from '@pp-clca-pcm/application';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { InvalidIbanError } from '@pp-clca-pcm/domain';
+import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain';
 
 export class ClientRegistration {
   public constructor (

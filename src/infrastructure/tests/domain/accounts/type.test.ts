@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain/entities/accounts/type';
+import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain';
 
 describe('Account Type Entity', () => {
   test('Create Account Type', () => {

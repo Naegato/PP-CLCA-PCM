@@ -1,13 +1,13 @@
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
 import { AccountRepository } from '../../../repositories/account.js';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { InvalidIbanError } from '@pp-clca-pcm/domain/errors/invalid-iban-format';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { InvalidIbanError } from '@pp-clca-pcm/domain';
 import { AccountCreateError } from '../../../errors/account-create.js';
-import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
-import { AccountLimitValidator } from '@pp-clca-pcm/domain/utils/account-limit-validator';
+import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain';
+import { AccountLimitValidator } from '@pp-clca-pcm/domain';
 
 export class ClientCreateAccount {
   public constructor(

@@ -1,8 +1,8 @@
-import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
-import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-not-found-by-email';
-import { UserNotFoundByIdError } from '@pp-clca-pcm/application/errors/user-not-found-by-id';
-import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { EmailAlreadyExistError } from '@pp-clca-pcm/application';
+import { UserNotFoundByEmailError } from '@pp-clca-pcm/application';
+import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
+import { UserUpdateError } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
 
 export interface UserRepository {
   save(user: User): Promise<User | EmailAlreadyExistError>;

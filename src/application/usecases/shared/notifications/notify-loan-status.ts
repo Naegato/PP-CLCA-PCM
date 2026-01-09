@@ -1,7 +1,7 @@
-import { Notification } from "@pp-clca-pcm/domain/entities/notification";
-import { NotificationType } from "@pp-clca-pcm/domain/value-objects/notification-type";
-import { LoanRequest } from "@pp-clca-pcm/domain/entities/loan-request";
-import { Loan } from "@pp-clca-pcm/domain/entities/loan";
+import { Notification } from '@pp-clca-pcm/domain';
+import { NotificationType } from '@pp-clca-pcm/domain';
+import { LoanRequest } from '@pp-clca-pcm/domain';
+import { Loan } from '@pp-clca-pcm/domain';
 import { NotificationRepository } from "../../../repositories/notification.js";
 import { Notifier } from "../../../services/notifier.js";
 

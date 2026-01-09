@@ -1,5 +1,5 @@
-import { AccountRepository } from '@pp-clca-pcm/application/repositories/account';
-import { ClientGetBalanceAccountError } from '@pp-clca-pcm/application/errors/client-get-balance-account';
+import { AccountRepository } from '@pp-clca-pcm/application';
+import { ClientGetBalanceAccountError } from '@pp-clca-pcm/application';
 
 export class ClientGetBalanceAccount {
   public constructor(private readonly accountRepository: AccountRepository) {}

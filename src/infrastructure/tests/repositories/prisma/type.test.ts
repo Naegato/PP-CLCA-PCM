@@ -1,7 +1,7 @@
-import { PrismaAccountTypeRepository } from '@pp-clca-pcm/adapters/repositories/prisma/account/type';
-import { prisma } from '@pp-clca-pcm/adapters/repositories/prisma/client';
-import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
+import { PrismaAccountTypeRepository } from '@pp-clca-pcm/adapters';
+import { prisma } from '@pp-clca-pcm/adapters';
+import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain';
+import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;

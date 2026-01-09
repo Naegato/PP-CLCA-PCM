@@ -1,13 +1,13 @@
-import { PortfolioRepository } from '@pp-clca-pcm/application/repositories/portfolio';
+import { PortfolioRepository } from '@pp-clca-pcm/application';
 import { Portfolio } from '@pp-clca-pcm/domain';
-import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { PortfolioItem } from '@pp-clca-pcm/domain/entities/portfolio/portfolio-item';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
+import { PrismaClient } from '@pp-clca-pcm/adapters';
+import { Account } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { PortfolioItem } from '@pp-clca-pcm/domain';
+import { Stock } from '@pp-clca-pcm/domain';
+import { Company } from '@pp-clca-pcm/domain';
 
 export class PrismaPortfolioRepository implements PortfolioRepository {
   constructor(private readonly db: PrismaClient) {}

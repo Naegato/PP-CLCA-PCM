@@ -1,9 +1,9 @@
-import { PrismaNotificationRepository } from '@pp-clca-pcm/adapters/repositories/prisma/notification';
-import { prisma } from '@pp-clca-pcm/adapters/repositories/prisma/client';
-import { Notification } from '@pp-clca-pcm/domain/entities/notification';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { NotificationType } from '@pp-clca-pcm/domain/value-objects/notification-type';
+import { PrismaNotificationRepository } from '@pp-clca-pcm/adapters';
+import { prisma } from '@pp-clca-pcm/adapters';
+import { Notification } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { NotificationType } from '@pp-clca-pcm/domain';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;

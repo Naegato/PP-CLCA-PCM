@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { InMemoryCompanyRepository } from '@pp-clca-pcm/adapters/repositories/memory/company';
-import { DirectorCreateCompany } from '@pp-clca-pcm/application/usecases/director/companies/director-create-company';
-import { DirectorCreateCompanyError } from '@pp-clca-pcm/application/errors/director-create-company';
+import { Company } from '@pp-clca-pcm/domain';
+import { InMemoryCompanyRepository } from '@pp-clca-pcm/adapters';
+import { DirectorCreateCompany } from '@pp-clca-pcm/application';
+import { DirectorCreateCompanyError } from '@pp-clca-pcm/application';
 
 describe('Director Create Company', () => {
   const getData = () => {

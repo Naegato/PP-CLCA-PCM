@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
-import { ClientSimulateLoan } from '@pp-clca-pcm/application/usecases/client/loans/client-simulate-loan';
-import { SimulatedLoan } from '@pp-clca-pcm/domain/entities/simulated-loan';
-import { SimulatedLoanError } from '@pp-clca-pcm/domain/errors/simulated-loan';
+import { ClientSimulateLoan } from '@pp-clca-pcm/application';
+import { SimulatedLoan } from '@pp-clca-pcm/domain';
+import { SimulatedLoanError } from '@pp-clca-pcm/domain';
 
 describe('Client Simulate Loan', () => {
   const useCase = new ClientSimulateLoan();

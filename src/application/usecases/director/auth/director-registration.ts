@@ -1,5 +1,5 @@
 import { UserRepository } from '../../../repositories/user.js';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { User } from '@pp-clca-pcm/domain';
 
 export class DirectorRegistration {
   public constructor (

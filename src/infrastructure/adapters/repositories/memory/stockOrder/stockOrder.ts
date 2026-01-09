@@ -1,5 +1,5 @@
-import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { StockOrderRepository } from '@pp-clca-pcm/application/repositories/stockOrder';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain';
+import { StockOrderRepository } from '@pp-clca-pcm/application';
 
 export class InMemoryStockOrderRepository implements StockOrderRepository {
   public orders: StockOrder[] = [];

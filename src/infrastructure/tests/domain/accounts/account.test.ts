@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { InvalidIbanError } from '@pp-clca-pcm/domain/errors/invalid-iban-format';
+import { Account } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { InvalidIbanError } from '@pp-clca-pcm/domain';
 
 describe('Account Entity', () => {
   test('Account create', () => {

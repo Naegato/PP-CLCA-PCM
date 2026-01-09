@@ -1,4 +1,4 @@
-import { User } from "@pp-clca-pcm/domain/entities/user";
+import { User } from '@pp-clca-pcm/domain';
 
 export interface Notifier {
 	notifierAllUsers(message: string): Promise<void>;

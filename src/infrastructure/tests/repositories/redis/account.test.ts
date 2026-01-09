@@ -1,13 +1,13 @@
-import { RedisAccountRepository } from '@pp-clca-pcm/adapters/repositories/redis/account/account';
-import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
+import { RedisAccountRepository } from '@pp-clca-pcm/adapters';
+import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain';
+import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters';
 import { beforeAll, describe, expect, test } from 'vitest';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { Email } from '@pp-clca-pcm/domain/value-objects/email';
-import { Password } from '@pp-clca-pcm/domain/value-objects/password';
-import { AccountDeleteError } from '@pp-clca-pcm/application/errors/account-delete';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { Account } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { Email } from '@pp-clca-pcm/domain';
+import { Password } from '@pp-clca-pcm/domain';
+import { AccountDeleteError } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
 
 const databaseProvider = process.env.DB_PROVIDER;
 const isRedis = databaseProvider === 'redis';

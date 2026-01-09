@@ -1,8 +1,8 @@
-import { RedisDiscussionRepository } from '@pp-clca-pcm/adapters/repositories/redis/discussion/discussion';
-import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
+import { RedisDiscussionRepository } from '@pp-clca-pcm/adapters';
+import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters';
 import { beforeAll, describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Discussion } from '@pp-clca-pcm/domain/entities/discussion/discussion';
+import { User } from '@pp-clca-pcm/domain';
+import { Discussion } from '@pp-clca-pcm/domain';
 
 const databaseProvider = process.env.DB_PROVIDER;
 const isRedis = databaseProvider === 'redis';

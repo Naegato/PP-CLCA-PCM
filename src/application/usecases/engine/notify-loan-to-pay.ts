@@ -1,5 +1,5 @@
-import { LoanRepository } from "@pp-clca-pcm/application/repositories/loan";
-import { Notifier } from "@pp-clca-pcm/application/services/notifier";
+import { LoanRepository } from '@pp-clca-pcm/application';
+import { Notifier } from '@pp-clca-pcm/application';
 
 export class NotifyLoanToPay {
   readonly message = "Paye ton loan cousin !";

@@ -1,6 +1,6 @@
-import { Discussion } from '@pp-clca-pcm/domain/entities/discussion/discussion';
-import { Database } from '@pp-clca-pcm/adapters/repositories/mariadb/database';
-import { DiscussionRepository } from '@pp-clca-pcm/application/repositories/discussion/discussion';
+import { Discussion } from '@pp-clca-pcm/domain';
+import { Database } from '@pp-clca-pcm/adapters';
+import { DiscussionRepository } from '@pp-clca-pcm/application';
 
 export class MariadbDiscussionRepository implements DiscussionRepository {
 public constructor(

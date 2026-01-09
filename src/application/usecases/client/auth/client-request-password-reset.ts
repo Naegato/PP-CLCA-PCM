@@ -1,8 +1,8 @@
-import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-not-found-by-email';
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
-import { RequestPasswordResetRequest } from '@pp-clca-pcm/application/requests/request-password-reset';
-import { RequestPasswordResetResponse } from '@pp-clca-pcm/application/responses/request-password-reset';
-import { TokenService } from '@pp-clca-pcm/application/services/token';
+import { UserNotFoundByEmailError } from '@pp-clca-pcm/application';
+import { UserRepository } from '@pp-clca-pcm/application';
+import { RequestPasswordResetRequest } from '@pp-clca-pcm/application';
+import { RequestPasswordResetResponse } from '@pp-clca-pcm/application';
+import { TokenService } from '@pp-clca-pcm/application';
 
 export class ClientRequestPasswordReset {
   public constructor(

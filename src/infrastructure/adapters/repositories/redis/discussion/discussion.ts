@@ -1,5 +1,5 @@
-import { DiscussionRepository } from "@pp-clca-pcm/application/repositories/discussion/discussion";
-import { Discussion } from "@pp-clca-pcm/domain/entities/discussion/discussion";
+import { DiscussionRepository } from '@pp-clca-pcm/application';
+import { Discussion } from '@pp-clca-pcm/domain';
 import { randomUUID } from "crypto";
 import { RedisBaseRepository } from "../base.js";
 

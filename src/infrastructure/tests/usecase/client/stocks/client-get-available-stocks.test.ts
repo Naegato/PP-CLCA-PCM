@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
 
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { InMemoryStockRepository } from '@pp-clca-pcm/adapters/repositories/memory/stock/stock';
-import { ClientGetAvailableStocks } from '@pp-clca-pcm/application/usecases/client/stocks/client-get-available-stocks';
+import { Stock } from '@pp-clca-pcm/domain';
+import { Company } from '@pp-clca-pcm/domain';
+import { InMemoryStockRepository } from '@pp-clca-pcm/adapters';
+import { ClientGetAvailableStocks } from '@pp-clca-pcm/application';
 
 describe('Client Get Available Stocks', () => {
   const getData = () => {

@@ -1,18 +1,18 @@
-import { ResetPasswordResponse } from '@pp-clca-pcm/application/responses/reset-password';
+import { ResetPasswordResponse } from '@pp-clca-pcm/application';
 import { describe, expect, test } from 'vitest';
 
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientResetPassword } from '@pp-clca-pcm/application/usecases/client/auth/client-reset-password';
-import { ClientLogin } from '@pp-clca-pcm/application/usecases/client/auth/client-login';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { Argon2PasswordService } from '@pp-clca-pcm/adapters/services/argon2-password';
-import { JwtTokenService } from '@pp-clca-pcm/adapters/services/jwt-token';
-import { InvalidResetTokenError } from '@pp-clca-pcm/application/errors/invalid-reset-token';
-import { UserNotFoundByIdError } from '@pp-clca-pcm/application/errors/user-not-found-by-id';
-import { PasswordLengthError } from '@pp-clca-pcm/domain/errors/password-length';
-import { LoginResponse } from '@pp-clca-pcm/application/responses/login';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientResetPassword } from '@pp-clca-pcm/application';
+import { ClientLogin } from '@pp-clca-pcm/application';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { Argon2PasswordService } from '@pp-clca-pcm/adapters';
+import { JwtTokenService } from '@pp-clca-pcm/adapters';
+import { InvalidResetTokenError } from '@pp-clca-pcm/application';
+import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
+import { PasswordLengthError } from '@pp-clca-pcm/domain';
+import { LoginResponse } from '@pp-clca-pcm/application';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
 
 describe('Client Reset Password', () => {
   const getData = () => {

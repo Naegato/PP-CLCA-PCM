@@ -1,5 +1,5 @@
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { CompanyRepository } from '@pp-clca-pcm/application/repositories/company';
+import { Company } from '@pp-clca-pcm/domain';
+import { CompanyRepository } from '@pp-clca-pcm/application';
 
 export class InMemoryCompanyRepository implements CompanyRepository {
   public companies: Company[] = [];

@@ -1,6 +1,6 @@
-import { InvalidResetTokenError } from '@pp-clca-pcm/application/errors/invalid-reset-token';
-import { TokenSecretNotDefinedError } from '@pp-clca-pcm/application/errors/token-secret-not-defined-error';
-import { TokenService } from '@pp-clca-pcm/application/services/token';
+import { InvalidResetTokenError } from '@pp-clca-pcm/application';
+import { TokenSecretNotDefinedError } from '@pp-clca-pcm/application';
+import { TokenService } from '@pp-clca-pcm/application';
 import * as jwt from 'jsonwebtoken';
 
 export class JwtTokenService implements TokenService {

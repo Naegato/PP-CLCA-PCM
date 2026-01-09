@@ -1,5 +1,5 @@
-import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { InvalidIbanError } from '@pp-clca-pcm/domain/errors/invalid-iban-format';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain';
+import { InvalidIbanError } from '@pp-clca-pcm/domain';
 
 export interface StockOrderRepository {
   save(order: StockOrder): Promise<StockOrder>;

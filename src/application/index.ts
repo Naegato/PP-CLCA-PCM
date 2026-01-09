@@ -5,9 +5,12 @@ export * from './errors/account-type-already-exist.js';
 export * from './errors/account-type-does-not-exist.js';
 export * from './errors/account-update.js';
 export * from './errors/client-cancel-stock-order.js';
+export * from './errors/client-get-account.js'
 export * from './errors/client-get-balance-account.js';
 export * from './errors/client-get-stock-orders.js';
 export * from './errors/client-get-stock-with-price.js';
+export * from './errors/client-get-portfolio.js';
+export * from './errors/client-create-portfolio.js';
 export * from './errors/client-register-stock-order.js';
 export * from './errors/director-create-company.js';
 export * from './errors/director-create-stock.js';

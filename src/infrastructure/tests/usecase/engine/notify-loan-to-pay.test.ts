@@ -1,15 +1,15 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Loan } from '@pp-clca-pcm/domain/entities/loan';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { NotifyLoanToPay } from '@pp-clca-pcm/application/usecases/engine/notify-loan-to-pay';
-import { LoanRepository } from '@pp-clca-pcm/application/repositories/loan';
-import { Notifier } from '@pp-clca-pcm/application/services/notifier';
+import { User } from '@pp-clca-pcm/domain';
+import { Loan } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { NotifyLoanToPay } from '@pp-clca-pcm/application';
+import { LoanRepository } from '@pp-clca-pcm/application';
+import { Notifier } from '@pp-clca-pcm/application';
 
 class InMemoryLoanRepository implements LoanRepository {
   public readonly loans: Loan[] = [];

@@ -1,5 +1,5 @@
-import { Notification } from "@pp-clca-pcm/domain/entities/notification";
-import { User } from "@pp-clca-pcm/domain/entities/user";
+import { Notification } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
 
 export interface NotificationRepository {
   save(notification: Notification): Promise<Notification>;

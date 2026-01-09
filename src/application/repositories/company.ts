@@ -1,4 +1,4 @@
-import { Company } from '@pp-clca-pcm/domain/entities/company';
+import { Company } from '@pp-clca-pcm/domain';
 
 export interface CompanyRepository {
   create(company: Company): Promise<Company>;

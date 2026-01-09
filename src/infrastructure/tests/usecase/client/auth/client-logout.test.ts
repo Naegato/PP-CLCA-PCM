@@ -1,11 +1,11 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientLogout } from '@pp-clca-pcm/application/usecases/client/auth/client-logout';
-import { NotClient } from '@pp-clca-pcm/application/errors/not-client';
-import { LogoutService } from '@pp-clca-pcm/application/services/logout';
-import { Security } from '@pp-clca-pcm/application/services/security';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientLogout } from '@pp-clca-pcm/application';
+import { NotClient } from '@pp-clca-pcm/application';
+import { LogoutService } from '@pp-clca-pcm/application';
+import { Security } from '@pp-clca-pcm/application';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
 
 class MockLogoutService implements LogoutService {
   public loggedOutUserIds: string[] = [];

@@ -1,8 +1,8 @@
-import { AccountTypeRepository } from '@pp-clca-pcm/application/repositories/type';
-import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
-import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application/errors/account-type-does-not-exist';
-import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
+import { AccountTypeRepository } from '@pp-clca-pcm/application';
+import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application';
+import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application';
+import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain';
+import { PrismaClient } from '@pp-clca-pcm/adapters';
 
 export class PrismaAccountTypeRepository implements AccountTypeRepository {
   constructor(private readonly db: PrismaClient) {

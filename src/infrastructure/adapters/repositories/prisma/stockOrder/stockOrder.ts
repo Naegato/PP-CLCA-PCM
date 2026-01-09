@@ -1,12 +1,12 @@
-import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { StockOrderRepository } from '@pp-clca-pcm/application/repositories/stockOrder';
-import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain';
+import { StockOrderRepository } from '@pp-clca-pcm/application';
+import { PrismaClient } from '@pp-clca-pcm/adapters';
+import { Stock } from '@pp-clca-pcm/domain';
+import { Account } from '@pp-clca-pcm/domain';
+import { Company } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
 
 export class PrismaStockOrderRepository implements StockOrderRepository {
   constructor(private readonly db: PrismaClient) {}

@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vitest';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { InMemoryCompanyRepository } from '@pp-clca-pcm/adapters/repositories/memory/company';
-import { InMemoryStockRepository } from '@pp-clca-pcm/adapters/repositories/memory/stock/stock';
-import { DirectorUpdateStock } from '@pp-clca-pcm/application/usecases/director/stocks/director-update-stock';
-import { DirectorUpdateStockError } from '@pp-clca-pcm/application/errors/director-update-stock';
+import { Company } from '@pp-clca-pcm/domain';
+import { Stock } from '@pp-clca-pcm/domain';
+import { InMemoryCompanyRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryStockRepository } from '@pp-clca-pcm/adapters';
+import { DirectorUpdateStock } from '@pp-clca-pcm/application';
+import { DirectorUpdateStockError } from '@pp-clca-pcm/application';
 
 describe('Director Update Stock', () => {
   const getData = () => {

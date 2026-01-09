@@ -1,5 +1,5 @@
-import { LoanRequest } from '@pp-clca-pcm/domain/entities/loan-request';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { LoanRequest } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
 
 export interface LoanRequestRepository {
   save(loan: LoanRequest): Promise<LoanRequest>,

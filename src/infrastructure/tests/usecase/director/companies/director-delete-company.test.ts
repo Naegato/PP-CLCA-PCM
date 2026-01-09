@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vitest';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { InMemoryCompanyRepository } from '@pp-clca-pcm/adapters/repositories/memory/company';
-import { InMemoryStockRepository } from '@pp-clca-pcm/adapters/repositories/memory/stock/stock';
-import { DirectorDeleteCompany } from '@pp-clca-pcm/application/usecases/director/companies/director-delete-company';
-import { DirectorDeleteCompanyError } from '@pp-clca-pcm/application/errors/director-delete-company';
+import { Company } from '@pp-clca-pcm/domain';
+import { Stock } from '@pp-clca-pcm/domain';
+import { InMemoryCompanyRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryStockRepository } from '@pp-clca-pcm/adapters';
+import { DirectorDeleteCompany } from '@pp-clca-pcm/application';
+import { DirectorDeleteCompanyError } from '@pp-clca-pcm/application';
 
 describe('Director Delete Company', () => {
   const getData = () => {

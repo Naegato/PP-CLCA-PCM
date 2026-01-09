@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Notification } from '@pp-clca-pcm/domain/entities/notification';
-import { NotificationType } from '@pp-clca-pcm/domain/value-objects/notification-type';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { InMemoryNotificationRepository } from '@pp-clca-pcm/adapters/repositories/memory/notification';
+import { User } from '@pp-clca-pcm/domain';
+import { Notification } from '@pp-clca-pcm/domain';
+import { NotificationType } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { InMemoryNotificationRepository } from '@pp-clca-pcm/adapters';
 
 describe('InMemory Notification Repository', () => {
   const createTestClient = (id: string = 'client-id') => {

@@ -1,4 +1,4 @@
-import { prisma } from '@pp-clca-pcm/adapters/repositories/prisma/client';
+import { prisma } from '@pp-clca-pcm/adapters';
 import { describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;

@@ -1,4 +1,4 @@
-import { PasswordService } from '@pp-clca-pcm/application/services/password';
+import { PasswordService } from '@pp-clca-pcm/application';
 import * as argon2 from 'argon2';
 
 export class Argon2PasswordService implements PasswordService {

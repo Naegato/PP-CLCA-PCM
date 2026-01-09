@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { NotificationType } from '@pp-clca-pcm/domain/value-objects/notification-type';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { NotifyClientSavingRateChange } from '@pp-clca-pcm/application/usecases/shared/notifications/notify-client-saving-rate-change';
-import { InMemoryNotificationRepository } from '@pp-clca-pcm/adapters/repositories/memory/notification';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { Notifier } from '@pp-clca-pcm/application/services/notifier';
+import { User } from '@pp-clca-pcm/domain';
+import { NotificationType } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { NotifyClientSavingRateChange } from '@pp-clca-pcm/application';
+import { InMemoryNotificationRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { Notifier } from '@pp-clca-pcm/application';
 
 class MockNotifier implements Notifier {
   public sentNotifications: { user: User; message: string }[] = [];

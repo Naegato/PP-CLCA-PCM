@@ -1,9 +1,9 @@
-import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
-import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-not-found-by-email';
-import { UserNotFoundByIdError } from '@pp-clca-pcm/application/errors/user-not-found-by-id';
-import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { EmailAlreadyExistError } from '@pp-clca-pcm/application';
+import { UserNotFoundByEmailError } from '@pp-clca-pcm/application';
+import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
+import { UserUpdateError } from '@pp-clca-pcm/application';
+import { UserRepository } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
 
 export class InMemoryUserRepository implements UserRepository {
   public readonly inMemoryUsers: User[] = [];

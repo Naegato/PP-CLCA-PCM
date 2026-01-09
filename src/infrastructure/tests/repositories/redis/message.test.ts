@@ -1,11 +1,11 @@
-import { RedisMessageRepository } from '@pp-clca-pcm/adapters/repositories/redis/discussion/message';
-import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
+import { RedisMessageRepository } from '@pp-clca-pcm/adapters';
+import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters';
 import { beforeAll, describe, expect, test } from 'vitest';
-import { Message } from '@pp-clca-pcm/domain/entities/discussion/message';
-import { Email } from '@pp-clca-pcm/domain/value-objects/email';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Password } from '@pp-clca-pcm/domain/value-objects/password';
-import { Discussion } from '@pp-clca-pcm/domain/entities/discussion/discussion';
+import { Message } from '@pp-clca-pcm/domain';
+import { Email } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { Password } from '@pp-clca-pcm/domain';
+import { Discussion } from '@pp-clca-pcm/domain';
 
 const databaseProvider = process.env.DB_PROVIDER;
 const isRedis = databaseProvider === 'redis';

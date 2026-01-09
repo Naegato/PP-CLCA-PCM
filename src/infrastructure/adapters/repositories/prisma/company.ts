@@ -1,6 +1,6 @@
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { CompanyRepository } from '@pp-clca-pcm/application/repositories/company';
-import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
+import { Company } from '@pp-clca-pcm/domain';
+import { CompanyRepository } from '@pp-clca-pcm/application';
+import { PrismaClient } from '@pp-clca-pcm/adapters';
 
 export class PrismaCompanyRepository implements CompanyRepository {
   constructor(private readonly db: PrismaClient) {}

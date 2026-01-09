@@ -1,10 +1,10 @@
-import { UserNotFoundByIdError } from '@pp-clca-pcm/application/errors/user-not-found-by-id';
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
-import { ResetPasswordRequest } from '@pp-clca-pcm/application/requests/reset-password';
-import { ResetPasswordResponse } from '@pp-clca-pcm/application/responses/reset-password';
-import { PasswordService } from '@pp-clca-pcm/application/services/password';
-import { TokenService } from '@pp-clca-pcm/application/services/token';
-import { Password } from '@pp-clca-pcm/domain/value-objects/password';
+import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
+import { UserRepository } from '@pp-clca-pcm/application';
+import { ResetPasswordRequest } from '@pp-clca-pcm/application';
+import { ResetPasswordResponse } from '@pp-clca-pcm/application';
+import { PasswordService } from '@pp-clca-pcm/application';
+import { TokenService } from '@pp-clca-pcm/application';
+import { Password } from '@pp-clca-pcm/domain';
 
 export class ClientResetPassword {
   public constructor(

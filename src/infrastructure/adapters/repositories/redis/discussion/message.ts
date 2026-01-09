@@ -1,5 +1,5 @@
-import { MessageRepository } from "@pp-clca-pcm/application/repositories/discussion/message";
-import { Message } from "@pp-clca-pcm/domain/entities/discussion/message";
+import { MessageRepository } from '@pp-clca-pcm/application';
+import { Message } from '@pp-clca-pcm/domain';
 import { randomUUID } from "crypto";
 import { RedisClientType } from "redis";
 import { RedisBaseRepository } from "../base.js";

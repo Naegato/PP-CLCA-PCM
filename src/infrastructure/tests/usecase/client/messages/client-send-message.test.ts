@@ -1,15 +1,15 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Discussion } from '@pp-clca-pcm/domain/entities/discussion/discussion';
-import { Message } from '@pp-clca-pcm/domain/entities/discussion/message';
-import { ClientSendMessage } from '@pp-clca-pcm/application/usecases/client/messages/client-send-message';
-import { NotClient } from '@pp-clca-pcm/application/errors/not-client';
-import { DiscussionNotFoundError } from '@pp-clca-pcm/application/errors/discussion-not-found';
-import { MessageRepository } from '@pp-clca-pcm/application/repositories/discussion/message';
-import { DiscussionRepository } from '@pp-clca-pcm/application/repositories/discussion/discussion';
-import { Security } from '@pp-clca-pcm/application/services/security';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
+import { User } from '@pp-clca-pcm/domain';
+import { Discussion } from '@pp-clca-pcm/domain';
+import { Message } from '@pp-clca-pcm/domain';
+import { ClientSendMessage } from '@pp-clca-pcm/application';
+import { NotClient } from '@pp-clca-pcm/application';
+import { DiscussionNotFoundError } from '@pp-clca-pcm/application';
+import { MessageRepository } from '@pp-clca-pcm/application';
+import { DiscussionRepository } from '@pp-clca-pcm/application';
+import { Security } from '@pp-clca-pcm/application';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
 
 class InMemoryMessageRepository implements MessageRepository {
   public readonly messages: Message[] = [];

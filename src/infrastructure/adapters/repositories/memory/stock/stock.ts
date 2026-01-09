@@ -1,5 +1,5 @@
-import { StockRepository } from '@pp-clca-pcm/application/repositories/stock';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
+import { StockRepository } from '@pp-clca-pcm/application';
+import { Stock } from '@pp-clca-pcm/domain';
 
 export class InMemoryStockRepository implements StockRepository {
   public readonly stocks: Stock[] = [];

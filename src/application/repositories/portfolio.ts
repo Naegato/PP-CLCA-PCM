@@ -1,5 +1,5 @@
-import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
-import { InvalidIbanError } from '@pp-clca-pcm/domain/errors/invalid-iban-format';
+import { Portfolio } from '@pp-clca-pcm/domain';
+import { InvalidIbanError } from '@pp-clca-pcm/domain';
 
 export interface PortfolioRepository {
   save(portfolio: Portfolio): Promise<Portfolio>;

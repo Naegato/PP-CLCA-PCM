@@ -1,8 +1,8 @@
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
+import { Account } from '@pp-clca-pcm/domain';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain';
 import { StockOrderRepository } from '../../../repositories/stockOrder.js';
 import { StockRepository } from '../../../repositories/stock.js';
-import { TRADING_FEE } from '@pp-clca-pcm/domain/constants/bank';
+import { TRADING_FEE } from '@pp-clca-pcm/domain';
 import { ClientMatchStockOrder } from './client-match-stock-order.js';
 import { ClientRegisterStockOrderError } from '../../../errors/client-register-stock-order.js';
 

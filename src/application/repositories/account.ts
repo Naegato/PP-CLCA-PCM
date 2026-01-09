@@ -1,8 +1,8 @@
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { Account } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
 import { AccountDeleteError } from '../errors/account-delete.js';
 import { AccountUpdateError } from '../errors/account-update.js';
-import { InvalidIbanError } from '@pp-clca-pcm/domain/errors/invalid-iban-format';
+import { InvalidIbanError } from '@pp-clca-pcm/domain';
 
 export interface AccountRepository {
   save(account: Account): Promise<Account>;

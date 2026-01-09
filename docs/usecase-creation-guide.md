@@ -173,11 +173,11 @@ findById(id: string): Promise<User | UserNotFoundByIdError> {
 
 **Structure type:**
 ```typescript
-import { SomeError } from '@pp-clca-pcm/application/errors/some-error';
-import { Repository } from '@pp-clca-pcm/application/repositories/repository';
-import { Request } from '@pp-clca-pcm/application/requests/request';
-import { Response } from '@pp-clca-pcm/application/responses/response';
-import { Service } from '@pp-clca-pcm/application/services/service';
+import { SomeError } from '@pp-clca-pcm/application';
+import { Repository } from '@pp-clca-pcm/application';
+import { Request } from '@pp-clca-pcm/application';
+import { Response } from '@pp-clca-pcm/application';
+import { Service } from '@pp-clca-pcm/application';
 
 export class NomDuUseCase {
   public constructor(
@@ -223,14 +223,14 @@ export class NomDuUseCase {
 
 ### 7.1 Structure du fichier test
 ```typescript
-import { Response } from '@pp-clca-pcm/application/responses/response';
+import { Response } from '@pp-clca-pcm/application';
 import { describe, expect, test } from 'vitest';
 
-import { Entity } from '@pp-clca-pcm/domain/entities/entity';
-import { UseCase } from '@pp-clca-pcm/application/usecases/<role>/<domaine>/use-case';
-import { InMemoryRepository } from '@pp-clca-pcm/adapters/repositories/memory/repository';
-import { ServiceImpl } from '@pp-clca-pcm/adapters/services/service-impl';
-import { SomeError } from '@pp-clca-pcm/application/errors/some-error';
+import { Entity } from '@pp-clca-pcm/domain';
+import { UseCase } from '@pp-clca-pcm/application';
+import { InMemoryRepository } from '@pp-clca-pcm/adapters';
+import { ServiceImpl } from '@pp-clca-pcm/adapters';
+import { SomeError } from '@pp-clca-pcm/application';
 
 describe('Nom du Use Case', () => {
   // Factory pour les dépendances

@@ -1,7 +1,7 @@
-import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
-import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application/errors/account-type-does-not-exist';
-import { AccountTypeRepository } from '@pp-clca-pcm/application/repositories/type';
-import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
+import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application';
+import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application';
+import { AccountTypeRepository } from '@pp-clca-pcm/application';
+import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain';
 
 export class InMemoryAccountTypeRepository implements AccountTypeRepository {
   public readonly inMemoryAccountTypes: AccountType[] = [];

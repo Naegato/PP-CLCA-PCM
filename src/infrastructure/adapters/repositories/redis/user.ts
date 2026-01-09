@@ -1,8 +1,8 @@
 import { RedisClientType } from 'redis';
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
-import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
+import { UserRepository } from '@pp-clca-pcm/application';
+import { EmailAlreadyExistError } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
+import { UserUpdateError } from '@pp-clca-pcm/application';
 import { RedisBaseRepository } from './base.js';
 
 export class RedisUserRepository extends RedisBaseRepository<User> implements UserRepository {
@@ -73,24 +73,24 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 	}
 
 
-	async findByEmail(email: string): Promise<User | import('@pp-clca-pcm/application/errors/user-not-found-by-email').UserNotFoundByEmailError> {
+	async findByEmail(email: string): Promise<User | import('@pp-clca-pcm/application').UserNotFoundByEmailError> {
 		const key = `${this.prefix}${email}`;
 		const user = await this.fetchFromKey(key).then(results => results.length ? results[0] : null);
 
 		if (!user) {
-			const { UserNotFoundByEmailError } = await import('@pp-clca-pcm/application/errors/user-not-found-by-email');
+			const { UserNotFoundByEmailError } = await import('@pp-clca-pcm/application');
 			return new UserNotFoundByEmailError(email);
 		}
 
 		return user;
 	}
 
-	async findById(id: string): Promise<User | import('@pp-clca-pcm/application/errors/user-not-found-by-id').UserNotFoundByIdError> {
+	async findById(id: string): Promise<User | import('@pp-clca-pcm/application').UserNotFoundByIdError> {
 		const allUsers = await this.all();
 		const user = allUsers.find(u => u.identifier === id);
 
 		if (!user) {
-			const { UserNotFoundByIdError } = await import('@pp-clca-pcm/application/errors/user-not-found-by-id');
+			const { UserNotFoundByIdError } = await import('@pp-clca-pcm/application');
 			return new UserNotFoundByIdError();
 		}
 
