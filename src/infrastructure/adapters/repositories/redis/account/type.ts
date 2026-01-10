@@ -99,12 +99,12 @@ export class RedisAccountTypeRepository
   }
 
   protected instanticate(entity: AccountType): AccountType {
-    return AccountType.fromPrimitives({
-      identifier: entity.identifier,
-      name: entity.name,
-      rate: entity.rate,
-      limitByClient: entity.limitByClient,
-      description: entity.description,
-    });
+    return AccountType.createFromRaw(
+      entity.identifier ?? "",
+      entity.name,
+      entity.rate,
+      entity.limitByClient,
+      entity.description,
+    );
   }
 }

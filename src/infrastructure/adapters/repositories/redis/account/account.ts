@@ -91,7 +91,7 @@ export class RedisAccountRepository
 
   protected instanticate(entity: Account): Account {
     return Account.createFromRaw(
-      entity.identifier!,
+      entity.identifier ?? "",
       entity.owner,
       entity.type,
       entity.emittedTransactions ?? [],

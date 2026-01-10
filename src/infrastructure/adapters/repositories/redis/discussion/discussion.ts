@@ -46,7 +46,7 @@ export class RedisDiscussionRepository extends RedisBaseRepository<Discussion> i
 
 	protected instanticate(entity: Discussion): Discussion {
 		return new Discussion(
-			entity.identifier,
+			entity.identifier ?? "",
 			entity.content,
 			entity.advisor,
 			entity.user,

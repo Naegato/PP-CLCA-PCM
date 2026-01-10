@@ -47,7 +47,7 @@ export class RedisMessageRepository extends RedisBaseRepository<Message> impleme
 
 	protected instanticate(entity: Message): Message {
 		return new Message(
-			entity.identifier,
+			entity.identifier ?? "",
 			entity.content,
 			entity.sendAt,
 			entity.sender,

@@ -35,7 +35,7 @@ export class RedisLoanRepository extends RedisBaseRepository<Loan> implements Lo
 
 	protected instanticate(entity: Loan): Loan {
 		return Loan.fromPrimitives({
-			identifier: entity.identifier,
+			identifier: entity.identifier ?? "",
 			client: entity.client,
 			amount: entity.amount,
 			advisor: entity.advisor,

@@ -26,7 +26,7 @@ export class RedisAdvisorRepository extends RedisBaseRepository<User> implements
 
 	protected instanticate(entity: User): User {
 		return User.fromPrimitives({
-			identifier: entity.identifier || '',
+			identifier: entity.identifier ?? "",
 			firstname: entity.firstname,
 			lastname: entity.lastname,
 			email: (entity.email as any)?.value ?? entity.email,

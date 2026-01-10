@@ -77,47 +77,10 @@ export class Portfolio {
     account: Account,
     items: Map<string, PortfolioItem>
   ) {
-    return new Portfolio(randomUUID(), account, items);
+    return new Portfolio(identifier, account, items);
   }
 
-  public static fromPrimitives(primitives: {
-    identifier: string,
-    account: Account,
-    items: { stock: Stock, quantity: number }[],
-  }): Portfolio {
-    const itemsMap = new Map<string, PortfolioItem>();
-    for (const item of primitives.items) {
-      if (!item.stock.identifier) {
-        throw new PortfolioError("Stock identifier is required.");
-      }
-      if (item.quantity <= 0) {
-        throw new PortfolioError("Quantity must be positive.");
-      }
-      itemsMap.set(item.stock.identifier, PortfolioItem.create(item.stock, item.quantity));
-    }
-    return new Portfolio(
-      primitives.identifier,
-      primitives.account,
-      itemsMap
-    );
-  }
-
-  public toPrimitives(): {
-    identifier: string | null;
-    account: Account;
-    items: { stock: Stock, quantity: number }[];
-  } {
-    const itemsArray: { stock: Stock, quantity: number }[] = [];
-    for (const item of this.items.values()) {
-        itemsArray.push({
-            stock: item.stock,
-            quantity: item.quantity,
-        });
-    }
-    return {
-        identifier: this.identifier,
-        account: this.account,
-        items: itemsArray,
-    };
+  public itemsIterator(): Iterable<PortfolioItem> {
+    return this.items.values();
   }
 }
