@@ -1,7 +1,6 @@
 import { AdvisorRepository } from "@pp-clca-pcm/application/repositories/advisor";
 import { User } from "@pp-clca-pcm/domain/entities/user";
 import { RedisBaseRepository } from "./base.js";
-import { RedisBaseRepository } from "./base";
 import { RedisClientType } from "redis";
 
 export class RedisAdvisorRepository extends RedisBaseRepository<User> implements AdvisorRepository {

@@ -1,4 +1,4 @@
-import { RedisBaseRepository } from './base';
+import { RedisBaseRepository } from './base.js';
 import { RedisClientType } from "redis";
 import { CompanyRepository } from '@pp-clca-pcm/application/repositories/company';
 import { Company } from '@pp-clca-pcm/domain/entities/company';

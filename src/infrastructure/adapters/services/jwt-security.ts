@@ -29,7 +29,7 @@ export class JwtSecurityService implements Security {
         return true;
     }
 
-    public getCurrentUser(): User | null {
-        return this.currentUser;
+    public getCurrentUser(): Promise<User | null>{
+        return Promise.resolve(this.currentUser);
     }
 }

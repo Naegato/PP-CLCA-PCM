@@ -121,8 +121,8 @@ dotenv.config({
   path: path.resolve(__dirname, "../../../../../.env"),
 });
 
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
 
 // Init repositories
 
@@ -284,12 +284,12 @@ const clientCreateAccount = new ClientCreateAccount(
 // Additional client use case instances
 const clientDeleteAccount = new ClientDeleteAccount(accountRepository!, userRepository);
 const clientGetAccount = new ClientGetAccount(accountRepository!);
-const clientGetBalanceAccount = new ClientGetBalanceAccount(accountRepository);
+const clientGetBalanceAccount = new ClientGetBalanceAccount(accountRepository!);
 const clientSavingAccountCreate = new ClientSavingAccountCreate(AccountType.create('savings', 5), accountRepository!);
 const clientUpdateNameAccount = new ClientUpdateNameAccount(accountRepository!);
 const clientLogin = new ClientLogin(userRepository, passwordService, tokenService);
 const clientLogout = new ClientLogout(logoutService, security);
-const clientRegistration = new ClientRegistration(userRepository, accountRepository, accountTypeRepository, passwordService);
+const clientRegistration = new ClientRegistration(userRepository, accountRepository!, accountTypeRepository!, passwordService);
 const clientRequestPasswordReset = new ClientRequestPasswordReset(userRepository, tokenService);
 const clientResetPassword = new ClientResetPassword(userRepository, tokenService, passwordService);
 const clientGetLoans = new ClientGetLoans(loanRepository);

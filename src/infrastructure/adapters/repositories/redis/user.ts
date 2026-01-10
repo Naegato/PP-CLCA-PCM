@@ -109,7 +109,7 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 		return `${this.prefix}${entity.email.value}`;
 	}
 
-	protected instanticate(entity: User): User {
+	protected instanticate(entity: any): User {
 		return User.fromPrimitives({
 			identifier: entity.identifier!,
 			firstname: entity.firstname,

@@ -12,13 +12,13 @@ export * from './services/simple-logout.js'
 // Repositories - Memory
 export * from './repositories/memory/account/account.js';
 export * from './repositories/memory/account/type.js';
-export * from './repositories/memory/ban.js';
-export * from './repositories/memory/company.js';
-export * from './repositories/memory/notification.js';
+export * from './repositories/memory/ban/ban.js';
+export * from './repositories/memory/company/company.js';
+export * from './repositories/memory/notification/notification.js';
 export * from './repositories/memory/portfolio/portfolio.js';
 export * from './repositories/memory/stock/stock.js';
 export * from './repositories/memory/stockOrder/stockOrder.js';
-export * from './repositories/memory/user.js';
+export * from './repositories/memory/user/user.js';
 
 // Repositories - Prisma
 export * from './repositories/prisma/client.js';

@@ -1,8 +1,24 @@
 import { Company } from '@pp-clca-pcm/domain/entities/company';
 import { CompanyRepository } from '@pp-clca-pcm/application/repositories/company';
+import { CompanyDeleteError } from '@pp-clca-pcm/application/errors/company-delete-error';
+import { randomUUID } from 'crypto';
 
 export class InMemoryCompanyRepository implements CompanyRepository {
-  public companies: Company[] = [];
+  public readonly companies: Company[] = [];
+
+  async save(company: Company): Promise<Company> {
+    const existingIndex = this.companies.findIndex(
+      (existingCompany) => existingCompany  .identifier === company.identifier
+    );
+
+    if (existingIndex !== -1) {
+      this.companies[existingIndex] = company;
+    } else {
+      this.companies.push(company);
+    }
+
+    return Promise.resolve(company);
+  }
 
   async create(company: Company): Promise<Company> {
     this.companies.push(company);
@@ -31,10 +47,15 @@ export class InMemoryCompanyRepository implements CompanyRepository {
     return company;
   }
 
-  async delete(id: string): Promise<void> {
-    const index = this.companies.findIndex((c) => c.identifier === id);
-    if (index !== -1) {
-      this.companies.splice(index, 1);
+  async delete(company: Company) {
+    const index = this.companies.findIndex((c) => c.identifier === company.identifier);
+
+    if (index === -1) {
+      return new CompanyDeleteError("Company not found.");
     }
+
+      const deletedCompany = this.companies[index];
+      this.companies.splice(index, 1);
+      return deletedCompany;
   }
 }

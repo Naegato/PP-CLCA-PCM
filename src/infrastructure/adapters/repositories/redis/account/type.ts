@@ -12,6 +12,12 @@ export class RedisAccountTypeRepository
 {
   readonly prefix = "account_type:";
 
+  public constructor(
+      redisClient: RedisClientType,
+  ) {
+      super(redisClient);
+  }
+
   async save(
     accountType: AccountType
   ): Promise<AccountType | AccountTypeAlreadyExistError> {
@@ -21,7 +27,7 @@ export class RedisAccountTypeRepository
 
     const key = this.key(realAccount);
 
-    const created = await this.db.set(key, JSON.stringify(realAccount), {
+    const created = await this.redisClient.set(key, JSON.stringify(realAccount), {
       NX: true,
     });
 
@@ -38,7 +44,7 @@ export class RedisAccountTypeRepository
   ): Promise<AccountType> {
     const key = this.key(name);
 
-    const existing = await this.db.get(key);
+    const existing = await this.redisClient.get(key);
     if (existing) {
       const data = JSON.parse(existing) as AccountType;
       this.instanticate(data);
@@ -47,7 +53,7 @@ export class RedisAccountTypeRepository
     const saved = await this.save(accountType);
 
     if (saved instanceof AccountTypeAlreadyExistError) {
-      const value = await this.db.get(key);
+      const value = await this.redisClient.get(key);
       if (!value) {
         throw new Error("AccountType exists but could not be retrieved");
       }
@@ -60,11 +66,11 @@ export class RedisAccountTypeRepository
   }
 
   async all(): Promise<AccountType[]> {
-    const keys = await this.db.keys(`${this.prefix}*`);
+    const keys = await this.redisClient.keys(`${this.prefix}*`);
     const types: AccountType[] = [];
 
     for (const key of keys) {
-      const value = await this.db.get(key);
+      const value = await this.redisClient.get(key);
       if (value) {
         const data = JSON.parse(value) as AccountType;
         types.push(this.instanticate(data));
@@ -82,13 +88,13 @@ export class RedisAccountTypeRepository
     }
 
     const key = this.key(accountType);
-    const existing = await this.db.get(key);
+    const existing = await this.redisClient.get(key);
 
     if (!existing) {
       return new AccountTypeDoesNotExistError();
     }
 
-    await this.db.set(key, JSON.stringify(accountType));
+    await this.redisClient.set(key, JSON.stringify(accountType));
     return accountType;
   }
 

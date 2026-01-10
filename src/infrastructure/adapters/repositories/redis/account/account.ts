@@ -2,7 +2,7 @@ import { AccountDeleteError } from "@pp-clca-pcm/application/errors/account-dele
 import { AccountRepository } from "@pp-clca-pcm/application/repositories/account";
 import { Account } from "@pp-clca-pcm/domain/entities/accounts/account";
 import { User } from "@pp-clca-pcm/domain/entities/user";
-import { RedisBaseRepository } from "../base";
+import { RedisBaseRepository } from "../base.js";
 import { RedisClientType } from "redis";
 
 export class RedisAccountRepository
@@ -90,7 +90,15 @@ export class RedisAccountRepository
   }
 
   protected instanticate(entity: Account): Account {
-    // Hydrate account from stored primitives
-    return Account.fromPrimitives(entity as any);
+    return Account.createFromRaw(
+      entity.identifier!,
+      entity.owner,
+      entity.type,
+      entity.emittedTransactions ?? [],
+      entity.receivedTransactions ?? [],
+      entity.iban,
+      entity.name,
+      (entity as any).portfolio,
+    );
   }
 }

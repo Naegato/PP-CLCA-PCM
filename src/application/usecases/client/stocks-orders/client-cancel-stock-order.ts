@@ -9,7 +9,8 @@ export class ClientCancelStockOrder {
   ) {}
 
   public async execute(orderId: string): Promise<void | ClientCancelStockOrderError> {
-    const user = this.security.getCurrentUser();
+    const user = await this.security.getCurrentUser();
+
     if (!user.identifier) {
       return new ClientCancelStockOrderError('User has no identifier.');
     }

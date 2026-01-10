@@ -174,8 +174,8 @@ export class User {
       primitives.identifier,
       primitives.firstname,
       primitives.lastname,
-      Email.createUnsafe(primitives.email),
-      Password.createUnsafe(primitives.password),
+      primitives.email,
+      primitives.password,
       primitives.clientProps,
       primitives.advisorProps,
       primitives.directorProps

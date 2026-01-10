@@ -37,65 +37,17 @@ export class Account {
     );
   }
 
-  public static fromPrimitives(primitives: any): Account {
-    const ownerRaw = primitives.owner as any;
-    const owner =
-      ownerRaw && (ownerRaw.identifier || ownerRaw.email)
-        ? User.fromPrimitives({
-            identifier: ownerRaw.identifier,
-            firstname: ownerRaw.firstname,
-            lastname: ownerRaw.lastname,
-            email: ownerRaw.email?.value ?? ownerRaw.email,
-            password: ownerRaw.password?.value ?? ownerRaw.password,
-            clientProps: ownerRaw.clientProps,
-            advisorProps: ownerRaw.advisorProps,
-            directorProps: ownerRaw.directorProps,
-          })
-        : (ownerRaw as User);
-
-    const type = primitives.type
-      ? AccountType.fromPrimitives({
-          identifier: primitives.type.identifier ?? null,
-          name: primitives.type.name,
-          rate: primitives.type.rate,
-          limitByClient: primitives.type.limitByClient ?? null,
-          description: primitives.type.description ?? null,
-        })
-      : (undefined as any);
-
-    const emitted = (primitives.emittedTransactions ?? []).map((t: any) =>
-      Tx.fromPrimitives({
-        identifier: t.identifier,
-        identified: t.identified,
-        amount: t.amount,
-        date: new Date(t.date),
-        description: t.description,
-      })
-    );
-
-    const received = (primitives.receivedTransactions ?? []).map((t: any) =>
-      Tx.fromPrimitives({
-        identifier: t.identifier,
-        identified: t.identified,
-        amount: t.amount,
-        date: new Date(t.date),
-        description: t.description,
-      })
-    );
-
-    const ibanOr = Iban.create(primitives.iban?.value ?? primitives.iban);
-    const iban = ibanOr as any as Iban;
-
-    return new Account(
-      primitives.identifier ?? null,
-      owner as User,
-      type,
-      emitted,
-      received,
-      iban,
-      primitives.name,
-      primitives.portfolio
-    );
+  public static createFromRaw(
+    identifier: string,
+    owner: User,
+    type: AccountType,
+    emittedTransactions: Transaction[],
+    receivedTransactions: Transaction[],
+    iban: Iban,
+    name?: string,
+    portfolio?: Portfolio,
+  ): Account {
+    return new Account(identifier, owner, type, emittedTransactions, receivedTransactions, iban, name, portfolio);
   }
 
   public update(

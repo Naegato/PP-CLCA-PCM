@@ -1,7 +1,7 @@
 import { DiscussionRepository } from "@pp-clca-pcm/application/repositories/discussion/discussion";
 import { Discussion } from "@pp-clca-pcm/domain/entities/discussion/discussion";
 import { randomUUID } from "crypto";
-import { RedisBaseRepository } from "../base";
+import { RedisBaseRepository } from "../base.js";
 import { RedisClientType } from "redis";
 
 export class RedisDiscussionRepository extends RedisBaseRepository<Discussion> implements DiscussionRepository{
