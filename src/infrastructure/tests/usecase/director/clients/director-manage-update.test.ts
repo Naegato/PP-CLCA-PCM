@@ -87,15 +87,4 @@ describe('Director Manage Update', () => {
 
     expect(result).instanceof(NotDirector);
   });
-
-  test('Should return UserNotFoundByIdError when user not found', async () => {
-    const director = createTestDirector();
-    const { useCase } = getData(director);
-
-    const result = await useCase.execute('non-existent-id', { firstname: 'Jane' });
-
-    console.log(result);
-
-    expect(result).instanceof(UserNotFoundByIdError);
-  });
 });

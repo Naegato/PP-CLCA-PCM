@@ -1,6 +1,5 @@
 import { User } from '@pp-clca-pcm/domain';
 import { NotDirector } from "../../../errors/not-director.js";
-import { UserNotFoundByIdError } from "../../../errors/user-not-found-by-id.js";
 import { UserRepository } from "../../../repositories/user.js";
 import { Security } from "../../../services/security.js";
 
@@ -13,10 +12,10 @@ export class DirectorManageUpdate {
   public async execute(
     userId: string,
     props: Parameters<typeof User.prototype.update>[0],
-  ): Promise<User | NotDirector | UserNotFoundByIdError | Error> {
+  ): Promise<User | NotDirector | Error> {
     const director = await this.security.getCurrentUser();
 
-    if (!director || director.isDirector()) {
+    if (!director || !director.isDirector()) {
       return new NotDirector();
     }
 

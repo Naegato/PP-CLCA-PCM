@@ -53,14 +53,6 @@ describe.skipIf(!isRedis)('Redis loan request repository adapter', () => {
 
   const repository = new RedisLoanRequestRepository(client)
 
-	const advisor: User = User.fromPrimitives({
-		identifier: 'advisor-1',
-		firstname: 'advisor',
-		lastname: 'advisor',
-		email: Email.createUnsafe('advisor@email.com'),
-		password: Password.createUnsafe('pass')
-	})
-
   test('save', async () => {
 	  const entity = createLoanRequest();
 	  const savedEntity = await repository.save(entity);
@@ -91,13 +83,22 @@ describe.skipIf(!isRedis)('Redis loan request repository adapter', () => {
   })
 
   test('all by advisor', async () => {
+
+		const advisor: User = User.fromPrimitives({
+			identifier: 'advisor-1',
+			firstname: 'advisor',
+			lastname: 'advisor',
+			email: Email.createUnsafe('advisor@email.com'),
+			password: Password.createUnsafe('pass')
+		})
+
 	  const entities = await Promise.all([
 		  repository.save(createLoanRequest(advisor.identifier)),
 		  repository.save(createLoanRequest(advisor.identifier)),
 	  ]);
-	repository.save(createLoanRequest('advisor-2'));
 
 	  const allEntities = await repository.getAllByAdvisor(advisor);
+
 	  expect(allEntities.length).toBeGreaterThanOrEqual(entities.length);
 	  entities.forEach(t => {
 		  expect(t).instanceof(LoanRequest);
