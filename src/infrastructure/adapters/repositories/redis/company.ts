@@ -13,23 +13,17 @@ export class RedisCompanyRepository extends RedisBaseRepository<Company> impleme
     super(redisClient);
   }
 
-  async save (company: Company): Promise<Company> {
+  public async create(company: Company): Promise<Company> {
     const key = this.key(company);
 
     await this.redisClient.set(key, JSON.stringify(company));
     return company;
   }
 
-  public async delete(company: Company) {
-    const key = this.key(company);
+  public async delete(id: string) {
+    const key = this.key(id);
 
-    const deleted = await this.redisClient.del(key);
-
-    if (deleted === 0) {
-      return new CompanyDeleteError(company.identifier!);
-    }
-
-    return company;
+    await this.redisClient.del(key);
   }
 
   public async update(company: Company): Promise<Company> {

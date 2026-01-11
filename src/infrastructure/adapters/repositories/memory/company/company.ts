@@ -47,15 +47,10 @@ export class InMemoryCompanyRepository implements CompanyRepository {
     return company;
   }
 
-  async delete(company: Company) {
-    const index = this.companies.findIndex((c) => c.identifier === company.identifier);
+  async delete(id: string) {
+    const index = this.companies.findIndex((c) => c.identifier === id);
 
-    if (index === -1) {
-      return new CompanyDeleteError("Company not found.");
-    }
-
-      const deletedCompany = this.companies[index];
-      this.companies.splice(index, 1);
-      return deletedCompany;
+    const deletedCompany = this.companies[index];
+    this.companies.splice(index, 1);
   }
 }

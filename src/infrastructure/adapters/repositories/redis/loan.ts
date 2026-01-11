@@ -41,6 +41,5 @@ export class RedisLoanRepository extends RedisBaseRepository<Loan> implements Lo
 			advisor: entity.advisor,
 			transaction: entity.transactions,
 		})
-
 	}
 }

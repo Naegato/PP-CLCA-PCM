@@ -19,6 +19,6 @@ export class DirectorDeleteCompany {
       return new DirectorDeleteCompanyError(`Company with id ${id} has associated stocks and cannot be deleted.`);
     }
 
-    await this.companyRepository.delete(company);
+    await this.companyRepository.delete(company.identifier);
   }
 }
