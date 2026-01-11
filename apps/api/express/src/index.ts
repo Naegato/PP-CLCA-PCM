@@ -17,11 +17,25 @@ import { RedisDiscussionRepository } from '../../../../src/infrastructure/adapte
 import { MessageRepository } from "../../../../src/application/repositories/discussion/message";
 import { RedisMessageRepository } from '../../../../src/infrastructure/adapters/repositories/redis/discussion/message';
 
-import { AdvisorRepository } from "../../../../src/application/repositories/advisor";
-import { RedisAdvisorRepository } from '../../../../src/infrastructure/adapters/repositories/redis/advisor';
-
 import { CompanyRepository } from '../../../../src/application/repositories/company';
 import { RedisCompanyRepository } from '../../../../src/infrastructure/adapters/repositories/redis/company';
+
+import { NotificationRepository } from "../../../../src/application/repositories/notification";
+import { RedisNotificationRepository } from '../../../../src/infrastructure/adapters/repositories/redis/notification';
+
+import { StockRepository } from "../../../../src/application/repositories/stock";
+import { RedisStockRepository } from '../../../../src/infrastructure/adapters/repositories/redis/stock';
+
+import { StockOrderRepository } from "../../../../src/application/repositories/stockOrder";
+import { RedisStockOrderRepository } from '../../../../src/infrastructure/adapters/repositories/redis/stockOrder';
+
+import { PortfolioRepository } from "../../../../src/application/repositories/portfolio";
+import { RedisPortfolioRepository } from '../../../../src/infrastructure/adapters/repositories/redis/portfolio';
+
+import { BanRepository } from "../../../../src/application/repositories/ban";
+import { RedisBanRepository } from '../../../../src/infrastructure/adapters/repositories/redis/ban';
+
+import { Notifier } from "../../../../src/application/services/notifier";
 
 import { RedisLoanRepository } from '../../../../src/infrastructure/adapters/repositories/redis/loan';
 import { RedisLoanRequestRepository } from '../../../../src/infrastructure/adapters/repositories/redis/request-loan';
@@ -49,6 +63,7 @@ import { AdvisorTransferChat } from '../../../../src/application/usecases/adviso
 import { ClientCreateAccount } from '../../../../src/application/usecases/client/accounts/client-create-account';
 import { ClientDeleteAccount } from '../../../../src/application/usecases/client/accounts/client-delete-account';
 import { ClientGetAccount } from '../../../../src/application/usecases/client/accounts/client-get-account';
+import { ClientGetAccounts } from '../../../../src/application/usecases/client/accounts/client-get-accounts';
 import { ClientGetBalanceAccount } from '../../../../src/application/usecases/client/accounts/client-get-balance-account';
 import { ClientSavingAccountCreate } from '../../../../src/application/usecases/client/accounts/client-saving-account-create';
 import { ClientUpdateNameAccount } from '../../../../src/application/usecases/client/accounts/client-update-name-account';
@@ -117,6 +132,8 @@ import { Argon2PasswordService } from "../../../../src/infrastructure/adapters/s
 import { JwtTokenService } from "../../../../src/infrastructure/adapters/services/jwt-token";
 import { JwtSecurityService } from "../../../../src/infrastructure/adapters/services/jwt-security";
 import { Account } from '../../../../src/domain/entities/accounts/account.js';
+import { SimpleLogoutService } from '../../../../src/infrastructure/adapters/services/simple-logout';
+import { MarketService } from "../../../../src/application/services/market";
 
 dotenv.config({
   path: path.resolve(__dirname, "../../../../../.env"),
@@ -137,13 +154,16 @@ let accountTypeRepository: AccountTypeRepository|null = null;
 let discussionRepository: DiscussionRepository|null = null;
 let messageRepository: MessageRepository|null = null;
 
-let advisorRepository: AdvisorRepository|null = null;
 let loanRepository: any = null;
 let loanRequestRepository: any = null;
 let transactionRepository: any = null;
 let userRepository: any = null;
 let companyRepository: CompanyRepository|null = null;
-
+let notificationRepository: NotificationRepository|null = null;
+let stockRepository: StockRepository|null = null;
+let stockOrderRepository: StockOrderRepository|null = null;
+let portfolioRepository: PortfolioRepository|null = null;
+let banRepository: BanRepository|null = null;
 if (databaseProvider === "postgresql") {
 } else if (databaseProvider === "redis") {
   connectRedis();
@@ -155,18 +175,24 @@ if (databaseProvider === "postgresql") {
   discussionRepository = new RedisDiscussionRepository(redisClient);
   messageRepository = new RedisMessageRepository(redisClient);
 
-  advisorRepository = new RedisAdvisorRepository(redisClient);
   loanRepository = new RedisLoanRepository(redisClient);
   loanRequestRepository = new RedisLoanRequestRepository(redisClient);
   transactionRepository = new RedisTransactionRepository(redisClient);
   userRepository = new RedisUserRepository(redisClient);
   companyRepository = new RedisCompanyRepository(redisClient);
+  stockRepository = new RedisStockRepository(redisClient);
+  stockOrderRepository = new RedisStockOrderRepository(redisClient);
+  notificationRepository = new RedisNotificationRepository(redisClient);
+  portfolioRepository = new RedisPortfolioRepository(redisClient);
+  banRepository = new RedisBanRepository(redisClient);
 }
 
 // Init service
 const passwordService = new Argon2PasswordService();
 const tokenService = new JwtTokenService();
 const security = new JwtSecurityService(tokenService, userRepository);
+const logoutService = new SimpleLogoutService();
+const marketService = new MarketService(stockOrderRepository!);
 
 // Middleware for authentication
 app.use(async (req, res, next) => {
@@ -179,7 +205,7 @@ app.use(async (req, res, next) => {
       try {
         const isAuthenticated = await security.authenticate(token);
         if (isAuthenticated) {
-          (req as any).user = security.getCurrentUser();
+          (req as any).user = await security.getCurrentUser();
         }
       } catch (error) {
         console.error("Authentication error:", error);
@@ -192,13 +218,11 @@ app.use(async (req, res, next) => {
 type UserRole = 'client' | 'advisor' | 'director';
 
 const requireRole = (requiredRole: UserRole) => {
-  return (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (!(req as any).user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-
-    const user = (req as any).user as User; // Cast to User type
-
+    const user = (req as any).user as User;
     let hasRole = false;
     switch (requiredRole) {
       case 'client':
@@ -221,13 +245,17 @@ const requireRole = (requiredRole: UserRole) => {
 };
 
 // TEMP STUBS
-const logoutService = { logout: async (userId: string) => { /* noop */ } } as any;
-const portfolioRepositoryStub = { save: async (p: any) => p, findByAccountId: async (id: string) => null } as any;
-const stockRepositoryStub = {} as any;
-const stockOrderRepositoryStub = { findAllByOwnerId: async (id: string) => [], save: async (o: any) => o, findAllByStockId: async (s: string) => [] } as any;
-const notifierStub = { notiferUser: async (user: any, message: any) => {} } as any;
-const notificationRepositoryStub = { save: async (n: any) => n } as any;
-const banRepositoryStub = {} as any;
+const notifier: Notifier =
+{
+  async notifierAllUsers(message: string): Promise<void> {
+    console.log(`[Notifier] Sending to all users: ${message}`);
+  },
+
+  async notiferUser(user: User, message: string): Promise<void> {
+    console.log(`[Notifier] Sending to user ${user.identifier}: ${message}`);
+  }
+}
+
 
 // Init use cases
 const advisorLogin = new AdvisorLogin(
@@ -285,6 +313,7 @@ const clientCreateAccount = new ClientCreateAccount(
 // Additional client use case instances
 const clientDeleteAccount = new ClientDeleteAccount(accountRepository!, userRepository);
 const clientGetAccount = new ClientGetAccount(accountRepository!);
+const clientGetAccounts = new ClientGetAccounts(accountRepository!, security);
 const clientGetBalanceAccount = new ClientGetBalanceAccount(accountRepository!);
 const clientSavingAccountCreate = new ClientSavingAccountCreate(AccountType.create('savings', 5), accountRepository!);
 const clientUpdateNameAccount = new ClientUpdateNameAccount(accountRepository!);
@@ -300,17 +329,17 @@ const clientSimulateLoan = new ClientSimulateLoan();
 
 const clientSendMessage = new ClientSendMessage(messageRepository!, discussionRepository!, security);
 
-const clientGetNotifications = new ClientGetNotifications(notificationRepositoryStub, security);
+const clientGetNotifications = new ClientGetNotifications(notificationRepository!, security);
 
-const clientCreatePortfolio = new ClientCreatePortfolio(portfolioRepositoryStub, accountRepository!);
-const clientGetPortfolio = new ClientGetPortfolio(portfolioRepositoryStub, accountRepository!);
+const clientCreatePortfolio = new ClientCreatePortfolio(portfolioRepository!, accountRepository!);
+const clientGetPortfolio = new ClientGetPortfolio(portfolioRepository!, accountRepository!);
 
-const clientGetAvailableStocks = new ClientGetAvailableStocks(stockRepositoryStub);
-const clientGetStockWithPrice = new ClientGetStockWithPrice(stockRepositoryStub, null as any);
-const clientCancelStockOrder = new ClientCancelStockOrder(stockOrderRepositoryStub, security);
-const clientGetStockOrders = new ClientGetStockOrders(stockOrderRepositoryStub);
-const clientMatchStockOrder = new ClientMatchStockOrder(stockOrderRepositoryStub, stockRepositoryStub, portfolioRepositoryStub);
-const clientRegisterStockOrder = new ClientRegisterStockOrder(stockOrderRepositoryStub, stockRepositoryStub, clientMatchStockOrder);
+const clientGetAvailableStocks = new ClientGetAvailableStocks(stockRepository!);
+const clientGetStockWithPrice = new ClientGetStockWithPrice(stockRepository!, marketService);
+const clientCancelStockOrder = new ClientCancelStockOrder(stockOrderRepository!, security);
+const clientGetStockOrders = new ClientGetStockOrders(stockOrderRepository!);
+const clientMatchStockOrder = new ClientMatchStockOrder(stockOrderRepository!, accountRepository!, portfolioRepository!);
+const clientRegisterStockOrder = new ClientRegisterStockOrder(stockOrderRepository!, stockRepository!, clientMatchStockOrder);
 
 const clientSendTransaction = new ClientSendTransaction(transactionRepository);
 
@@ -320,31 +349,31 @@ const directorRegistration = new DirectorRegistration(userRepository, passwordSe
 
 const directorGetAllClients = new DirectorGetAllClients(userRepository);
 const directorGetClientAccounts = new DirectorGetClientAccounts(userRepository);
-const directorManageBan = new DirectorManageBan(userRepository, banRepositoryStub, security);
+const directorManageBan = new DirectorManageBan(userRepository, banRepository!, security);
 const directorManageCreate = new DirectorManageCreate(userRepository, security);
 const directorManageDelete = new DirectorManageDelete(userRepository, security);
 const directorManageUpdate = new DirectorManageUpdate(userRepository, security);
 
 const directorCreateCompany = new DirectorCreateCompany(companyRepository!);
-const directorDeleteCompany = new DirectorDeleteCompany(companyRepository!, stockRepositoryStub);
+const directorDeleteCompany = new DirectorDeleteCompany(companyRepository!, stockRepository!);
 const directorGetAllCompanies = new DirectorGetAllCompanies(companyRepository!);
 const directorGetCompany = new DirectorGetCompany(companyRepository!);
 const directorUpdateCompany = new DirectorUpdateCompany(companyRepository!);
 
 const directorChangeSavingRate = new DirectorChangeSavingRate(accountTypeRepository!);
 
-const directorCreateStock = new DirectorCreateStock(stockRepositoryStub, companyRepository!);
-const directorDeleteStock = new DirectorDeleteStock(stockRepositoryStub, portfolioRepositoryStub, stockOrderRepositoryStub);
-const directorToggleStockListing = new DirectorToggleStockListing(stockRepositoryStub);
-const directorUpdateStock = new DirectorUpdateStock(stockRepositoryStub, companyRepository!);
+const directorCreateStock = new DirectorCreateStock(stockRepository!, companyRepository!);
+const directorDeleteStock = new DirectorDeleteStock(stockRepository!, portfolioRepository!, stockOrderRepository!);
+const directorToggleStockListing = new DirectorToggleStockListing(stockRepository!);
+const directorUpdateStock = new DirectorUpdateStock(stockRepository!, companyRepository!);
 
 // Engine
 const generateDailyInterest = new GenerateDailyInterest(accountRepository!);
-const notifyLoanToPay = new NotifyLoanToPay(loanRepository, notifierStub);
+const notifyLoanToPay = new NotifyLoanToPay(loanRepository, notifier);
 
 // Shared notifications
-const notifyClientSavingRateChange = new NotifyClientSavingRateChange(notificationRepositoryStub, notifierStub, userRepository);
-const notifyLoanStatus = new NotifyLoanStatus(notificationRepositoryStub, notifierStub);
+const notifyClientSavingRateChange = new NotifyClientSavingRateChange(notificationRepository!, notifier, userRepository);
+const notifyLoanStatus = new NotifyLoanStatus(notificationRepository!, notifier);
 
 app.use(express.json());
 
@@ -426,7 +455,13 @@ app.post("/advisor/discussions/:id/transfer", requireRole('advisor'), async (req
 
 // ============ CLIENT ACCOUNT ROUTES ============
 app.post("/client/accounts", requireRole('client'), async (req, res) => {
-  const result = await clientCreateAccount.execute(req.body.user, req.body.name);
+  const user = await security.getCurrentUser();
+
+  if (!user) {
+    return res.status(401).json({ error: "User not logged in" });
+  }
+
+  const result = await clientCreateAccount.execute(user, req.body.name);
   res.json(result);
 });
 
@@ -437,6 +472,11 @@ app.delete("/client/accounts/:id", requireRole('client'), async (req, res) => {
 
 app.get("/client/accounts/:id", requireRole('client'), async (req, res) => {
   const result = await clientGetAccount.execute(req.params.id);
+  res.json(result);
+});
+
+app.get("/client/accounts", requireRole('client'), async (req, res) => {
+  const result = await clientGetAccounts.execute();
   res.json(result);
 });
 

@@ -1,8 +1,8 @@
-import { DiscussionRepository } from "@pp-clca-pcm/application";
-import { Discussion } from "@pp-clca-pcm/domain";
-import { randomUUID } from "crypto";
-import { RedisBaseRepository } from "../base.js";
-import { RedisClientType } from "redis";
+import { RedisClientType } from 'redis';
+import { randomUUID } from 'crypto';
+import { RedisBaseRepository } from '../base';
+import { DiscussionRepository } from '@pp-clca-pcm/application';
+import { Discussion } from '@pp-clca-pcm/domain';
 
 export class RedisDiscussionRepository extends RedisBaseRepository<Discussion> implements DiscussionRepository{
 	readonly prefix = 'discussion:';

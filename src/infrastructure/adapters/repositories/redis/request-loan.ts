@@ -1,8 +1,8 @@
-import { LoanRequest } from '@pp-clca-pcm/domain';
-import { LoanRequestRepository } from '@pp-clca-pcm/application';
+import { RedisClientType } from 'redis';
 import { RedisBaseRepository } from './base.js';
-import { RedisClientType } from "redis";
-import { User } from '@pp-clca-pcm/domain';
+import { LoanRequest, User } from '@pp-clca-pcm/domain';
+import { LoanRequestRepository } from '@pp-clca-pcm/application';
+
 export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest> implements LoanRequestRepository {
 	readonly prefix = 'loan-request:';
 

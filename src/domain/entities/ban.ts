@@ -21,4 +21,21 @@ export class Ban {
     return new Ban(randomUUID(), user, author, start, reason ?? "", end ?? null)
   }
 
+  public static fromPrimitives(primitives: {
+    identifier: string,
+    user: User,
+    author: User,
+    start: Date,
+    reason: string,
+    end: Date | null,
+  }): Ban {
+    return new Ban(
+      primitives.identifier,
+      primitives.user,
+      primitives.author,
+      primitives.start,
+      primitives.reason,
+      primitives.end,
+    );
+  }
 }

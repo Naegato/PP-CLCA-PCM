@@ -187,6 +187,13 @@
           }
         },
         {
+          "name": "Get Accounts",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/client/accounts"
+          }
+        },
+        {
           "name": "Get Balance",
           "request": {
             "method": "GET",

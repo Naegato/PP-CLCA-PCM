@@ -33,6 +33,8 @@ export class ClientCreateAccount {
 
     const account = Account.create(user, this.defaultAccountType, ibanOrError, name);
 
+    console.log(user);
+
     user.updateClientProps(new ClientProps([...user.clientProps?.accounts ?? [], account]));
 
     const savedAccount = await this.accountRepository.save(account);

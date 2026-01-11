@@ -1,12 +1,13 @@
-import { UserRepository } from '@pp-clca-pcm/application';
-import { EmailAlreadyExistError } from '@pp-clca-pcm/application';
-import { User } from '@pp-clca-pcm/domain';
-import { UserUpdateError } from '@pp-clca-pcm/application';
+import {
+  UserRepository,
+  EmailAlreadyExistError,
+  UserUpdateError,
+  UserNotFoundByEmailError,
+  UserNotFoundByIdError,
+} from '@pp-clca-pcm/application';
+import { User, Password, Email } from '@pp-clca-pcm/domain';
 import { RedisBaseRepository } from './base.js';
-import { UserNotFoundByEmailError } from '@pp-clca-pcm/application';
-import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
-import { Password } from '@pp-clca-pcm/domain';
-import { Email } from '@pp-clca-pcm/domain';
+
 export class RedisUserRepository extends RedisBaseRepository<User> implements UserRepository {
   readonly prefix = 'user:';
 
