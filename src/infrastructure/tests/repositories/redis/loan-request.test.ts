@@ -1,7 +1,7 @@
 import { RedisLoanRequestRepository } from '@pp-clca-pcm/adapters';
 import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters';
 import { beforeAll, describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain';
+import { Email, Password, User } from '@pp-clca-pcm/domain';
 import { Discussion } from '@pp-clca-pcm/domain';
 import { LoanRequest } from '@pp-clca-pcm/domain';
 import { AdvisorProps } from '@pp-clca-pcm/domain';
@@ -12,20 +12,34 @@ const isRedis = databaseProvider === 'redis';
 const client = getRedisClient();
 
 const createLoanRequest = (advisorId?: string) => {
-  const client = User.create('a', 'a', 'a@a.com', 'P@ssword bla2')
-  const loan = LoanRequest.create(client, 12);
+  const clientOrError = User.create('a', 'a', 'a@a.com', 'P@ssword bla2');
+
+	if (!(clientOrError instanceof User)){
+		fail("User creation failed");
+	}
+
+	const client: User = clientOrError;
+
+  const loanOrError = LoanRequest.create(client, 12);
+
+	if (!(loanOrError instanceof LoanRequest)){
+		fail("Loan creation failed");
+	}
+
+	const loan = loanOrError;
 
   if (advisorId) {
-	const advisor = User.createFromRaw(
-	  advisorId,
-	  'Advisor',
-	  'User',
-	  'b@b.com',
-	  'An0therP@ssword12',
-	  undefined,
-	  new AdvisorProps([]),
-	);
-	loan.advisor = advisor;
+		const advisor = User.createFromRaw(
+			advisorId,
+			'Advisor',
+			'User',
+			'b@b.com',
+			'An0therP@ssword12',
+			undefined,
+			new AdvisorProps([]),
+		);
+
+		loan.grant(advisor);
   }
 
   return loan;
@@ -38,6 +52,14 @@ describe.skipIf(!isRedis)('Redis loan request repository adapter', () => {
   })
 
   const repository = new RedisLoanRequestRepository(client)
+
+	const advisor: User = User.fromPrimitives({
+		identifier: 'advisor-1',
+		firstname: 'advisor',
+		lastname: 'advisor',
+		email: Email.createUnsafe('advisor@email.com'),
+		password: Password.createUnsafe('pass')
+	})
 
   test('save', async () => {
 	  const entity = createLoanRequest();
@@ -70,12 +92,12 @@ describe.skipIf(!isRedis)('Redis loan request repository adapter', () => {
 
   test('all by advisor', async () => {
 	  const entities = await Promise.all([
-		  repository.save(createLoanRequest('advisor-1')),
-		  repository.save(createLoanRequest('advisor-1')),
+		  repository.save(createLoanRequest(advisor.identifier)),
+		  repository.save(createLoanRequest(advisor.identifier)),
 	  ]);
 	repository.save(createLoanRequest('advisor-2'));
 
-	  const allEntities = await repository.getAllByAdvisor('advisor-1');
+	  const allEntities = await repository.getAllByAdvisor(advisor);
 	  expect(allEntities.length).toBeGreaterThanOrEqual(entities.length);
 	  entities.forEach(t => {
 		  expect(t).instanceof(LoanRequest);

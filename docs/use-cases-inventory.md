@@ -331,7 +331,7 @@ Ce document liste tous les 56 use cases de l'application, organisés par rôle.
 **Input**: None
 **Output**: `User[]`
 
-#### 38. DirectorGetClientAccount
+#### 38. DirectorGetClientAccounts
 **Fichier**: `src/application/usecases/director/clients/director-get-client-accounts.ts`
 **Description**: Récupérer les comptes d'un client
 **Dépendances**: UserRepository

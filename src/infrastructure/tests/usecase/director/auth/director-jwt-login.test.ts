@@ -1,7 +1,7 @@
 import { LoginResponse } from '@pp-clca-pcm/application';
 import { describe, expect, test } from 'vitest';
 
-import { User } from '@pp-clca-pcm/domain';
+import { Email, User, Password } from '@pp-clca-pcm/domain';
 import { DirectorLogin } from '@pp-clca-pcm/application';
 import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
 import { Argon2PasswordService } from '@pp-clca-pcm/adapters';
@@ -35,8 +35,8 @@ describe('Director JWT Login', () => {
       identifier: 'director-123',
       firstname: 'John',
       lastname: 'Doe',
-      email: 'director@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('director@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       directorProps: new DirectorProps(),
     });
 
@@ -63,8 +63,8 @@ describe('Director JWT Login', () => {
       identifier: 'director-123',
       firstname: 'John',
       lastname: 'Doe',
-      email: 'director@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('director@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       directorProps: new DirectorProps(),
     });
 
@@ -87,8 +87,8 @@ describe('Director JWT Login', () => {
       identifier: 'director-123',
       firstname: 'John',
       lastname: 'Doe',
-      email: 'director@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('director@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       directorProps: new DirectorProps(),
     });
 
@@ -111,8 +111,8 @@ describe('Director JWT Login', () => {
       identifier: 'client-123',
       firstname: 'Jane',
       lastname: 'Doe',
-      email: 'client@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('client@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       clientProps: new ClientProps(),
     });
 

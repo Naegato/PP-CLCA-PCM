@@ -14,7 +14,14 @@ const isRedis = databaseProvider === 'redis';
 const client = getRedisClient();
 
 const createTransaction = () => {
-  const client = User.create('a', 'a', 'a@a.com', 'P@ssword bla2')
+	 const clientOrError = User.create('a', 'a', 'a@a.com', 'P@ssword bla2');
+
+	if (!(clientOrError instanceof User)){
+		fail("User creation failed");
+	}
+
+	const client: User = clientOrError;
+	
   const loan = Loan.create(client, 12, client);
 
   return Transaction.create(loan, 100, 'deposit');

@@ -1,7 +1,7 @@
 import { ResetPasswordResponse } from '@pp-clca-pcm/application';
 import { describe, expect, test } from 'vitest';
 
-import { User } from '@pp-clca-pcm/domain';
+import { Email, User, Password } from '@pp-clca-pcm/domain';
 import { ClientResetPassword } from '@pp-clca-pcm/application';
 import { ClientLogin } from '@pp-clca-pcm/application';
 import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
@@ -42,8 +42,8 @@ describe('Client Reset Password', () => {
       identifier: 'user-123',
       firstname: 'John',
       lastname: 'Doe',
-      email: 'jdoe@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('jdoe@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       clientProps: new ClientProps(),
     });
 
@@ -84,8 +84,8 @@ describe('Client Reset Password', () => {
       identifier: 'user-123',
       firstname: 'John',
       lastname: 'Doe',
-      email: 'jdoe@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('jdoe@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       clientProps: new ClientProps(),
     });
 
@@ -122,8 +122,8 @@ describe('Client Reset Password', () => {
       identifier: 'advisor-123',
       firstname: 'Jane',
       lastname: 'Doe',
-      email: 'advisor@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('advisor@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       advisorProps: new AdvisorProps(),
     });
 
@@ -149,8 +149,8 @@ describe('Client Reset Password', () => {
       identifier: 'user-123',
       firstname: 'John',
       lastname: 'Doe',
-      email: 'jdoe@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('jdoe@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       clientProps: new ClientProps(),
     });
 

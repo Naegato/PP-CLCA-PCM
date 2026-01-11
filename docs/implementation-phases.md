@@ -625,7 +625,7 @@ POST /advisor/discussions/:id/transfer (transfer)
 
 **Use cases (6)**:
 - DirectorGetAllClients
-- DirectorGetClientAccount
+- DirectorGetClientAccounts
 - DirectorManageBan
 - DirectorManageCreate
 - DirectorManageDelete

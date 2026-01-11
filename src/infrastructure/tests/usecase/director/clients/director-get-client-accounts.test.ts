@@ -1,17 +1,17 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain';
+import { Email, Password, User } from '@pp-clca-pcm/domain';
 import { Account } from '@pp-clca-pcm/domain';
 import { AccountType } from '@pp-clca-pcm/domain';
 import { Iban } from '@pp-clca-pcm/domain';
 import { ClientProps } from '@pp-clca-pcm/domain';
 import { DirectorProps } from '@pp-clca-pcm/domain';
 import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
-import { DirectorGetClientAccount } from '@pp-clca-pcm/application';
+import { DirectorGetClientAccounts } from '@pp-clca-pcm/application';
 
 describe('Director Get Client Accounts', () => {
   const getData = () => {
     const userRepository = new InMemoryUserRepository();
-    const useCase = new DirectorGetClientAccount(userRepository);
+    const useCase = new DirectorGetClientAccounts(userRepository);
 
     return {
       useCase,
@@ -24,8 +24,8 @@ describe('Director Get Client Accounts', () => {
       identifier: `user-${email}`,
       firstname: 'John',
       lastname: 'Doe',
-      email,
-      password: 'hashedpassword',
+      email: Email.createUnsafe('jdoe@yopmail.com'),
+      password: Password.createUnsafe('hashedpassword'),
       clientProps: new ClientProps(accounts),
     });
   };
@@ -35,8 +35,8 @@ describe('Director Get Client Accounts', () => {
       identifier: `user-${email}`,
       firstname: 'Director',
       lastname: 'User',
-      email,
-      password: 'hashedpassword',
+      email: Email.createUnsafe('jdoe@yopmail.com'),
+      password: Password.createUnsafe('hashedpassword'),
       directorProps: new DirectorProps(),
     });
   };

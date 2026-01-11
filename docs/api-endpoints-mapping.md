@@ -4,27 +4,32 @@ Ce document présente le mapping complet de tous les endpoints API avec leurs us
 
 ## Table des matières
 
-- [App](#app)
-- [Advisor](#advisor)
-  - [Auth](#advisor-auth)
-  - [Messages](#advisor-messages)
-  - [Loans](#advisor-loans)
-- [Client](#client)
-  - [Auth](#client-auth)
-  - [Accounts](#client-accounts)
-  - [Messages](#client-messages)
-  - [Loans](#client-loans)
-  - [Notifications](#client-notifications)
-  - [Stock Orders](#client-stock-orders)
-  - [Transactions](#client-transactions)
-  - [Stocks](#client-stocks)
-  - [Portfolio](#client-portfolio)
-- [Director](#director)
-  - [Auth](#director-auth)
-  - [Stocks](#director-stocks)
-  - [Companies](#director-companies)
-  - [Clients](#director-clients)
-  - [Savings](#director-savings)
+- [API Endpoints Mapping](#api-endpoints-mapping)
+  - [Table des matières](#table-des-matières)
+  - [App](#app)
+  - [Advisor](#advisor)
+    - [Advisor Auth](#advisor-auth)
+    - [Advisor Messages](#advisor-messages)
+    - [Advisor Loans](#advisor-loans)
+  - [Client](#client)
+    - [Client Auth](#client-auth)
+    - [Client Accounts](#client-accounts)
+    - [Client Messages](#client-messages)
+    - [Client Loans](#client-loans)
+    - [Client Notifications](#client-notifications)
+    - [Client Stock Orders](#client-stock-orders)
+    - [Client Transactions](#client-transactions)
+    - [Client Stocks](#client-stocks)
+    - [Client Portfolio](#client-portfolio)
+  - [Director](#director)
+    - [Director Auth](#director-auth)
+    - [Director Stocks](#director-stocks)
+    - [Director Companies](#director-companies)
+    - [Director Clients](#director-clients)
+    - [Director Savings](#director-savings)
+  - [Statistiques](#statistiques)
+  - [Fichiers de Tests](#fichiers-de-tests)
+  - [Notes](#notes)
 
 ---
 
@@ -236,7 +241,7 @@ Ce document présente le mapping complet de tous les endpoints API avec leurs us
 | Method | Endpoint | Use Case | Description |
 |--------|----------|----------|-------------|
 | GET | `/director/clients` | `DirectorGetAllClients` | Récupérer tous les clients |
-| GET | `/director/clients/:id/accounts` | `DirectorGetClientAccount` | Récupérer les comptes d'un client |
+| GET | `/director/clients/:id/accounts` | `DirectorGetClientAccounts` | Récupérer les comptes d'un client |
 | POST | `/director/clients` | `DirectorManageCreate` | Créer un nouveau client |
 | PATCH | `/director/clients/:id` | `DirectorManageUpdate` | Modifier un client |
 | DELETE | `/director/clients/:id` | `DirectorManageDelete` | Supprimer un client |
