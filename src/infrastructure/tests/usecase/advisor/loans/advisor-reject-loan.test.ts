@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { LoanRequest } from '@pp-clca-pcm/domain/entities/loan-request';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { AdvisorRejectLoan } from '@pp-clca-pcm/application/usecases/advisor/loans/advisor-reject-loan';
-import { NotAdvisor } from '@pp-clca-pcm/application/errors/not-advisor';
-import { LoanRequestRepository } from '@pp-clca-pcm/application/repositories/request-loan';
-import { Security } from '@pp-clca-pcm/application/services/security';
+import { User } from '@pp-clca-pcm/domain';
+import { LoanRequest } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { AdvisorRejectLoan } from '@pp-clca-pcm/application';
+import { NotAdvisor } from '@pp-clca-pcm/application';
+import { LoanRequestRepository } from '@pp-clca-pcm/application';
+import { Security } from '@pp-clca-pcm/application';
 
 class InMemoryLoanRequestRepository implements LoanRequestRepository {
   public readonly loanRequests: LoanRequest[] = [];

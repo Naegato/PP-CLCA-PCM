@@ -1,18 +1,18 @@
 import { describe, expect, test } from 'vitest';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
-import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { InMemoryStockRepository } from '@pp-clca-pcm/adapters/repositories/memory/stock/stock';
-import { InMemoryStockOrderRepository } from '@pp-clca-pcm/adapters/repositories/memory/stockOrder/stockOrder';
-import { InMemoryPortfolioRepository } from '@pp-clca-pcm/adapters/repositories/memory/portfolio/portfolio';
-import { DirectorDeleteStock } from '@pp-clca-pcm/application/usecases/director/stocks/director-delete-stock';
-import { DirectorDeleteStockError } from '@pp-clca-pcm/application/errors/director-delete-stock';
+import { Company } from '@pp-clca-pcm/domain';
+import { Stock } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Portfolio } from '@pp-clca-pcm/domain';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { InMemoryStockRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryStockOrderRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryPortfolioRepository } from '@pp-clca-pcm/adapters';
+import { DirectorDeleteStock } from '@pp-clca-pcm/application';
+import { DirectorDeleteStockError } from '@pp-clca-pcm/application';
 
 describe('Director Delete Stock', () => {
   const getData = () => {

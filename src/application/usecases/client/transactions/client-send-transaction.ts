@@ -1,7 +1,7 @@
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
+import { Account } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
 import { TransactionError } from '../../../errors/transaction.js';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { User } from '@pp-clca-pcm/domain';
 import { AccountRepository } from '../../../repositories/account.js';
 import { AccountUpdateError } from '../../../errors/account-update.js';
 

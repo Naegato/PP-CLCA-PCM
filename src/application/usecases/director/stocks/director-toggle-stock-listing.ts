@@ -1,5 +1,5 @@
 import { StockRepository } from '../../../repositories/stock.js';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
+import { Stock } from '@pp-clca-pcm/domain';
 import { DirectorToggleStockListingError } from '../../../errors/director-toggle-stock-listing.js';
 
 export class DirectorToggleStockListing {

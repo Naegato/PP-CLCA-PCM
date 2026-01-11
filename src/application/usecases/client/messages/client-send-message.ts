@@ -1,5 +1,5 @@
-import { Message } from "@pp-clca-pcm/domain/entities/discussion/message";
-import { Discussion } from "@pp-clca-pcm/domain/entities/discussion/discussion";
+import { Message } from '@pp-clca-pcm/domain';
+import { Discussion } from '@pp-clca-pcm/domain';
 import { NotClient } from "../../../errors/not-client.js";
 import { DiscussionNotFoundError } from "../../../errors/discussion-not-found.js";
 import { MessageRepository } from "../../../repositories/discussion/message.js";

@@ -2,7 +2,7 @@ import { StockRepository } from '../../../repositories/stock.js';
 import { DirectorDeleteStockError } from '../../../errors/director-delete-stock.js';
 import { PortfolioRepository } from '../../../repositories/portfolio.js';
 import { StockOrderRepository } from '../../../repositories/stockOrder.js';
-import { PortfolioError } from '@pp-clca-pcm/domain/errors/portfolio';
+import { PortfolioError } from '@pp-clca-pcm/domain';
 
 export class DirectorDeleteStock {
   constructor(

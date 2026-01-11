@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
+import { Company } from '@pp-clca-pcm/domain';
 
 describe('Company entity', () => {
   test('should create a company', () => {

@@ -1,6 +1,6 @@
-import { LoanRequestRepository } from "@pp-clca-pcm/application/repositories/request-loan";
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { LoanRequest } from  '@pp-clca-pcm/domain/entities/loan-request';
+import { LoanRequestRepository } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
+import { LoanRequest } from  '@pp-clca-pcm/domain';
 
 export class ClientRequestLoan {
   public constructor (

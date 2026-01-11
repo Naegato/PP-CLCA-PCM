@@ -1,7 +1,7 @@
-import { RedisAccountTypeRepository } from '@pp-clca-pcm/adapters/repositories/redis/account/type';
-import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
-import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
+import { RedisAccountTypeRepository } from '@pp-clca-pcm/adapters';
+import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain';
+import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application';
+import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;

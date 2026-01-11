@@ -1,4 +1,4 @@
-import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
+import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain';
 import { AccountTypeAlreadyExistError } from '../errors/account-type-already-exist.js';
 import { AccountTypeDoesNotExistError } from '../errors/account-type-does-not-exist.js';
 

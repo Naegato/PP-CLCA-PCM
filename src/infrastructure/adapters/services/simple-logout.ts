@@ -1,4 +1,4 @@
-import { LogoutService } from '@pp-clca-pcm/application/services/logout';
+import { LogoutService } from '@pp-clca-pcm/application';
 
 /**
  * SimpleLogoutService

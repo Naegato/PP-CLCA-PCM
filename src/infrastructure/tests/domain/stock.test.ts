@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
+import { Stock } from '@pp-clca-pcm/domain';
+import { Company } from '@pp-clca-pcm/domain';
 
 describe('Stock Entity', () => {
   const appleCompany = Company.create('Apple Inc.');

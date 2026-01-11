@@ -1,9 +1,7 @@
 import { RedisBaseRepository } from './base.js';
 import { RedisClientType } from "redis";
-import { CompanyRepository } from '@pp-clca-pcm/application/repositories/company';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { CompanyDeleteError } from "@pp-clca-pcm/application/errors/company-delete-error";
-
+import { CompanyRepository } from '@pp-clca-pcm/application';
+import { Company } from '@pp-clca-pcm/domain';
 export class RedisCompanyRepository extends RedisBaseRepository<Company> implements CompanyRepository {
   readonly prefix = 'company:';
 

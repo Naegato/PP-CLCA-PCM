@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Ban } from '@pp-clca-pcm/domain/entities/ban';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { DirectorProps } from '@pp-clca-pcm/domain/value-objects/user/director';
-import { InMemoryBanRepository } from '@pp-clca-pcm/adapters/repositories/memory/ban';
+import { User } from '@pp-clca-pcm/domain';
+import { Ban } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { DirectorProps } from '@pp-clca-pcm/domain';
+import { InMemoryBanRepository } from '@pp-clca-pcm/adapters';
 
 describe('InMemory Ban Repository', () => {
   const createTestClient = (id: string = 'client-id') => {

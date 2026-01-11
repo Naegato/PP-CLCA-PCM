@@ -1,5 +1,5 @@
-import { AdvisorRepository } from "@pp-clca-pcm/application/repositories/advisor";
-import { User } from "@pp-clca-pcm/domain/entities/user";
+import { AdvisorRepository } from "@pp-clca-pcm/application";
+import { User } from "@pp-clca-pcm/domain";
 import { RedisBaseRepository } from "./base.js";
 import { RedisClientType } from "redis";
 
@@ -12,8 +12,8 @@ export class RedisAdvisorRepository extends RedisBaseRepository<User> implements
 		super(redisClient);
 	}
 
-	async save(advisor: User): Promise<User> {
-		const key = this.key(advisor);
+  async save(advisor: User): Promise<User> {
+    const key = this.key(advisor);
 
 		const result = await this.redisClient.set(
 			key,
@@ -21,8 +21,8 @@ export class RedisAdvisorRepository extends RedisBaseRepository<User> implements
 			{ NX: true }
 		);
 
-		return advisor;
-	}
+    return advisor;
+  }
 
 	protected instanticate(entity: User): User {
 		return User.fromPrimitives({

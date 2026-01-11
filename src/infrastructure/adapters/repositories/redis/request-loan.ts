@@ -13,8 +13,8 @@ export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest>
 		super(redisClient);
 	}
 
-	async save(loan: LoanRequest): Promise<LoanRequest> {
-		const key = this.key(loan);
+  async save(loan: LoanRequest): Promise<LoanRequest> {
+    const key = this.key(loan);
 
 		await this.redisClient.set(
 			key,
@@ -22,31 +22,31 @@ export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest>
 			{ NX: true }
 		);
 
-		return loan;
-	}
+    return loan;
+  }
 
 	async getAllByAdvisor(advisor: User): Promise<LoanRequest[]> {
 		const advisorId = advisor.identifier ? advisor.identifier : 'null';
 		return this.fetchFromKey(`${this.prefix}${advisorId}:*`);
 	}
 
-	async get(id: string): Promise<LoanRequest | null> {
-		return this.fetchFromKey(`${this.prefix}*:${id}`).then(results => results.length ? results[0] : null);
-	}
+  async get(id: string): Promise<LoanRequest | null> {
+    return this.fetchFromKey(`${this.prefix}*:${id}`).then(results => results.length ? results[0] : null);
+  }
 
-	override key(loan: LoanRequest): string {
-		const advisorId = loan.advisor ? loan.advisor.identifier : 'null';
+  override key(loan: LoanRequest): string {
+    const advisorId = loan.advisor ? loan.advisor.identifier : 'null';
 
-		return `${this.prefix}${advisorId}:${loan.identifier}`;
-	}
+    return `${this.prefix}${advisorId}:${loan.identifier}`;
+  }
 
-	protected instanticate(entity: LoanRequest): LoanRequest {
-		return LoanRequest.fromPrimitives({
-			identifier: entity.identifier,
-			client: entity.client,
-			amount: entity.amount,
-			approved: entity.approved,
-			advisor: entity.advisor,
-		});
-	}
+  protected instanticate(entity: LoanRequest): LoanRequest {
+    return LoanRequest.fromPrimitives({
+      identifier: entity.identifier,
+      client: entity.client,
+      amount: entity.amount,
+      approved: entity.approved,
+      advisor: entity.advisor,
+    });
+  }
 }

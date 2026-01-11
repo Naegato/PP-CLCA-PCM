@@ -1,6 +1,6 @@
-import { LoanRepository } from '@pp-clca-pcm/application/repositories/loan';
-import { Loan } from '@pp-clca-pcm/domain/entities/loan';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { LoanRepository } from '@pp-clca-pcm/application';
+import { Loan } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
 import { RedisBaseRepository } from './base.js';
 import { RedisClientType } from "redis";
 
@@ -13,8 +13,8 @@ export class RedisLoanRepository extends RedisBaseRepository<Loan> implements Lo
 		super(redisClient);
 	}
 
-	async save(loan: Loan): Promise<Loan> {
-		const key = this.key(loan);
+  async save(loan: Loan): Promise<Loan> {
+    const key = this.key(loan);
 
 		await this.redisClient.set(
 			key,
@@ -22,16 +22,16 @@ export class RedisLoanRepository extends RedisBaseRepository<Loan> implements Lo
 			{ NX: true }
 		);
 
-		return loan;
-	}
+    return loan;
+  }
 
-	async allByClient(client: User): Promise<Loan[]> {
-		return this.fetchFromKey(`${this.prefix}${client.identifier}:*`);
-	}
+  async allByClient(client: User): Promise<Loan[]> {
+    return this.fetchFromKey(`${this.prefix}${client.identifier}:*`);
+  }
 
-	override key(loan: Loan): string {
-		return `${this.prefix}${loan.client.identifier}:${loan.identifier}`;
-	}
+  override key(loan: Loan): string {
+    return `${this.prefix}${loan.client.identifier}:${loan.identifier}`;
+  }
 
 	protected instanticate(entity: Loan): Loan {
 		return Loan.fromPrimitives({

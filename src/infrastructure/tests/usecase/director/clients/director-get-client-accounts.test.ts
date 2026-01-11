@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { DirectorProps } from '@pp-clca-pcm/domain/value-objects/user/director';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { DirectorGetClientAccount } from '@pp-clca-pcm/application/usecases/director/clients/director-get-client-accounts';
+import { User } from '@pp-clca-pcm/domain';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { DirectorProps } from '@pp-clca-pcm/domain';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { DirectorGetClientAccount } from '@pp-clca-pcm/application';
 
 describe('Director Get Client Accounts', () => {
   const getData = () => {

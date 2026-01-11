@@ -1,7 +1,7 @@
-import { MessageRepository } from "@pp-clca-pcm/application/repositories/discussion/message";
-import { Message } from "@pp-clca-pcm/domain/entities/discussion/message";
-import { randomUUID } from "crypto";
-import { RedisBaseRepository } from "../base.js";
+import { MessageRepository } from '@pp-clca-pcm/application';
+import { Message } from '@pp-clca-pcm/domain';
+import { randomUUID } from 'crypto';
+import { RedisBaseRepository } from '../base.js';
 import { RedisClientType } from "redis";
 
 export class RedisMessageRepository extends RedisBaseRepository<Message> implements MessageRepository {
@@ -13,14 +13,14 @@ export class RedisMessageRepository extends RedisBaseRepository<Message> impleme
 		super(redisClient);
 	}
 
-	public async save(message: Message): Promise<Message> {
-		const realMessage = new Message(
-			randomUUID(),
-			message.content,
-			message.sendAt,
-			message.sender,
-			message.discussion,
-		)
+  public async save(message: Message): Promise<Message> {
+    const realMessage = new Message(
+      randomUUID(),
+      message.content,
+      message.sendAt,
+      message.sender,
+      message.discussion,
+    );
 
 		const result = await this.redisClient.set(
 			this.key(realMessage),

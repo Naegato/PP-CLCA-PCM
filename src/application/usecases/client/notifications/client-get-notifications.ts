@@ -1,4 +1,4 @@
-import { Notification } from "@pp-clca-pcm/domain/entities/notification";
+import { Notification } from '@pp-clca-pcm/domain';
 import { NotClient } from "../../../errors/not-client.js";
 import { NotificationRepository } from "../../../repositories/notification.js";
 import { Security } from "../../../services/security.js";

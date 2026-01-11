@@ -1,15 +1,17 @@
 import { describe, expect, test } from 'vitest';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { AdvisorRegistration } from '@pp-clca-pcm/application/usecases/advisor/auth/advisor-registration';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
+import { Argon2PasswordService, InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { AdvisorRegistration } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { EmailAlreadyExistError } from '@pp-clca-pcm/application';
 
 describe('Advisor Registration ', () => {
   const getData = () => {
     const inMemoryUserRepository = new InMemoryUserRepository();
+    const passwordService = new Argon2PasswordService();
     const useCase = new AdvisorRegistration(
-      inMemoryUserRepository
+      inMemoryUserRepository,
+      passwordService
     );
 
     return {

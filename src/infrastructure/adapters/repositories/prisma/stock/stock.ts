@@ -1,7 +1,7 @@
-import { StockRepository } from '@pp-clca-pcm/application/repositories/stock';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
+import { StockRepository } from '@pp-clca-pcm/application';
+import { Stock } from '@pp-clca-pcm/domain';
+import { PrismaClient } from '@pp-clca-pcm/adapters';
+import { Company } from '@pp-clca-pcm/domain';
 
 export class PrismaStockRepository implements StockRepository {
   constructor(private readonly db: PrismaClient) {}

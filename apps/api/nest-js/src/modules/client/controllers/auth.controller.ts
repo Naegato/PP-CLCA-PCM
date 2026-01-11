@@ -1,4 +1,12 @@
-import { Controller, Post, Body, HttpCode, UseGuards, UseInterceptors, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpCode,
+  UseGuards,
+  UseInterceptors,
+  Inject,
+} from '@nestjs/common';
 
 // Use cases
 import { ClientLogin } from '@pp-clca-pcm/application';
@@ -71,7 +79,12 @@ export class ClientAuthController {
   @Post('login')
   @HttpCode(200)
   async login(@Body() dto: LoginDto) {
-    const useCase = new ClientLogin(this.userRepository, this.passwordService, this.tokenService);
+    const useCase = new ClientLogin(
+      this.userRepository,
+      this.passwordService,
+      this.tokenService,
+    );
+
     return await useCase.execute({
       email: dto.email,
       password: dto.password,
@@ -85,7 +98,13 @@ export class ClientAuthController {
   @Post('register')
   @HttpCode(201)
   async register(@Body() dto: RegisterDto) {
-    const useCase = new ClientRegistration(this.userRepository, this.accountRepository, this.accountTypeRepository, this.passwordService);
+    const useCase = new ClientRegistration(
+      this.userRepository,
+      this.accountRepository,
+      this.accountTypeRepository,
+      this.passwordService,
+    );
+
     return await useCase.execute(
       dto.firstname,
       dto.lastname,
@@ -114,7 +133,10 @@ export class ClientAuthController {
   @Post('password-reset/request')
   @HttpCode(200)
   async requestPasswordReset(@Body() dto: RequestPasswordResetDto) {
-    const useCase = new ClientRequestPasswordReset(this.userRepository, this.tokenService);
+    const useCase = new ClientRequestPasswordReset(
+      this.userRepository,
+      this.tokenService,
+    );
     return await useCase.execute({
       email: dto.email,
     });
@@ -127,7 +149,11 @@ export class ClientAuthController {
   @Post('password-reset/confirm')
   @HttpCode(200)
   async resetPassword(@Body() dto: ResetPasswordDto) {
-    const useCase = new ClientResetPassword(this.userRepository, this.tokenService, this.passwordService);
+    const useCase = new ClientResetPassword(
+      this.userRepository,
+      this.tokenService,
+      this.passwordService,
+    );
     return await useCase.execute({
       token: dto.token,
       newPassword: dto.newPassword,

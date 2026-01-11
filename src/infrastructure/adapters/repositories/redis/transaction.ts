@@ -1,6 +1,5 @@
-import { RedisClientType } from 'redis';
-import { TransactionRepository } from '@pp-clca-pcm/application/repositories/transaction';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
+import { TransactionRepository } from '@pp-clca-pcm/application';
+import { Transaction } from '@pp-clca-pcm/domain';
 import { RedisBaseRepository } from './base.js';
 
 export class RedisTransactionRepository extends RedisBaseRepository<Transaction> implements TransactionRepository {
@@ -12,8 +11,8 @@ export class RedisTransactionRepository extends RedisBaseRepository<Transaction>
 		super(redisClient);
 	}
 
-	async save(entity: Transaction): Promise<Transaction> {
-		const key = this.key(entity);
+  async save(entity: Transaction): Promise<Transaction> {
+    const key = this.key(entity);
 
 		await this.redisClient.set(
 			key,
@@ -21,16 +20,16 @@ export class RedisTransactionRepository extends RedisBaseRepository<Transaction>
 			{ NX: true }
 		);
 
-		return entity;
-	}
+    return entity;
+  }
 
-	async delete(transaction: Transaction): Promise<Transaction> {
-		const key = this.key(transaction);
+  async delete(transaction: Transaction): Promise<Transaction> {
+    const key = this.key(transaction);
 
 		const result = await this.redisClient.del(key);
 
-		return transaction;
-	}
+    return transaction;
+  }
 
 	protected instanticate(entity: Transaction): Transaction {
 		return Transaction.fromPrimitives({

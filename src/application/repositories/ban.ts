@@ -1,5 +1,5 @@
-import { Ban } from "@pp-clca-pcm/domain/entities/ban";
-import { User } from "@pp-clca-pcm/domain/entities/user";
+import { Ban } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
 
 export interface BanRepository {
   save(ban: Ban): Promise<Ban>;

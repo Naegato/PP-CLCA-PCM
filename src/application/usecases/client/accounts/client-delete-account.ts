@@ -1,8 +1,8 @@
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
+import { UserRepository } from '@pp-clca-pcm/application';
 import { AccountRepository } from '../../../repositories/account.js';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { AccountDeleteError } from '@pp-clca-pcm/application/errors/account-delete';
+import { Account } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { AccountDeleteError } from '@pp-clca-pcm/application';
 
 export class ClientDeleteAccount {
   public constructor(

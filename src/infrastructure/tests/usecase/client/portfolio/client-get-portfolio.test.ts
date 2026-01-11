@@ -1,21 +1,21 @@
 import { describe, expect, test } from 'vitest';
 
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
-import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
-import { PortfolioRepository } from '@pp-clca-pcm/application/repositories/portfolio';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters/repositories/memory/user';
-import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters/repositories/memory/account/account';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { Stock } from '@pp-clca-pcm/domain';
+import { Company } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain';
+import { Portfolio } from '@pp-clca-pcm/domain';
+import { PortfolioRepository } from '@pp-clca-pcm/application';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryAccountRepository } from '@pp-clca-pcm/adapters';
 
 // Import the usecase from client-get-portfolio.ts
-import { ClientGetPortfolio } from '@pp-clca-pcm/application/usecases/client/portfolio/client-get-portfolio';
-import { ClientGetPortfolioError } from '@pp-clca-pcm/application/errors/client-get-portfolio';
+import { ClientGetPortfolio } from '@pp-clca-pcm/application';
+import { ClientGetPortfolioError } from '@pp-clca-pcm/application';
 
 // Simple InMemory implementation for testing
 class InMemoryPortfolioRepository implements PortfolioRepository {

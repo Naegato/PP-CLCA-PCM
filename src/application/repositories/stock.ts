@@ -1,4 +1,4 @@
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
+import { Stock } from '@pp-clca-pcm/domain';
 
 export interface StockRepository {
   all(): Promise<Stock[]>;

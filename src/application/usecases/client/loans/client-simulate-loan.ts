@@ -1,5 +1,5 @@
-import { SimulatedLoan } from "@pp-clca-pcm/domain/entities/simulated-loan";
-import { SimulatedLoanError } from "@pp-clca-pcm/domain/errors/simulated-loan";
+import { SimulatedLoan } from '@pp-clca-pcm/domain';
+import { SimulatedLoanError } from '@pp-clca-pcm/domain';
 
 export class ClientSimulateLoan {
   public async execute(

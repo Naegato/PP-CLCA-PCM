@@ -1,6 +1,6 @@
-import { Ban } from '@pp-clca-pcm/domain/entities/ban';
-import { BanRepository } from '@pp-clca-pcm/application/repositories/ban';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { Ban } from '@pp-clca-pcm/domain';
+import { BanRepository } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
 
 export class InMemoryBanRepository implements BanRepository {
   public bans: Ban[] = [];

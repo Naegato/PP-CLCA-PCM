@@ -1,7 +1,7 @@
-import { PrismaStockRepository } from '@pp-clca-pcm/adapters/repositories/prisma/stock/stock';
-import { prisma } from '@pp-clca-pcm/adapters/repositories/prisma/client';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
+import { PrismaStockRepository } from '@pp-clca-pcm/adapters';
+import { prisma } from '@pp-clca-pcm/adapters';
+import { Stock } from '@pp-clca-pcm/domain';
+import { Company } from '@pp-clca-pcm/domain';
 import { beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;

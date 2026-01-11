@@ -1,12 +1,12 @@
+import { Toaster } from '@/components/ui/sonner';
 import { routing } from '@/src/i18n/routing';
-import type { Metadata } from 'next';
 import { hasLocale, Locale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { notFound } from 'next/navigation';
-import { ReactNode } from 'react';
 import Navigation from '@/components/naviagtion';
+import { AuthProvider } from '@/contexts/auth-context';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -50,8 +50,13 @@ export default async function LocaleLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
     <NextIntlClientProvider>
-      <Navigation/>
-      {children}
+      <AuthProvider>
+        <Navigation/>
+        <main className="container mx-auto px-4 py-8">
+          {children}
+        </main>
+        <Toaster />
+      </AuthProvider>
     </NextIntlClientProvider>
     </body>
     </html>

@@ -1,6 +1,6 @@
+import { PasswordService } from '@pp-clca-pcm/application';
 import { UserRepository } from '../../../repositories/user.js';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { PasswordService } from '../../../services/password';
+import { User } from '@pp-clca-pcm/domain';
 
 export class DirectorRegistration {
   public constructor(

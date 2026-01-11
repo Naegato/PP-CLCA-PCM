@@ -1,3 +1,10 @@
+import { NotificationList } from '@/components/client/notification-list';
+import { ProtectedRoute } from '@/components/protected-route';
+
 export default function NotificationsPage() {
-  return <h1>Notifications Page</h1>;
+  return (
+    <ProtectedRoute allowedRoles={['client']}>
+      <NotificationList />
+    </ProtectedRoute>
+  );
 }

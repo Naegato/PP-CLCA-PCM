@@ -1,7 +1,7 @@
-import { Ban } from '@pp-clca-pcm/domain/entities/ban';
-import { BanRepository } from '@pp-clca-pcm/application/repositories/ban';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
+import { Ban } from '@pp-clca-pcm/domain';
+import { BanRepository } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
+import { PrismaClient } from '@pp-clca-pcm/adapters';
 
 export class PrismaBanRepository implements BanRepository {
   constructor(private readonly db: PrismaClient) {}

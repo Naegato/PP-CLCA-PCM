@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { DirectorProps } from '@pp-clca-pcm/domain/value-objects/user/director';
+import { User } from '@pp-clca-pcm/domain';
+import { DirectorProps } from '@pp-clca-pcm/domain';
 
 describe('Director entity', () => {
   test('Create Director', () => {

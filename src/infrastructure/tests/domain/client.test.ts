@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
 
 describe('Client entity', () => {
   test('Create Client', () => {

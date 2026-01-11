@@ -5,5 +5,12 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@pp-clca-pcm/application$": "<rootDir>/../../../../src/application/dist/index.js",
+    "^@pp-clca-pcm/adapters$":
+    "<rootDir>/../../../../src/infrastructure/adapters/repositories/prisma/__mocks__/index.ts",
+    "^(.*/src/infrastructure/adapters/.*)\\.js$":
+    "$1.ts"
   }
 }

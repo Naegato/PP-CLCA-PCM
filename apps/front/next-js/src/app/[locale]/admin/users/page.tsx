@@ -1,3 +1,10 @@
-export default function AdminUserPage() {
-  return <h1>AdminUser Page</h1>;
+import { ClientList } from '@/components/director/client-list';
+import { ProtectedRoute } from '@/components/protected-route';
+
+export default function AdminUsersPage() {
+  return (
+    <ProtectedRoute allowedRoles={['director']}>
+      <ClientList />
+    </ProtectedRoute>
+  );
 }

@@ -1,5 +1,5 @@
-import { PortfolioRepository } from '@pp-clca-pcm/application/repositories/portfolio';
-import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
+import { PortfolioRepository } from '@pp-clca-pcm/application';
+import { Portfolio } from '@pp-clca-pcm/domain';
 
 export class InMemoryPortfolioRepository implements PortfolioRepository {
   private readonly portfolios: Map<string, Portfolio> = new Map();

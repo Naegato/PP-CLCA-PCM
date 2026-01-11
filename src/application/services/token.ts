@@ -1,5 +1,5 @@
-import { InvalidResetTokenError } from '@pp-clca-pcm/application/errors/invalid-reset-token';
-import { TokenSecretNotDefinedError } from '@pp-clca-pcm/application/errors/token-secret-not-defined-error';
+import { InvalidResetTokenError } from '@pp-clca-pcm/application';
+import { TokenSecretNotDefinedError } from '@pp-clca-pcm/application';
 
 export interface TokenService {
   generateToken(userId: string): Promise<string | TokenSecretNotDefinedError>;

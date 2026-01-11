@@ -1,7 +1,7 @@
-import { RedisUserRepository } from '@pp-clca-pcm/adapters/repositories/redis/user';
-import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
+import { RedisUserRepository } from '@pp-clca-pcm/adapters';
+import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters';
 import { beforeAll, describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { User } from '@pp-clca-pcm/domain';
 
 const databaseProvider = process.env.DB_PROVIDER;
 const isRedis = databaseProvider === 'redis';

@@ -1,5 +1,5 @@
 import { StockOrderRepository } from '../repositories/stockOrder.js';
-import { OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
+import { OrderSide } from '@pp-clca-pcm/domain';
 
 export class MarketService {
   constructor(private readonly stockOrderRepository: StockOrderRepository) {}

@@ -1,7 +1,7 @@
 import { RedisBaseRepository } from './base.js';
 import { RedisClientType } from "redis";
-import { PortfolioRepository } from '@pp-clca-pcm/application/repositories/portfolio';
-import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
+import { PortfolioRepository } from '@pp-clca-pcm/application';
+import { Portfolio } from '@pp-clca-pcm/domain';
 import { PortfolioItem } from '@pp-clca-pcm/domain';
 
 export class RedisPortfolioRepository extends RedisBaseRepository<Portfolio> implements PortfolioRepository {

@@ -1,5 +1,5 @@
-import { DiscussionRepository } from "@pp-clca-pcm/application/repositories/discussion/discussion";
-import { Discussion } from "@pp-clca-pcm/domain/entities/discussion/discussion";
+import { DiscussionRepository } from "@pp-clca-pcm/application";
+import { Discussion } from "@pp-clca-pcm/domain";
 import { randomUUID } from "crypto";
 import { RedisBaseRepository } from "../base.js";
 import { RedisClientType } from "redis";
@@ -13,13 +13,13 @@ export class RedisDiscussionRepository extends RedisBaseRepository<Discussion> i
 		super(redisClient);
 	}
 
-	async save(discussion: Discussion): Promise<Discussion> {
-		const realDiscussion = new Discussion(
-			randomUUID(),
-			discussion.content,
-			discussion.advisor,
-			discussion.user,
-		);
+  async save(discussion: Discussion): Promise<Discussion> {
+    const realDiscussion = new Discussion(
+      randomUUID(),
+      discussion.content,
+      discussion.advisor,
+      discussion.user,
+    );
 
 		const result = await this.redisClient.set(
 			this.key(realDiscussion),
@@ -27,22 +27,22 @@ export class RedisDiscussionRepository extends RedisBaseRepository<Discussion> i
 			{ NX: true }
 		);
 
-		return realDiscussion;
-	}
+    return realDiscussion;
+  }
 
-	async get(id: string): Promise<Discussion | null> {
-		const key = this.key(id);
+  async get(id: string): Promise<Discussion | null> {
+    const key = this.key(id);
 
 		const data = await this.redisClient.get(key);
 
-		if (!data) {
-			return null;
-		}
+    if (!data) {
+      return null;
+    }
 
-		const parsedData = JSON.parse(data);
+    const parsedData = JSON.parse(data);
 
-		return this.instanticate(parsedData);
-	}
+    return this.instanticate(parsedData);
+  }
 
 	protected instanticate(entity: Discussion): Discussion {
 		return new Discussion(

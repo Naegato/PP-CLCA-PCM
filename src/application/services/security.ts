@@ -1,4 +1,4 @@
-import { User } from "@pp-clca-pcm/domain/entities/user";
+import { User } from '@pp-clca-pcm/domain';
 
 export interface Security {
   getCurrentUser(): Promise<User | null>;

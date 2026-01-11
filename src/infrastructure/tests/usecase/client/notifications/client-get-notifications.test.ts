@@ -1,13 +1,13 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Notification } from '@pp-clca-pcm/domain/entities/notification';
-import { NotificationType } from '@pp-clca-pcm/domain/value-objects/notification-type';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { ClientGetNotifications } from '@pp-clca-pcm/application/usecases/client/notifications/client-get-notifications';
-import { NotClient } from '@pp-clca-pcm/application/errors/not-client';
-import { InMemoryNotificationRepository } from '@pp-clca-pcm/adapters/repositories/memory/notification';
-import { Security } from '@pp-clca-pcm/application/services/security';
+import { User } from '@pp-clca-pcm/domain';
+import { Notification } from '@pp-clca-pcm/domain';
+import { NotificationType } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { ClientGetNotifications } from '@pp-clca-pcm/application';
+import { NotClient } from '@pp-clca-pcm/application';
+import { InMemoryNotificationRepository } from '@pp-clca-pcm/adapters';
+import { Security } from '@pp-clca-pcm/application';
 
 class MockSecurity implements Security {
   constructor(private currentUser: User) {}

@@ -1,13 +1,13 @@
-import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { TRADING_FEE } from '@pp-clca-pcm/domain/constants/bank';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
+import { TRADING_FEE } from '@pp-clca-pcm/domain';
 import { AccountRepository } from '../../../repositories/account.js';
 import { StockOrderRepository } from '../../../repositories/stockOrder.js';
 import { MatchStockOrderError } from '../../../errors/match-stock-order.js';
 import { PortfolioRepository } from '../../../repositories/portfolio.js';
-import { Portfolio } from '@pp-clca-pcm/domain/entities/portfolio/portfolio';
-import { PortfolioError } from '@pp-clca-pcm/domain/errors/portfolio';
-import { InvalidIbanError } from '@pp-clca-pcm/domain/errors/invalid-iban-format';
+import { Portfolio } from '@pp-clca-pcm/domain';
+import { PortfolioError } from '@pp-clca-pcm/domain';
+import { InvalidIbanError } from '@pp-clca-pcm/domain';
 
 //purpose of this function is to match an order to buy or sell a stock to other existing orders on the same stock, and if possible procede with the stocks' trade
 export class ClientMatchStockOrder {

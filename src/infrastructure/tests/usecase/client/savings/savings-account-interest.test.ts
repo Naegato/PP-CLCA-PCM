@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest';
 
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain';
 
 describe('Savings Account Interest', () => {
   const createTestUser = () => {

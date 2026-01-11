@@ -1,8 +1,8 @@
-import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application/errors/account-type-already-exist';
-import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application/errors/account-type-does-not-exist';
-import { AccountTypeRepository } from '@pp-clca-pcm/application/repositories/type';
-import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Database } from '@pp-clca-pcm/adapters/repositories/mariadb/database';
+import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application';
+import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application';
+import { AccountTypeRepository } from '@pp-clca-pcm/application';
+import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain';
+import { Database } from '@pp-clca-pcm/adapters';
 
 export class MariaDbAccountTypeRepository implements AccountTypeRepository {
   constructor(private readonly db: Database) {

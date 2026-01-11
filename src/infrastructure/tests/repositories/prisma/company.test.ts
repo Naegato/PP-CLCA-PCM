@@ -1,6 +1,6 @@
-import { PrismaCompanyRepository } from '@pp-clca-pcm/adapters/repositories/prisma/company';
-import { prisma } from '@pp-clca-pcm/adapters/repositories/prisma/client';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
+import { PrismaCompanyRepository } from '@pp-clca-pcm/adapters';
+import { prisma } from '@pp-clca-pcm/adapters';
+import { Company } from '@pp-clca-pcm/domain';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;

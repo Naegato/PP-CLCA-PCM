@@ -1,12 +1,12 @@
-import { PrismaUserRepository } from '@pp-clca-pcm/adapters/repositories/prisma/user';
-import { prisma } from '@pp-clca-pcm/adapters/repositories/prisma/client';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
-import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-not-found-by-email';
-import { UserNotFoundByIdError } from '@pp-clca-pcm/application/errors/user-not-found-by-id';
-import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
+import { PrismaUserRepository } from '@pp-clca-pcm/adapters';
+import { prisma } from '@pp-clca-pcm/adapters';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { EmailAlreadyExistError } from '@pp-clca-pcm/application';
+import { UserNotFoundByEmailError } from '@pp-clca-pcm/application';
+import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
+import { UserUpdateError } from '@pp-clca-pcm/application';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;

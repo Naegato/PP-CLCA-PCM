@@ -6,10 +6,10 @@ import { RedisBaseRepository } from './base.js';
 import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-not-found-by-email';
 
 export class RedisUserRepository extends RedisBaseRepository<User> implements UserRepository {
-	readonly prefix = 'user:';
+  readonly prefix = 'user:';
 
-	async save(user: User): Promise<User | EmailAlreadyExistError> {
-		const key = this.key(user);
+  async save(user: User): Promise<User | EmailAlreadyExistError> {
+    const key = this.key(user);
 
 		const exists = await this.redisClient.exists(key);
 		if (exists) {
@@ -22,8 +22,8 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 			{ NX: true }
 		);
 
-		return user;
-	}
+    return user;
+  }
 
 	async find(user: User): Promise<User | null> {
 		return this.fetchFromKey(this.key(user)).then(results => results.length ? results[0] : null);
@@ -40,8 +40,8 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 		return results[0];
 	}
 
-	async update(user: User): Promise<User | UserUpdateError> {
-		const key = this.key(user);
+  async update(user: User): Promise<User | UserUpdateError> {
+    const key = this.key(user);
 
 		const exists = await this.redisClient.exists(key);
 		if (!exists) {
@@ -53,61 +53,61 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 			JSON.stringify(user),
 		);
 
-		return user;
-	}
+    return user;
+  }
 
-	protected async fetchFromKey(keyToSearch: string): Promise<User[]> {
-		const result: User[] = [];
+  protected async fetchFromKey(keyToSearch: string): Promise<User[]> {
+    const result: User[] = [];
 
 		for await (const key of this.redisClient.scanIterator({ MATCH: keyToSearch })) {
 			await Promise.all(key.map(async k => {
 				const value = await this.redisClient.get(k);
 				if (!value) return;
 
-				const data = JSON.parse(value);
-				result.push(
-					User.fromPrimitives({
-						identifier: data.identifier,
-						firstname: data.firstname,
-						lastname: data.lastname,
-						email: data.email,
-						password: data.password,
-						clientProps: data.clientProps,
-						advisorProps: data.advisorProps,
-						directorProps: data.directorProps,
-					})
-				);
-			}))
-		}
+        const data = JSON.parse(value);
+        result.push(
+          User.fromPrimitives({
+            identifier: data.identifier,
+            firstname: data.firstname,
+            lastname: data.lastname,
+            email: data.email,
+            password: data.password,
+            clientProps: data.clientProps,
+            advisorProps: data.advisorProps,
+            directorProps: data.directorProps,
+          })
+        );
+      }));
+    }
 
-		return result;
-	}
+    return result;
+  }
 
 	async findById(id: string): Promise<User | import('@pp-clca-pcm/application/errors/user-not-found-by-id').UserNotFoundByIdError> {
 		const allUsers = await this.all();
 		const user = allUsers.find(u => u.identifier === id);
 
-		if (!user) {
-			const { UserNotFoundByIdError } = await import('@pp-clca-pcm/application/errors/user-not-found-by-id');
-			return new UserNotFoundByIdError();
-		}
+    if (!user) {
+      const { UserNotFoundByIdError } = await import('@pp-clca-pcm/application');
+      return new UserNotFoundByIdError();
+    }
 
-		return user;
-	}
+    return user;
+  }
 
-	async delete(userId: string): Promise<void> {
-		const user = await this.findById(userId);
-		if (user instanceof Error) {
-			return;
-		}
+  async delete(userId: string): Promise<void> {
+    const user = await this.findById(userId);
+    if (user instanceof Error) {
+      return;
+    }
 
 		const key = this.key(user);
 		await this.redisClient.del(key);
 	}
 
-	protected override key(entity: User): string {
-		return `${this.prefix}${entity.email.value}`;
-	}
+  protected override key(entity: User): string {
+    return `${this.prefix}${entity.email.value}`;
+  }
 
 	protected instanticate(entity: any): User {
 		return User.fromPrimitives({

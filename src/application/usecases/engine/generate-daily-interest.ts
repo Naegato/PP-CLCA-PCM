@@ -1,5 +1,5 @@
 import { AccountRepository } from '../../repositories/account.js';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
+import { Transaction } from '@pp-clca-pcm/domain';
 import { AccountUpdateError } from '../../errors/account-update.js';
 import { GenerateDailyInterestError } from '../../errors/generate-daily-interest.js';
 

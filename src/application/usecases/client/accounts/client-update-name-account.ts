@@ -1,5 +1,5 @@
 import { AccountRepository } from '../../../repositories/account.js';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
+import { Account } from '@pp-clca-pcm/domain';
 
 export class ClientUpdateNameAccount {
   public constructor(

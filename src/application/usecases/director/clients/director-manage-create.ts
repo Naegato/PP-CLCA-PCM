@@ -1,4 +1,4 @@
-import { User } from "@pp-clca-pcm/domain/entities/user";
+import { User } from '@pp-clca-pcm/domain';
 import { NotDirector } from "../../../errors/not-director.js";
 import { UserRepository } from "../../../repositories/user.js";
 import { Security } from "../../../services/security.js";

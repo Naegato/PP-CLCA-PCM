@@ -1,4 +1,4 @@
-import { getRedisClient, connectRedis } from '@pp-clca-pcm/adapters/repositories/redis/client';
+import { getRedisClient, connectRedis } from '@pp-clca-pcm/adapters';
 import { describe, expect, test } from 'vitest';
 
 const databaseProvider = process.env.DB_PROVIDER;

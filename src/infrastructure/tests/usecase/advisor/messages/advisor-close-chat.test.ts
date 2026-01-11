@@ -1,14 +1,14 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Discussion } from '@pp-clca-pcm/domain/entities/discussion/discussion';
-import { DiscussionStatus } from '@pp-clca-pcm/domain/value-objects/discussion-status';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { AdvisorCloseChat } from '@pp-clca-pcm/application/usecases/advisor/messages/advisor-close-chat';
-import { NotAdvisor } from '@pp-clca-pcm/application/errors/not-advisor';
-import { DiscussionNotFoundError } from '@pp-clca-pcm/application/errors/discussion-not-found';
-import { DiscussionRepository } from '@pp-clca-pcm/application/repositories/discussion/discussion';
-import { Security } from '@pp-clca-pcm/application/services/security';
+import { User } from '@pp-clca-pcm/domain';
+import { Discussion } from '@pp-clca-pcm/domain';
+import { DiscussionStatus } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { AdvisorCloseChat } from '@pp-clca-pcm/application';
+import { NotAdvisor } from '@pp-clca-pcm/application';
+import { DiscussionNotFoundError } from '@pp-clca-pcm/application';
+import { DiscussionRepository } from '@pp-clca-pcm/application';
+import { Security } from '@pp-clca-pcm/application';
 
 class InMemoryDiscussionRepository implements DiscussionRepository {
   public discussions: Discussion[] = [];

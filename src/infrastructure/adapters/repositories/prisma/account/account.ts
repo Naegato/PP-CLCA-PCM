@@ -1,13 +1,13 @@
-import { AccountDeleteError } from '@pp-clca-pcm/application/errors/account-delete';
-import { AccountRepository } from '@pp-clca-pcm/application/repositories/account';
-import { AccountUpdateError } from '@pp-clca-pcm/application/errors/account-update';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
-import { FRENCH_IBAN_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/iban-fr';
+import { AccountDeleteError } from '@pp-clca-pcm/application';
+import { AccountRepository } from '@pp-clca-pcm/application';
+import { AccountUpdateError } from '@pp-clca-pcm/application';
+import { Account } from '@pp-clca-pcm/domain';
+import { PrismaClient } from '@pp-clca-pcm/adapters';
+import { User } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
+import { FRENCH_IBAN_ATTRIBUTES } from '@pp-clca-pcm/domain';
 
 export class PrismaAccountRepository implements AccountRepository {
   private lastAccountNumber = 0n;

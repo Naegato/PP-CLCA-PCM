@@ -1,11 +1,11 @@
 import { describe, expect, test } from 'vitest';
-import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain';
+import { Stock } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { Company } from '@pp-clca-pcm/domain';
 
 describe('StockOrder Entity', () => {
   const userResult = User.create('John', 'Doe', 'john.doe@example.com', 'Password123!');

@@ -1,19 +1,19 @@
 import { describe, expect, test } from 'vitest';
 
-import { Stock } from '@pp-clca-pcm/domain/entities/stock';
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
-import { AccountType } from '@pp-clca-pcm/domain/entities/accounts/type';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { Iban } from '@pp-clca-pcm/domain/value-objects/iban';
-import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/bank';
-import { StockOrder, OrderSide } from '@pp-clca-pcm/domain/entities/stockOrder';
-import { InMemoryStockRepository } from '@pp-clca-pcm/adapters/repositories/memory/stock/stock';
-import { InMemoryStockOrderRepository } from '@pp-clca-pcm/adapters/repositories/memory/stockOrder/stockOrder';
-import { MarketService } from '@pp-clca-pcm/application/services/market';
-import { ClientGetStockWithPrice } from '@pp-clca-pcm/application/usecases/client/stocks/client-get-stock-with-price';
-import { ClientGetStockWithPriceError } from '@pp-clca-pcm/application/errors/client-get-stock-with-price';
+import { Stock } from '@pp-clca-pcm/domain';
+import { Company } from '@pp-clca-pcm/domain';
+import { Account } from '@pp-clca-pcm/domain';
+import { AccountType } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { Iban } from '@pp-clca-pcm/domain';
+import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain';
+import { StockOrder, OrderSide } from '@pp-clca-pcm/domain';
+import { InMemoryStockRepository } from '@pp-clca-pcm/adapters';
+import { InMemoryStockOrderRepository } from '@pp-clca-pcm/adapters';
+import { MarketService } from '@pp-clca-pcm/application';
+import { ClientGetStockWithPrice } from '@pp-clca-pcm/application';
+import { ClientGetStockWithPriceError } from '@pp-clca-pcm/application';
 
 describe('Client Get Stock With Price', () => {
   const getData = () => {

@@ -1,8 +1,8 @@
-import { Notification } from '@pp-clca-pcm/domain/entities/notification';
-import { NotificationRepository } from '@pp-clca-pcm/application/repositories/notification';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { PrismaClient } from '@pp-clca-pcm/adapters/repositories/prisma/generated/client';
-import { NotificationType } from '@pp-clca-pcm/domain/value-objects/notification-type';
+import { Notification } from '@pp-clca-pcm/domain';
+import { NotificationRepository } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
+import { PrismaClient } from '@pp-clca-pcm/adapters';
+import { NotificationType } from '@pp-clca-pcm/domain';
 import { randomUUID } from 'node:crypto';
 
 export class PrismaNotificationRepository implements NotificationRepository {

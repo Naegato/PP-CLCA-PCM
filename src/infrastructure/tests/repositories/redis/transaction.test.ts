@@ -1,12 +1,12 @@
-import { RedisTransactionRepository } from '@pp-clca-pcm/adapters/repositories/redis/transaction';
-import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters/repositories/redis/client';
+import { RedisTransactionRepository } from '@pp-clca-pcm/adapters';
+import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters';
 import { beforeAll, describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Discussion } from '@pp-clca-pcm/domain/entities/discussion/discussion';
-import { LoanRequest } from '@pp-clca-pcm/domain/entities/loan-request';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { Loan } from '@pp-clca-pcm/domain/entities/loan';
-import { Transaction } from '@pp-clca-pcm/domain/entities/transaction';
+import { User } from '@pp-clca-pcm/domain';
+import { Discussion } from '@pp-clca-pcm/domain';
+import { LoanRequest } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { Loan } from '@pp-clca-pcm/domain';
+import { Transaction } from '@pp-clca-pcm/domain';
 
 const databaseProvider = process.env.DB_PROVIDER;
 const isRedis = databaseProvider === 'redis';

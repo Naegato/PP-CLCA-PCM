@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Discussion } from '@pp-clca-pcm/domain/entities/discussion/discussion';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorTransferChat } from '@pp-clca-pcm/application/usecases/advisor/messages/advisor-transfer-chat';
-import { NotAdvisor } from '@pp-clca-pcm/application/errors/not-advisor';
-import { DiscussionRepository } from '@pp-clca-pcm/application/repositories/discussion/discussion';
-import { Security } from '@pp-clca-pcm/application/services/security';
+import { User } from '@pp-clca-pcm/domain';
+import { Discussion } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorTransferChat } from '@pp-clca-pcm/application';
+import { NotAdvisor } from '@pp-clca-pcm/application';
+import { DiscussionRepository } from '@pp-clca-pcm/application';
+import { Security } from '@pp-clca-pcm/application';
 
 class InMemoryDiscussionRepository implements DiscussionRepository {
   public readonly discussions: Discussion[] = [];

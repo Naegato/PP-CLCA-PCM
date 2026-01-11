@@ -1,13 +1,13 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Discussion } from '@pp-clca-pcm/domain/entities/discussion/discussion';
-import { Message } from '@pp-clca-pcm/domain/entities/discussion/message';
-import { AdvisorProps } from '@pp-clca-pcm/domain/value-objects/user/advisor';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { AdvisorReplyMessage } from '@pp-clca-pcm/application/usecases/advisor/messages/advisor-reply-message';
-import { NotAdvisor } from '@pp-clca-pcm/application/errors/not-advisor';
-import { MessageRepository } from '@pp-clca-pcm/application/repositories/discussion/message';
-import { Security } from '@pp-clca-pcm/application/services/security';
+import { User } from '@pp-clca-pcm/domain';
+import { Discussion } from '@pp-clca-pcm/domain';
+import { Message } from '@pp-clca-pcm/domain';
+import { AdvisorProps } from '@pp-clca-pcm/domain';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AdvisorReplyMessage } from '@pp-clca-pcm/application';
+import { NotAdvisor } from '@pp-clca-pcm/application';
+import { MessageRepository } from '@pp-clca-pcm/application';
+import { Security } from '@pp-clca-pcm/application';
 
 class InMemoryMessageRepository implements MessageRepository {
   public readonly messages: Message[] = [];

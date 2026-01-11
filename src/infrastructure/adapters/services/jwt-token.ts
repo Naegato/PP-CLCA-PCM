@@ -1,7 +1,7 @@
-import { InvalidResetTokenError } from '@pp-clca-pcm/application/errors/invalid-reset-token';
-import { TokenSecretNotDefinedError } from '@pp-clca-pcm/application/errors/token-secret-not-defined-error';
-import { TokenService } from '@pp-clca-pcm/application/services/token';
-import * as jwt from 'jsonwebtoken';
+import { InvalidResetTokenError } from '@pp-clca-pcm/application';
+import { TokenSecretNotDefinedError } from '@pp-clca-pcm/application';
+import { TokenService } from '@pp-clca-pcm/application';
+import jwt from 'jsonwebtoken';
 
 export class JwtTokenService implements TokenService {
   public async generateToken(userId: string) {
@@ -10,6 +10,8 @@ export class JwtTokenService implements TokenService {
     if (!secret) {
       return new TokenSecretNotDefinedError();
     }
+
+    console.log('Generating token for userId:', userId);
 
     return jwt.sign({ userId }, secret, { expiresIn: '1h' });
   }
