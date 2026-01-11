@@ -136,6 +136,20 @@
       "name": { "label": "Nouveau nom", "placeholder": "Entrez le nouveau nom" }
     }
   },
+  "AccountCreateForm": {
+    "title": "Nouveau compte",
+    "success": "Compte cree avec succes.",
+    "fields": {
+      "name": { "label": "Nom du compte", "placeholder": "Ex: Compte principal" }
+    }
+  },
+  "SavingsCreateForm": {
+    "title": "Nouveau compte epargne",
+    "success": "Compte epargne cree avec succes.",
+    "fields": {
+      "name": { "label": "Nom du compte", "placeholder": "Ex: Epargne vacances" }
+    }
+  },
   "TransactionForm": {
     "title": "Effectuer un virement",
     "success": "Virement effectue avec succes.",

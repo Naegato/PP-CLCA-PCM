@@ -5,7 +5,25 @@
       "Edit",
       "Write",
       "Bash(cat:*)",
-      "Bash(npm:*)"
+      "Bash(npm:*)",
+      "Bash(pnpm:*)",
+      "Bash(wc:*)",
+      "Bash(for:*)",
+      "Bash(done)",
+      "Bash(find:*)",
+      "Bash(mkdir -p:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm --filter @pp-clca-pcm/adapters p:g:*)",
+      "Bash(pnpm run build:*)",
+      "Bash(tree:*)",
+      "Bash(mv:*)",
+      "Bash(pnpm prisma:generate:*)",
+      "Bash(pnpm build:*)",
+      "Bash(ls:*)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "context7"
+  ]
 }

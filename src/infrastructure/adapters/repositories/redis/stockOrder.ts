@@ -1,5 +1,5 @@
 import { RedisClientType } from 'redis';
-import { RedisBaseRepository } from './base';
+import { RedisBaseRepository } from './base.js';
 import { StockOrderRepository } from '@pp-clca-pcm/application';
 import { Stock, Account, Company, User, AccountType, Iban, Email, Password, StockOrder, OrderSide } from '@pp-clca-pcm/domain';
 

@@ -28,6 +28,20 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const TOKEN_KEY = 'auth_token';
 const USER_KEY = 'auth_user';
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
+
+function setCookie(name: string, value: string, maxAge: number = COOKIE_MAX_AGE) {
+  document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAge}; SameSite=Lax`;
+}
+
+function deleteCookie(name: string) {
+  document.cookie = `${name}=; path=/; max-age=0`;
+}
+
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : null;
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -35,16 +49,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem(TOKEN_KEY);
+    // Try cookie first, then localStorage for backwards compatibility
+    const cookieToken = getCookie(TOKEN_KEY);
+    const storedToken = cookieToken || localStorage.getItem(TOKEN_KEY);
     const storedUser = localStorage.getItem(USER_KEY);
 
     if (storedToken && storedUser) {
       try {
         setToken(storedToken);
         setUser(JSON.parse(storedUser));
+        // Ensure cookie is set if we found token in localStorage
+        if (!cookieToken && storedToken) {
+          setCookie(TOKEN_KEY, storedToken);
+        }
       } catch {
         localStorage.removeItem(TOKEN_KEY);
         localStorage.removeItem(USER_KEY);
+        deleteCookie(TOKEN_KEY);
       }
     }
     setIsLoading(false);
@@ -55,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(newToken);
     localStorage.setItem(TOKEN_KEY, newToken);
     localStorage.setItem(USER_KEY, JSON.stringify(newUser));
+    setCookie(TOKEN_KEY, newToken);
   }, []);
 
   const login = useCallback(async (email: string, password: string, role: UserRole = 'client') => {
@@ -112,6 +134,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(null);
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+    deleteCookie(TOKEN_KEY);
   }, [token, user]);
 
   return (

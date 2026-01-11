@@ -1,6 +1,6 @@
 import { RedisClientType } from 'redis';
 import { randomUUID } from 'crypto';
-import { RedisBaseRepository } from '../base';
+import { RedisBaseRepository } from '../base.js';
 import { DiscussionRepository } from '@pp-clca-pcm/application';
 import { Discussion } from '@pp-clca-pcm/domain';
 

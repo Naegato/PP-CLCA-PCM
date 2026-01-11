@@ -1,6 +1,6 @@
 import { RedisClientType } from 'redis';
 import { StockRepository } from '@pp-clca-pcm/application';
-import { RedisBaseRepository } from './base';
+import { RedisBaseRepository } from './base.js';
 import { Stock, Company } from '@pp-clca-pcm/domain';
 
 export class RedisStockRepository extends RedisBaseRepository<Stock> implements StockRepository {

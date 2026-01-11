@@ -17,6 +17,14 @@ export const routing = defineRouting({
       en: '/account/[id]',
       fr: '/compte/[id]'
     },
+    '/account/create': {
+      en: '/account/create',
+      fr: '/compte/creer'
+    },
+    '/account/savings/create': {
+      en: '/account/savings/create',
+      fr: '/compte/epargne/creer'
+    },
     '/loans': {
       en: '/loans',
       fr: '/emprunts'

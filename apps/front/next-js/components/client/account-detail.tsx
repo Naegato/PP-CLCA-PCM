@@ -1,62 +1,31 @@
 'use client';
 
 import { getApi } from '@/lib/api';
-import { useEffect, useState } from 'react';
+import { Account } from '@pp-clca-pcm/domain';
+import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/src/i18n/navigation';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TransactionForm } from './transaction-form';
 import { AccountRenameForm } from './account-rename-form';
 
-interface Account {
-  id: string;
-  name: string;
-  iban: string;
-  balance: number;
-  type: string;
-}
-
-interface Transaction {
-  id: string;
-  amount: number;
-  type: string;
-  createdAt: string;
-  description?: string;
-}
-
 interface AccountDetailProps {
-  accountId: string;
+  account: Account;
 }
 
-export function AccountDetail({ accountId }: AccountDetailProps) {
+export function AccountDetail({ account }: AccountDetailProps) {
   const t = useTranslations('AccountDetail');
   const tForm = useTranslations('Forms');
   const router = useRouter();
-  const [account, setAccount] = useState<Account | null>(null);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [accountState, setAccount] = useState<Account>(account);
+  const transactions = useMemo(() => {
+    return [...(accountState.emittedTransactions || []), ...(accountState.receivedTransactions || [])];
+  }, [accountState.emittedTransactions, accountState.receivedTransactions]);
+  const accountId = useMemo(() => accountState.identifier!, [accountState.identifier]);
   const [showRename, setShowRename] = useState(false);
   const [showTransfer, setShowTransfer] = useState(false);
-
-  useEffect(() => {
-    async function fetchAccount() {
-      try {
-        const response = await getApi().fetch(`/client/accounts/${accountId}`);
-        const data = await response.json();
-        if (data && !data.error) {
-          setAccount(data.account || data);
-          setTransactions(data.transactions || []);
-        }
-      } catch (error) {
-        console.error('Failed to fetch account:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchAccount();
-  }, [accountId]);
 
   const handleDelete = async () => {
     if (!confirm(t('confirmDelete'))) return;
@@ -81,11 +50,7 @@ export function AccountDetail({ accountId }: AccountDetailProps) {
     }
   };
 
-  if (loading) {
-    return <div className="text-muted-foreground">{t('loading')}</div>;
-  }
-
-  if (!account) {
+  if (!accountState) {
     return <div className="text-muted-foreground">{t('notFound')}</div>;
   }
 
@@ -93,8 +58,8 @@ export function AccountDetail({ accountId }: AccountDetailProps) {
     <div className="space-y-6">
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-2xl font-bold">{account.name}</h1>
-          <p className="text-muted-foreground">{account.iban}</p>
+          <h1 className="text-2xl font-bold">{accountState.name}</h1>
+          <p className="text-muted-foreground">{accountState.iban.value}</p>
         </div>
         <div className="space-x-2">
           <Button variant="outline" onClick={() => setShowRename(!showRename)}>
@@ -118,7 +83,7 @@ export function AccountDetail({ accountId }: AccountDetailProps) {
             {new Intl.NumberFormat('fr-FR', {
               style: 'currency',
               currency: 'EUR',
-            }).format(account.balance)}
+            }).format(accountState.balance || 0)}
           </p>
         </CardContent>
       </Card>
@@ -126,9 +91,9 @@ export function AccountDetail({ accountId }: AccountDetailProps) {
       {showRename && (
         <AccountRenameForm
           accountId={accountId}
-          currentName={account.name}
+          currentName={account.name || ''}
           onSuccess={(newName) => {
-            setAccount({ ...account, name: newName });
+            setAccount({ ...accountState, name: newName } as Account);
             setShowRename(false);
           }}
         />
@@ -155,13 +120,13 @@ export function AccountDetail({ accountId }: AccountDetailProps) {
             <div className="space-y-2">
               {transactions.map((tx) => (
                 <div
-                  key={tx.id}
+                  key={tx.identifier}
                   className="flex justify-between items-center p-3 border rounded"
                 >
                   <div>
-                    <p className="font-medium">{tx.description || tx.type}</p>
+                    <p className="font-medium">{tx.description}</p>
                     <p className="text-sm text-muted-foreground">
-                      {new Date(tx.createdAt).toLocaleDateString('fr-FR')}
+                      {new Date(tx.date).toLocaleDateString('fr-FR')}
                     </p>
                   </div>
                   <p

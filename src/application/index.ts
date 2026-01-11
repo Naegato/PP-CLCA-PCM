@@ -85,6 +85,7 @@ export * from './usecases/advisor/messages/advisor-transfer-chat.js';
 export * from './usecases/client/accounts/client-create-account.js';
 export * from './usecases/client/accounts/client-delete-account.js';
 export * from './usecases/client/accounts/client-get-account.js';
+export * from './usecases/client/accounts/client-get-accounts.js';
 export * from './usecases/client/accounts/client-get-balance-account.js';
 export * from './usecases/client/accounts/client-saving-account-create.js';
 export * from './usecases/client/accounts/client-update-name-account.js';
