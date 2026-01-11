@@ -57,6 +57,9 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
     const saved = await repository.save(user);
 
     expect(saved).instanceof(User);
+    if (!(saved instanceof User)) {
+      expect.fail('Saved user is not an instance of User');
+    }
     expect(saved.email.value).toBe('unique1@example.com');
   });
 
@@ -91,12 +94,22 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
   });
 
   test('find - should return null for non-existent user', async () => {
+    const email = Email.create('fake@example.com');
+    const password = Password.create('pAssword123*');
+
+    if (email instanceof Error) {
+      expect.fail('Email creation failed');
+    }
+    if (password instanceof Error) {
+      expect.fail('Password creation failed');
+    }
+
     const fakeUser = User.fromPrimitives({
       identifier: 'non-existent-id',
       firstname: 'Fake',
       lastname: 'User',
-      email: 'fake@example.com',
-      password: 'password',
+      email: email,
+      password: password,
     });
 
     const found = await repository.find(fakeUser);
@@ -157,12 +170,22 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
   });
 
   test('update - should return UserUpdateError for non-existent user', async () => {
+    const email = Email.create('fake@example.com');
+    const password = Password.create('pAssword123*');
+
+    if (email instanceof Error) {
+      expect.fail('Email creation failed');
+    }
+    if (password instanceof Error) {
+      expect.fail('Password creation failed');
+    }
+
     const fakeUser = User.fromPrimitives({
       identifier: 'non-existent-update-id',
       firstname: 'Fake',
       lastname: 'User',
-      email: 'fakeupdated@example.com',
-      password: 'password',
+      email: email,
+      password: password,
     });
 
     const result = await repository.update(fakeUser);
@@ -192,12 +215,22 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
   });
 
   test('save - should preserve advisor props', async () => {
+    const email = Email.create('advisor@example.com');
+    const password = Password.create('pAssword123*');
+
+    if (email instanceof Error) {
+      expect.fail('Email creation failed');
+    }
+    if (password instanceof Error) {
+      expect.fail('Password creation failed');
+    }
+
     const user = User.fromPrimitives({
       identifier: crypto.randomUUID(),
       firstname: 'Advisor',
       lastname: 'Test',
-      email: 'advisor@example.com',
-      password: 'password',
+      email: email,
+      password: password,
       advisorProps: new AdvisorProps(),
     });
     await repository.save(user);
