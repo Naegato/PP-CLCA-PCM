@@ -1,6 +1,6 @@
 import { PrismaNotificationRepository } from '@pp-clca-pcm/adapters';
 import { prisma } from '@pp-clca-pcm/adapters';
-import { Notification } from '@pp-clca-pcm/domain';
+import { Email, Notification, Password } from '@pp-clca-pcm/domain';
 import { User } from '@pp-clca-pcm/domain';
 import { ClientProps } from '@pp-clca-pcm/domain';
 import { NotificationType } from '@pp-clca-pcm/domain';
@@ -31,12 +31,23 @@ describe.skipIf(!isPostgres)('Prisma Notification Repository', async () => {
   });
 
   const createTestUser = async (id: string = crypto.randomUUID()) => {
+    const email = Email.create(`user-${id}@test.com`);
+    const password = Password.create('123456Aa*')
+
+    if (password instanceof Error) {
+      expect.fail('Password creation failed');
+    }
+
+    if (email instanceof Error) {
+      expect.fail('Email creation failed');
+    }
+
     const user = User.fromPrimitives({
       identifier: id,
       firstname: 'John',
       lastname: 'Doe',
-      email: `user-${id}@test.com`,
-      password: 'hashedpassword',
+      email,
+      password,
       clientProps: new ClientProps(),
     });
 
