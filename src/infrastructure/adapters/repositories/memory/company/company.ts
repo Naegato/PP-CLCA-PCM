@@ -1,7 +1,5 @@
-import { Company } from '@pp-clca-pcm/domain/entities/company';
-import { CompanyRepository } from '@pp-clca-pcm/application/repositories/company';
-import { CompanyDeleteError } from '@pp-clca-pcm/application/errors/company-delete-error';
-import { randomUUID } from 'crypto';
+import { Company } from '@pp-clca-pcm/domain';
+import { CompanyRepository } from '@pp-clca-pcm/application';
 
 export class InMemoryCompanyRepository implements CompanyRepository {
   public readonly companies: Company[] = [];

@@ -1,11 +1,11 @@
-import { AccountDeleteError } from '@pp-clca-pcm/application/errors/account-delete';
-import { AccountRepository } from '@pp-clca-pcm/application/repositories/account';
-import { AccountUpdateError } from '@pp-clca-pcm/application/errors/account-update';
-import { Account } from '@pp-clca-pcm/domain/entities/accounts/account';
+import { Account } from '@pp-clca-pcm/domain';
 import { InMemoryUserRepository } from '../user/user.js';
-import { ClientProps } from '@pp-clca-pcm/domain/value-objects/user/client';
-import { FRENCH_IBAN_ATTRIBUTES } from '@pp-clca-pcm/domain/constants/iban-fr';
-import { User } from '@pp-clca-pcm/domain/entities/user';
+import { ClientProps } from '@pp-clca-pcm/domain';
+import { AccountDeleteError } from '@pp-clca-pcm/application';
+import { AccountRepository } from '@pp-clca-pcm/application';
+import { AccountUpdateError } from '@pp-clca-pcm/application';
+import { FRENCH_IBAN_ATTRIBUTES } from '@pp-clca-pcm/domain';
+import { User } from '@pp-clca-pcm/domain';
 
 export class InMemoryAccountRepository implements AccountRepository {
   public readonly inMemoryAccounts: Account[] = [];

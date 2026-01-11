@@ -1,9 +1,8 @@
-import { Security } from "@pp-clca-pcm/application/services/security";
-import { TokenService } from "@pp-clca-pcm/application/services/token";
-import { UserRepository } from "@pp-clca-pcm/application/repositories/user";
-import { User } from "@pp-clca-pcm/domain/entities/user";
-import { UserNotFoundByIdError } from "@pp-clca-pcm/application/errors/user-not-found-by-id";
-
+import { Security } from "@pp-clca-pcm/application";
+import { TokenService } from "@pp-clca-pcm/application";
+import { UserRepository } from "@pp-clca-pcm/application";
+import { User } from "@pp-clca-pcm/domain";
+import { UserNotFoundByIdError } from "@pp-clca-pcm/application";
 export class JwtSecurityService implements Security {
     private currentUser: User | null = null;
 

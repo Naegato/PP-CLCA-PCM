@@ -12,13 +12,13 @@ export * from '../../../services/simple-logout';
 // ✅ Repositories - Memory (SRC)
 export * from '../../../repositories/memory/account/account';
 export * from '../../../repositories/memory/account/type';
-export * from '../../../repositories/memory/ban';
-export * from '../../../repositories/memory/company';
-export * from '../../../repositories/memory/notification';
+export * from '../../../repositories/memory/ban/ban';
+export * from '../../../repositories/memory/company/company';
+export * from '../../../repositories/memory/notification/notification';
 export * from '../../../repositories/memory/portfolio/portfolio';
 export * from '../../../repositories/memory/stock/stock';
-export * from '../../../repositories/memory/stockOrder/stockOrder';
-export * from '../../../repositories/memory/user';
+export * from '../../memory/stock/stockOrder';
+export * from '../../../repositories/memory/user/user';
 
 // ✅ Repositories - Redis (SRC)
 export * from '../../../repositories/redis/account/account';

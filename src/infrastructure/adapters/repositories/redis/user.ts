@@ -1,10 +1,10 @@
-import { UserRepository } from '@pp-clca-pcm/application/repositories/user';
-import { EmailAlreadyExistError } from '@pp-clca-pcm/application/errors/email-already-exist';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { UserUpdateError } from '@pp-clca-pcm/application/errors/user-update';
+import { UserRepository } from '@pp-clca-pcm/application';
+import { EmailAlreadyExistError } from '@pp-clca-pcm/application';
+import { User } from '@pp-clca-pcm/domain';
+import { UserUpdateError } from '@pp-clca-pcm/application';
 import { RedisBaseRepository } from './base.js';
-import { UserNotFoundByEmailError } from '@pp-clca-pcm/application/errors/user-not-found-by-email';
-
+import { UserNotFoundByEmailError } from '@pp-clca-pcm/application';
+import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
 export class RedisUserRepository extends RedisBaseRepository<User> implements UserRepository {
   readonly prefix = 'user:';
 
@@ -83,7 +83,7 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
     return result;
   }
 
-	async findById(id: string): Promise<User | import('@pp-clca-pcm/application/errors/user-not-found-by-id').UserNotFoundByIdError> {
+	async findById(id: string): Promise<User | UserNotFoundByIdError> {
 		const allUsers = await this.all();
 		const user = allUsers.find(u => u.identifier === id);
 

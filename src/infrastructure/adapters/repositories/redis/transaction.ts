@@ -1,6 +1,7 @@
 import { TransactionRepository } from '@pp-clca-pcm/application';
 import { Transaction } from '@pp-clca-pcm/domain';
 import { RedisBaseRepository } from './base.js';
+import { RedisClientType } from 'redis';
 
 export class RedisTransactionRepository extends RedisBaseRepository<Transaction> implements TransactionRepository {
 	readonly prefix = 'transaction:';

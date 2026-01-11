@@ -17,7 +17,7 @@ export * from './repositories/memory/company/company.js';
 export * from './repositories/memory/notification/notification.js';
 export * from './repositories/memory/portfolio/portfolio.js';
 export * from './repositories/memory/stock/stock.js';
-export * from './repositories/memory/stockOrder/stockOrder.js';
+export * from './repositories/memory/stock/stockOrder.js';
 export * from './repositories/memory/user/user.js';
 
 // Repositories - Prisma
@@ -28,9 +28,9 @@ export * from './repositories/prisma/account/type.js';
 export * from './repositories/prisma/ban.js';
 export * from './repositories/prisma/company.js';
 export * from './repositories/prisma/notification.js';
-export * from './repositories/prisma/portfolio/portfolio.js';
+export * from './repositories/prisma/portfolio.js';
 export * from './repositories/prisma/stock/stock.js';
-export * from './repositories/prisma/stockOrder/stockOrder.js';
+export * from './repositories/prisma/stock/stockOrder.js';
 
 // Repositories - Redis
 export * from './repositories/redis/account/account.js';
