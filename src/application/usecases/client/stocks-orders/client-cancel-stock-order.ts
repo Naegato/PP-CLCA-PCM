@@ -1,6 +1,6 @@
-import { StockOrderRepository } from '../../../repositories/stockOrder';
-import { Security } from "../../../services/security";
-import { ClientCancelStockOrderError } from '../../../errors/client-cancel-stock-order';
+import { StockOrderRepository } from '../../../repositories/stockOrder.js';
+import { Security } from "../../../services/security.js";
+import { ClientCancelStockOrderError } from '../../../errors/client-cancel-stock-order.js';
 
 export class ClientCancelStockOrder {
   constructor(

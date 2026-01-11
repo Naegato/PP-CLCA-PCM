@@ -1,4 +1,4 @@
-import { AdvisorReplyMMessageError } from "src/application/errors/advisor-reply-message.js";
+import { AdvisorReplyMMessageError } from "../../../errors/advisor-reply-message.js";
 import { NotAdvisor } from "../../../errors/not-advisor.js";
 import { MessageRepository } from "../../../repositories/discussion/message.js";
 import { Security } from "../../../services/security.js";
