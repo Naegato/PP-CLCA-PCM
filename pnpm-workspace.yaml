@@ -6,3 +6,4 @@ packages:
   - "src/infrastructure/tests"
   - "apps/api/nest-js"
   - "apps/front/next-js"
+  - "apps/api/express"

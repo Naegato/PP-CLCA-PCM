@@ -70,7 +70,10 @@ export class RedisAccountRepository
   }
 
   public async generateAccountNumber(): Promise<string> {
-    return `todo-i-guess`;
+    const counterKey = 'account:number:counter';
+    const nextNumber = await this.redisClient.incr(counterKey);
+
+    return nextNumber.toString().padStart(11, '0');
   }
 
   public async findByOwner(owner: User): Promise<Account[] | null> {
