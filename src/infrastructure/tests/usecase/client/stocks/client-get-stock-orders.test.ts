@@ -30,7 +30,7 @@ describe('Client Get Stock Orders', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: `${id}@yopmail.com`,
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       clientProps: new ClientProps(),
     });
   };
@@ -109,7 +109,7 @@ describe('Client Get Stock Orders', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: 'test@yopmail.com',
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       clientProps: new ClientProps(),
     });
 

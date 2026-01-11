@@ -56,7 +56,7 @@ describe('Client Register Stock Order', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: `${id}@yopmail.com`,
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       clientProps: new ClientProps(),
     });
   };

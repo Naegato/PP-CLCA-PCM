@@ -36,7 +36,7 @@ describe('Client Saving Account Create', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: 'jdoe@yopmail.com',
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       clientProps: new ClientProps(accounts),
     });
   };
@@ -137,7 +137,7 @@ describe('Client Saving Account Create', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: 'jdoe@yopmail.com',
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       clientProps: new ClientProps([existingAccount1, existingAccount2]),
     });
 
@@ -164,7 +164,7 @@ describe('Client Saving Account Create', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: 'jdoe@yopmail.com',
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       clientProps: new ClientProps([existingAccount]),
     });
 

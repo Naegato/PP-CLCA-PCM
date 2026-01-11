@@ -24,7 +24,7 @@ describe.skipIf(!isRedis)('Redis user repository adapter', () => {
 		const entityOrError = createUser('save@ŧest.com');
 
 		if (!(entityOrError instanceof User)) {
-			fail('User creation failed');
+			expect.fail('User creation failed');
 		}
 
 		const savedEntity = await repository.save(entityOrError);
@@ -57,7 +57,7 @@ describe.skipIf(!isRedis)('Redis user repository adapter', () => {
 		const entityOrError = createUser('find@test.com');
 
 		if (!(entityOrError instanceof User)){
-			fail("User creation failed")
+			expect.fail("User creation failed")
 		}
 
 		const entity: User = entityOrError;
@@ -65,7 +65,7 @@ describe.skipIf(!isRedis)('Redis user repository adapter', () => {
 		const savedEntityOrError = await repository.save(entity);
 
 		if (!(savedEntityOrError instanceof User)){
-			fail("User creation failed")
+			expect.fail("User creation failed")
 		}
 
 		const savedEntity: User = entityOrError;
@@ -79,7 +79,7 @@ describe.skipIf(!isRedis)('Redis user repository adapter', () => {
 
     const entityOrError = createUser('find@test.com');
     if (!(entityOrError instanceof User)) {
-      fail('User creation failed');
+      expect.fail('User creation failed');
     }
 
     await repository.save(entityOrError);
@@ -91,26 +91,26 @@ describe.skipIf(!isRedis)('Redis user repository adapter', () => {
   test('update', async () => {
 		const entityOrError = createUser('update@test.com');
 		if (!(entityOrError instanceof User)) {
-			fail('User creation failed');
+			expect.fail('User creation failed');
 		}
 
 		const savedEntityOrError = await repository.save(entityOrError);
 		if (!(savedEntityOrError instanceof User)) {
-			fail('User save failed');
+			expect.fail('User save failed');
 		}
 
 		const updatedCandidateOrError = savedEntityOrError.update({
 			firstname: 'NewFirstName',
 		});
 		if (!(updatedCandidateOrError instanceof User)) {
-			fail('User update failed');
+			expect.fail('User update failed');
 		}
 
 		const updatedEntityOrError = await repository.update(
 			updatedCandidateOrError
 		);
 		if (!(updatedEntityOrError instanceof User)) {
-			fail('User persistence update failed');
+			expect.fail('User persistence update failed');
 		}
 
 		const testedEntity = await repository.find(updatedEntityOrError);

@@ -17,7 +17,7 @@ const createTransaction = () => {
 	 const clientOrError = User.create('a', 'a', 'a@a.com', 'P@ssword bla2');
 
 	if (!(clientOrError instanceof User)){
-		fail("User creation failed");
+		expect.fail("User creation failed");
 	}
 
 	const client: User = clientOrError;

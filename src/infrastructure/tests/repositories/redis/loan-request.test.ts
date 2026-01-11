@@ -15,7 +15,7 @@ const createLoanRequest = (advisorId?: string) => {
   const clientOrError = User.create('a', 'a', 'a@a.com', 'P@ssword bla2');
 
 	if (!(clientOrError instanceof User)){
-		fail("User creation failed");
+		expect.fail("User creation failed");
 	}
 
 	const client: User = clientOrError;
@@ -23,7 +23,7 @@ const createLoanRequest = (advisorId?: string) => {
   const loanOrError = LoanRequest.create(client, 12);
 
 	if (!(loanOrError instanceof LoanRequest)){
-		fail("Loan creation failed");
+		expect.fail("Loan creation failed");
 	}
 
 	const loan = loanOrError;

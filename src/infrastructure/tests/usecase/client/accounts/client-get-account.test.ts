@@ -32,7 +32,7 @@ describe('Client Get Account', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: 'jdoe@yopmail.com',
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       clientProps: new ClientProps(),
     });
   };

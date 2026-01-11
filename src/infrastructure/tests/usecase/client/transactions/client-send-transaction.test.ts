@@ -32,7 +32,7 @@ describe('Client Send Transaction', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: `${id}@yopmail.com`,
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       clientProps: new ClientProps(),
     });
   };

@@ -26,11 +26,11 @@ describe.skipIf(!isRedis)('Redis message repository adapter', () => {
 		'user-id',
 		'John',
 		'a@a.com',
-		'a',
+		'Password123&',
 	  );
 
 	if (!(userOrError instanceof User)) {
-		fail('User creation failed');
+		expect.fail('User creation failed');
 	}
 
 	const user: User = userOrError;
@@ -57,11 +57,11 @@ describe.skipIf(!isRedis)('Redis message repository adapter', () => {
 		'user-id',
 		'John',
 		'a@a.com',
-		'a',
+		'Password123&',
 	  );
 
 	if (!(userOrError instanceof User)) {
-		fail('User creation failed');
+		expect.fail('User creation failed');
 	}
 
 	const user: User = userOrError;

@@ -30,7 +30,7 @@ describe('Client Cancel Stock Order', () => {
 
   const createTestUser = (id: string = 'user-123') => {
     const email = Email.create(`${id}@yopmail.com`)
-    const password = Password.create('hashedPassword123');
+    const password = Password.create('hashedPassword123&');
 
     if (email instanceof Error) {
       expect.fail('Email creation failed');
@@ -149,7 +149,7 @@ describe('Client Cancel Stock Order', () => {
     await stockOrderRepository.save(order);
 
     const email = Email.create('test@yopmail.com');
-    const password = Password.create('hashedPassword123');
+    const password = Password.create('hashedPasword123&');
     if (email instanceof Error) {
       expect.fail('Email creation failed');
     }

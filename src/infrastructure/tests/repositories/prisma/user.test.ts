@@ -1,6 +1,6 @@
 import { PrismaUserRepository } from '@pp-clca-pcm/adapters';
 import { prisma } from '@pp-clca-pcm/adapters';
-import { User } from '@pp-clca-pcm/domain';
+import { User, Email, Password } from '@pp-clca-pcm/domain';
 import { ClientProps } from '@pp-clca-pcm/domain';
 import { AdvisorProps } from '@pp-clca-pcm/domain';
 import { EmailAlreadyExistError } from '@pp-clca-pcm/application';
@@ -46,8 +46,8 @@ describe.skipIf(!isPostgres)('Prisma User Repository', async () => {
       identifier: crypto.randomUUID(),
       firstname: 'John',
       lastname: 'Doe',
-      email,
-      password: 'hashedPassword123',
+      email: Email.createUnsafe(email),
+      password: Password.createUnsafe('hashedPassword123&'),
       clientProps: new ClientProps(),
     });
   };

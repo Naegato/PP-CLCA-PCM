@@ -41,7 +41,7 @@ describe('Client Get Loans', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: `${id}@yopmail.com`,
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       clientProps: new ClientProps(),
     });
   };
@@ -52,7 +52,7 @@ describe('Client Get Loans', () => {
       firstname: 'Jane',
       lastname: 'Smith',
       email: 'advisor@yopmail.com',
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       advisorProps: new AdvisorProps(),
     });
   };

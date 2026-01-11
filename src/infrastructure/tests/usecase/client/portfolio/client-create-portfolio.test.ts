@@ -66,7 +66,7 @@ describe('Client Create Portfolio', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: `${id}@yopmail.com`,
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       clientProps: new ClientProps(),
     });
   };

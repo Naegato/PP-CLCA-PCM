@@ -56,7 +56,7 @@ describe('Client Repay Loan', () => {
       firstname: 'John',
       lastname: 'Doe',
       email: 'jdoe@yopmail.com',
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       clientProps: new ClientProps(),
     });
   };
@@ -67,7 +67,7 @@ describe('Client Repay Loan', () => {
       firstname: 'Jane',
       lastname: 'Smith',
       email: 'advisor@yopmail.com',
-      password: 'hashedPassword123',
+      password: 'hashedPasword123&',
       advisorProps: new AdvisorProps(),
     });
   };
