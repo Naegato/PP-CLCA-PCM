@@ -4,6 +4,7 @@ import { Account } from "@pp-clca-pcm/domain";
 import { User } from "@pp-clca-pcm/domain";
 import { RedisBaseRepository } from "../base.js";
 import { RedisClientType } from "redis";
+import { Iban } from "@pp-clca-pcm/domain";
 
 export class RedisAccountRepository
   extends RedisBaseRepository<Account>

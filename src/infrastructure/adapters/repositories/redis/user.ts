@@ -5,6 +5,8 @@ import { UserUpdateError } from '@pp-clca-pcm/application';
 import { RedisBaseRepository } from './base.js';
 import { UserNotFoundByEmailError } from '@pp-clca-pcm/application';
 import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
+import { Password } from '@pp-clca-pcm/domain';
+import { Email } from '@pp-clca-pcm/domain';
 export class RedisUserRepository extends RedisBaseRepository<User> implements UserRepository {
   readonly prefix = 'user:';
 
@@ -70,8 +72,8 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
             identifier: data.identifier,
             firstname: data.firstname,
             lastname: data.lastname,
-            email: data.email,
-            password: data.password,
+            email: Email.createUnsafe(data.email),
+  					password: Password.createUnsafe(data.password),
             clientProps: data.clientProps,
             advisorProps: data.advisorProps,
             directorProps: data.directorProps,
@@ -114,8 +116,8 @@ export class RedisUserRepository extends RedisBaseRepository<User> implements Us
 			identifier: entity.identifier!,
 			firstname: entity.firstname,
 			lastname: entity.lastname,
-			email:  entity.email.value,
-			password: entity.password.value,
+			email:  Email.createUnsafe(entity.email),
+			password: Password.createUnsafe(entity.password),
 			clientProps: entity.clientProps,
 			advisorProps: entity.advisorProps,
 			directorProps: entity.directorProps,
