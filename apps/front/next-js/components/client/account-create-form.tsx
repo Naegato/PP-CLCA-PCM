@@ -1,6 +1,6 @@
 'use client';
 
-import { Api, getApi } from '@/lib/api';
+import { getApi } from '@/lib/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -13,34 +13,32 @@ import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field
 import { Input } from '@/components/ui/input';
 
 const formSchema = z.object({
-  name: z.string().min(1).max(50),
+  name: z.string().min(1).max(100),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
-interface AccountRenameFormProps {
-  accountId: string;
-  currentName: string;
-  onSuccess?: (newName: string) => void;
+interface AccountCreateFormProps {
+  onSuccess?: () => void;
 }
 
-export function AccountRenameForm({ accountId, currentName, onSuccess }: AccountRenameFormProps) {
-  const t = useTranslations('AccountRenameForm');
+export function AccountCreateForm({ onSuccess }: AccountCreateFormProps) {
+  const t = useTranslations('AccountCreateForm');
   const tForm = useTranslations('Forms');
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: currentName,
+      name: '',
     },
   });
 
   const onSubmit = async (data: FormSchema) => {
     try {
-      const response = await getApi(Api.getToken()).fetch(`/client/accounts/${accountId}`, {
-        method: 'PATCH',
+      const response = await getApi().fetch('/client/accounts', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: data.name }),
+        body: JSON.stringify(data),
       });
 
       const result = await response.json();
@@ -50,7 +48,8 @@ export function AccountRenameForm({ accountId, currentName, onSuccess }: Account
       }
 
       toast.success(t('success'));
-      onSuccess?.(data.name);
+      form.reset();
+      onSuccess?.();
     } catch (e) {
       const error = e as Error;
       const hasMessage = tForm.has(`errors.${error.message}`);
@@ -64,19 +63,19 @@ export function AccountRenameForm({ accountId, currentName, onSuccess }: Account
         <CardTitle>{t('title')}</CardTitle>
       </CardHeader>
       <CardContent>
-        <form id="form-rename" onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="form-account-create" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
               name="name"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rename-name">
+                  <FieldLabel htmlFor="form-account-create-name">
                     {t('fields.name.label')}
                   </FieldLabel>
                   <Input
                     {...field}
-                    id="form-rename-name"
+                    id="form-account-create-name"
                     placeholder={t('fields.name.placeholder')}
                   />
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

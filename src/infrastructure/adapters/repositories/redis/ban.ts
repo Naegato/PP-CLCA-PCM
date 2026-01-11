@@ -1,5 +1,5 @@
 import { RedisClientType } from 'redis';
-import { RedisBaseRepository } from './base';
+import { RedisBaseRepository } from './base.js';
 import { BanRepository } from '@pp-clca-pcm/application';
 import { Ban, User, Email, Password } from '@pp-clca-pcm/domain';
 

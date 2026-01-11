@@ -136,6 +136,20 @@
       "name": { "label": "New name", "placeholder": "Enter the new name" }
     }
   },
+  "AccountCreateForm": {
+    "title": "New account",
+    "success": "Account created successfully.",
+    "fields": {
+      "name": { "label": "Account name", "placeholder": "E.g., Main account" }
+    }
+  },
+  "SavingsCreateForm": {
+    "title": "New savings account",
+    "success": "Savings account created successfully.",
+    "fields": {
+      "name": { "label": "Account name", "placeholder": "E.g., Vacation savings" }
+    }
+  },
   "TransactionForm": {
     "title": "Make a transfer",
     "success": "Transfer completed successfully.",

@@ -16,9 +16,11 @@ import {
 import { ClientCreateAccount } from '@pp-clca-pcm/application';
 import { ClientSavingAccountCreate } from '@pp-clca-pcm/application';
 import { ClientGetAccount } from '@pp-clca-pcm/application';
+import { ClientGetAccounts } from '@pp-clca-pcm/application';
 import { ClientGetBalanceAccount } from '@pp-clca-pcm/application';
 import { ClientUpdateNameAccount } from '@pp-clca-pcm/application';
 import { ClientDeleteAccount } from '@pp-clca-pcm/application';
+import { Security } from '@pp-clca-pcm/application';
 
 // DTOs
 import { CreateAccountDto } from '../dto/accounts/create-account.dto';
@@ -32,7 +34,7 @@ import { CurrentUser } from '../../../common/decorators/current-user.decorator';
 import { ErrorInterceptor } from '../../../common/interceptors/error.interceptor';
 
 // Domain entities
-import { User } from '@pp-clca-pcm/domain';
+import { AccountType, AccountTypeNameEnum, User } from '@pp-clca-pcm/domain';
 
 // Repositories & Services
 import type { AccountRepository, AccountTypeRepository, UserRepository } from '@pp-clca-pcm/application';
@@ -60,6 +62,8 @@ export class ClientAccountsController {
     private readonly accountTypeRepository: AccountTypeRepository,
     @Inject(REPOSITORY_TOKENS.USER)
     private readonly userRepository: UserRepository,
+    @Inject('Security')
+    private readonly security: Security,
   ) {}
 
   /**
@@ -71,9 +75,11 @@ export class ClientAccountsController {
   async create(@CurrentUser() user: User, @Body() dto: CreateAccountDto) {
     // Récupérer le type de compte "normal"
     const accountTypes = await this.accountTypeRepository.all();
-    const accountType = accountTypes.find((at) => at.identifier === 'normal');
+
+    console.log(accountTypes);
+    const accountType = accountTypes.find((at) => at.name === AccountTypeNameEnum.DEFAULT);
     if (!accountType) {
-      return new Error('Account type "normal" not found');
+      return new Error('Account type "default" not found');
     }
 
     const useCase = new ClientCreateAccount(accountType, this.accountRepository);
@@ -89,13 +95,23 @@ export class ClientAccountsController {
   async createSavings(@CurrentUser() user: User, @Body() dto: CreateAccountDto) {
     // Récupérer le type de compte "savings"
     const accountTypes = await this.accountTypeRepository.all();
-    const accountType = accountTypes.find((at) => at.identifier === 'savings');
+    const accountType = accountTypes.find((at) => at.name === AccountTypeNameEnum.SAVINGS);
     if (!accountType) {
       return new Error('Account type "savings" not found');
     }
 
     const useCase = new ClientSavingAccountCreate(accountType, this.accountRepository);
     return await useCase.execute(user, dto.name);
+  }
+
+  /**
+   * GET /client/accounts
+   * Récupérer tous les comptes de l'utilisateur connecté
+   */
+  @Get()
+  async getAll() {
+    const useCase = new ClientGetAccounts(this.accountRepository, this.security);
+    return await useCase.execute();
   }
 
   /**

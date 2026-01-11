@@ -1,5 +1,5 @@
 import { RedisClientType } from 'redis';
-import { RedisBaseRepository } from './base';
+import { RedisBaseRepository } from './base.js';
 import { AdvisorRepository } from '@pp-clca-pcm/application';
 import { User } from '@pp-clca-pcm/domain';
 

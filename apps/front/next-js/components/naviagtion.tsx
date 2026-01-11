@@ -66,7 +66,7 @@ export default function Navigation() {
               <span className="text-sm text-slate-300">
                 {user?.firstname} {user?.lastname}
               </span>
-              <Button variant="outline" size="sm" onClick={handleLogout}>
+              <Button variant="destructive" size="sm" onClick={handleLogout}>
                 {t('logout')}
               </Button>
             </div>

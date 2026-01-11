@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { Link } from '@/src/i18n/navigation';
 import { StockCreateForm } from './stock-create-form';
 
 interface Stock {

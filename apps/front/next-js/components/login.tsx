@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
+import { Link } from '@/src/i18n/navigation';
 
 const formSchema = z.object({
   email: z.string().email(),
