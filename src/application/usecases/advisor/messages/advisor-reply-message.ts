@@ -1,4 +1,4 @@
-import { Message } from "../../../../domain/entities/discussion/message.js"
+import { AdvisorReplyMMessageError } from "../../../errors/advisor-reply-message.js";
 import { NotAdvisor } from "../../../errors/not-advisor.js";
 import { MessageRepository } from "../../../repositories/discussion/message.js";
 import { Security } from "../../../services/security.js";
@@ -10,13 +10,17 @@ export class AdvisorReplyMessage {
 	) {
 	}
 
-	public async execute(message: Message, text: string) {
+	public async execute(messageId: string, text: string) {
+		const message = await this.messageRepository.get(messageId);
 		const advisor = await this.security.getCurrentUser();
 
-		if (!advisor.isAdvisor()) {
+		if (!advisor || !advisor.isAdvisor()) {
 			return new NotAdvisor();
 		}
 
+		if (message === null) {
+			return new AdvisorReplyMMessageError("Message not found");
+		}
 		const newMessage = message.reply(advisor, text);
 
 		if (message.discussion.advisor === null) {

@@ -11,7 +11,7 @@ export class ClientLogout {
   public async execute(): Promise<void | NotClient> {
     const user = await this.security.getCurrentUser();
 
-    if (!user.isClient()) {
+    if (!user || !user.isClient()) {
       return new NotClient();
     }
 

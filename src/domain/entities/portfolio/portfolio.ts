@@ -77,6 +77,10 @@ export class Portfolio {
     account: Account,
     items: Map<string, PortfolioItem>
   ) {
-    return new Portfolio(randomUUID(), account, items);
+    return new Portfolio(identifier, account, items);
+  }
+
+  public itemsIterator(): Iterable<PortfolioItem> {
+    return this.items.values();
   }
 }

@@ -19,7 +19,7 @@ export class DirectorManageBan {
   ): Promise<Ban | NotDirector | UserNotFoundByIdError> {
     const director = await this.security.getCurrentUser();
 
-    if (!director.isDirector()) {
+    if (!director || !director.isDirector()) {
       return new NotDirector();
     }
 

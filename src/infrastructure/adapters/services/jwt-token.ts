@@ -45,4 +45,22 @@ export class JwtTokenService implements TokenService {
       return new InvalidResetTokenError();
     }
   }
+
+  public async verify(token: string): Promise<string | null> {
+    const secret = process.env.JWT_SECRET;
+
+    if (!secret) {
+      
+      return null;
+    }
+
+    try {
+      const decoded = jwt.verify(token, secret) as { userId: string };
+      
+      return decoded.userId;
+    } catch (error) {
+      
+      return null;
+    }
+  }
 }

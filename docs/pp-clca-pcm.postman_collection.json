@@ -1,0 +1,459 @@
+{
+  "info": {
+    "name": "PP-CLCA-PCM",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection for Advisor, Client, Director, Engine and Notification routes"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Root",
+      "item": [
+        {
+          "name": "Hello World",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Advisor",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"email\": \"advisor@test.com\", \"password\": \"Password1&\" }"
+            },
+            "url": "{{baseUrl}}/advisor/login"
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"firstname\": \"John\", \"lastname\": \"Doe\", \"email\": \"advisor@test.com\", \"password\": \"Password1&\" }"
+            },
+            "url": "{{baseUrl}}/advisor/register"
+          }
+        },
+        {
+          "name": "Get Pending Loans",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/advisor/loans/pending"
+          }
+        },
+        {
+          "name": "Grant Loan",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/advisor/loans/{{loanId}}/grant"
+          }
+        },
+        {
+          "name": "Reject Loan",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/advisor/loans/{{loanId}}/reject"
+          }
+        },
+        {
+          "name": "Close Discussion",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/advisor/discussions/{{discussionId}}/close"
+          }
+        },
+        {
+          "name": "Reply Message",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"text\": \"Reply message\" }"
+            },
+            "url": "{{baseUrl}}/advisor/messages/{{messageId}}/reply"
+          }
+        },
+        {
+          "name": "Transfer Discussion",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"advisorId\": \"123\" }"
+            },
+            "url": "{{baseUrl}}/advisor/discussions/{{discussionId}}/transfer"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Client Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"email\": \"client@test.com\", \"password\": \"Password1&\" }"
+            },
+            "url": "{{baseUrl}}/client/login"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/client/logout"
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"firstname\": \"Jane\", \"lastname\": \"Doe\", \"email\": \"client@test.com\", \"password\": \"Password1&\" }"
+            },
+            "url": "{{baseUrl}}/client/register"
+          }
+        },
+        {
+          "name": "Request Password Reset",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"email\": \"client@test.com\" }" },
+            "url": "{{baseUrl}}/client/password/request-reset"
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"token\": \"token\", \"password\": \"newpass\" }" },
+            "url": "{{baseUrl}}/client/password/reset"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Client Accounts",
+      "item": [
+        {
+          "name": "Create Account",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"user\": \"1\", \"name\": \"Main Account\" }" },
+            "url": "{{baseUrl}}/client/accounts"
+          }
+        },
+        {
+          "name": "Delete Account",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"account\": \"1\" }" },
+            "url": "{{baseUrl}}/client/accounts/{{accountId}}"
+          }
+        },
+        {
+          "name": "Get Account",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/client/accounts/{{accountId}}"
+          }
+        },
+        {
+          "name": "Get Balance",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/client/accounts/{{accountId}}/balance"
+          }
+        },
+        {
+          "name": "Create Savings Account",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"user\": \"1\", \"name\": \"Savings\" }" },
+            "url": "{{baseUrl}}/client/accounts/savings"
+          }
+        },
+        {
+          "name": "Update Account Name",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"name\": \"New Name\" }" },
+            "url": "{{baseUrl}}/client/accounts/{{accountId}}/name"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Engine",
+      "item": [
+        {
+          "name": "Generate Daily Interest",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/engine/interest/daily"
+          }
+        },
+        {
+          "name": "Notify Loans To Pay",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/engine/loans/notify-to-pay"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Savings Rate Change",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"newRate\": 3.5 }" },
+            "url": "{{baseUrl}}/notifications/savings-rate-change"
+          }
+        },
+        {
+          "name": "Loan Status",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"loan\": \"1\", \"status\": \"APPROVED\" }" },
+            "url": "{{baseUrl}}/notifications/loan-status"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Director",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.request.headers.upsert({",
+              "  key: 'Authorization',",
+              "  value: `Bearer ${pm.environment.get('directorToken')}`",
+              "});"
+            ]
+          }
+        }
+      ],
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"email\": \"director@test.com\", \"password\": \"Password1&\" }"
+            },
+            "url": "{{baseUrl}}/director/login"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) pm.environment.set('directorToken', res.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"firstname\": \"Dir\", \"lastname\": \"Boss\", \"email\": \"director@test.com\", \"password\": \"Password1&\" }"
+            },
+            "url": "{{baseUrl}}/director/register"
+          }
+        },
+
+        {
+          "name": "Get All Clients",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/director/clients"
+          }
+        },
+        {
+          "name": "Get Client Accounts",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/director/clients/{{clientId}}/accounts"
+          }
+        },
+        {
+          "name": "Create Client",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"firstname\": \"Jane\", \"lastname\": \"Doe\", \"email\": \"jane@test.com\", \"password\": \"Password1&\" }"
+            },
+            "url": "{{baseUrl}}/director/clients"
+          }
+        },
+        {
+          "name": "Update Client",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"firstname\": \"Jane Updated\" }"
+            },
+            "url": "{{baseUrl}}/director/clients/{{clientId}}"
+          }
+        },
+        {
+          "name": "Delete Client",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/director/clients/{{clientId}}"
+          }
+        },
+        {
+          "name": "Ban Client",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"reason\": \"Fraud\", \"endDate\": \"2026-12-31\" }"
+            },
+            "url": "{{baseUrl}}/director/clients/{{clientId}}/ban"
+          }
+        },
+
+        {
+          "name": "Create Company",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"name\": \"Acme Corp\" }" },
+            "url": "{{baseUrl}}/director/companies"
+          }
+        },
+        {
+          "name": "Get All Companies",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/director/companies"
+          }
+        },
+        {
+          "name": "Get Company",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/director/companies/{{companyId}}"
+          }
+        },
+        {
+          "name": "Update Company",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"name\": \"Acme Updated\" }" },
+            "url": "{{baseUrl}}/director/companies/{{companyId}}"
+          }
+        },
+        {
+          "name": "Delete Company",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/director/companies/{{companyId}}"
+          }
+        },
+
+        {
+          "name": "Change Savings Rate",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"accountTypeName\": \"SAVINGS\", \"rate\": 3.5 }"
+            },
+            "url": "{{baseUrl}}/director/savings/rate"
+          }
+        },
+
+        {
+          "name": "Create Stock",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"symbol\": \"ACME\", \"name\": \"Acme Inc\", \"companyId\": \"{{companyId}}\" }"
+            },
+            "url": "{{baseUrl}}/director/stocks"
+          }
+        },
+        {
+          "name": "Update Stock",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{ \"name\": \"Acme Updated\" }" },
+            "url": "{{baseUrl}}/director/stocks/{{stockId}}"
+          }
+        },
+        {
+          "name": "Toggle Stock Listing",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/director/stocks/{{stockId}}/listing"
+          }
+        },
+        {
+          "name": "Delete Stock",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/director/stocks/{{stockId}}"
+          }
+        }
+      ]
+    }
+  ]
+}

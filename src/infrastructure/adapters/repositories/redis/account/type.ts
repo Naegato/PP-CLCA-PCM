@@ -1,3 +1,4 @@
+import { RedisClientType } from 'redis';
 import { randomUUID } from 'crypto';
 import { AccountTypeRepository } from '@pp-clca-pcm/application';
 import { AccountType, AccountTypeName } from '@pp-clca-pcm/domain';
@@ -5,8 +6,17 @@ import { AccountTypeAlreadyExistError } from '@pp-clca-pcm/application';
 import { AccountTypeDoesNotExistError } from '@pp-clca-pcm/application';
 import { RedisBaseRepository } from '../base.js';
 
-export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType> implements AccountTypeRepository {
-  readonly prefix = 'account_type:';
+export class RedisAccountTypeRepository
+  extends RedisBaseRepository<AccountType>
+  implements AccountTypeRepository
+{
+  readonly prefix = "account_type:";
+
+  public constructor(
+      redisClient: RedisClientType,
+  ) {
+      super(redisClient);
+  }
 
   async save(
     accountType: AccountType
@@ -17,11 +27,9 @@ export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType>
 
     const key = this.key(realAccount);
 
-    const created = await this.db.set(
-      key,
-      JSON.stringify(realAccount),
-      { NX: true }
-    );
+    const created = await this.redisClient.set(key, JSON.stringify(realAccount), {
+      NX: true,
+    });
 
     if (created === null) {
       return new AccountTypeAlreadyExistError(realAccount.name);
@@ -36,7 +44,7 @@ export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType>
   ): Promise<AccountType> {
     const key = this.key(name);
 
-    const existing = await this.db.get(key);
+    const existing = await this.redisClient.get(key);
     if (existing) {
       const data = JSON.parse(existing) as AccountType;
       this.instanticate(data);
@@ -45,9 +53,9 @@ export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType>
     const saved = await this.save(accountType);
 
     if (saved instanceof AccountTypeAlreadyExistError) {
-      const value = await this.db.get(key);
+      const value = await this.redisClient.get(key);
       if (!value) {
-        throw new Error('AccountType exists but could not be retrieved');
+        throw new Error("AccountType exists but could not be retrieved");
       }
 
       const data = JSON.parse(value) as AccountType;
@@ -58,11 +66,11 @@ export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType>
   }
 
   async all(): Promise<AccountType[]> {
-    const keys = await this.db.keys(`${this.prefix}*`);
+    const keys = await this.redisClient.keys(`${this.prefix}*`);
     const types: AccountType[] = [];
 
     for (const key of keys) {
-      const value = await this.db.get(key);
+      const value = await this.redisClient.get(key);
       if (value) {
         const data = JSON.parse(value) as AccountType;
         types.push(this.instanticate(data));
@@ -72,29 +80,31 @@ export class RedisAccountTypeRepository extends RedisBaseRepository<AccountType>
     return types;
   }
 
-  async update(accountType: AccountType): Promise<AccountType | AccountTypeDoesNotExistError> {
+  async update(
+    accountType: AccountType
+  ): Promise<AccountType | AccountTypeDoesNotExistError> {
     if (!accountType.identifier) {
       return new AccountTypeDoesNotExistError();
     }
 
     const key = this.key(accountType);
-    const existing = await this.db.get(key);
+    const existing = await this.redisClient.get(key);
 
     if (!existing) {
       return new AccountTypeDoesNotExistError();
     }
 
-    await this.db.set(key, JSON.stringify(accountType));
+    await this.redisClient.set(key, JSON.stringify(accountType));
     return accountType;
   }
 
   protected instanticate(entity: AccountType): AccountType {
     return AccountType.createFromRaw(
-      entity.identifier!,
+      entity.identifier ?? "",
       entity.name,
       entity.rate,
       entity.limitByClient,
-      entity.description
+      entity.description,
     );
   }
 }

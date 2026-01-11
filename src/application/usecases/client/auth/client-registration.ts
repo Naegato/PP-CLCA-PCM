@@ -11,14 +11,14 @@ import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain';
 import { PasswordService } from '@pp-clca-pcm/application';
 
 export class ClientRegistration {
-  public constructor (
+  public constructor(
     public readonly userRepository: UserRepository,
     public readonly accountRepository: AccountRepository,
     public readonly accountTypeRepository: AccountTypeRepository,
     public readonly passwordService: PasswordService,
   ) { }
 
-  public async execute (
+  public async execute(
     firstname: string,
     lastname: string,
     email: string,

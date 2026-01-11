@@ -18,7 +18,7 @@
 import * as runtime from "@prisma/client/runtime/index-browser"
 
 export type * from '../models'
-export type * from './prismaNamespace.js'
+export type * from './prismaNamespace'
 
 export const Decimal = runtime.Decimal
 

@@ -1,12 +1,12 @@
 import { Transaction } from '../transaction.js';
 import { AccountType } from './type.js';
 import { randomUUID } from 'node:crypto';
-import { User } from '../user.js';
-import { Iban } from '../../value-objects/iban.js';
-import { Portfolio } from '../portfolio/portfolio.js';
+import { User } from '../user';
+import { Iban } from '../../value-objects/iban';
+import { Portfolio } from '../portfolio/portfolio';
 
 export class Account {
-  private constructor (
+  private constructor(
     public readonly identifier: string | null,
     public readonly owner: User,
     public readonly type: AccountType,
@@ -14,17 +14,26 @@ export class Account {
     public readonly receivedTransactions: Transaction[] = [],
     public readonly iban: Iban,
     public readonly name?: string,
-    public readonly portfolio?: Portfolio,
-  ) { }
+    public readonly portfolio?: Portfolio
+  ) {}
 
-  public static create (
+  public static create(
     owner: User,
     type: AccountType,
     iban: Iban,
     name?: string,
-    portfolio?: Portfolio,
+    portfolio?: Portfolio
   ): Account {
-    return new Account(randomUUID(), owner, type, [], [], iban, name ?? randomUUID(), portfolio);
+    return new Account(
+      randomUUID(),
+      owner,
+      type,
+      [],
+      [],
+      iban,
+      name ?? randomUUID(),
+      portfolio
+    );
   }
 
   public static createFromRaw(
@@ -40,7 +49,9 @@ export class Account {
     return new Account(identifier, owner, type, emittedTransactions, receivedTransactions, iban, name, portfolio);
   }
 
-  public update(props: Partial<Omit<Account, 'identifier' | 'owner' | 'iban' | 'portfolio'>>): Account {
+  public update(
+    props: Partial<Omit<Account, "identifier" | "owner" | "iban" | "portfolio">>
+  ): Account {
     return new Account(
       this.identifier,
       this.owner,
@@ -49,13 +60,15 @@ export class Account {
       props.receivedTransactions ?? this.receivedTransactions,
       this.iban,
       props.name ?? this.name,
-      this.portfolio,
+      this.portfolio
     );
   }
 
   public get balance(): number {
-    const received = this.receivedTransactions?.reduce((sum, tx) => sum + tx.amount, 0) ?? 0;
-    const emitted = this.emittedTransactions?.reduce((sum, tx) => sum + tx.amount, 0) ?? 0;
+    const received =
+      this.receivedTransactions?.reduce((sum, tx) => sum + tx.amount, 0) ?? 0;
+    const emitted =
+      this.emittedTransactions?.reduce((sum, tx) => sum + tx.amount, 0) ?? 0;
     return received - emitted;
   }
 

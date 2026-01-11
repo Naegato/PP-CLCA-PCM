@@ -1,12 +1,17 @@
 import { StockOrderRepository } from '../../../repositories/stockOrder.js';
-import { User } from '@pp-clca-pcm/domain';
+import { Security } from "../../../services/security.js";
 import { ClientCancelStockOrderError } from '../../../errors/client-cancel-stock-order.js';
 
 export class ClientCancelStockOrder {
-  constructor(private readonly stockOrderRepository: StockOrderRepository) {}
+  constructor(
+    private readonly stockOrderRepository: StockOrderRepository,
+    private readonly security: Security
+  ) {}
 
-  public async execute(orderId: string, user: User): Promise<void | ClientCancelStockOrderError> {
-    if (!user.identifier) {
+  public async execute(orderId: string): Promise<void | ClientCancelStockOrderError> {
+    const user = await this.security.getCurrentUser();
+
+    if (!user || !user.identifier) {
       return new ClientCancelStockOrderError('User has no identifier.');
     }
 

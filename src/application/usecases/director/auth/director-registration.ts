@@ -3,12 +3,12 @@ import { UserRepository } from '../../../repositories/user.js';
 import { User } from '@pp-clca-pcm/domain';
 
 export class DirectorRegistration {
-  public constructor (
+  public constructor(
     public readonly userRepositories: UserRepository,
     public readonly passwordService: PasswordService,
   ) { }
 
-  public async execute (
+  public async execute(
     firstname: string,
     lastname: string,
     email: string,

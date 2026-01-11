@@ -38,6 +38,7 @@ import type {
   StockRepository,
   AccountRepository,
   PortfolioRepository,
+  Security
 } from '@pp-clca-pcm/application';
 import { REPOSITORY_TOKENS } from '../../../config/repositories.module';
 
@@ -64,6 +65,8 @@ export class ClientStockOrdersController {
     private readonly accountRepository: AccountRepository,
     @Inject(REPOSITORY_TOKENS.PORTFOLIO)
     private readonly portfolioRepository: PortfolioRepository,
+    @Inject('Security')
+    private readonly security: Security,
   ) {}
 
   /**
@@ -150,7 +153,7 @@ export class ClientStockOrdersController {
   @Delete(':id')
   @HttpCode(204)
   async cancel(@Param('id') id: string, @CurrentUser() user: User) {
-    const useCase = new ClientCancelStockOrder(this.stockOrderRepository);
-    return await useCase.execute(id, user);
+    const useCase = new ClientCancelStockOrder(this.stockOrderRepository, this.security);
+    return await useCase.execute(id);
   }
 }

@@ -11,7 +11,7 @@ export class AdvisorGetPendingLoans {
   public async execute() {
 	const advisor = await this.security.getCurrentUser();
 
-	if (!advisor.isAdvisor()) {
+	if (!advisor || !advisor.isAdvisor()) {
 		return new NotAdvisor();
 	}
 

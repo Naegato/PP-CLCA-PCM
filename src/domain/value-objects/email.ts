@@ -5,6 +5,10 @@ export class Email {
     public readonly value: string,
   ) { }
 
+  public static from(value: string): Email {
+    return new Email(value);
+  }
+
   public static create (value: string): Email | InvalidEmailFormatError {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {

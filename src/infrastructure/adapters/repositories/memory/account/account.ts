@@ -1,9 +1,9 @@
+import { Account } from '@pp-clca-pcm/domain';
+import { InMemoryUserRepository } from '../user/user.js';
+import { ClientProps } from '@pp-clca-pcm/domain';
 import { AccountDeleteError } from '@pp-clca-pcm/application';
 import { AccountRepository } from '@pp-clca-pcm/application';
 import { AccountUpdateError } from '@pp-clca-pcm/application';
-import { Account } from '@pp-clca-pcm/domain';
-import { InMemoryUserRepository } from '../user.js';
-import { ClientProps } from '@pp-clca-pcm/domain';
 import { FRENCH_IBAN_ATTRIBUTES } from '@pp-clca-pcm/domain';
 import { User } from '@pp-clca-pcm/domain';
 

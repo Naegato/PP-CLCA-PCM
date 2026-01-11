@@ -1,4 +1,4 @@
-.PHONY: up up-nextjs up-nestjs db clear install build prisma-generate prisma-migrate up-db tests api-test help
+.PHONY: up up-nextjs up-nestjs up-express db clear install build prisma-generate prisma-migrate prisma-reset up-db tests api-test help
 
 help:
 	@echo "Available targets:"
@@ -14,6 +14,7 @@ help:
 	@echo "  make up              - Start all apps (requires tests to pass)"
 	@echo "  make up-nestjs       - Start NestJS API only"
 	@echo "  make up-nextjs       - Start Next.js frontend only"
+	@echo "  make up-express      - Start Express API only"
 	@echo "  make clear           - Remove all node_modules"
 
 .env:
@@ -54,13 +55,16 @@ api-test: up-db build
 
 up: tests
 	@echo "Starting all applications..."
-	@pnpm dev:api & pnpm dev:front & wait
+	@pnpm dev:api & pnpm dev:front & pnpm dev:express & wait
 
 up-nestjs: up-db build
-	pnpm dev:api
+	pnpm dev:nest
 
 up-nextjs:
 	pnpm dev:front
+
+up-express: up-db build
+	pnpm dev:express
 
 clear:
 	rm -rf node_modules

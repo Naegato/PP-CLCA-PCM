@@ -2,18 +2,25 @@ import { LoanRepository } from '@pp-clca-pcm/application';
 import { Loan } from '@pp-clca-pcm/domain';
 import { User } from '@pp-clca-pcm/domain';
 import { RedisBaseRepository } from './base.js';
+import { RedisClientType } from "redis";
 
 export class RedisLoanRepository extends RedisBaseRepository<Loan> implements LoanRepository {
-  readonly prefix = 'loan:';
+	readonly prefix = 'loan:';
+
+	public constructor(
+		redisClient: RedisClientType,
+	) {
+		super(redisClient);
+	}
 
   async save(loan: Loan): Promise<Loan> {
     const key = this.key(loan);
 
-    await this.db.set(
-      key,
-      JSON.stringify(loan),
-      { NX: true }
-    );
+		await this.redisClient.set(
+			key,
+			JSON.stringify(loan),
+			{ NX: true }
+		);
 
     return loan;
   }
@@ -26,14 +33,13 @@ export class RedisLoanRepository extends RedisBaseRepository<Loan> implements Lo
     return `${this.prefix}${loan.client.identifier}:${loan.identifier}`;
   }
 
-  protected instanticate(entity: Loan): Loan {
-    return Loan.fromPrimitives({
-      identifier: entity.identifier,
-      client: entity.client,
-      amount: entity.amount,
-      advisor: entity.advisor,
-      transaction: entity.transactions,
-    });
-
-  }
+	protected instanticate(entity: Loan): Loan {
+		return Loan.fromPrimitives({
+			identifier: entity.identifier ?? "",
+			client: entity.client,
+			amount: entity.amount,
+			advisor: entity.advisor,
+			transaction: entity.transactions,
+		})
+	}
 }

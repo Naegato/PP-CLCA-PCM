@@ -2,9 +2,16 @@ import { MessageRepository } from '@pp-clca-pcm/application';
 import { Message } from '@pp-clca-pcm/domain';
 import { randomUUID } from 'crypto';
 import { RedisBaseRepository } from '../base.js';
+import { RedisClientType } from "redis";
 
 export class RedisMessageRepository extends RedisBaseRepository<Message> implements MessageRepository {
-  readonly prefix = 'message:';
+	readonly prefix = 'message:';
+
+	public constructor(
+		redisClient: RedisClientType,
+	) {
+		super(redisClient);
+	}
 
   public async save(message: Message): Promise<Message> {
     const realMessage = new Message(
@@ -15,22 +22,36 @@ export class RedisMessageRepository extends RedisBaseRepository<Message> impleme
       message.discussion,
     );
 
-    const result = await this.db.set(
-      this.key(realMessage),
-      JSON.stringify(realMessage),
-      { NX: true }
-    );
+		const result = await this.redisClient.set(
+			this.key(realMessage),
+			JSON.stringify(realMessage),
+			{ NX: true }
+		);
 
-    return realMessage;
-  }
+		return realMessage;
+	}
 
-  protected instanticate(entity: Message): Message {
-    return new Message(
-      entity.identifier,
-      entity.content,
-      entity.sendAt,
-      entity.sender,
-      entity.discussion,
-    );
-  }
+	public async get(id: string): Promise<Message | null> {
+		const key = this.key(id);
+
+		const data = await this.redisClient.get(key);
+
+		if (!data) {
+			return null;
+		}
+
+		const parsedData = JSON.parse(data);
+
+		return this.instanticate(parsedData);
+	}
+
+	protected instanticate(entity: Message): Message {
+		return new Message(
+			entity.identifier ?? "",
+			entity.content,
+			entity.sendAt,
+			entity.sender,
+			entity.discussion,
+		);
+	}
 }

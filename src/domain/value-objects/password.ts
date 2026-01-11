@@ -7,6 +7,10 @@ import { PasswordDigitError } from '@pp-clca-pcm/domain';
 export class Password {
   private constructor (public readonly value: string) { }
 
+  public static from(value: string): Password {
+    return new Password(value);
+  }
+
   public static create (value: string) {
 
     if (value.length < 8) {

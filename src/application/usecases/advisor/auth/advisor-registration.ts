@@ -1,14 +1,14 @@
 import { User } from '@pp-clca-pcm/domain';
-import { PasswordService } from '@pp-clca-pcm/application';
-import { UserRepository } from '../../../repositories/user.js';
+import { UserRepository } from '../../../repositories/user';
+import { PasswordService } from "../../../services/password";
 
 export class AdvisorRegistration {
-  public constructor (
+  public constructor(
     public readonly userRepositories: UserRepository,
     public readonly passwordService: PasswordService,
   ) { }
 
-  public async execute (
+  public async execute(
     firstname: string,
     lastname: string,
     email: string,

@@ -16,7 +16,7 @@ export class DirectorManageUpdate {
   ): Promise<User | NotDirector | UserNotFoundByIdError | Error> {
     const director = await this.security.getCurrentUser();
 
-    if (!director.isDirector()) {
+    if (!director || director.isDirector()) {
       return new NotDirector();
     }
 

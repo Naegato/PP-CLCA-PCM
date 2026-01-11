@@ -2,7 +2,21 @@ import { Company } from '@pp-clca-pcm/domain';
 import { CompanyRepository } from '@pp-clca-pcm/application';
 
 export class InMemoryCompanyRepository implements CompanyRepository {
-  public companies: Company[] = [];
+  public readonly companies: Company[] = [];
+
+  async save(company: Company): Promise<Company> {
+    const existingIndex = this.companies.findIndex(
+      (existingCompany) => existingCompany  .identifier === company.identifier
+    );
+
+    if (existingIndex !== -1) {
+      this.companies[existingIndex] = company;
+    } else {
+      this.companies.push(company);
+    }
+
+    return Promise.resolve(company);
+  }
 
   async create(company: Company): Promise<Company> {
     this.companies.push(company);
@@ -31,10 +45,10 @@ export class InMemoryCompanyRepository implements CompanyRepository {
     return company;
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string) {
     const index = this.companies.findIndex((c) => c.identifier === id);
-    if (index !== -1) {
-      this.companies.splice(index, 1);
-    }
+
+    const deletedCompany = this.companies[index];
+    this.companies.splice(index, 1);
   }
 }
