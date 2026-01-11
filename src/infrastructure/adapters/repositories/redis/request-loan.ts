@@ -4,7 +4,7 @@ import { RedisBaseRepository } from './base.js';
 import { RedisClientType } from "redis";
 import { User } from '@pp-clca-pcm/domain';
 export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest> implements LoanRequestRepository {
-	readonly prefix = 'loan-request:';
+	readonly prefix = 'loanRequest:';
 
 	public constructor(
 		redisClient: RedisClientType,
@@ -14,13 +14,7 @@ export class RedisLoanRequestRepository extends RedisBaseRepository<LoanRequest>
 
   async save(loan: LoanRequest): Promise<LoanRequest> {
     const key = this.key(loan);
-
-		await this.redisClient.set(
-			key,
-			JSON.stringify(loan),
-			{ NX: true }
-		);
-
+		await this.redisClient.set(key, JSON.stringify(loan));
     return loan;
   }
 

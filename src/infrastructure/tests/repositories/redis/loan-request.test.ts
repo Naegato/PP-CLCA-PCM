@@ -2,7 +2,6 @@ import { RedisLoanRequestRepository } from '@pp-clca-pcm/adapters';
 import { connectRedis, getRedisClient } from '@pp-clca-pcm/adapters';
 import { beforeAll, describe, expect, test } from 'vitest';
 import { Email, Password, User } from '@pp-clca-pcm/domain';
-import { Discussion } from '@pp-clca-pcm/domain';
 import { LoanRequest } from '@pp-clca-pcm/domain';
 import { AdvisorProps } from '@pp-clca-pcm/domain';
 
