@@ -1,7 +1,7 @@
 import { LoginResponse } from '@pp-clca-pcm/application';
 import { describe, expect, test } from 'vitest';
 
-import { User } from '@pp-clca-pcm/domain';
+import { Email, User, Password } from '@pp-clca-pcm/domain';
 import { ClientLogin } from '@pp-clca-pcm/application';
 import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
 import { Argon2PasswordService } from '@pp-clca-pcm/adapters';
@@ -35,8 +35,8 @@ describe('Client JWT Login', () => {
       identifier: 'user-123',
       firstname: 'John',
       lastname: 'Doe',
-      email: 'jdoe@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('jdoe@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       clientProps: new ClientProps(),
     });
 
@@ -63,8 +63,8 @@ describe('Client JWT Login', () => {
       identifier: 'user-123',
       firstname: 'John',
       lastname: 'Doe',
-      email: 'jdoe@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('jdoe@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       clientProps: new ClientProps(),
     });
 
@@ -87,8 +87,8 @@ describe('Client JWT Login', () => {
       identifier: 'user-123',
       firstname: 'John',
       lastname: 'Doe',
-      email: 'jdoe@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('jdoe@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       clientProps: new ClientProps(),
     });
 
@@ -111,8 +111,8 @@ describe('Client JWT Login', () => {
       identifier: 'advisor-123',
       firstname: 'Jane',
       lastname: 'Doe',
-      email: 'advisor@yopmail.com',
-      password: hashedPassword,
+      email: Email.createUnsafe('jdoe@yopmail.com'),
+      password: Password.createUnsafe(hashedPassword),
       advisorProps: new AdvisorProps(),
     });
 

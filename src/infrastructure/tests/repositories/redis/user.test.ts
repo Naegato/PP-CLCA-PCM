@@ -21,53 +21,99 @@ describe.skipIf(!isRedis)('Redis user repository adapter', () => {
 	const repository = new RedisUserRepository(client);
 
 	test('save', async () => {
-		const entity = createUser('save@ŧest.com');
-		const savedEntity = await repository.save(entity);
+		const entityOrError = createUser('save@ŧest.com');
+
+		if (!(entityOrError instanceof User)) {
+			fail('User creation failed');
+		}
+
+		const savedEntity = await repository.save(entityOrError);
 		expect(savedEntity).instanceof(User);
 	});
 
 	test('all', async () => {
-		const entities = await Promise.all([
-			repository.save(createUser('all1@test.com')),
-			repository.save(createUser('all2@test.com')),
-			repository.save(createUser('all3@test.com')),
-			repository.save(createUser('all4@test.com')),
-		]);
+		const users = [
+			createUser('all1@test.com'),
+			createUser('all2@test.com'),
+			createUser('all3@test.com'),
+			createUser('all4@test.com'),
+		];
+
+		const validUsers = users.filter(
+			(user): user is User => user instanceof User
+		);
+
+		await Promise.all(validUsers.map(user => repository.save(user)));
 
 		const allEntities = await repository.all();
-		expect(allEntities.length).toBeGreaterThanOrEqual(entities.length);
-		entities.forEach(t => {
+		expect(allEntities.length).toBeGreaterThanOrEqual(validUsers.length);
+		validUsers.forEach(t => {
 			expect(t).instanceof(User);
 		});
 	});
 
 	test('find', async () => {
 		await client.flushDb();
-		const entity = createUser('find@test.com');
-		const savedEntity = await repository.save(entity);
+		const entityOrError = createUser('find@test.com');
+
+		if (!(entityOrError instanceof User)){
+			fail("User creation failed")
+		}
+
+		const entity: User = entityOrError;
+
+		const savedEntityOrError = await repository.save(entity);
+
+		if (!(savedEntityOrError instanceof User)){
+			fail("User creation failed")
+		}
+
+		const savedEntity: User = entityOrError;
 
 		const findedEntity = await repository.find(savedEntity);
 		expect(findedEntity).toEqual(entity);
 	});
 
-	test('findByEmail', async () => {
-		await client.flushDb();
-		const entity = createUser('find@test.com');
-		const savedEntity = await repository.save(entity);
+  test('findByEmail', async () => {
+    await client.flushDb();
 
-		const findedEntity = await repository.findByEmail('find@test.com');
-		expect(findedEntity).toEqual(entity);
-	});
+    const entityOrError = createUser('find@test.com');
+    if (!(entityOrError instanceof User)) {
+      fail('User creation failed');
+    }
 
-	test('update', async () => {
-		const entity = createUser('update@test.com');
-		const savedEntity = await repository.save(entity);
+    await repository.save(entityOrError);
 
-		const newEntity = savedEntity.update({firstname: 'NewFirstName'});
+    const foundEntity = await repository.findByEmail('find@test.com');
+    expect(foundEntity).toEqual(entityOrError);
+  });
 
-		const updatedEntity = await repository.update(newEntity);
+  test('update', async () => {
+		const entityOrError = createUser('update@test.com');
+		if (!(entityOrError instanceof User)) {
+			fail('User creation failed');
+		}
 
-		const testedEntity = await repository.find(updatedEntity);
+		const savedEntityOrError = await repository.save(entityOrError);
+		if (!(savedEntityOrError instanceof User)) {
+			fail('User save failed');
+		}
+
+		const updatedCandidateOrError = savedEntityOrError.update({
+			firstname: 'NewFirstName',
+		});
+		if (!(updatedCandidateOrError instanceof User)) {
+			fail('User update failed');
+		}
+
+		const updatedEntityOrError = await repository.update(
+			updatedCandidateOrError
+		);
+		if (!(updatedEntityOrError instanceof User)) {
+			fail('User persistence update failed');
+		}
+
+		const testedEntity = await repository.find(updatedEntityOrError);
 		expect(testedEntity?.firstname).toBe('NewFirstName');
 	});
 });

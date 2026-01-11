@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain';
+import { User, Email, Password } from '@pp-clca-pcm/domain';
 import { NotificationType } from '@pp-clca-pcm/domain';
 import { ClientProps } from '@pp-clca-pcm/domain';
 import { AdvisorProps } from '@pp-clca-pcm/domain';
@@ -26,8 +26,8 @@ describe('Notify Client Saving Rate Change', () => {
       identifier: `client-${email}`,
       firstname: 'John',
       lastname: 'Doe',
-      email,
-      password: 'hashedpassword',
+      email: Email.createUnsafe(email),
+      password: Password.createUnsafe('hashedpassword'),
       clientProps: new ClientProps(),
     });
   };
@@ -37,8 +37,8 @@ describe('Notify Client Saving Rate Change', () => {
       identifier: 'advisor-id',
       firstname: 'Advisor',
       lastname: 'User',
-      email: 'advisor@test.com',
-      password: 'hashedpassword',
+      email: Email.createUnsafe('advisor@test.com'),
+      password: Password.createUnsafe('hashedpassword'),
       advisorProps: new AdvisorProps(),
     });
   };

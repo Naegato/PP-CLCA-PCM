@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain';
+import { User, Email, Password } from '@pp-clca-pcm/domain';
 import { ClientProps } from '@pp-clca-pcm/domain';
 import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
 import { DirectorGetAllClients } from '@pp-clca-pcm/application';
@@ -18,10 +18,10 @@ describe('Director Get All Clients', () => {
   const createTestClient = (email: string, firstname: string = 'John', lastname: string = 'Doe') => {
     return User.fromPrimitives({
       identifier: `user-${email}`,
-      firstname,
-      lastname,
-      email,
-      password: 'hashedpassword',
+      firstname: firstname,
+      lastname: lastname,
+      email: Email.createUnsafe(email),
+      password: Password.createUnsafe('hashedpassword'),
       clientProps: new ClientProps(),
     });
   };
