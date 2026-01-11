@@ -457,7 +457,7 @@ app.put("/client/accounts/:id/name", requireRole('client'), async (req, res) => 
     return res.status(404).json({ error: "Account not found" });
   }
 
-  if (account !instanceof Account) {
+  if (!(account instanceof Account)) {
     return res.status(400).json({ error: "Invalid IBAN" });
   }
 

@@ -6,11 +6,6 @@ import { Email } from '@pp-clca-pcm/domain';
 import { User } from '@pp-clca-pcm/domain';
 import { Password } from '@pp-clca-pcm/domain';
 import { Discussion } from '@pp-clca-pcm/domain';
-import { Message } from '@pp-clca-pcm/domain/entities/discussion/message';
-import { Email } from '@pp-clca-pcm/domain/value-objects/email';
-import { User } from '@pp-clca-pcm/domain/entities/user';
-import { Password } from '@pp-clca-pcm/domain/value-objects/password';
-import { Discussion } from '@pp-clca-pcm/domain/entities/discussion/discussion';
 import { warn } from 'node:console';
 
 const databaseProvider = process.env.DB_PROVIDER;
@@ -27,12 +22,19 @@ describe.skipIf(!isRedis)('Redis message repository adapter', () => {
   const repository = new RedisMessageRepository(client)
 
   test('save', async () => {
-	const user = User.create(
+	const userOrError = User.create(
 		'user-id',
 		'John',
 		'a@a.com',
 		'a',
 	  );
+
+	if (!(userOrError instanceof User)) {
+		fail('User creation failed');
+	}
+
+	const user: User = userOrError;
+
 	const message = new Message(
 	  null,
 	  'Hello, this is a test message.',
@@ -51,12 +53,19 @@ describe.skipIf(!isRedis)('Redis message repository adapter', () => {
   });
 
   test('get', async () => {
-	const user = User.create(
+	const userOrError = User.create(
 		'user-id',
 		'John',
 		'a@a.com',
 		'a',
 	  );
+
+	if (!(userOrError instanceof User)) {
+		fail('User creation failed');
+	}
+
+	const user: User = userOrError;
+		
 	const message = new Message(
 	  null,
 	  'Hello, this is a test message.',
