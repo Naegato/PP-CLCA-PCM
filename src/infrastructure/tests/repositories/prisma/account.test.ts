@@ -1,6 +1,6 @@
 import { PrismaAccountRepository } from '@pp-clca-pcm/adapters';
 import { prisma } from '@pp-clca-pcm/adapters';
-import { Account } from '@pp-clca-pcm/domain';
+import { Account, Email, Password } from '@pp-clca-pcm/domain';
 import { AccountType, AccountTypeNameEnum } from '@pp-clca-pcm/domain';
 import { User } from '@pp-clca-pcm/domain';
 import { ClientProps } from '@pp-clca-pcm/domain';
@@ -31,12 +31,23 @@ describe.skipIf(!isPostgres)('Prisma Account Repository', async () => {
   });
 
   const createTestUser = async (id: string = crypto.randomUUID()) => {
+    const email = Email.create(`director-${id}@test.com`);
+    const password = Password.create('123456Aa*')
+
+    if (password instanceof Error) {
+      expect.fail('Password creation failed');
+    }
+
+    if (email instanceof Error) {
+      expect.fail('Email creation failed');
+    }
+
     const user = User.fromPrimitives({
       identifier: id,
       firstname: 'John',
       lastname: 'Doe',
-      email: `user-${id}@test.com`,
-      password: 'hashedpassword',
+      email,
+      password,
       clientProps: new ClientProps(),
     });
 
@@ -241,7 +252,10 @@ describe.skipIf(!isPostgres)('Prisma Account Repository', async () => {
 
     const found = await repository.findById(account.identifier!);
 
-    expect(found).not.toBeNull();
+    expect(found).not.instanceof(Error);
+    if (found instanceof Error) {
+      expect.fail('Account should be found');
+    }
     expect(found?.identifier).toBe(account.identifier);
   });
 

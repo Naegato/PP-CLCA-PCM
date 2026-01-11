@@ -1,6 +1,6 @@
 import { PrismaBanRepository } from '@pp-clca-pcm/adapters';
 import { prisma } from '@pp-clca-pcm/adapters';
-import { Ban } from '@pp-clca-pcm/domain';
+import { Ban, Email, Password } from '@pp-clca-pcm/domain';
 import { User } from '@pp-clca-pcm/domain';
 import { ClientProps } from '@pp-clca-pcm/domain';
 import { DirectorProps } from '@pp-clca-pcm/domain';
@@ -31,12 +31,23 @@ describe.skipIf(!isPostgres)('Prisma Ban Repository', async () => {
   });
 
   const createTestClient = async (id: string = crypto.randomUUID()) => {
+    const email = Email.create(`user-${id}@test.com`);
+    const password = Password.create('123456Aa*')
+
+    if (password instanceof Error) {
+      expect.fail('Password creation failed');
+    }
+
+    if (email instanceof Error) {
+      expect.fail('Email creation failed');
+    }
+
     const user = User.fromPrimitives({
       identifier: id,
       firstname: 'John',
       lastname: 'Doe',
-      email: `client-${id}@test.com`,
-      password: 'hashedpassword',
+      email,
+      password,
       clientProps: new ClientProps(),
     });
 
@@ -56,12 +67,23 @@ describe.skipIf(!isPostgres)('Prisma Ban Repository', async () => {
 
   const createTestDirector = async () => {
     const id = crypto.randomUUID();
+    const email = Email.create(`director-${id}@test.com`);
+    const password = Password.create('123456Aa*')
+
+    if (password instanceof Error) {
+      expect.fail('Password creation failed');
+    }
+
+    if (email instanceof Error) {
+      expect.fail('Email creation failed');
+    }
+
     const user = User.fromPrimitives({
       identifier: id,
       firstname: 'Director',
       lastname: 'User',
-      email: `director-${id}@test.com`,
-      password: 'hashedpassword',
+      email,
+      password,
       directorProps: new DirectorProps(),
     });
 
