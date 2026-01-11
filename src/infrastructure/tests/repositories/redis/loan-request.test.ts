@@ -44,7 +44,7 @@ const createLoanRequest = (advisorId?: string) => {
   return loan;
 }
 
-describe.skipIf(!isRedis)('Redis loan request repository adapter', () => {
+describe.skipIf(isRedis ? describe : describe.skip)('Redis loan request repository adapter', () => {
   beforeAll(async () => {
 	connectRedis();
     await client.flushDb();

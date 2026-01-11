@@ -27,7 +27,7 @@ const createTransaction = () => {
   return Transaction.create(loan, 100, 'deposit');
 }
 
-describe.skipIf(!isRedis)('Redis transaction repository adapter', () => {
+describe.skipIf(isRedis ? describe : describe.skip)('Redis transaction repository adapter', () => {
   beforeAll(async () => {
 	connectRedis();
     await client.flushDb();
