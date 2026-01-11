@@ -1,4 +1,4 @@
-import { InMemoryUserRepository, JwtSecurityService, JwtTokenService } from '@pp-clca-pcm/adapters';
+import { InMemoryStockOrderRepository } from '@pp-clca-pcm/adapters';
 import { describe, expect, test } from 'vitest';
 
 import { Email, Password, Stock } from '@pp-clca-pcm/domain';
@@ -10,16 +10,21 @@ import { User } from '@pp-clca-pcm/domain';
 import { ClientProps } from '@pp-clca-pcm/domain';
 import { Iban } from '@pp-clca-pcm/domain';
 import { BANK_ATTRIBUTES } from '@pp-clca-pcm/domain';
-import { InMemoryStockOrderRepository } from '@pp-clca-pcm/adapters';
 import { ClientCancelStockOrder } from '@pp-clca-pcm/application';
 import { ClientCancelStockOrderError } from '@pp-clca-pcm/application';
+import { Security } from '@pp-clca-pcm/application';
+
+class MockSecurity implements Security {
+  constructor(private currentUser: User | null) {}
+  async getCurrentUser(): Promise<User | null> {
+    return this.currentUser;
+  }
+}
 
 describe('Client Cancel Stock Order', () => {
-  const getData = () => {
+  const getData = (currentUser: User | null = null) => {
     const stockOrderRepository = new InMemoryStockOrderRepository();
-    const tokenService = new JwtTokenService();
-    const userRepository = new InMemoryUserRepository();
-    const security = new JwtSecurityService(tokenService, userRepository);
+    const security = new MockSecurity(currentUser);
     const useCase = new ClientCancelStockOrder(stockOrderRepository, security);
 
     return {
@@ -63,12 +68,12 @@ describe('Client Cancel Stock Order', () => {
   };
 
   test('Should cancel order successfully', async () => {
-    const { useCase, stockOrderRepository } = getData();
-
     const user = createTestUser();
     if (user instanceof Error) {
       expect.fail('User creation failed');
     }
+    const { useCase, stockOrderRepository } = getData(user);
+
     const account = await createTestAccount(user, '00000000001');
     const stock = createTestStock();
 
@@ -84,9 +89,8 @@ describe('Client Cancel Stock Order', () => {
   });
 
   test('Should return error when order not found', async () => {
-    const { useCase } = getData();
-
     const user = createTestUser();
+    const { useCase } = getData(user);
 
     const result = await useCase.execute('non-existent-order');
 
@@ -95,13 +99,13 @@ describe('Client Cancel Stock Order', () => {
   });
 
   test('Should return error when user is not the owner', async () => {
-    const { useCase, stockOrderRepository } = getData();
-
     const owner = createTestUser('owner');
     if (owner instanceof Error) {
       expect.fail('Owner creation failed');
     }
     const otherUser = createTestUser('other');
+    const { useCase, stockOrderRepository } = getData(otherUser);
+
     const account = await createTestAccount(owner, '00000000001');
     const stock = createTestStock();
 
@@ -115,12 +119,12 @@ describe('Client Cancel Stock Order', () => {
   });
 
   test('Should return error when order is already executed', async () => {
-    const { useCase, stockOrderRepository } = getData();
-
     const user = createTestUser();
     if (user instanceof Error) {
       expect.fail('User creation failed');
     }
+    const { useCase, stockOrderRepository } = getData(user);
+
     const account = await createTestAccount(user, '00000000001');
     const stock = createTestStock();
 
@@ -136,18 +140,6 @@ describe('Client Cancel Stock Order', () => {
   });
 
   test('Should return error when user has no identifier', async () => {
-    const { useCase, stockOrderRepository } = getData();
-
-    const owner = createTestUser();
-    if (owner instanceof Error) {
-      expect.fail('Owner creation failed');
-    }
-    const account = await createTestAccount(owner, '00000000001');
-    const stock = createTestStock();
-
-    const order = StockOrder.create(stock, account, OrderSide.BUY, 100, 10);
-    await stockOrderRepository.save(order);
-
     const email = Email.create('test@yopmail.com');
     const password = Password.create('hashedPasword123&');
     if (email instanceof Error) {
@@ -166,15 +158,27 @@ describe('Client Cancel Stock Order', () => {
       clientProps: new ClientProps(),
     });
 
+    const { useCase, stockOrderRepository } = getData(userWithoutId);
+
+    const owner = createTestUser();
+    if (owner instanceof Error) {
+      expect.fail('Owner creation failed');
+    }
+    const account = await createTestAccount(owner, '00000000001');
+    const stock = createTestStock();
+
+    const order = StockOrder.create(stock, account, OrderSide.BUY, 100, 10);
+    await stockOrderRepository.save(order);
+
     const result = await useCase.execute(order.identifier!);
 
     expect(result).instanceof(ClientCancelStockOrderError);
   });
 
   test('Should keep other orders when cancelling one', async () => {
-    const { useCase, stockOrderRepository } = getData();
-
     const user = createTestUser();
+    const { useCase, stockOrderRepository } = getData(user);
+
     const account = await createTestAccount(user, '00000000001');
     const stock = createTestStock();
 

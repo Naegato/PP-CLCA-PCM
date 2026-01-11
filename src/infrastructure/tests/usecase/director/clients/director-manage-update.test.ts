@@ -5,7 +5,15 @@ import { DirectorProps } from '@pp-clca-pcm/domain';
 import { DirectorManageUpdate } from '@pp-clca-pcm/application';
 import { NotDirector } from '@pp-clca-pcm/application';
 import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
-import { InMemoryUserRepository, JwtSecurityService, JwtTokenService } from '@pp-clca-pcm/adapters';
+import { Security } from '@pp-clca-pcm/application';
+import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
+
+class MockSecurity implements Security {
+  constructor(private currentUser: User | null) {}
+  async getCurrentUser(): Promise<User | null> {
+    return this.currentUser;
+  }
+}
 
 describe('Director Manage Update', () => {
   const createTestDirector = () => {
@@ -50,10 +58,9 @@ describe('Director Manage Update', () => {
     });
   };
 
-  const getData = (currentUser: User) => {
+  const getData = (currentUser: User | null) => {
     const userRepository = new InMemoryUserRepository();
-    const tokenService = new JwtTokenService();
-    const security = new JwtSecurityService(tokenService,userRepository);
+    const security = new MockSecurity(currentUser);
     const useCase = new DirectorManageUpdate(userRepository, security);
 
     return {
