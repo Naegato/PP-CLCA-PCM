@@ -116,6 +116,7 @@ import { NotifyLoanStatus } from '../../../../src/application/usecases/shared/no
 import { Argon2PasswordService } from "../../../../src/infrastructure/adapters/services/argon2-password";
 import { JwtTokenService } from "../../../../src/infrastructure/adapters/services/jwt-token";
 import { JwtSecurityService } from "../../../../src/infrastructure/adapters/services/jwt-security";
+import { Account } from '../../../../src/domain/entities/accounts/account.js';
 
 dotenv.config({
   path: path.resolve(__dirname, "../../../../../.env"),
@@ -411,7 +412,15 @@ app.post("/advisor/messages/:id/reply", requireRole('advisor'), async (req, res)
 });
 
 app.post("/advisor/discussions/:id/transfer", requireRole('advisor'), async (req, res) => {
-  const result = await advisorTransferChat.execute(req.params.id, req.body.advisorId);
+  const discussion = await discussionRepository!.get(req.params.id);
+
+  if (!discussion) return res.status(404).json({ error: 'Discussion not found' });
+
+  const newAdvisor = await userRepository.findById(req.body.newAdvisorId);
+  if (!newAdvisor || newAdvisor instanceof Error) {
+    return res.status(404).json({ error: 'New advisor not found' });
+  }
+  const result = await advisorTransferChat.execute(discussion, newAdvisor);
   res.json(result);
 });
 
@@ -442,7 +451,20 @@ app.post("/client/accounts/savings", requireRole('client'), async (req, res) => 
 });
 
 app.put("/client/accounts/:id/name", requireRole('client'), async (req, res) => {
-  const result = await clientUpdateNameAccount.execute(req.params.id, req.body.name);
+  const account = await accountRepository!.findById(req.params.id);
+
+  if (!account) {
+    return res.status(404).json({ error: "Account not found" });
+  }
+
+  if (account !instanceof Account) {
+    return res.status(400).json({ error: "Invalid IBAN" });
+  }
+
+  const validAccount = account as Account;
+
+
+  const result = await clientUpdateNameAccount.execute(validAccount, req.body.name);
   res.json(result);
 });
 
@@ -474,7 +496,13 @@ app.post("/client/password/reset", async (req, res) => {
 
 // ============ CLIENT LOAN ROUTES ============
 app.get("/client/loans", requireRole('client'), async (req, res) => {
-  const result = await clientGetLoans.execute(security.getCurrentUser());
+  const user = await security.getCurrentUser();
+
+  if (!user) {
+    return res.status(401).json({ error: "User not logged in" });
+  }
+
+  const result = await clientGetLoans.execute(user);
   res.json(result);
 });
 
@@ -484,7 +512,13 @@ app.post("/client/loans/:id/repay", requireRole('client'), async (req, res) => {
 });
 
 app.post("/client/loans/request", requireRole('client'), async (req, res) => {
-  const result = await clientRequestLoan.execute(security.getCurrentUser(), req.body.amount);
+  const user = await security.getCurrentUser();
+
+  if (!user) {
+    return res.status(401).json({ error: "User not found or not logged in" });
+  }
+
+  const result = await clientRequestLoan.execute(user, req.body.amount);
   res.json(result);
 });
 
@@ -534,7 +568,13 @@ app.delete("/client/stock-orders/:id", requireRole('client'), async (req, res) =
 });
 
 app.get("/client/stock-orders", requireRole('client'), async (req, res) => {
-  const result = await clientGetStockOrders.execute(security.getCurrentUser());
+  const user = await security.getCurrentUser();
+
+  if (!user) {
+    return res.status(401).json({ error: "User not logged in" });
+  }
+
+  const result = await clientGetStockOrders.execute(user);
   res.json(result);
 });
 
@@ -572,7 +612,14 @@ app.get("/director/clients", requireRole('director'), async (req, res) => {
 });
 
 app.get("/director/clients/:id/accounts", requireRole('director'), async (req, res) => {
-  const result = await directorGetClientAccounts.execute(req.params.id);
+  const client = await userRepository.findById(req.params.id);
+
+  if (!client) {
+    return res.status(404).json({ error: "Client not found" });
+  }
+
+  const result = await directorGetClientAccounts.execute(client);
+
   res.json(result);
 });
 

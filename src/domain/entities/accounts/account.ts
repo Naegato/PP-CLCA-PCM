@@ -4,7 +4,6 @@ import { randomUUID } from 'node:crypto';
 import { User } from '../user';
 import { Iban } from '../../value-objects/iban';
 import { Portfolio } from '../portfolio/portfolio';
-import { Transaction as Tx } from "../transaction";
 
 export class Account {
   private constructor(
