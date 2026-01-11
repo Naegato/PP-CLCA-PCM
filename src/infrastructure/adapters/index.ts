@@ -8,6 +8,7 @@ export * from './cron/DailyInterestCron.js';
 export * from './services/argon2-password.js';
 export * from './services/jwt-token.js';
 export * from './services/simple-logout.js'
+export * from './services/jwt-security.js';
 
 // Repositories - Memory
 export * from './repositories/memory/account/account.js';

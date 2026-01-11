@@ -1,47 +1,59 @@
 import { describe, expect, test } from 'vitest';
-import { User } from '@pp-clca-pcm/domain';
+import { Email, Password, User } from '@pp-clca-pcm/domain';
 import { ClientProps } from '@pp-clca-pcm/domain';
 import { DirectorProps } from '@pp-clca-pcm/domain';
 import { DirectorManageUpdate } from '@pp-clca-pcm/application';
 import { NotDirector } from '@pp-clca-pcm/application';
 import { UserNotFoundByIdError } from '@pp-clca-pcm/application';
-import { InMemoryUserRepository } from '@pp-clca-pcm/adapters';
-import { Security } from '@pp-clca-pcm/application';
-
-class MockSecurity implements Security {
-  constructor(private currentUser: User) {}
-
-  getCurrentUser(): User {
-    return this.currentUser;
-  }
-}
+import { InMemoryUserRepository, JwtSecurityService, JwtTokenService } from '@pp-clca-pcm/adapters';
 
 describe('Director Manage Update', () => {
   const createTestDirector = () => {
+    const email = Email.create('director@test.com');
+    const password = Password.create('123456Aa*');
+
+    if (email instanceof Error) {
+      expect.fail('Email creation failed');
+    }
+    if (password instanceof Error) {
+      expect.fail('Password creation failed');
+    }
+
     return User.fromPrimitives({
       identifier: 'director-id',
       firstname: 'Director',
       lastname: 'User',
-      email: 'director@test.com',
-      password: 'hashedpassword',
+      email: email,
+      password: password,
       directorProps: new DirectorProps(),
     });
   };
 
   const createTestClient = (id: string = 'client-id') => {
+    const email = Email.create('john@test.com');
+    const password = Password.create('123456Aa*');
+
+    if (email instanceof Error) {
+      expect.fail('Email creation failed');
+    }
+    if (password instanceof Error) {
+      expect.fail('Password creation failed');
+    }
+
     return User.fromPrimitives({
       identifier: id,
       firstname: 'John',
       lastname: 'Doe',
-      email: 'john@test.com',
-      password: 'hashedpassword',
+      email: email,
+      password: password,
       clientProps: new ClientProps(),
     });
   };
 
   const getData = (currentUser: User) => {
     const userRepository = new InMemoryUserRepository();
-    const security = new MockSecurity(currentUser);
+    const tokenService = new JwtTokenService();
+    const security = new JwtSecurityService(tokenService,userRepository);
     const useCase = new DirectorManageUpdate(userRepository, security);
 
     return {
@@ -81,6 +93,8 @@ describe('Director Manage Update', () => {
     const { useCase } = getData(director);
 
     const result = await useCase.execute('non-existent-id', { firstname: 'Jane' });
+
+    console.log(result);
 
     expect(result).instanceof(UserNotFoundByIdError);
   });

@@ -1,6 +1,7 @@
+import { InMemoryUserRepository, JwtSecurityService, JwtTokenService } from '@pp-clca-pcm/adapters';
 import { describe, expect, test } from 'vitest';
 
-import { Stock } from '@pp-clca-pcm/domain';
+import { Email, Password, Stock } from '@pp-clca-pcm/domain';
 import { Company } from '@pp-clca-pcm/domain';
 import { Account } from '@pp-clca-pcm/domain';
 import { AccountType } from '@pp-clca-pcm/domain';
@@ -16,7 +17,10 @@ import { ClientCancelStockOrderError } from '@pp-clca-pcm/application';
 describe('Client Cancel Stock Order', () => {
   const getData = () => {
     const stockOrderRepository = new InMemoryStockOrderRepository();
-    const useCase = new ClientCancelStockOrder(stockOrderRepository);
+    const tokenService = new JwtTokenService();
+    const userRepository = new InMemoryUserRepository();
+    const security = new JwtSecurityService(tokenService, userRepository);
+    const useCase = new ClientCancelStockOrder(stockOrderRepository, security);
 
     return {
       useCase,
@@ -25,12 +29,23 @@ describe('Client Cancel Stock Order', () => {
   };
 
   const createTestUser = (id: string = 'user-123') => {
+    const email = Email.create(`${id}@yopmail.com`)
+    const password = Password.create('hashedPassword123');
+
+    if (email instanceof Error) {
+      expect.fail('Email creation failed');
+    }
+
+    if (password instanceof Error) {
+      expect.fail('Password creation failed');
+    }
+
     return User.fromPrimitives({
       identifier: id,
       firstname: 'John',
       lastname: 'Doe',
-      email: `${id}@yopmail.com`,
-      password: 'hashedPassword123',
+      email: email,
+      password: password,
       clientProps: new ClientProps(),
     });
   };
@@ -51,13 +66,16 @@ describe('Client Cancel Stock Order', () => {
     const { useCase, stockOrderRepository } = getData();
 
     const user = createTestUser();
+    if (user instanceof Error) {
+      expect.fail('User creation failed');
+    }
     const account = await createTestAccount(user, '00000000001');
     const stock = createTestStock();
 
     const order = StockOrder.create(stock, account, OrderSide.BUY, 100, 10);
     await stockOrderRepository.save(order);
 
-    const result = await useCase.execute(order.identifier!, user);
+    const result = await useCase.execute(order.identifier!);
 
     expect(result).toBeUndefined();
 
@@ -70,7 +88,7 @@ describe('Client Cancel Stock Order', () => {
 
     const user = createTestUser();
 
-    const result = await useCase.execute('non-existent-order', user);
+    const result = await useCase.execute('non-existent-order');
 
     expect(result).instanceof(ClientCancelStockOrderError);
     expect((result as ClientCancelStockOrderError).message).toContain('not found');
@@ -80,6 +98,9 @@ describe('Client Cancel Stock Order', () => {
     const { useCase, stockOrderRepository } = getData();
 
     const owner = createTestUser('owner');
+    if (owner instanceof Error) {
+      expect.fail('Owner creation failed');
+    }
     const otherUser = createTestUser('other');
     const account = await createTestAccount(owner, '00000000001');
     const stock = createTestStock();
@@ -87,7 +108,7 @@ describe('Client Cancel Stock Order', () => {
     const order = StockOrder.create(stock, account, OrderSide.BUY, 100, 10);
     await stockOrderRepository.save(order);
 
-    const result = await useCase.execute(order.identifier!, otherUser);
+    const result = await useCase.execute(order.identifier!);
 
     expect(result).instanceof(ClientCancelStockOrderError);
     expect((result as ClientCancelStockOrderError).message).toContain('not the owner');
@@ -97,6 +118,9 @@ describe('Client Cancel Stock Order', () => {
     const { useCase, stockOrderRepository } = getData();
 
     const user = createTestUser();
+    if (user instanceof Error) {
+      expect.fail('User creation failed');
+    }
     const account = await createTestAccount(user, '00000000001');
     const stock = createTestStock();
 
@@ -105,7 +129,7 @@ describe('Client Cancel Stock Order', () => {
     const executedOrder = order.reduceRemainingBy(10);
     await stockOrderRepository.save(executedOrder);
 
-    const result = await useCase.execute(executedOrder.identifier!, user);
+    const result = await useCase.execute(executedOrder.identifier!);
 
     expect(result).instanceof(ClientCancelStockOrderError);
     expect((result as ClientCancelStockOrderError).message).toContain('already executed');
@@ -115,22 +139,34 @@ describe('Client Cancel Stock Order', () => {
     const { useCase, stockOrderRepository } = getData();
 
     const owner = createTestUser();
+    if (owner instanceof Error) {
+      expect.fail('Owner creation failed');
+    }
     const account = await createTestAccount(owner, '00000000001');
     const stock = createTestStock();
 
     const order = StockOrder.create(stock, account, OrderSide.BUY, 100, 10);
     await stockOrderRepository.save(order);
 
+    const email = Email.create('test@yopmail.com');
+    const password = Password.create('hashedPassword123');
+    if (email instanceof Error) {
+      expect.fail('Email creation failed');
+    }
+    if (password instanceof Error) {
+      expect.fail('Password creation failed');
+    }
+
     const userWithoutId = User.fromPrimitives({
       identifier: null as any,
       firstname: 'John',
       lastname: 'Doe',
-      email: 'test@yopmail.com',
-      password: 'hashedPassword123',
+      email: email,
+      password: password,
       clientProps: new ClientProps(),
     });
 
-    const result = await useCase.execute(order.identifier!, userWithoutId);
+    const result = await useCase.execute(order.identifier!);
 
     expect(result).instanceof(ClientCancelStockOrderError);
   });
@@ -147,7 +183,7 @@ describe('Client Cancel Stock Order', () => {
     await stockOrderRepository.save(order1);
     await stockOrderRepository.save(order2);
 
-    await useCase.execute(order1.identifier!, user);
+    await useCase.execute(order1.identifier!);
 
     const remainingOrders = await stockOrderRepository.findAllByOwnerId(user.identifier!);
     expect(remainingOrders).toHaveLength(1);
