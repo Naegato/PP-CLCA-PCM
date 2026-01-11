@@ -119,7 +119,7 @@ describe('Client JWT Login', () => {
     await userRepository.save(advisor);
 
     const result = await useCase.execute({
-      email: 'advisor@yopmail.com',
+      email: 'jdoe@yopmail.com',
       password: plainPassword,
     });
 
