@@ -85,7 +85,7 @@ export class ClientAuthController {
   @Post('register')
   @HttpCode(201)
   async register(@Body() dto: RegisterDto) {
-    const useCase = new ClientRegistration(this.userRepository, this.accountRepository, this.accountTypeRepository);
+    const useCase = new ClientRegistration(this.userRepository, this.accountRepository, this.accountTypeRepository, this.passwordService);
     return await useCase.execute(
       dto.firstname,
       dto.lastname,

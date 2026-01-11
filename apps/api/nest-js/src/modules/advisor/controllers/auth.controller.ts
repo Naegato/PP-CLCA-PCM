@@ -55,7 +55,7 @@ export class AdvisorAuthController {
   @Post('register')
   @HttpCode(201)
   async register(@Body() dto: RegisterDto) {
-    const useCase = new AdvisorRegistration(this.userRepository);
+    const useCase = new AdvisorRegistration(this.userRepository, this.passwordService);
     return await useCase.execute(
       dto.firstname,
       dto.lastname,

@@ -15,7 +15,7 @@ describe('Advisor Registration ', () => {
     return {
       useCase,
       repositories: {
-        inMemoryUserRepository
+        inMemoryUserRepository,
       }
     };
   }

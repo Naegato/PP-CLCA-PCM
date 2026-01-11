@@ -15,7 +15,7 @@ import { DirectorRegistration } from '@pp-clca-pcm/application';
 
 // Use cases - Client Management
 import { DirectorGetAllClients } from '@pp-clca-pcm/application';
-import { DirectorGetClientAccount } from '@pp-clca-pcm/application';
+import { DirectorGetClientAccounts } from '@pp-clca-pcm/application';
 import { DirectorManageBan } from '@pp-clca-pcm/application';
 import { DirectorManageCreate } from '@pp-clca-pcm/application';
 import { DirectorManageUpdate } from '@pp-clca-pcm/application';
@@ -84,7 +84,7 @@ import type { Security } from '@pp-clca-pcm/application';
     },
     {
       provide: DirectorRegistration,
-      useFactory: (userRepository: UserRepository) => new DirectorRegistration(userRepository),
+      useFactory: (userRepository: UserRepository, passwordService: PasswordService) => new DirectorRegistration(userRepository, passwordService),
       inject: [REPOSITORY_TOKENS.USER],
     },
 
@@ -95,8 +95,8 @@ import type { Security } from '@pp-clca-pcm/application';
       inject: [REPOSITORY_TOKENS.USER],
     },
     {
-      provide: DirectorGetClientAccount,
-      useFactory: (userRepository: UserRepository) => new DirectorGetClientAccount(userRepository),
+      provide: DirectorGetClientAccounts,
+      useFactory: (userRepository: UserRepository) => new DirectorGetClientAccounts(userRepository),
       inject: [REPOSITORY_TOKENS.USER],
     },
     {

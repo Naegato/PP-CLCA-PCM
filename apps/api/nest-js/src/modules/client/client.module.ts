@@ -126,7 +126,8 @@ import type { MarketService } from '@pp-clca-pcm/application';
         userRepository: UserRepository,
         accountRepository: AccountRepository,
         accountTypeRepository: AccountTypeRepository,
-      ) => new ClientRegistration(userRepository, accountRepository, accountTypeRepository),
+        passwordService: PasswordService,
+      ) => new ClientRegistration(userRepository, accountRepository, accountTypeRepository, passwordService),
       inject: [
         REPOSITORY_TOKENS.USER,
         REPOSITORY_TOKENS.ACCOUNT,
@@ -287,8 +288,8 @@ import type { MarketService } from '@pp-clca-pcm/application';
     },
     {
       provide: ClientCancelStockOrder,
-      useFactory: (stockOrderRepository: StockOrderRepository) =>
-        new ClientCancelStockOrder(stockOrderRepository),
+      useFactory: (stockOrderRepository: StockOrderRepository, security: Security) =>
+        new ClientCancelStockOrder(stockOrderRepository, security),
       inject: [REPOSITORY_TOKENS.STOCK_ORDER],
     },
     {

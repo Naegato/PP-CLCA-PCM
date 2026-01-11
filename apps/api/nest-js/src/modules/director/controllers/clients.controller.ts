@@ -13,7 +13,7 @@ import {
 
 // Use cases
 import { DirectorGetAllClients } from '@pp-clca-pcm/application';
-import { DirectorGetClientAccount } from '@pp-clca-pcm/application';
+import { DirectorGetClientAccounts } from '@pp-clca-pcm/application';
 import { DirectorManageCreate } from '@pp-clca-pcm/application';
 import { DirectorManageUpdate } from '@pp-clca-pcm/application';
 import { DirectorManageDelete } from '@pp-clca-pcm/application';
@@ -88,7 +88,7 @@ export class DirectorClientsController {
       return user;
     }
 
-    const useCase = new DirectorGetClientAccount(this.userRepository);
+    const useCase = new DirectorGetClientAccounts(this.userRepository);
 
     return await useCase.execute(user);
   }
